@@ -1,3 +1,5 @@
+<img src="docs/logo.svg" alt="pourbase logo" width="96" align="right">
+
 # pourbase
 
 pourbase is a source-linked database of experimental standard thermochemistry and a Python package
@@ -9,20 +11,27 @@ energies.
 
 ## Install
 
+From a clone of this repository, in a virtual environment (Python 3.11 or newer):
+
 ```bash
-pip install pourbase                           # database, calculations and command line
-pip install "pourbase[gui]"                    # plus the desktop application
-pip install "pourbase[gui,materials-project]"  # plus live Materials Project comparisons
+git clone https://github.com/FrederikLizakJohansen/pourbase.git
+cd pourbase
+python -m venv .venv
+source .venv/bin/activate            # Windows: .venv\Scripts\activate
+pip install ".[gui]"                 # add ",materials-project" for live DFT comparisons
+pourbase-gui
 ```
+
+Use `pip install -e ".[gui]"` instead to work on the code; `python -m unittest discover -s tests`
+runs the tests. Without `[gui]`, the package installs the database, the Python API and the
+`pourbase` command line only.
 
 The database ships inside the package. Experimental calculations run offline and need no download,
 API key or data path.
 
 ## Desktop application
 
-```bash
-pourbase-gui          # or: pourbase gui Fe
-```
+Start it with `pourbase-gui`, or `pourbase gui Fe` to open one element directly.
 
 The application opens on a periodic table showing the stable species of every supported element at
 a chosen pH and potential (SHE or RHE). Hover over an element for its stable species and Gibbs

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="pourbase">
+  <title>pourbase</title>
+  <defs>
+    <clipPath id="tile">
+      <rect x="8" y="8" width="112" height="112" rx="18"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#tile)" stroke-linejoin="round">
+    <polygon points="8,8 44,8 44,50 8,62" fill="#ee7d4f"/>
+    <polygon points="44,8 120,8 120,60 78,74 44,50" fill="#f5b75a"/>
+    <polygon points="8,62 44,50 78,74 8,90" fill="#5b9bd5"/>
+    <polygon points="78,74 120,60 120,94 94,98" fill="#79c07f"/>
+    <polygon points="8,90 78,74 94,98 120,94 120,120 8,120" fill="#a0aab5"/>
+    <g fill="none" stroke="#15181c" stroke-width="2.5">
+      <polyline points="44,8 44,50 78,74 120,60"/>
+      <polyline points="8,62 44,50"/>
+      <polyline points="8,90 78,74 94,98 120,94"/>
+    </g>
+    <g stroke="#ffffff" stroke-width="2.5" stroke-dasharray="6 5">
+      <line x1="8" y1="34" x2="120" y2="20"/>
+      <line x1="8" y1="108" x2="120" y2="84"/>
+    </g>
+  </g>
+  <rect x="8" y="8" width="112" height="112" rx="18" fill="none" stroke="#15181c" stroke-width="3"/>
+</svg>
