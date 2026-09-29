@@ -1,0 +1,10 @@
+phase_id,label,formula,phase_type,source_url,metal_count,oxygen_per_metal,hydrogen_per_metal,protons_per_metal,electrons_per_metal,baseline_energy_eV_metal,log10_activity,stable_grid_points
+ion-2,FeO2[-1],FeO2,aqueous,https://docs.materialsproject.org/methodology/materials-methodology/aqueous-stability-pourbaix,1.0,2.0,0.0,4.0,3.0,0.7953825238844114,-6.0,0
+ion-0,FeO2[-2],FeO2,aqueous,https://docs.materialsproject.org/methodology/materials-methodology/aqueous-stability-pourbaix,1.0,2.0,0.0,4.0,2.0,1.551354954832227,-6.0,0
+ion-6,FeO4[-2],FeO4,aqueous,https://docs.materialsproject.org/methodology/materials-methodology/aqueous-stability-pourbaix,1.0,4.0,0.0,8.0,6.0,6.189051498336399,-6.0,6312
+ion-8,FeOH[+1],FeHO,aqueous,https://docs.materialsproject.org/methodology/materials-methodology/aqueous-stability-pourbaix,1.0,1.0,1.0,1.0,2.0,-0.720180263077292,-6.0,1199
+ion-3,Fe[+2],Fe,aqueous,https://docs.materialsproject.org/methodology/materials-methodology/aqueous-stability-pourbaix,1.0,0.0,0.0,0.0,2.0,-1.122139899290175,-6.0,13044
+ion-7,Fe[+3],Fe,aqueous,https://docs.materialsproject.org/methodology/materials-methodology/aqueous-stability-pourbaix,1.0,0.0,0.0,0.0,3.0,-0.3524658566928801,-6.0,2072
+mp-13-GGA,Fe(s),Fe,solid,https://materialsproject.org/materials/mp-13,1.0,0.0,0.0,0.0,0.0,0.0,,24183
+mp-19770-GGA+U,Fe2O3(s),Fe2O3,solid,https://materialsproject.org/materials/mp-19770,2.0,1.5,0.0,3.0,3.0,-0.10518188250000016,,36002
+mp-1274279-GGA+U,FeO(s),FeO,solid,https://materialsproject.org/materials/mp-1274279,1.0,1.0,0.0,2.0,2.0,-0.18800777500000043,,1769

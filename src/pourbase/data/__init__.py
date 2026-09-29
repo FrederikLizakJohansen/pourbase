@@ -1,0 +1,1 @@
+"""Bundled publication database."""

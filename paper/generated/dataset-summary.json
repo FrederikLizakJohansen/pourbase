@@ -1,0 +1,1988 @@
+{
+  "metadata": {
+    "database_role": "public_release",
+    "dataset_version": "1.0.0",
+    "freeze_date": "2026-09-24",
+    "publication_status": "release_candidate_pending_collaborator_review",
+    "reference_pressure_bar": "1.0",
+    "reference_temperature_K": "298.15",
+    "schema_version": "7",
+    "value_policy": "Calculations use one documented recommended value per property. All retained reported values remain available in reported_thermochemistry. Optional MP 300 K SISSO fallbacks are stored separately and never replace experimental values.",
+    "water_gibbs_energy_J_mol": "-237129.0"
+  },
+  "totals": {
+    "species": 460,
+    "supported_systems": 74,
+    "all_elements_documented": 118,
+    "reported_thermochemistry": 1412,
+    "recommended_values": 1135,
+    "source_records": 400,
+    "distinct_citations": 72,
+    "warnings": 236,
+    "phase_records": 126,
+    "resolved_phase_records": 118,
+    "mp_matches": 105,
+    "mp_energy_rows": 299,
+    "computational_fallbacks": 6,
+    "ligands": 5
+  },
+  "phases": [
+    {
+      "phase": "aqueous",
+      "species": 255,
+      "gibbs": 255,
+      "entropy": 196,
+      "enthalpy": 133
+    },
+    {
+      "phase": "solid",
+      "species": 194,
+      "gibbs": 188,
+      "entropy": 181,
+      "enthalpy": 149
+    },
+    {
+      "phase": "gas",
+      "species": 9,
+      "gibbs": 9,
+      "entropy": 9,
+      "enthalpy": 9
+    },
+    {
+      "phase": "liquid",
+      "species": 2,
+      "gibbs": 2,
+      "entropy": 2,
+      "enthalpy": 2
+    }
+  ],
+  "properties": [
+    {
+      "property": "Gibbs energy",
+      "available": 454
+    },
+    {
+      "property": "Entropy",
+      "available": 388
+    },
+    {
+      "property": "Formation enthalpy",
+      "available": 293
+    }
+  ],
+  "gibbs_status": {
+    "verified": 328,
+    "defined_reference_state": 74,
+    "source_verified_estimate": 52,
+    "terminal_evidence_gap": 6
+  },
+  "element_coverage": [
+    {
+      "atomic_number": 1,
+      "symbol": "H",
+      "coverage_status": "reference_component",
+      "reason": "Used as water, proton, and electron reference components in the calculation.",
+      "species": 0
+    },
+    {
+      "atomic_number": 2,
+      "symbol": "He",
+      "coverage_status": "deferred_noble_gas",
+      "reason": "No practical aqueous single-element Pourbaix system is included for this noble gas.",
+      "species": 0
+    },
+    {
+      "atomic_number": 3,
+      "symbol": "Li",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 3
+    },
+    {
+      "atomic_number": 4,
+      "symbol": "Be",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 5
+    },
+    {
+      "atomic_number": 5,
+      "symbol": "B",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 6
+    },
+    {
+      "atomic_number": 6,
+      "symbol": "C",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 7,
+      "symbol": "N",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 8
+    },
+    {
+      "atomic_number": 8,
+      "symbol": "O",
+      "coverage_status": "reference_component",
+      "reason": "Used as water, proton, and electron reference components in the calculation.",
+      "species": 0
+    },
+    {
+      "atomic_number": 9,
+      "symbol": "F",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 10,
+      "symbol": "Ne",
+      "coverage_status": "deferred_noble_gas",
+      "reason": "No practical aqueous single-element Pourbaix system is included for this noble gas.",
+      "species": 0
+    },
+    {
+      "atomic_number": 11,
+      "symbol": "Na",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 2
+    },
+    {
+      "atomic_number": 12,
+      "symbol": "Mg",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 13,
+      "symbol": "Al",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 5
+    },
+    {
+      "atomic_number": 14,
+      "symbol": "Si",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 5
+    },
+    {
+      "atomic_number": 15,
+      "symbol": "P",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 9
+    },
+    {
+      "atomic_number": 16,
+      "symbol": "S",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 10
+    },
+    {
+      "atomic_number": 17,
+      "symbol": "Cl",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 9
+    },
+    {
+      "atomic_number": 18,
+      "symbol": "Ar",
+      "coverage_status": "deferred_noble_gas",
+      "reason": "No practical aqueous single-element Pourbaix system is included for this noble gas.",
+      "species": 0
+    },
+    {
+      "atomic_number": 19,
+      "symbol": "K",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 3
+    },
+    {
+      "atomic_number": 20,
+      "symbol": "Ca",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 21,
+      "symbol": "Sc",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 8
+    },
+    {
+      "atomic_number": 22,
+      "symbol": "Ti",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 23,
+      "symbol": "V",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 14
+    },
+    {
+      "atomic_number": 24,
+      "symbol": "Cr",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 25,
+      "symbol": "Mn",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 10
+    },
+    {
+      "atomic_number": 26,
+      "symbol": "Fe",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 14
+    },
+    {
+      "atomic_number": 27,
+      "symbol": "Co",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 28,
+      "symbol": "Ni",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 29,
+      "symbol": "Cu",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 9
+    },
+    {
+      "atomic_number": 30,
+      "symbol": "Zn",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 8
+    },
+    {
+      "atomic_number": 31,
+      "symbol": "Ga",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 32,
+      "symbol": "Ge",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 33,
+      "symbol": "As",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 12
+    },
+    {
+      "atomic_number": 34,
+      "symbol": "Se",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 35,
+      "symbol": "Br",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 36,
+      "symbol": "Kr",
+      "coverage_status": "deferred_noble_gas",
+      "reason": "No practical aqueous single-element Pourbaix system is included for this noble gas.",
+      "species": 0
+    },
+    {
+      "atomic_number": 37,
+      "symbol": "Rb",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 2
+    },
+    {
+      "atomic_number": 38,
+      "symbol": "Sr",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 39,
+      "symbol": "Y",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 40,
+      "symbol": "Zr",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 9
+    },
+    {
+      "atomic_number": 41,
+      "symbol": "Nb",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 42,
+      "symbol": "Mo",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 43,
+      "symbol": "Tc",
+      "coverage_status": "restricted_radioactive",
+      "reason": "Deferred because experimental thermochemical evidence is sparse and radiological review is required.",
+      "species": 0
+    },
+    {
+      "atomic_number": 44,
+      "symbol": "Ru",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 5
+    },
+    {
+      "atomic_number": 45,
+      "symbol": "Rh",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 9
+    },
+    {
+      "atomic_number": 46,
+      "symbol": "Pd",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 47,
+      "symbol": "Ag",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 13
+    },
+    {
+      "atomic_number": 48,
+      "symbol": "Cd",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 10
+    },
+    {
+      "atomic_number": 49,
+      "symbol": "In",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 50,
+      "symbol": "Sn",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 51,
+      "symbol": "Sb",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 8
+    },
+    {
+      "atomic_number": 52,
+      "symbol": "Te",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 53,
+      "symbol": "I",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 9
+    },
+    {
+      "atomic_number": 54,
+      "symbol": "Xe",
+      "coverage_status": "deferred_noble_gas",
+      "reason": "No practical aqueous single-element Pourbaix system is included for this noble gas.",
+      "species": 0
+    },
+    {
+      "atomic_number": 55,
+      "symbol": "Cs",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 2
+    },
+    {
+      "atomic_number": 56,
+      "symbol": "Ba",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 57,
+      "symbol": "La",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 58,
+      "symbol": "Ce",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 5
+    },
+    {
+      "atomic_number": 59,
+      "symbol": "Pr",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 5
+    },
+    {
+      "atomic_number": 60,
+      "symbol": "Nd",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 61,
+      "symbol": "Pm",
+      "coverage_status": "restricted_radioactive",
+      "reason": "Deferred because experimental thermochemical evidence is sparse and radiological review is required.",
+      "species": 0
+    },
+    {
+      "atomic_number": 62,
+      "symbol": "Sm",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 63,
+      "symbol": "Eu",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 7
+    },
+    {
+      "atomic_number": 64,
+      "symbol": "Gd",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 3
+    },
+    {
+      "atomic_number": 65,
+      "symbol": "Tb",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 3
+    },
+    {
+      "atomic_number": 66,
+      "symbol": "Dy",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 3
+    },
+    {
+      "atomic_number": 67,
+      "symbol": "Ho",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 3
+    },
+    {
+      "atomic_number": 68,
+      "symbol": "Er",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 3
+    },
+    {
+      "atomic_number": 69,
+      "symbol": "Tm",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 3
+    },
+    {
+      "atomic_number": 70,
+      "symbol": "Yb",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 71,
+      "symbol": "Lu",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 3
+    },
+    {
+      "atomic_number": 72,
+      "symbol": "Hf",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 8
+    },
+    {
+      "atomic_number": 73,
+      "symbol": "Ta",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 74,
+      "symbol": "W",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 75,
+      "symbol": "Re",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 76,
+      "symbol": "Os",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 8
+    },
+    {
+      "atomic_number": 77,
+      "symbol": "Ir",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 3
+    },
+    {
+      "atomic_number": 78,
+      "symbol": "Pt",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 4
+    },
+    {
+      "atomic_number": 79,
+      "symbol": "Au",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 10
+    },
+    {
+      "atomic_number": 80,
+      "symbol": "Hg",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 9
+    },
+    {
+      "atomic_number": 81,
+      "symbol": "Tl",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 9
+    },
+    {
+      "atomic_number": 82,
+      "symbol": "Pb",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 10
+    },
+    {
+      "atomic_number": 83,
+      "symbol": "Bi",
+      "coverage_status": "supported",
+      "reason": "Single-element thermodynamic species are included in this release.",
+      "species": 6
+    },
+    {
+      "atomic_number": 84,
+      "symbol": "Po",
+      "coverage_status": "restricted_radioactive",
+      "reason": "Deferred because experimental thermochemical evidence is sparse and radiological review is required.",
+      "species": 0
+    },
+    {
+      "atomic_number": 85,
+      "symbol": "At",
+      "coverage_status": "restricted_radioactive",
+      "reason": "Deferred because experimental thermochemical evidence is sparse and radiological review is required.",
+      "species": 0
+    },
+    {
+      "atomic_number": 86,
+      "symbol": "Rn",
+      "coverage_status": "restricted_radioactive",
+      "reason": "Deferred because experimental thermochemical evidence is sparse and radiological review is required.",
+      "species": 0
+    },
+    {
+      "atomic_number": 87,
+      "symbol": "Fr",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 88,
+      "symbol": "Ra",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 89,
+      "symbol": "Ac",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 90,
+      "symbol": "Th",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 91,
+      "symbol": "Pa",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 92,
+      "symbol": "U",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 93,
+      "symbol": "Np",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 94,
+      "symbol": "Pu",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 95,
+      "symbol": "Am",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 96,
+      "symbol": "Cm",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 97,
+      "symbol": "Bk",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 98,
+      "symbol": "Cf",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 99,
+      "symbol": "Es",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 100,
+      "symbol": "Fm",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 101,
+      "symbol": "Md",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 102,
+      "symbol": "No",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 103,
+      "symbol": "Lr",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 104,
+      "symbol": "Rf",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 105,
+      "symbol": "Db",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 106,
+      "symbol": "Sg",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 107,
+      "symbol": "Bh",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 108,
+      "symbol": "Hs",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 109,
+      "symbol": "Mt",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 110,
+      "symbol": "Ds",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 111,
+      "symbol": "Rg",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 112,
+      "symbol": "Cn",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 113,
+      "symbol": "Nh",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 114,
+      "symbol": "Fl",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 115,
+      "symbol": "Mc",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 116,
+      "symbol": "Lv",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 117,
+      "symbol": "Ts",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    },
+    {
+      "atomic_number": 118,
+      "symbol": "Og",
+      "coverage_status": "outside_current_scope",
+      "reason": "This element has not yet been curated into the publication dataset.",
+      "species": 0
+    }
+  ],
+  "systems": [
+    {
+      "symbol": "Ag",
+      "system": "Silver (Ag)",
+      "species": 13,
+      "aqueous": 5,
+      "solid": 8,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 13,
+      "entropy": 10,
+      "enthalpy": 7,
+      "warnings": 5
+    },
+    {
+      "symbol": "Al",
+      "system": "Aluminum (Al)",
+      "species": 5,
+      "aqueous": 2,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 5,
+      "entropy": 5,
+      "enthalpy": 2,
+      "warnings": 0
+    },
+    {
+      "symbol": "As",
+      "system": "Arsenic (As)",
+      "species": 12,
+      "aqueous": 9,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 12,
+      "entropy": 11,
+      "enthalpy": 11,
+      "warnings": 1
+    },
+    {
+      "symbol": "Au",
+      "system": "Gold (Au)",
+      "species": 10,
+      "aqueous": 8,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 9,
+      "entropy": 3,
+      "enthalpy": 1,
+      "warnings": 12
+    },
+    {
+      "symbol": "B",
+      "system": "Boron (B)",
+      "species": 6,
+      "aqueous": 4,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 6,
+      "entropy": 6,
+      "enthalpy": 6,
+      "warnings": 0
+    },
+    {
+      "symbol": "Ba",
+      "system": "Barium (Ba)",
+      "species": 4,
+      "aqueous": 2,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 3,
+      "enthalpy": 1,
+      "warnings": 1
+    },
+    {
+      "symbol": "Be",
+      "system": "Beryllium (Be)",
+      "species": 5,
+      "aqueous": 2,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 5,
+      "entropy": 5,
+      "enthalpy": 3,
+      "warnings": 1
+    },
+    {
+      "symbol": "Bi",
+      "system": "Bismuth (Bi)",
+      "species": 6,
+      "aqueous": 3,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 6,
+      "entropy": 2,
+      "enthalpy": 2,
+      "warnings": 5
+    },
+    {
+      "symbol": "Br",
+      "system": "Bromine (Br)",
+      "species": 7,
+      "aqueous": 6,
+      "solid": 0,
+      "gas": 0,
+      "liquid": 1,
+      "gibbs": 7,
+      "entropy": 7,
+      "enthalpy": 7,
+      "warnings": 0
+    },
+    {
+      "symbol": "C",
+      "system": "Carbon (C)",
+      "species": 7,
+      "aqueous": 4,
+      "solid": 1,
+      "gas": 2,
+      "liquid": 0,
+      "gibbs": 7,
+      "entropy": 7,
+      "enthalpy": 7,
+      "warnings": 6
+    },
+    {
+      "symbol": "Ca",
+      "system": "Calcium (Ca)",
+      "species": 4,
+      "aqueous": 2,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 3,
+      "enthalpy": 1,
+      "warnings": 1
+    },
+    {
+      "symbol": "Cd",
+      "system": "Cadmium (Cd)",
+      "species": 10,
+      "aqueous": 7,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 10,
+      "entropy": 4,
+      "enthalpy": 4,
+      "warnings": 6
+    },
+    {
+      "symbol": "Ce",
+      "system": "Cerium (Ce)",
+      "species": 5,
+      "aqueous": 2,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 5,
+      "entropy": 5,
+      "enthalpy": 5,
+      "warnings": 0
+    },
+    {
+      "symbol": "Cl",
+      "system": "Chlorine (Cl)",
+      "species": 9,
+      "aqueous": 8,
+      "solid": 0,
+      "gas": 1,
+      "liquid": 0,
+      "gibbs": 9,
+      "entropy": 9,
+      "enthalpy": 9,
+      "warnings": 1
+    },
+    {
+      "symbol": "Co",
+      "system": "Cobalt (Co)",
+      "species": 7,
+      "aqueous": 2,
+      "solid": 5,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 7,
+      "entropy": 6,
+      "enthalpy": 3,
+      "warnings": 4
+    },
+    {
+      "symbol": "Cr",
+      "system": "Chromium (Cr)",
+      "species": 7,
+      "aqueous": 5,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 7,
+      "entropy": 6,
+      "enthalpy": 1,
+      "warnings": 1
+    },
+    {
+      "symbol": "Cs",
+      "system": "Caesium (Cs)",
+      "species": 2,
+      "aqueous": 1,
+      "solid": 1,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 2,
+      "entropy": 2,
+      "enthalpy": 0,
+      "warnings": 0
+    },
+    {
+      "symbol": "Cu",
+      "system": "Copper (Cu)",
+      "species": 9,
+      "aqueous": 5,
+      "solid": 4,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 9,
+      "entropy": 9,
+      "enthalpy": 3,
+      "warnings": 4
+    },
+    {
+      "symbol": "Dy",
+      "system": "Dysprosium (Dy)",
+      "species": 3,
+      "aqueous": 1,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 0
+    },
+    {
+      "symbol": "Er",
+      "system": "Erbium (Er)",
+      "species": 3,
+      "aqueous": 1,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 0
+    },
+    {
+      "symbol": "Eu",
+      "system": "Europium (Eu)",
+      "species": 7,
+      "aqueous": 2,
+      "solid": 5,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 7,
+      "entropy": 7,
+      "enthalpy": 7,
+      "warnings": 0
+    },
+    {
+      "symbol": "F",
+      "system": "Fluorine (F)",
+      "species": 4,
+      "aqueous": 3,
+      "solid": 0,
+      "gas": 1,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 4,
+      "enthalpy": 4,
+      "warnings": 1
+    },
+    {
+      "symbol": "Fe",
+      "system": "Iron (Fe)",
+      "species": 14,
+      "aqueous": 9,
+      "solid": 5,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 14,
+      "entropy": 11,
+      "enthalpy": 4,
+      "warnings": 6
+    },
+    {
+      "symbol": "Ga",
+      "system": "Gallium (Ga)",
+      "species": 7,
+      "aqueous": 4,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 7,
+      "entropy": 6,
+      "enthalpy": 2,
+      "warnings": 4
+    },
+    {
+      "symbol": "Gd",
+      "system": "Gadolinium (Gd)",
+      "species": 3,
+      "aqueous": 1,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 0
+    },
+    {
+      "symbol": "Ge",
+      "system": "Germanium (Ge)",
+      "species": 4,
+      "aqueous": 1,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 2
+    },
+    {
+      "symbol": "Hf",
+      "system": "Hafnium (Hf)",
+      "species": 8,
+      "aqueous": 6,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 8,
+      "entropy": 8,
+      "enthalpy": 8,
+      "warnings": 12
+    },
+    {
+      "symbol": "Hg",
+      "system": "Mercury (Hg)",
+      "species": 9,
+      "aqueous": 6,
+      "solid": 1,
+      "gas": 1,
+      "liquid": 1,
+      "gibbs": 9,
+      "entropy": 8,
+      "enthalpy": 8,
+      "warnings": 6
+    },
+    {
+      "symbol": "Ho",
+      "system": "Holmium (Ho)",
+      "species": 3,
+      "aqueous": 1,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 0
+    },
+    {
+      "symbol": "I",
+      "system": "Iodine (I)",
+      "species": 9,
+      "aqueous": 8,
+      "solid": 1,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 9,
+      "entropy": 8,
+      "enthalpy": 8,
+      "warnings": 1
+    },
+    {
+      "symbol": "In",
+      "system": "Indium (In)",
+      "species": 7,
+      "aqueous": 4,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 6,
+      "entropy": 5,
+      "enthalpy": 2,
+      "warnings": 7
+    },
+    {
+      "symbol": "Ir",
+      "system": "Iridium (Ir)",
+      "species": 3,
+      "aqueous": 1,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 2,
+      "enthalpy": 2,
+      "warnings": 2
+    },
+    {
+      "symbol": "K",
+      "system": "Potassium (K)",
+      "species": 3,
+      "aqueous": 1,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 1,
+      "warnings": 0
+    },
+    {
+      "symbol": "La",
+      "system": "Lanthanum (La)",
+      "species": 4,
+      "aqueous": 1,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 4,
+      "enthalpy": 4,
+      "warnings": 0
+    },
+    {
+      "symbol": "Li",
+      "system": "Lithium (Li)",
+      "species": 3,
+      "aqueous": 2,
+      "solid": 1,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 1,
+      "warnings": 0
+    },
+    {
+      "symbol": "Lu",
+      "system": "Lutetium (Lu)",
+      "species": 3,
+      "aqueous": 1,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 0
+    },
+    {
+      "symbol": "Mg",
+      "system": "Magnesium (Mg)",
+      "species": 4,
+      "aqueous": 2,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 3,
+      "enthalpy": 1,
+      "warnings": 1
+    },
+    {
+      "symbol": "Mn",
+      "system": "Manganese (Mn)",
+      "species": 10,
+      "aqueous": 5,
+      "solid": 5,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 10,
+      "entropy": 9,
+      "enthalpy": 6,
+      "warnings": 7
+    },
+    {
+      "symbol": "Mo",
+      "system": "Molybdenum (Mo)",
+      "species": 4,
+      "aqueous": 1,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 4,
+      "enthalpy": 2,
+      "warnings": 0
+    },
+    {
+      "symbol": "N",
+      "system": "Nitrogen (N)",
+      "species": 8,
+      "aqueous": 5,
+      "solid": 0,
+      "gas": 3,
+      "liquid": 0,
+      "gibbs": 8,
+      "entropy": 8,
+      "enthalpy": 8,
+      "warnings": 15
+    },
+    {
+      "symbol": "Na",
+      "system": "Sodium (Na)",
+      "species": 2,
+      "aqueous": 1,
+      "solid": 1,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 2,
+      "entropy": 2,
+      "enthalpy": 0,
+      "warnings": 0
+    },
+    {
+      "symbol": "Nb",
+      "system": "Niobium (Nb)",
+      "species": 7,
+      "aqueous": 4,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 7,
+      "entropy": 4,
+      "enthalpy": 4,
+      "warnings": 5
+    },
+    {
+      "symbol": "Nd",
+      "system": "Neodymium (Nd)",
+      "species": 4,
+      "aqueous": 1,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 4,
+      "enthalpy": 4,
+      "warnings": 0
+    },
+    {
+      "symbol": "Ni",
+      "system": "Nickel (Ni)",
+      "species": 7,
+      "aqueous": 2,
+      "solid": 5,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 6,
+      "entropy": 5,
+      "enthalpy": 2,
+      "warnings": 7
+    },
+    {
+      "symbol": "Os",
+      "system": "Osmium (Os)",
+      "species": 8,
+      "aqueous": 3,
+      "solid": 4,
+      "gas": 1,
+      "liquid": 0,
+      "gibbs": 8,
+      "entropy": 5,
+      "enthalpy": 5,
+      "warnings": 8
+    },
+    {
+      "symbol": "P",
+      "system": "Phosphorus (P)",
+      "species": 9,
+      "aqueous": 7,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 9,
+      "entropy": 7,
+      "enthalpy": 7,
+      "warnings": 2
+    },
+    {
+      "symbol": "Pb",
+      "system": "Lead (Pb)",
+      "species": 10,
+      "aqueous": 3,
+      "solid": 7,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 10,
+      "entropy": 9,
+      "enthalpy": 6,
+      "warnings": 3
+    },
+    {
+      "symbol": "Pd",
+      "system": "Palladium (Pd)",
+      "species": 4,
+      "aqueous": 1,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 1,
+      "warnings": 4
+    },
+    {
+      "symbol": "Pr",
+      "system": "Praseodymium (Pr)",
+      "species": 5,
+      "aqueous": 3,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 5,
+      "entropy": 2,
+      "enthalpy": 2,
+      "warnings": 3
+    },
+    {
+      "symbol": "Pt",
+      "system": "Platinum (Pt)",
+      "species": 4,
+      "aqueous": 1,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 2,
+      "entropy": 2,
+      "enthalpy": 0,
+      "warnings": 9
+    },
+    {
+      "symbol": "Rb",
+      "system": "Rubidium (Rb)",
+      "species": 2,
+      "aqueous": 1,
+      "solid": 1,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 2,
+      "entropy": 2,
+      "enthalpy": 0,
+      "warnings": 0
+    },
+    {
+      "symbol": "Re",
+      "system": "Rhenium (Re)",
+      "species": 4,
+      "aqueous": 1,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 4,
+      "enthalpy": 2,
+      "warnings": 0
+    },
+    {
+      "symbol": "Rh",
+      "system": "Rhodium (Rh)",
+      "species": 9,
+      "aqueous": 6,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 9,
+      "entropy": 8,
+      "enthalpy": 8,
+      "warnings": 13
+    },
+    {
+      "symbol": "Ru",
+      "system": "Ruthenium (Ru)",
+      "species": 5,
+      "aqueous": 2,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 5,
+      "entropy": 5,
+      "enthalpy": 2,
+      "warnings": 5
+    },
+    {
+      "symbol": "S",
+      "system": "Sulfur (S)",
+      "species": 10,
+      "aqueous": 9,
+      "solid": 1,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 10,
+      "entropy": 9,
+      "enthalpy": 9,
+      "warnings": 2
+    },
+    {
+      "symbol": "Sb",
+      "system": "Antimony (Sb)",
+      "species": 8,
+      "aqueous": 4,
+      "solid": 4,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 8,
+      "entropy": 6,
+      "enthalpy": 6,
+      "warnings": 2
+    },
+    {
+      "symbol": "Sc",
+      "system": "Scandium (Sc)",
+      "species": 8,
+      "aqueous": 5,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 8,
+      "entropy": 8,
+      "enthalpy": 8,
+      "warnings": 10
+    },
+    {
+      "symbol": "Se",
+      "system": "Selenium (Se)",
+      "species": 7,
+      "aqueous": 6,
+      "solid": 1,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 7,
+      "entropy": 7,
+      "enthalpy": 7,
+      "warnings": 0
+    },
+    {
+      "symbol": "Si",
+      "system": "Silicon (Si)",
+      "species": 5,
+      "aqueous": 3,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 5,
+      "entropy": 4,
+      "enthalpy": 4,
+      "warnings": 1
+    },
+    {
+      "symbol": "Sm",
+      "system": "Samarium (Sm)",
+      "species": 4,
+      "aqueous": 2,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 1
+    },
+    {
+      "symbol": "Sn",
+      "system": "Tin (Sn)",
+      "species": 7,
+      "aqueous": 4,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 7,
+      "entropy": 5,
+      "enthalpy": 3,
+      "warnings": 3
+    },
+    {
+      "symbol": "Sr",
+      "system": "Strontium (Sr)",
+      "species": 4,
+      "aqueous": 2,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 3,
+      "enthalpy": 1,
+      "warnings": 1
+    },
+    {
+      "symbol": "Ta",
+      "system": "Tantalum (Ta)",
+      "species": 4,
+      "aqueous": 2,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 2,
+      "enthalpy": 1,
+      "warnings": 5
+    },
+    {
+      "symbol": "Tb",
+      "system": "Terbium (Tb)",
+      "species": 3,
+      "aqueous": 1,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 0
+    },
+    {
+      "symbol": "Te",
+      "system": "Tellurium (Te)",
+      "species": 4,
+      "aqueous": 2,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 2
+    },
+    {
+      "symbol": "Ti",
+      "system": "Titanium (Ti)",
+      "species": 7,
+      "aqueous": 2,
+      "solid": 5,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 7,
+      "entropy": 7,
+      "enthalpy": 4,
+      "warnings": 6
+    },
+    {
+      "symbol": "Tl",
+      "system": "Thallium (Tl)",
+      "species": 9,
+      "aqueous": 5,
+      "solid": 4,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 9,
+      "entropy": 6,
+      "enthalpy": 6,
+      "warnings": 3
+    },
+    {
+      "symbol": "Tm",
+      "system": "Thulium (Tm)",
+      "species": 3,
+      "aqueous": 1,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 0
+    },
+    {
+      "symbol": "V",
+      "system": "Vanadium (V)",
+      "species": 14,
+      "aqueous": 9,
+      "solid": 5,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 14,
+      "entropy": 12,
+      "enthalpy": 7,
+      "warnings": 3
+    },
+    {
+      "symbol": "W",
+      "system": "Tungsten (W)",
+      "species": 4,
+      "aqueous": 1,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 4,
+      "enthalpy": 2,
+      "warnings": 2
+    },
+    {
+      "symbol": "Y",
+      "system": "Yttrium (Y)",
+      "species": 7,
+      "aqueous": 5,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 7,
+      "entropy": 7,
+      "enthalpy": 7,
+      "warnings": 10
+    },
+    {
+      "symbol": "Yb",
+      "system": "Ytterbium (Yb)",
+      "species": 4,
+      "aqueous": 2,
+      "solid": 2,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 4,
+      "entropy": 3,
+      "enthalpy": 3,
+      "warnings": 1
+    },
+    {
+      "symbol": "Zn",
+      "system": "Zinc (Zn)",
+      "species": 8,
+      "aqueous": 5,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 8,
+      "entropy": 8,
+      "enthalpy": 2,
+      "warnings": 1
+    },
+    {
+      "symbol": "Zr",
+      "system": "Zirconium (Zr)",
+      "species": 9,
+      "aqueous": 6,
+      "solid": 3,
+      "gas": 0,
+      "liquid": 0,
+      "gibbs": 9,
+      "entropy": 9,
+      "enthalpy": 9,
+      "warnings": 12
+    }
+  ],
+  "warning_types": [
+    {
+      "warning_type": "entropy_terminal_evidence_gap",
+      "count": 72
+    },
+    {
+      "warning_type": "gibbs_energy_source_verified_estimate",
+      "count": 52
+    },
+    {
+      "warning_type": "entropy_source_verified_estimate",
+      "count": 52
+    },
+    {
+      "warning_type": "phase_identity_limit",
+      "count": 18
+    },
+    {
+      "warning_type": "gas_aqueous_reservoir_coupling",
+      "count": 13
+    },
+    {
+      "warning_type": "fixed_gas_fugacity",
+      "count": 9
+    },
+    {
+      "warning_type": "nitrogen_equilibrium_scope",
+      "count": 8
+    },
+    {
+      "warning_type": "gibbs_energy_terminal_evidence_gap",
+      "count": 6
+    },
+    {
+      "warning_type": "computational_gibbs_fallback_available",
+      "count": 6
+    }
+  ],
+  "phase_identity": [
+    {
+      "identity_status": "resolved",
+      "count": 108
+    },
+    {
+      "identity_status": "resolved_thermochemistry_gap",
+      "count": 10
+    },
+    {
+      "identity_status": "ambiguous",
+      "count": 8
+    }
+  ],
+  "materials_project_comparison": {
+    "materials_project_database_versions": [
+      "2026.04.13"
+    ],
+    "retrieval_dates": [
+      "2026-08-28",
+      "2026-08-31",
+      "2026-09-03",
+      "2026-09-07",
+      "2026-09-08",
+      "2026-09-09",
+      "2026-09-24",
+      "2026-09-25",
+      "2026-09-26",
+      "2026-09-27",
+      "2026-09-28"
+    ],
+    "phase_matched_records": 105,
+    "materials_project_energy_rows": 299,
+    "methods": {
+      "enthalpy": {
+        "GGA_GGA+U": {
+          "count": 99,
+          "mean_signed_error_eV_atom": -0.12803970389957503,
+          "mean_absolute_error_eV_atom": 0.15451351652630788,
+          "root_mean_square_error_eV_atom": 0.2091356893229107
+        },
+        "GGA_GGA+U_R2SCAN": {
+          "count": 99,
+          "mean_signed_error_eV_atom": -0.12934904937704425,
+          "mean_absolute_error_eV_atom": 0.15122842464433656,
+          "root_mean_square_error_eV_atom": 0.20675627520317486
+        },
+        "r2SCAN": {
+          "count": 90,
+          "mean_signed_error_eV_atom": 0.012932346045115534,
+          "mean_absolute_error_eV_atom": 0.08509941235162069,
+          "root_mean_square_error_eV_atom": 0.1072121009308779
+        }
+      },
+      "gibbs": {
+        "GGA_GGA+U": {
+          "count": 103,
+          "mean_signed_error_eV_atom": -0.3003111588901863,
+          "mean_absolute_error_eV_atom": 0.3072123172945248,
+          "root_mean_square_error_eV_atom": 0.3472813052540559
+        },
+        "GGA_GGA+U_R2SCAN": {
+          "count": 103,
+          "mean_signed_error_eV_atom": -0.30148961190508267,
+          "mean_absolute_error_eV_atom": 0.3067186818702401,
+          "root_mean_square_error_eV_atom": 0.34672832540659454
+        },
+        "r2SCAN": {
+          "count": 93,
+          "mean_signed_error_eV_atom": -0.15887119118138496,
+          "mean_absolute_error_eV_atom": 0.17078422926515235,
+          "root_mean_square_error_eV_atom": 0.19825191934488665
+        }
+      }
+    },
+    "residual_definition": "Materials Project formation energy minus experimental value",
+    "normalization": "eV per atom; experimental J/mol values divided by Faraday constant and formula atom count",
+    "selected_marker": "points with a black edge are the curated calculation selected for diagram comparison"
+  }
+}

@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this dataset, cite this release and the scientific sources linked from the thermochemistry table."
+title: "Curated Gibbs Free Energies for Aqueous Metal Species and Crystalline Solids"
+type: dataset
+authors:
+  - family-names: "Johansen"
+    given-names: "Frederik Lizak"
+version: 1.0.0
+repository-code: "https://github.com/FrederikLizakJohansen/pourbase"
+license: GPL-3.0-only
+keywords:
+  - Gibbs energy of formation
+  - thermochemistry
+  - Pourbaix diagrams
+  - Materials Project
+  - density functional theory
+  - aqueous ions
+abstract: >-
+  A source-backed database of 460 aqueous, solid, liquid, and gas species across 74
+  supported elemental systems. Version 1.0 provides recommended thermochemistry, retained reported
+  values, source references, explicit evidence gaps, phase identities, selected Materials Project
+  data, and an experimental Pourbaix calculation package at 298.15 K and 1 bar.

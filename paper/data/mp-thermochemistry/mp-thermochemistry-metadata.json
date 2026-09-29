@@ -1,0 +1,65 @@
+{
+  "materials_project_database_versions": [
+    "2026.04.13"
+  ],
+  "retrieval_dates": [
+    "2026-08-28",
+    "2026-08-31",
+    "2026-09-03",
+    "2026-09-07",
+    "2026-09-08",
+    "2026-09-09",
+    "2026-09-24",
+    "2026-09-25",
+    "2026-09-26",
+    "2026-09-27",
+    "2026-09-28"
+  ],
+  "phase_matched_records": 105,
+  "materials_project_energy_rows": 299,
+  "methods": {
+    "enthalpy": {
+      "GGA_GGA+U": {
+        "count": 99,
+        "mean_signed_error_eV_atom": -0.12803970389957503,
+        "mean_absolute_error_eV_atom": 0.15451351652630788,
+        "root_mean_square_error_eV_atom": 0.2091356893229107
+      },
+      "GGA_GGA+U_R2SCAN": {
+        "count": 99,
+        "mean_signed_error_eV_atom": -0.12934904937704425,
+        "mean_absolute_error_eV_atom": 0.15122842464433656,
+        "root_mean_square_error_eV_atom": 0.20675627520317486
+      },
+      "r2SCAN": {
+        "count": 90,
+        "mean_signed_error_eV_atom": 0.012932346045115534,
+        "mean_absolute_error_eV_atom": 0.08509941235162069,
+        "root_mean_square_error_eV_atom": 0.1072121009308779
+      }
+    },
+    "gibbs": {
+      "GGA_GGA+U": {
+        "count": 103,
+        "mean_signed_error_eV_atom": -0.3003111588901863,
+        "mean_absolute_error_eV_atom": 0.3072123172945248,
+        "root_mean_square_error_eV_atom": 0.3472813052540559
+      },
+      "GGA_GGA+U_R2SCAN": {
+        "count": 103,
+        "mean_signed_error_eV_atom": -0.30148961190508267,
+        "mean_absolute_error_eV_atom": 0.3067186818702401,
+        "root_mean_square_error_eV_atom": 0.34672832540659454
+      },
+      "r2SCAN": {
+        "count": 93,
+        "mean_signed_error_eV_atom": -0.15887119118138496,
+        "mean_absolute_error_eV_atom": 0.17078422926515235,
+        "root_mean_square_error_eV_atom": 0.19825191934488665
+      }
+    }
+  },
+  "residual_definition": "Materials Project formation energy minus experimental value",
+  "normalization": "eV per atom; experimental J/mol values divided by Faraday constant and formula atom count",
+  "selected_marker": "points with a black edge are the curated calculation selected for diagram comparison"
+}
