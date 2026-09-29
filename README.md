@@ -12,7 +12,20 @@ exact source location, evidence status, uncertainty when available, phase identi
 warnings. Reviewed crystalline phases are matched to Materials Project structures and DFT formation
 energies.
 
+<p align="center">
+  <img src="docs/periodic-table.png" alt="The pourbase periodic table: the stable species of every element at pH 0 and 0 V vs SHE" width="900">
+</p>
+
 ## Install
+
+From PyPI:
+
+```bash
+pip install pourbase                           # database, calculations and command line
+pip install "pourbase[gui]"                    # plus the desktop application
+pip install "pourbase[gui,materials-project]"  # plus live Materials Project comparisons
+pourbase-gui
+```
 
 From a clone of this repository, in a virtual environment (Python 3.11 or newer):
 
