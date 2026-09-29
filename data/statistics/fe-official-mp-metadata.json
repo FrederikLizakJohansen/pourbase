@@ -9,11 +9,19 @@
   "temperature_K": 298.15,
   "pressure_bar": 1.0,
   "log10_aqueous_activity": -6.0,
-  "pH_range": [0.0, 14.0, 281],
-  "eh_V_range": [-1.5, 1.5, 301],
+  "pH_range": [
+    0.0,
+    14.0,
+    281
+  ],
+  "eh_V_range": [
+    -1.5,
+    1.5,
+    301
+  ],
   "filter_solids": true,
   "use_gibbs_300K": false,
   "grid_reconstruction": "baseline_energy_eV_metal - 0.0591 * protons_per_metal * pH - electrons_per_metal * Eh_V",
   "phase_file": "fe-official-mp-phases.csv",
-  "cache_role": "Versioned paper input; live package comparisons continue to use the official Materials Project API and the user's API key."
+  "cache_role": "Cached input of the Fe comparison in STATISTICS.md; live comparisons use the official Materials Project API and the user's API key."
 }

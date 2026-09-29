@@ -13,10 +13,16 @@ warnings. Reviewed crystalline phases are matched to Materials Project structure
 energies.
 
 > [!NOTE]
-> The literature search behind this database was agentic (GPT 5.6 Sol). Every value carries its
-> source, exact location and evidence status so that it can be checked, and pourbase is a living
-> database: if you find a mistake or a better source, please
-> [contribute a correction](CONTRIBUTING.md).
+> **A living, source-linked database.** Candidate sources were found with an agentic literature
+> search (GPT 5.6 Sol). Each value is stored with its citation, its exact location in the source and
+> an evidence status, so you can check it before you rely on it. Found an error or a better source?
+> [Help improve the data](CONTRIBUTING.md).
+
+<p align="center">
+  <a href="STATISTICS.md">Dataset statistics</a> ·
+  <a href="CONTRIBUTING.md">Contributing</a> ·
+  <a href="docs/DATA_DICTIONARY.md">Data dictionary</a>
+</p>
 
 <p align="center">
   <img src="docs/periodic-table.png" alt="The pourbase periodic table: the stable species of every element at pH 0 and 0 V vs SHE" width="900">
@@ -223,10 +229,11 @@ mass-balance mode it sets the conserved total metal concentration. Atomic weight
 |---|---|
 | `src/pourbase/` | Python package, with the database in `data/` and the application in `gui/` |
 | `docs/` | Data dictionary and exploratory temperature-trend model |
-| `paper/` | LaTeX data paper, generated statistics and figures |
+| `scripts/`, `data/statistics/` | The script that writes [STATISTICS.md](STATISTICS.md), and its inputs |
 | `tests/` | Database, calculation and application tests |
 
-Run the tests with `python -m unittest discover -s tests`. Build the paper with `make -C paper`.
+Run the tests with `python -m unittest discover -s tests`. Regenerate the statistics with
+`python scripts/dataset_statistics.py`.
 
 ## Citation and licence
 

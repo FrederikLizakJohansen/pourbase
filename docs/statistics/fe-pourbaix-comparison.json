@@ -23,7 +23,7 @@
   "use_gibbs_300K": false,
   "grid_reconstruction": "baseline_energy_eV_metal - 0.0591 * protons_per_metal * pH - electrons_per_metal * Eh_V",
   "phase_file": "fe-official-mp-phases.csv",
-  "cache_role": "Versioned paper input; live package comparisons continue to use the official Materials Project API and the user's API key.",
+  "cache_role": "Cached input of the Fe comparison in STATISTICS.md; live comparisons use the official Materials Project API and the user's API key.",
   "experimental_dataset_version": "1.0.0",
   "equivalence_definition": "Solids match by H/O composition per metal; aqueous species match by proton and electron coefficients per metal.",
   "equivalent_domain_fraction": 0.9041746964448281,

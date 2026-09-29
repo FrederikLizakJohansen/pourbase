@@ -11,7 +11,7 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
 - Fixed-activity and closed-inventory diagrams, Davies activity corrections, ligand and gas
   reservoirs, concentration sweeps, Boltzmann-like smoothing, and an official Materials Project
   comparison.
-- Desktop application (`pourbase-gui`, PySide6 and pyqtgraph) and LaTeX data paper.
+- Desktop application (`pourbase-gui`, PySide6 and pyqtgraph) and dataset statistics in `STATISTICS.md`.
 
 API:
 

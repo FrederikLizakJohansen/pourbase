@@ -27,7 +27,7 @@ The database includes 299 method-specific Materials Project thermochemistry rows
 phase-matched records from database version 2026.04.13, and six 300 K Gibbs estimates generated
 through pymatgen's Materials Project SISSO descriptor for explicit use as gap fallbacks. These
 records keep the MP identifier, calculation type, model, database version, retrieval date, mapping
-confidence, and source URL. The `paper` folder contains comparison figures derived from these
+confidence, and source URL. `STATISTICS.md` and `docs/statistics` contain comparison figures derived from these
 records, with their plotted rows. Materials Project core data are provided under CC BY 4.0.
 
 The optional live comparison retrieves the current Materials Project database through the official

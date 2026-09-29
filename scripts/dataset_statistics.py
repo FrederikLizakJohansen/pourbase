@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Generate the data-paper statistics, references, tables, and figures.
+"""Write STATISTICS.md and its figures from the bundled database.
 
-Every reported number is read from the clean publication database.  Run from
-any directory with::
+Run from the repository root::
 
-    python publication/paper/scripts/generate_paper_assets.py
+    python scripts/dataset_statistics.py
 """
 
 from __future__ import annotations
@@ -27,14 +26,12 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Patch, Rectangle
 
 
-HERE = Path(__file__).resolve().parent
-PAPER = HERE.parent
-REPOSITORY = PAPER.parent
+REPOSITORY = Path(__file__).resolve().parents[1]
 DATABASE = REPOSITORY / "src" / "pourbase" / "data" / "pourbase.sqlite"
-MP_THERMOCHEMISTRY = PAPER / "data" / "mp-thermochemistry"
-PAPER_DATA = PAPER / "data"
-GENERATED = PAPER / "generated"
-FIGURES = PAPER / "figures"
+INPUTS = REPOSITORY / "data" / "statistics"
+MP_THERMOCHEMISTRY = PAPER_DATA = INPUTS
+GENERATED = FIGURES = REPOSITORY / "docs" / "statistics"
+STATISTICS = REPOSITORY / "STATISTICS.md"
 
 INK = "#333331"
 SPINE = "#8a8a82"
@@ -235,162 +232,6 @@ def write_statistics(stats: dict[str, Any]) -> None:
         writer.writeheader()
         writer.writerows(stats["systems"])
 
-    total = stats["totals"]
-    properties = {item["property"]: item["available"] for item in stats["properties"]}
-    phases = {item["phase"]: item["species"] for item in stats["phases"]}
-    mp_comparison = stats["materials_project_comparison"]
-    mp_enthalpy = mp_comparison["methods"]["enthalpy"]["r2SCAN"]
-    mp_gibbs = mp_comparison["methods"]["gibbs"]["r2SCAN"]
-    macros = {
-        "DatasetVersion": stats["metadata"]["dataset_version"],
-        "SpeciesCount": total["species"],
-        "SystemCount": total["supported_systems"],
-        "GibbsCount": properties["Gibbs energy"],
-        "EntropyCount": properties["Entropy"],
-        "EnthalpyCount": properties["Formation enthalpy"],
-        "ReportedValueCount": total["reported_thermochemistry"],
-        "RecommendedValueCount": total["recommended_values"],
-        "SourceRecordCount": total["source_records"],
-        "DistinctCitationCount": total["distinct_citations"],
-        "PhaseRecordCount": total["phase_records"],
-        "ResolvedPhaseCount": total["resolved_phase_records"],
-        "MPMatchCount": total["mp_matches"],
-        "MPEnergyCount": total["mp_energy_rows"],
-        "FallbackCount": total["computational_fallbacks"],
-        "WarningCount": total["warnings"],
-        "LigandCount": total["ligands"],
-        "AqueousSpeciesCount": phases["aqueous"],
-        "SolidSpeciesCount": phases["solid"],
-        "GasSpeciesCount": phases["gas"],
-        "LiquidSpeciesCount": phases["liquid"],
-        "GibbsCoveragePercent": f"{100 * properties['Gibbs energy'] / total['species']:.1f}\\%",
-        "EntropyCoveragePercent": f"{100 * properties['Entropy'] / total['species']:.1f}\\%",
-        "EnthalpyCoveragePercent": f"{100 * properties['Formation enthalpy'] / total['species']:.1f}\\%",
-        "VerifiedGibbsCount": stats["gibbs_status"]["verified"],
-        "ReferenceGibbsCount": stats["gibbs_status"]["defined_reference_state"],
-        "EstimatedGibbsCount": stats["gibbs_status"]["source_verified_estimate"],
-        "GibbsGapCount": stats["gibbs_status"]["terminal_evidence_gap"],
-        "MPDatabaseVersion": mp_comparison["materials_project_database_versions"][0],
-        "MPEnthalpyRtwoCount": mp_enthalpy["count"],
-        "MPEnthalpyRtwoMAE": f"{mp_enthalpy['mean_absolute_error_eV_atom']:.3f}",
-        "MPGibbsRtwoCount": mp_gibbs["count"],
-        "MPGibbsRtwoMAE": f"{mp_gibbs['mean_absolute_error_eV_atom']:.3f}",
-    }
-    lines = ["% Generated from src/pourbase/data/pourbase.sqlite; do not edit by hand."]
-    for name, value in macros.items():
-        lines.append(f"\\newcommand{{\\{name}}}{{{value}}}")
-    (GENERATED / "dataset-statistics.tex").write_text("\n".join(lines) + "\n")
-
-
-def latex_escape(value: str) -> str:
-    replacements = {
-        "\\": r"\textbackslash{}",
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        "_": r"\_",
-        "{": r"\{",
-        "}": r"\}",
-        "~": r"\textasciitilde{}",
-        "^": r"\textasciicircum{}",
-    }
-    return "".join(replacements.get(character, character) for character in value)
-
-
-METHOD_REFERENCES = [
-    (
-        "method-pourbaix",
-        "Pourbaix, M. Atlas of Electrochemical Equilibria in Aqueous Solutions, "
-        "2nd English ed., National Association of Corrosion Engineers (1974).",
-        "",
-    ),
-    (
-        "method-davies",
-        "Davies, C. W. The extent of dissociation of salts in water. Part VIII. "
-        "An equation for the mean ionic activity coefficient of an electrolyte. "
-        "Journal of the Chemical Society, 2093-2098 (1938).",
-        "https://doi.org/10.1039/JR9380002093",
-    ),
-    (
-        "method-persson",
-        "Persson, K. A. et al. Prediction of solid-aqueous equilibria: Scheme to combine "
-        "first-principles calculations of solids with experimental aqueous states. "
-        "Physical Review B 85, 235438 (2012).",
-        "https://doi.org/10.1103/PhysRevB.85.235438",
-    ),
-    (
-        "method-jain",
-        "Jain, A. et al. Commentary: The Materials Project: A materials genome approach "
-        "to accelerating materials innovation. APL Materials 1, 011002 (2013).",
-        "https://doi.org/10.1063/1.4812323",
-    ),
-    (
-        "method-horton",
-        "Horton, M. K. et al. Accelerated data-driven materials science with the "
-        "Materials Project. Nature Materials 24, 1522-1532 (2025).",
-        "https://doi.org/10.1038/s41563-025-02272-0",
-    ),
-    (
-        "method-singh",
-        "Singh, A. K. et al. Electrochemical stability of metastable materials. "
-        "Chemistry of Materials 29, 10159-10167 (2017).",
-        "https://doi.org/10.1021/acs.chemmater.7b03980",
-    ),
-    (
-        "method-bartel",
-        "Bartel, C. J. et al. Physical descriptor for the Gibbs energy of inorganic "
-        "crystalline solids and temperature-dependent materials chemistry. Nature "
-        "Communications 9, 4168 (2018).",
-        "https://doi.org/10.1038/s41467-018-06682-4",
-    ),
-    (
-        "software-numpy",
-        "Harris, C. R. et al. Array programming with NumPy. Nature 585, 357-362 (2020).",
-        "https://doi.org/10.1038/s41586-020-2649-2",
-    ),
-    (
-        "software-matplotlib",
-        "Hunter, J. D. Matplotlib: A 2D graphics environment. Computing in Science "
-        "and Engineering 9, 90-95 (2007).",
-        "https://doi.org/10.1109/MCSE.2007.55",
-    ),
-]
-
-
-def write_references() -> None:
-    with closing(sqlite3.connect(DATABASE)) as connection:
-        connection.row_factory = sqlite3.Row
-        grouped: dict[str, dict[str, Any]] = {}
-        for row in connection.execute(
-            "SELECT citation,url,source_id FROM sources ORDER BY citation,source_id"
-        ):
-            item = grouped.setdefault(row["citation"], {"source_ids": [], "urls": []})
-            item["source_ids"].append(row["source_id"])
-            if row["url"] and row["url"] not in item["urls"]:
-                item["urls"].append(row["url"])
-
-    lines = [
-        "% Generated from the sources table; do not edit by hand.",
-        r"\begin{thebibliography}{99}",
-    ]
-    for key, citation, url in METHOD_REFERENCES:
-        lines.append(f"\\bibitem{{{key}}} {latex_escape(citation)}")
-        if url:
-            lines.append(f"\\url{{{url}}}")
-    for index, (citation, item) in enumerate(sorted(grouped.items()), start=1):
-        lines.append(f"\\bibitem{{data-source-{index:03d}}} {latex_escape(citation)}")
-        links = item["urls"]
-        if links:
-            preferred = next((url for url in links if "doi.org" in url), links[0])
-            lines.append(f"Database link: \\url{{{preferred}}}")
-        lines.append(
-            f"\\textit{{Used by {len(item['source_ids'])} source record"
-            f"{'s' if len(item['source_ids']) != 1 else ''} in version "
-            r"\DatasetVersion.}"
-        )
-    lines.append(r"\end{thebibliography}")
-    (GENERATED / "references.tex").write_text("\n".join(lines) + "\n")
 
 
 PERIODIC_POSITIONS: dict[str, tuple[int, int]] = {}
@@ -744,7 +585,7 @@ def plot_dataset_overview(stats: dict[str, Any]) -> None:
     )
     style_axis(evidence_axis)
 
-    for suffix in ("pdf", "png"):
+    for suffix in ("png",):
         figure.savefig(FIGURES / f"dataset-overview.{suffix}", bbox_inches="tight")
     plt.close(figure)
 
@@ -875,7 +716,7 @@ def plot_calculation_showcase() -> None:
         axis.title.set_ha("left")
         axis.title.set_position((0, 1.02))
         style_axis(axis)
-    for suffix in ("pdf", "png"):
+    for suffix in ("png",):
         figure.savefig(FIGURES / f"calculation-showcase.{suffix}", bbox_inches="tight")
     plt.close(figure)
 
@@ -1056,9 +897,128 @@ def plot_mp_thermochemistry() -> None:
         handlelength=1,
         columnspacing=1.5,
     )
-    for suffix in ("pdf", "png"):
+    for suffix in ("png",):
         figure.savefig(FIGURES / f"mp-thermochemistry.{suffix}", bbox_inches="tight")
     plt.close(figure)
+
+
+TABLES = (
+    ("species", "Formula, charge, phase, composition, oxidation state and reaction coefficients"),
+    ("thermochemistry", "One recommended Gibbs energy, entropy and enthalpy per species"),
+    ("reported_thermochemistry", "Every retained reported value, recommended or not, with supersession links"),
+    ("sources", "Full citations, links, locators and access dates"),
+    ("phases", "Phase identity, candidate polymorphs, space group and evidence"),
+    ("warnings", "Scientific cautions attached to records"),
+    ("computational_fallbacks", "Opt-in Materials Project 300 K estimates for missing solid Gibbs energies"),
+    ("materials_project_matches", "Reviewed experimental-phase to Materials Project structure matches"),
+    ("materials_project_energies", "Method-specific Materials Project energies with provenance"),
+    ("element_coverage", "Status of every chemical element"),
+    ("ligands", "Free-ligand reference states for ligand-aware calculations"),
+    ("metadata", "Dataset version, reference conditions, schema version and value policy"),
+)
+
+
+def write_markdown(stats: dict[str, Any]) -> None:
+    total = stats["totals"]
+    species = total["species"]
+    properties = {item["property"]: item["available"] for item in stats["properties"]}
+    methods = stats["materials_project_comparison"]["methods"]
+    comparison = json.loads((GENERATED / "fe-pourbaix-comparison.json").read_text())
+    with closing(sqlite3.connect(DATABASE)) as connection:
+        table_rows = {name: scalar(connection, f'SELECT COUNT(*) FROM "{name}"') for name, _ in TABLES}
+
+    def percent(count: int) -> str:
+        return f"{count} ({100 * count / species:.0f} %)"
+
+    lines = [
+        "# Dataset statistics",
+        "",
+        f"pourbase dataset {stats['metadata']['dataset_version']}, generated from the bundled database "
+        "by `scripts/dataset_statistics.py`. Machine-readable versions are in "
+        "[`docs/statistics`](docs/statistics).",
+        "",
+        "## Summary",
+        "",
+        "| | |",
+        "|---|---|",
+        f"| Species | {species} |",
+        f"| Supported elemental systems | {total['supported_systems']} of {total['all_elements_documented']} elements |",
+        f"| Recommended Gibbs energies | {percent(properties['Gibbs energy'])} |",
+        f"| Recommended entropies | {percent(properties['Entropy'])} |",
+        f"| Recommended formation enthalpies | {percent(properties['Formation enthalpy'])} |",
+        f"| Reported values retained | {total['reported_thermochemistry']} |",
+        f"| Source records | {total['source_records']} ({total['distinct_citations']} distinct citations) |",
+        f"| Phase records | {total['phase_records']} ({total['resolved_phase_records']} resolved) |",
+        f"| Warnings | {total['warnings']} |",
+        f"| Materials Project matches | {total['mp_matches']} phases, {total['mp_energy_rows']} energy rows |",
+        f"| Materials Project fallback estimates | {total['computational_fallbacks']} |",
+        f"| Ligands | {total['ligands']} |",
+        "",
+        "Gibbs energies by evidence status:",
+        "",
+        "| Status | Species |",
+        "|---|---|",
+        *(f"| `{status}` | {count} |" for status, count in stats["gibbs_status"].items()),
+        "",
+        "Species by phase:",
+        "",
+        "| Phase | Species | Gibbs | Entropy | Enthalpy |",
+        "|---|---|---|---|---|",
+        *(f"| {row['phase']} | {row['species']} | {row['gibbs']} | {row['entropy']} | {row['enthalpy']} |"
+          for row in stats["phases"]),
+        "",
+        "## Database tables",
+        "",
+        "| Table | Rows | Contents |",
+        "|---|---|---|",
+        *(f"| `{name}` | {table_rows[name]} | {description} |" for name, description in TABLES),
+        "",
+        "[`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.",
+        "",
+        "## Coverage",
+        "",
+        "![Dataset overview](docs/statistics/dataset-overview.png)",
+        "",
+        "Elemental coverage, species by phase, property availability and evidence status.",
+        "",
+        "## Comparison with Materials Project",
+        "",
+        "![Experimental and Materials Project formation energies](docs/statistics/mp-thermochemistry.png)",
+        "",
+        "Phase-matched experimental formation energies against Materials Project DFT formation "
+        f"energies (database {stats['materials_project_comparison']['materials_project_database_versions'][0]}). "
+        "Mean absolute differences, in eV per atom:",
+        "",
+        "| Method | Enthalpy (n) | Enthalpy MAE | Gibbs (n) | Gibbs MAE |",
+        "|---|---|---|---|---|",
+        *(f"| {method} | {methods['enthalpy'][method]['count']} | "
+          f"{methods['enthalpy'][method]['mean_absolute_error_eV_atom']:.3f} | "
+          f"{methods['gibbs'][method]['count']} | {methods['gibbs'][method]['mean_absolute_error_eV_atom']:.3f} |"
+          for method in methods["enthalpy"] if method in methods["gibbs"]),
+        "",
+        "The enthalpy is the closest comparison with a 0 K DFT formation energy; the Gibbs difference "
+        "also includes finite-temperature entropy. These differences are diagnostics, not "
+        "experimental error estimates.",
+        "",
+        "## Example: the iron system",
+        "",
+        "![Iron Pourbaix diagram compared with Materials Project](docs/statistics/calculation-showcase.png)",
+        "",
+        f"The experimental Fe diagram at log₁₀ a = {comparison['log10_aqueous_activity']:g} and the official "
+        f"Materials Project diagram (database {comparison['materials_project_database_version']}) have the "
+        f"same thermodynamic species over {100 * comparison['equivalent_domain_fraction']:.0f} % of the grid "
+        f"and {100 * comparison['water_window_equivalent_domain_fraction']:.0f} % of the water-stability window.",
+        "",
+        "## Systems",
+        "",
+        "| Element | System | Species | Aqueous | Solid | Gas | Liquid | Gibbs | Entropy | Enthalpy | Warnings |",
+        "|---|---|---|---|---|---|---|---|---|---|---|",
+        *(f"| {row['symbol']} | {row['system']} | {row['species']} | {row['aqueous']} | {row['solid']} | "
+          f"{row['gas']} | {row['liquid']} | {row['gibbs']} | {row['entropy']} | {row['enthalpy']} | {row['warnings']} |"
+          for row in stats["systems"]),
+        "",
+    ]
+    STATISTICS.write_text("\n".join(lines))
 
 
 def main() -> None:
@@ -1066,12 +1026,11 @@ def main() -> None:
         raise FileNotFoundError(DATABASE)
     stats = collect_statistics()
     write_statistics(stats)
-    write_references()
     plot_dataset_overview(stats)
     plot_calculation_showcase()
     plot_mp_thermochemistry()
-    print(f"Wrote statistics and references to {GENERATED}")
-    print(f"Wrote paper figures to {FIGURES}")
+    write_markdown(stats)
+    print(f"Wrote {STATISTICS} and {GENERATED}")
 
 
 if __name__ == "__main__":

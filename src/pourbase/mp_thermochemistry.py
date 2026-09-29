@@ -125,7 +125,7 @@ def plot_mp_thermochemistry_comparison(
 def write_mp_thermochemistry_bundle(
     database: ThermodynamicDatabase, output_dir: str | Path
 ) -> dict[str, object]:
-    """Write paper-ready figures, plotted rows, metrics, and method notes."""
+    """Write the comparison figures, plotted rows, metrics, and method notes."""
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
     rows = database.materials_project_thermochemistry()
