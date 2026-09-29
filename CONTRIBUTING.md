@@ -1,0 +1,57 @@
+# Contributing to pourbase
+
+pourbase is a living database. It grows as sources are checked, gaps are filled and mistakes are
+corrected, and contributions of both data and code are welcome.
+
+## How the data were gathered
+
+The literature search behind the database was agentic: GPT 5.6 Sol located candidate sources and
+the tables and values in them. We acknowledge that this search can miss a better source, pick up a
+secondary copy of a value, confuse phases or conventions, or misread a table.
+
+Every value is therefore stored with what you need to check it:
+
+- the full citation, a link where one exists, and the exact location of the value in the source
+  (table, row, column or page);
+- an evidence status: `verified`, `source_verified_estimate`, `defined_reference_state` or
+  `terminal_evidence_gap`;
+- every retained alternative and superseded value in `reported_thermochemistry`, next to the
+  recommended value in `thermochemistry`;
+- scientific cautions in `warnings` and the phase and polymorph assignment in `phases`;
+- explicit gaps where no defensible value was found, and six Materials Project estimates kept
+  separately in `computational_fallbacks` and used only on request.
+
+Check the cited source for any value your conclusions depend on. The Species tab of the desktop
+application and `ThermodynamicDatabase.species_records` show the citation and locator of every
+value. If you find a mistake, please tell us.
+
+## Reporting a data problem or a new source
+
+Open an issue with the
+[Data correction or addition](https://github.com/FrederikLizakJohansen/pourbase/issues/new/choose)
+form and give:
+
+- the record ID from the Species tab, or the formula and phase of a missing species;
+- the property, value, units, temperature, pressure and standard state you propose, with its
+  uncertainty if reported;
+- the full citation and the exact table, row, column or page of the value;
+- anything that affects comparability, such as the ion convention, the phase or whether the value
+  is derived.
+
+Each accepted change is recorded with its source and a plain-language reason. Earlier values stay
+in `reported_thermochemistry`, and the change appears in the next dataset release.
+
+## Contributing code
+
+```bash
+git clone https://github.com/FrederikLizakJohansen/pourbase.git
+cd pourbase
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[gui,materials-project]"
+python -m unittest discover -s tests
+```
+
+Open an issue before a large change, keep pull requests focused, and add tests with new behaviour.
+`tests/test_dataset_snapshot.py` pins the released dataset; update it only in pull requests that
+change the data.
