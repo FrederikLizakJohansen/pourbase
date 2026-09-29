@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass
 
 import numpy as np
 import numpy.typing as npt
 
+from .grid import nearest_index
 from .mass_balance import MassBalancedPourbaixDiagram
 from .models import ThermodynamicSpecies
 
@@ -33,78 +33,65 @@ class SpeciationProfile:
             raise ValueError("speciation fractions must conserve total metal")
 
 
+def _metal_fractions(
+    diagram: MassBalancedPourbaixDiagram, rows: slice | int, columns: slice | int
+) -> FloatArray:
+    """Fraction of the total metal held by each species on part of the grid."""
+    concentration = diagram.aqueous_concentration_mol_L[:, rows, columns]
+    solid = diagram.precipitating_solid_index[rows, columns]
+    precipitated = diagram.precipitated_metal_fraction[rows, columns]
+    fractions = np.zeros((len(diagram.system.species), *np.shape(solid)), dtype=np.float64)
+    fractions[diagram.aqueous_species_indices] = concentration / diagram.total_metal.total_metal_mol_L
+    for index, species in enumerate(diagram.system.species):
+        if not species.is_aqueous:
+            fractions[index] = np.where(solid == index, precipitated, 0.0)
+    return fractions
+
+
 def metal_fraction_grid(diagram: MassBalancedPourbaixDiagram) -> FloatArray:
-    """Return one metal-inventory fraction grid per included species."""
-    fractions = np.zeros(
-        (len(diagram.system.species), diagram.eh_V.size, diagram.pH.size),
-        dtype=np.float64,
-    )
-    total = diagram.total_metal.total_metal_mol_L
-    for local_index, system_index in enumerate(diagram.aqueous_species_indices):
-        fractions[int(system_index)] = (
-            diagram.aqueous_concentration_mol_L[local_index] / total
-        )
-    for system_index, species in enumerate(diagram.system.species):
-        if species.is_aqueous:
-            continue
-        fractions[system_index] = np.where(
-            diagram.precipitating_solid_index == system_index,
-            diagram.precipitated_metal_fraction,
-            0.0,
-        )
+    """Fraction of the total metal held by each species at every grid point."""
+    fractions = _metal_fractions(diagram, slice(None), slice(None))
     fractions.setflags(write=False)
     return fractions
 
 
-def speciation_profile(
-    diagram: MassBalancedPourbaixDiagram, eh_V: float
-) -> SpeciationProfile:
-    """Extract pH-dependent metal fractions at the nearest calculated Eh."""
-    if not math.isfinite(eh_V) or not diagram.eh_V[0] <= eh_V <= diagram.eh_V[-1]:
-        raise ValueError("eh_V lies outside the diagram")
-    eh_index = int(np.abs(diagram.eh_V - eh_V).argmin())
-    fractions = metal_fraction_grid(diagram)[:, eh_index, :]
-    active = np.max(fractions, axis=1) > 1e-12
-    profile_fractions = np.asarray(fractions[active], dtype=np.float64)
-    profile_fractions.setflags(write=False)
+def speciation_profile(diagram: MassBalancedPourbaixDiagram, eh_V: float) -> SpeciationProfile:
+    """Metal fractions along pH at the grid Eh nearest to ``eh_V``."""
+    row = nearest_index(diagram.eh_V, eh_V, "eh_V")
+    fractions = _metal_fractions(diagram, row, slice(None))
+    active = fractions.max(axis=1) > 1e-12
+    profile = fractions[active]
+    profile.setflags(write=False)
     return SpeciationProfile(
-        eh_V=float(diagram.eh_V[eh_index]),
+        eh_V=float(diagram.eh_V[row]),
         pH=diagram.pH,
-        species=tuple(
-            item for index, item in enumerate(diagram.system.species) if active[index]
-        ),
-        metal_fraction=profile_fractions,
+        species=tuple(item for index, item in enumerate(diagram.system.species) if active[index]),
+        metal_fraction=profile,
     )
 
 
 def speciation_at(
     diagram: MassBalancedPourbaixDiagram, pH: float, eh_V: float
 ) -> tuple[dict[str, object], ...]:
-    """Return sourced metal fractions at one point, including precipitated solids."""
-    if not diagram.pH[0] <= pH <= diagram.pH[-1]:
-        raise ValueError("pH lies outside the diagram")
-    if not diagram.eh_V[0] <= eh_V <= diagram.eh_V[-1]:
-        raise ValueError("eh_V lies outside the diagram")
-    pH_index = int(np.abs(diagram.pH - pH).argmin())
-    eh_index = int(np.abs(diagram.eh_V - eh_V).argmin())
-    fractions = metal_fraction_grid(diagram)[:, eh_index, pH_index]
-    rows = []
-    for index, species in enumerate(diagram.system.species):
-        fraction = float(fractions[index])
-        if fraction <= 1e-15:
-            continue
-        rows.append({
+    """Sourced metal fractions at one point, largest first, including a precipitated solid."""
+    row = nearest_index(diagram.eh_V, eh_V, "eh_V")
+    column = nearest_index(diagram.pH, pH, "pH")
+    fractions = _metal_fractions(diagram, row, column)
+    total = diagram.total_metal.total_metal_mol_L
+    rows = [
+        {
             "record_id": species.record_id,
             "species": species.species,
             "phase": species.phase,
-            "metal_fraction": fraction,
-            "metal_concentration_mol_L": (
-                fraction * diagram.total_metal.total_metal_mol_L
-            ),
+            "metal_fraction": float(fraction),
+            "metal_concentration_mol_L": float(fraction) * total,
             "gibbs_source_id": species.source_id,
-            "gibbs_status": species.gibbs_status,
-        })
-    return tuple(sorted(rows, key=lambda item: float(item["metal_fraction"]), reverse=True))
+            "gibbs_status": species.gibbs_status.value,
+        }
+        for species, fraction in zip(diagram.system.species, fractions)
+        if fraction > 1e-15
+    ]
+    return tuple(sorted(rows, key=lambda item: item["metal_fraction"], reverse=True))
 
 
 def plot_speciation_profile(

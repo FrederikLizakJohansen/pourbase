@@ -755,6 +755,7 @@ def plot_calculation_showcase() -> None:
         OfficialMaterialsProjectComparison,
         OfficialMaterialsProjectDiagram,
         OfficialMaterialsProjectPhase,
+        AqueousActivityModel,
         PourbaixConditions,
         PourbaixEngine,
         ThermodynamicDatabase,
@@ -773,7 +774,7 @@ def plot_calculation_showcase() -> None:
         eh_min_V=metadata["eh_V_range"][0],
         eh_max_V=metadata["eh_V_range"][1],
         eh_points=metadata["eh_V_range"][2],
-        log10_aqueous_activity=metadata["log10_aqueous_activity"],
+        aqueous_activities=AqueousActivityModel(metadata["log10_aqueous_activity"]),
     )
     experimental = PourbaixEngine(database).calculate("Fe", conditions)
     with (PAPER_DATA / metadata["phase_file"]).open(newline="") as handle:

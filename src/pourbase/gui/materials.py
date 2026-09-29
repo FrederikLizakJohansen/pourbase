@@ -9,14 +9,14 @@ from __future__ import annotations
 
 import re
 import threading
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from importlib.metadata import PackageNotFoundError, version
 from importlib.util import find_spec
 from typing import Any, Callable, Sequence
 
 import numpy as np
 
-from ..exceptions import MaterialsProjectUnavailableError
+from ..exceptions import CalculationCancelled, MaterialsProjectUnavailableError
 from ..materials_project import (
     OfficialMaterialsProjectComparison,
     OfficialMaterialsProjectDiagram,
@@ -24,8 +24,7 @@ from ..materials_project import (
     evaluate_official_materials_project_entries,
     thermodynamic_species_equivalence_key,
 )
-from ..models import AqueousActivityModel, PourbaixConditions
-from .engine import SweepCancelled
+from ..models import PourbaixConditions
 
 SUPERSCRIPT = str.maketrans("0123456789+-", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻")
 SUBSCRIPT = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
@@ -97,7 +96,6 @@ def fetch_entries(symbol: str, api_key: str, filter_solids: bool, use_gibbs_300K
         with MPRester(api_key, mute_progress_bars=True, notify_db_version=False) as rester:
             entries = rester.get_pourbaix_entries([symbol], use_gibbs=300 if use_gibbs_300K else None)
             database_version = str(rester.db_version)
-        # Solid filtering does not depend on ion concentrations, so one diagram suffices
         filtered = MPPourbaixDiagram(entries, filter_solids=filter_solids).all_entries
     except Exception as error:
         message = str(error).replace(api_key, "[redacted]")
@@ -115,23 +113,33 @@ class MaterialsProjectSource:
         self.fetcher = fetcher
         self._fetched: dict[tuple, FetchedEntries] = {}
         self._lock = threading.Lock()
+        self._evaluation_lock = threading.Lock()
 
     @staticmethod
     def key(symbol: str, filter_solids: bool, use_gibbs_300K: bool) -> tuple:
         return (symbol, filter_solids, use_gibbs_300K)
 
     def fetched(self, symbol: str, filter_solids: bool, use_gibbs_300K: bool) -> FetchedEntries | None:
-        return self._fetched.get(self.key(symbol, filter_solids, use_gibbs_300K))
+        with self._lock:
+            return self._fetched.get(self.key(symbol, filter_solids, use_gibbs_300K))
 
     def fetch(self, symbol: str, api_key: str, filter_solids: bool, use_gibbs_300K: bool) -> FetchedEntries:
-        key = self.key(symbol, filter_solids, use_gibbs_300K)
-        if key not in self._fetched:
-            self._fetched[key] = self.fetcher(symbol, api_key, filter_solids, use_gibbs_300K)
-        return self._fetched[key]
+        """Download once per element and option set; later calls return the cached entries."""
+        if (cached := self.fetched(symbol, filter_solids, use_gibbs_300K)) is not None:
+            return cached
+        entries = self.fetcher(symbol, api_key, filter_solids, use_gibbs_300K)
+        with self._lock:
+            return self._fetched.setdefault(self.key(symbol, filter_solids, use_gibbs_300K), entries)
+
+    def invalidate(self, symbol: str | None = None) -> None:
+        """Forget downloaded entries, for one element or all."""
+        with self._lock:
+            for key in [key for key in self._fetched if symbol is None or key[0] == symbol]:
+                del self._fetched[key]
 
     def diagram(self, fetched: FetchedEntries, conditions: PourbaixConditions) -> OfficialMaterialsProjectDiagram:
         """Evaluate the fetched entries at the activities and grid of ``conditions``."""
-        with self._lock:  # entries carry their ion concentration as mutable state
+        with self._evaluation_lock:
             apply_aqueous_activities(fetched.entries, conditions)
             return evaluate_official_materials_project_entries(
                 fetched.symbol, conditions, fetched.entries,
@@ -156,14 +164,11 @@ class MaterialsProjectSource:
         """MP stable-phase indices on the grid of every level of an experimental sweep."""
         volume = []
         phases: tuple[PhaseView, ...] = ()
-        for number, (level, diagram) in enumerate(zip(experimental_sweep.log10_activities,
-                                                      experimental_sweep.diagrams)):
-            if progress is not None and progress(number / len(experimental_sweep.diagrams)) is False:
-                raise SweepCancelled()
-            conditions = replace(
-                diagram.conditions, aqueous_activities=AqueousActivityModel(default_log10_activity=float(level))
-            )
-            official = self.diagram(fetched, conditions)
+        count = len(experimental_sweep.diagrams)
+        for number, diagram in enumerate(experimental_sweep.diagrams):
+            if progress is not None and progress(number / count) is False:
+                raise CalculationCancelled()
+            official = self.diagram(fetched, diagram.conditions)
             volume.append(official.stable_phase_index.astype(np.int16))
             phases = phase_views(official)
         return np.stack(volume), phases

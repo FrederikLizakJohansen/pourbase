@@ -1,25 +1,29 @@
 """Public exceptions raised by :mod:`pourbase`."""
 
 
-class GibbsPourbaixError(Exception):
+class PourbaseError(Exception):
     """Base class for package-specific failures."""
 
 
-class DatabaseSchemaError(GibbsPourbaixError):
+class DatabaseSchemaError(PourbaseError):
     """The SQLite file does not provide the schema required by this package."""
 
 
-class MetalSystemNotFoundError(GibbsPourbaixError):
+class MetalSystemNotFoundError(PourbaseError):
     """The requested element symbol has no records in the database."""
 
 
-class IncompleteSystemError(GibbsPourbaixError):
+class IncompleteSystemError(PourbaseError):
     """A calculation would omit a ligand-free species without a Gibbs value."""
 
 
-class UnsupportedConditionError(GibbsPourbaixError):
+class UnsupportedConditionError(PourbaseError):
     """The requested calculation is outside the validated scientific scope."""
 
 
-class MaterialsProjectUnavailableError(GibbsPourbaixError):
+class MaterialsProjectUnavailableError(PourbaseError):
     """The optional live Materials Project workflow could not run."""
+
+
+class CalculationCancelled(PourbaseError):
+    """A long calculation was cancelled through its progress callback."""

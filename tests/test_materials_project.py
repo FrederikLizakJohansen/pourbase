@@ -1,19 +1,15 @@
 from __future__ import annotations
 
-import sys
 import unittest
-from pathlib import Path
 from unittest import mock
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+import numpy as np
 
-import numpy as np  # noqa: E402
+import support  # noqa: F401
+from mp_fixtures import MP_API, PYMATGEN, FakeRester
 
-from mp_fixtures import MP_API, PYMATGEN, FakeRester  # noqa: E402
-from pourbase.materials_project import OfficialMaterialsProjectClient  # noqa: E402
-from pourbase.models import AqueousActivityModel, PourbaixConditions  # noqa: E402
+from pourbase.materials_project import OfficialMaterialsProjectClient
+from pourbase.models import AqueousActivityModel, PourbaixConditions
 
 
 def conditions(level: float) -> PourbaixConditions:

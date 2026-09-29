@@ -12,11 +12,13 @@ from .activity_coefficients import (
     ActivityCoefficientModel,
     IdealActivityCoefficientModel,
 )
-from .constants import FARADAY_C_MOL, GAS_CONSTANT_J_MOL_K, LN_10
+from .constants import GAS_CONSTANT_J_MOL_K
 from .database import ThermodynamicDatabase
-from .engine import PourbaixEngine
-from .exceptions import IncompleteSystemError, UnsupportedConditionError
+from .engine import standard_transformed_gibbs_J_mol_metal, validate_reference_conditions
+from .exceptions import UnsupportedConditionError
+from .grid import grid_axes, nearest_index, water_lines
 from .models import (
+    ExclusionReason,
     GibbsEnergyPolicy,
     MetalSystem,
     PourbaixConditions,
@@ -28,14 +30,6 @@ from .models import (
 
 FloatArray = npt.NDArray[np.float64]
 IntegerArray = npt.NDArray[np.int_]
-
-
-def _nearest_grid_index(values: FloatArray, requested: float, name: str) -> int:
-    if not math.isfinite(requested):
-        raise ValueError(f"{name} must be finite")
-    if not values[0] <= requested <= values[-1]:
-        raise ValueError(f"{name} lies outside the diagram")
-    return int(np.abs(values - requested).argmin())
 
 
 @dataclass(frozen=True, slots=True)
@@ -79,93 +73,25 @@ class MassBalancedPourbaixDiagram:
     oer_V: FloatArray
 
     def __post_init__(self) -> None:
-        expected_shape = (self.eh_V.size, self.pH.size)
+        shape = (self.eh_V.size, self.pH.size)
         for name in (
-            "dominant_species_index",
-            "precipitating_solid_index",
-            "dissolved_metal_mol_L",
-            "saturation_dissolved_metal_mol_L",
-            "precipitated_metal_fraction",
+            "dominant_species_index", "precipitating_solid_index", "dissolved_metal_mol_L",
+            "saturation_dissolved_metal_mol_L", "precipitated_metal_fraction",
             "equilibrium_metal_chemical_potential_J_mol",
         ):
-            if getattr(self, name).shape != expected_shape:
+            if getattr(self, name).shape != shape:
                 raise ValueError(f"{name} has the wrong grid shape")
-        expected_aqueous_shape = (self.aqueous_species_indices.size, *expected_shape)
-        if self.aqueous_concentration_mol_L.shape != expected_aqueous_shape:
-            raise ValueError("aqueous concentration array has the wrong shape")
-        if self.aqueous_activity.shape != expected_aqueous_shape:
-            raise ValueError("aqueous activity array has the wrong shape")
-        if self.aqueous_activity_coefficient.shape != (
-            self.aqueous_species_indices.size,
-        ):
+        aqueous_shape = (self.aqueous_species_indices.size, *shape)
+        if self.aqueous_concentration_mol_L.shape != aqueous_shape or self.aqueous_activity.shape != aqueous_shape:
+            raise ValueError("aqueous arrays have the wrong shape")
+        if self.aqueous_activity_coefficient.shape != (self.aqueous_species_indices.size,):
             raise ValueError("aqueous activity-coefficient array has the wrong shape")
-        if np.any(self.dominant_species_index < 0) or np.any(
-            self.dominant_species_index >= len(self.system.species)
-        ):
-            raise ValueError("dominant species index lies outside the system")
-        if np.any(self.precipitated_metal_fraction < 0) or np.any(
-            self.precipitated_metal_fraction > 1
-        ):
-            raise ValueError("precipitated fractions must lie between zero and one")
-        if np.any(~np.isfinite(self.aqueous_concentration_mol_L)) or np.any(
-            self.aqueous_concentration_mol_L < 0
-        ):
-            raise ValueError("aqueous concentrations must be non-negative and finite")
-        if np.any(~np.isfinite(self.aqueous_activity_coefficient)) or np.any(
-            self.aqueous_activity_coefficient <= 0
-        ):
-            raise ValueError("aqueous activity coefficients must be positive and finite")
-        if np.any(~np.isfinite(self.aqueous_activity)) or np.any(
-            self.aqueous_activity < 0
-        ):
-            raise ValueError("aqueous activities must be non-negative and finite")
-        expected_activity = (
-            self.aqueous_activity_coefficient[:, np.newaxis, np.newaxis]
-            * self.aqueous_concentration_mol_L
-            / self.total_metal.standard_concentration_mol_L
-        )
-        if not np.allclose(
-            self.aqueous_activity,
-            expected_activity,
-            rtol=1e-12,
-            atol=0.0,
-        ):
-            raise ValueError("aqueous activities are inconsistent with concentrations")
-        if np.any(~np.isfinite(self.dissolved_metal_mol_L)) or np.any(
-            self.dissolved_metal_mol_L < 0
-        ):
-            raise ValueError("dissolved metal concentrations must be non-negative and finite")
-        if np.any(self.dissolved_metal_mol_L > self.total_metal.total_metal_mol_L):
-            raise ValueError("dissolved metal cannot exceed total metal")
-        if not np.allclose(
-            np.sum(self.aqueous_concentration_mol_L, axis=0),
-            self.dissolved_metal_mol_L,
-            rtol=1e-12,
-            atol=0.0,
-        ):
-            raise ValueError("aqueous concentrations do not satisfy dissolved metal balance")
-        reconstructed_total = self.dissolved_metal_mol_L + (
-            self.precipitated_metal_fraction
-            * self.total_metal.total_metal_mol_L
-        )
-        if not np.allclose(
-            reconstructed_total,
-            self.total_metal.total_metal_mol_L,
-            rtol=1e-12,
-            atol=0.0,
-        ):
-            raise ValueError("dissolved and precipitated inventories do not conserve metal")
-        for index in self.aqueous_species_indices:
-            if not self.system.species[int(index)].is_aqueous:
-                raise ValueError("aqueous species index refers to a solid")
-        solid_indices = np.unique(self.precipitating_solid_index)
-        for index in solid_indices[solid_indices >= 0]:
-            if self.system.species[int(index)].is_aqueous:
-                raise ValueError("precipitating solid index refers to an aqueous species")
+        if any(not self.system.species[int(index)].is_aqueous for index in self.aqueous_species_indices):
+            raise ValueError("aqueous species index refers to a condensed phase")
 
     @property
     def stable_species_index(self) -> IntegerArray:
-        """Compatibility alias used by the common phase-map plotting layer."""
+        """The dominant species; the name matches :class:`PourbaixDiagram`."""
         return self.dominant_species_index
 
     @property
@@ -183,15 +109,15 @@ class MassBalancedPourbaixDiagram:
 
     def species_at(self, pH: float, eh_V: float) -> ThermodynamicSpecies:
         """Return the dominant species nearest to a requested coordinate."""
-        pH_index = _nearest_grid_index(self.pH, pH, "pH")
-        eh_index = _nearest_grid_index(self.eh_V, eh_V, "eh_V")
+        pH_index = nearest_index(self.pH, pH, "pH")
+        eh_index = nearest_index(self.eh_V, eh_V, "eh_V")
         index = int(self.dominant_species_index[eh_index, pH_index])
         return self.system.species[index]
 
     def state_at(self, pH: float, eh_V: float) -> MassBalancedState:
         """Return the complete equilibrium inventory nearest to one coordinate."""
-        pH_index = _nearest_grid_index(self.pH, pH, "pH")
-        eh_index = _nearest_grid_index(self.eh_V, eh_V, "eh_V")
+        pH_index = nearest_index(self.pH, pH, "pH")
+        eh_index = nearest_index(self.eh_V, eh_V, "eh_V")
         dominant_index = int(self.dominant_species_index[eh_index, pH_index])
         solid_index = int(self.precipitating_solid_index[eh_index, pH_index])
         dissolved = float(self.dissolved_metal_mol_L[eh_index, pH_index])
@@ -244,7 +170,6 @@ class MassBalanceEngine:
         activity_coefficient_model: ActivityCoefficientModel | None = None,
     ) -> None:
         self.database = database
-        self.phase_engine = PourbaixEngine(database)
         self.activity_coefficient_model = (
             IdealActivityCoefficientModel()
             if activity_coefficient_model is None
@@ -314,28 +239,17 @@ class MassBalanceEngine:
                     SpeciesExclusion(
                         record_id=item.record_id,
                         species=item.species,
-                        reason="mass_balance_nonmonometal_aqueous_unsupported",
+                        reason=ExclusionReason.POLYNUCLEAR_AQUEOUS,
                         status=item.gibbs_status,
                     )
                     for item in unsupported_aqueous
                 ),
             )
         reference_state = self.database.reference_state
-        self.phase_engine._validate_conditions(conditions, reference_state)
-        if not allow_incomplete and not system.is_thermochemically_complete:
-            missing = [
-                item.record_id
-                for item in system.excluded
-                if item.reason == "recommended_gibbs_energy_unavailable"
-            ]
-            raise IncompleteSystemError(
-                f"{system.symbol} has {len(missing)} ligand-free species without a "
-                f"recommended Gibbs energy: {', '.join(missing)}. "
-                "Pass allow_incomplete=True for exploratory use."
-            )
-        activity_model = conditions.aqueous_activities
-        assert activity_model is not None
-        if activity_model.overrides:
+        validate_reference_conditions(conditions, reference_state)
+        if not allow_incomplete:
+            system.require_complete()
+        if conditions.aqueous_activities.overrides:
             raise UnsupportedConditionError(
                 "Fixed aqueous activity overrides cannot be combined with a total-metal "
                 "mass balance; the solver calculates all aqueous activities"
@@ -353,26 +267,12 @@ class MassBalanceEngine:
             raise UnsupportedConditionError(
                 f"{system.symbol} has no supported aqueous species for a mass balance"
             )
-        pH = np.linspace(conditions.pH_min, conditions.pH_max, conditions.pH_points)
-        eh_V = np.linspace(
-            conditions.eh_min_V,
-            conditions.eh_max_V,
-            conditions.eh_points,
-        )
+        pH, eh_V = grid_axes(conditions)
         pH_grid, eh_grid = np.meshgrid(pH, eh_V)
-        standard_energy = np.stack(
-            [
-                self.phase_engine.standard_transformed_gibbs_J_mol_metal(
-                    species,
-                    reference_state,
-                    conditions,
-                    pH_grid,
-                    eh_grid,
-                )
-                for species in system.species
-            ],
-            axis=0,
-        )
+        standard_energy = np.stack([
+            standard_transformed_gibbs_J_mol_metal(species, reference_state, conditions, pH_grid, eh_grid)
+            for species in system.species
+        ])
         rt = GAS_CONSTANT_J_MOL_K * conditions.temperature_K
         aqueous_energy = standard_energy[aqueous_indices]
         aqueous_activity_coefficient = np.asarray(
@@ -464,16 +364,8 @@ class MassBalanceEngine:
             dominant_index,
         )
 
-        nernst_slope = rt * LN_10 / FARADAY_C_MOL
-        her_V = -nernst_slope * pH
-        oer_standard_V = -reference_state.water_gibbs_energy_J_mol / (
-            2 * FARADAY_C_MOL
-        )
-        oer_V = oer_standard_V - nernst_slope * pH
-
+        her_V, oer_V = water_lines(pH, conditions.temperature_K, reference_state.water_gibbs_energy_J_mol)
         arrays = (
-            pH,
-            eh_V,
             dominant_index,
             precipitating_solid_index,
             aqueous_indices,
@@ -484,8 +376,6 @@ class MassBalanceEngine:
             saturation,
             precipitated_fraction,
             chemical_potential,
-            her_V,
-            oer_V,
         )
         for array in arrays:
             array.setflags(write=False)
@@ -520,9 +410,3 @@ class MassBalanceEngine:
             oer_V=oer_V,
         )
 
-
-class IdealMassBalanceEngine(MassBalanceEngine):
-    """Backward-compatible mass-balance engine with unit activity coefficients."""
-
-    def __init__(self, database: ThermodynamicDatabase) -> None:
-        super().__init__(database, IdealActivityCoefficientModel())

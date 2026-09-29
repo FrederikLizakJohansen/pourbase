@@ -19,7 +19,6 @@ SETTINGS_KEY = "materials_project/api_key"
 def _keyring():
     try:
         import keyring
-        from keyring.errors import KeyringError  # noqa: F401
 
         backend = keyring.get_keyring()
         if type(backend).__name__ in ("FailKeyring", "NullKeyring"):

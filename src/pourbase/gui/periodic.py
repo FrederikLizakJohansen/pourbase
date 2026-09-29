@@ -1,45 +1,42 @@
-"""Painted periodic table colored by the stable species at one pH and potential."""
+"""The periodic-table overview: a painted table of stable species and its controls."""
 
 from __future__ import annotations
 
 import math
-from typing import Any
 
 from PySide6.QtCore import QPointF, QRectF, Qt, Signal
 from PySide6.QtGui import (
-    QBrush, QColor, QFont, QFontMetricsF, QLinearGradient, QPainter, QPainterPath, QPen,
+    QBrush, QColor, QFont, QFontMetricsF, QLinearGradient, QPainter, QPainterPath, QPen, QPixmap,
 )
-from PySide6.QtWidgets import QSizePolicy, QToolTip, QWidget
+from PySide6.QtWidgets import QCheckBox, QComboBox, QHBoxLayout, QLabel, QSizePolicy, QToolTip, QVBoxLayout, QWidget
 
-from .formula import draw_formula
+from ..overview import Category, ElementResult, ElementStatus, PeriodicScreen
+from .formula import draw_formula, phase_label
+from .widgets import FloatSlider
 
 CATEGORY_COLORS = {
-    "dissolved_or_gas": "#5b9bd5",
-    "solid_oxide": "#ee7d4f",
-    "hydroxide_or_oxyhydroxide": "#f5b75a",
-    "elemental_solid": "#a0aab5",
-    "elemental_liquid": "#b79ddb",
-    "other_solid": "#79c07f",
-    "incomplete": "#f2a0a0",
+    Category.DISSOLVED_OR_GAS: "#5b9bd5",
+    Category.SOLID_OXIDE: "#ee7d4f",
+    Category.HYDROXIDE: "#f5b75a",
+    Category.ELEMENTAL_SOLID: "#a0aab5",
+    Category.ELEMENTAL_LIQUID: "#b79ddb",
+    Category.OTHER_SOLID: "#79c07f",
+    Category.INCOMPLETE: "#f2a0a0",
 }
-CALCULATED_CATEGORIES = tuple(CATEGORY_COLORS)
 COLOR_MODES = {"category": "Stable species category", "margin": "Stability margin"}
-
 UNIT_LABELS = {"log10_molar": "log₁₀ M", "molar": "M", "ppm": "ppm", "wt_percent": "wt %"}
-GROUP_LABELS = [str(number) for number in range(1, 19)]
 F_BLOCK_MARKERS = {(5, 2): "57–71", (6, 2): "89–103"}
-CARD_COLUMNS = (2, 11)  # empty block above the transition metals, used for the detail card
-CARD_ROWS = (0, 2)
+CARD_CELLS = ((0, 2), (2, 11))
+PROVISIONAL_LABEL = "Provisional: some species lack an experimental Gibbs energy"
 
 
 def table_position(atomic_number: int) -> tuple[int, int]:
-    """Return the (row, column) of an element; the f-block occupies rows 8 and 9."""
+    """(row, column) of an element; the f-block occupies rows 8 and 9."""
     if 57 <= atomic_number <= 71:
-        return 8, atomic_number - 57 + 3
+        return 8, atomic_number - 54
     if 89 <= atomic_number <= 103:
-        return 9, atomic_number - 89 + 3
-    periods = ((1, 2), (3, 10), (11, 18), (19, 36), (37, 54), (55, 86), (87, 118))
-    for row, (first, last) in enumerate(periods):
+        return 9, atomic_number - 86
+    for row, (first, last) in enumerate(((1, 2), (3, 10), (11, 18), (19, 36), (37, 54), (55, 86), (87, 118))):
         if first <= atomic_number <= last:
             offset = atomic_number - first
             if row == 0:
@@ -53,13 +50,13 @@ def table_position(atomic_number: int) -> tuple[int, int]:
 
 
 def margin_color(margin_kJ: float) -> QColor:
-    """Sequential color for the energy margin to the next species (0 to about 100 kJ/mol)."""
+    """Sequential color for the energy margin to the next species, 0 to about 100 kJ/mol."""
     fraction = min(max(math.log10(1 + max(margin_kJ, 0.0)) / 2.0, 0.0), 1.0)
     stops = ((0.0, (253, 231, 190)), (0.35, (246, 170, 92)), (0.7, (214, 96, 77)), (1.0, (122, 41, 88)))
     for (a, left), (b, right) in zip(stops, stops[1:]):
         if fraction <= b:
             t = (fraction - a) / (b - a)
-            return QColor(*(round(l + t * (r - l)) for l, r in zip(left, right)))
+            return QColor(*(round(low + t * (high - low)) for low, high in zip(left, right)))
     return QColor(*stops[-1][1])
 
 
@@ -71,64 +68,53 @@ class PeriodicTableCanvas(QWidget):
         self.setMouseTracking(True)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setMinimumSize(760, 520)
-        self.screen: dict[str, Any] | None = None
-        self.elements: dict[str, dict[str, Any]] = {}
+        self.screen: PeriodicScreen | None = None
+        self.elements: dict[str, ElementResult] = {}
         self.hovered: str | None = None
         self.selected: str | None = None
-        self.highlight_category: str | None = None
+        self.highlight_category: Category | None = None
         self.color_mode = "category"
         self.dark = False
         self._tiles: dict[str, QRectF] = {}
-        self._chips: dict[str, QRectF] = {}
+        self._chips: dict[Category, QRectF] = {}
+        self._static: QPixmap | None = None
 
-    # -- data --------------------------------------------------------------------------------
-
-    def show_screen(self, screen: dict[str, Any]) -> None:
+    def show_screen(self, screen: PeriodicScreen) -> None:
         self.screen = screen
-        self.elements = {item["symbol"]: item for item in screen["elements"]}
-        self.update()
+        self.elements = {item.symbol: item for item in screen.elements}
+        self._redraw()
 
     def set_selected(self, symbol: str | None) -> None:
         self.selected = symbol
-        self.update()
+        self._redraw()
 
     def set_color_mode(self, mode: str) -> None:
         self.color_mode = mode
-        self.update()
+        self._redraw()
 
     def set_dark(self, dark: bool) -> None:
         self.dark = dark
+        self._redraw()
+
+    def _redraw(self) -> None:
+        self._static = None
         self.update()
 
-    @staticmethod
-    def clickable(element: dict[str, Any]) -> bool:
-        """Calculated systems (also with gaps or MP fallbacks) and withheld incomplete systems."""
-        return element["status"].startswith("calculated") or element["status"] == "incomplete"
-
-    @staticmethod
-    def provisional(element: dict[str, Any]) -> bool:
-        """The result omits species without Gibbs data or uses MP fallback estimates."""
-        return element["status"] in ("calculated_with_gaps", "calculated_with_fallback")
-
-    # -- geometry ----------------------------------------------------------------------------
+    def resizeEvent(self, event) -> None:
+        self._static = None
+        super().resizeEvent(event)
 
     def _layout(self) -> tuple[float, QPointF, float]:
-        """Tile pitch, origin of the grid, and the gap before the f-block rows."""
-        legend_height = 64.0
-        width = self.width() - 40
-        height = self.height() - legend_height - 30
-        pitch = min(width / 18.6, height / 9.8)
-        gap = pitch * 0.35
-        grid_width = 18 * pitch
-        origin = QPointF((self.width() - grid_width) / 2 + pitch * 0.3, 22 + pitch * 0.35)
-        return pitch, origin, gap
+        """Tile pitch, grid origin, and the gap before the f-block rows."""
+        pitch = min((self.width() - 40) / 18.6, (self.height() - 94) / 9.8)
+        origin = QPointF((self.width() - 18 * pitch) / 2 + pitch * 0.3, 22 + pitch * 0.35)
+        return pitch, origin, pitch * 0.35
 
-    def _cell(self, row: int, column: int, pitch: float, origin: QPointF, gap: float) -> QRectF:
+    def _cell(self, row: int, column: int) -> QRectF:
+        pitch, origin, gap = self._layout()
         y = origin.y() + row * pitch + (gap - pitch if row >= 8 else 0)
         inset = pitch * 0.045
         return QRectF(origin.x() + column * pitch + inset, y + inset, pitch - 2 * inset, pitch - 2 * inset)
-
-    # -- colors ------------------------------------------------------------------------------
 
     def _text_color(self) -> QColor:
         return QColor("#dfe1e5" if self.dark else "#1f2328")
@@ -136,73 +122,76 @@ class PeriodicTableCanvas(QWidget):
     def _muted(self) -> QColor:
         return QColor("#7d828a" if self.dark else "#8a9099")
 
-    def _fill(self, element: dict[str, Any]) -> QColor | None:
-        category = element["category"]
-        if category not in CALCULATED_CATEGORIES:
+    def _fill(self, element: ElementResult) -> QColor | None:
+        if element.category not in CATEGORY_COLORS:
             return None
-        if self.color_mode == "margin" and element.get("energy_margin_J_mol_metal") is not None:
-            color = margin_color(element["energy_margin_J_mol_metal"] / 1000)
+        if self.color_mode == "margin" and element.energy_margin_J_mol_metal is not None:
+            color = margin_color(element.energy_margin_J_mol_metal / 1000)
         else:
-            color = QColor(CATEGORY_COLORS[category])
-        if self.highlight_category and category != self.highlight_category:
+            color = QColor(CATEGORY_COLORS[element.category])
+        if self.highlight_category and element.category != self.highlight_category:
             color.setAlphaF(0.22)
         return color
 
-    # -- painting ----------------------------------------------------------------------------
-
     def paintEvent(self, _event) -> None:
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing)
-        painter.setRenderHint(QPainter.TextAntialiasing)
         if self.screen is None:
             return
-        pitch, origin, gap = self._layout()
-        self._tiles = {}
+        if self._static is None or self._static.size() != self.size() * self.devicePixelRatioF():
+            self._static = self._paint_static()
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        painter.drawPixmap(0, 0, self._static)
+        pitch = self._layout()[0]
         base = QFont(self.font())
+        if self.hovered in self.elements:
+            cell = self._tiles[self.hovered].adjusted(-pitch * 0.06, -pitch * 0.06, pitch * 0.06, pitch * 0.06)
+            self._paint_tile(painter, self.elements[self.hovered], cell, pitch, base, raised=True)
+        card = self._cell(*CARD_CELLS[0]).united(self._cell(*CARD_CELLS[1])).adjusted(
+            pitch * 0.15, pitch * 0.05, -pitch * 0.15, -pitch * 0.2
+        )
+        self._paint_card(painter, card, pitch, base)
 
-        # Group and period labels
+    def _paint_static(self) -> QPixmap:
+        """Everything that does not change on hover: labels, tiles and legend."""
+        ratio = self.devicePixelRatioF()
+        pixmap = QPixmap(self.size() * ratio)
+        pixmap.setDevicePixelRatio(ratio)
+        pixmap.fill(Qt.transparent)
+        painter = QPainter(pixmap)
+        painter.setRenderHint(QPainter.Antialiasing)
+        painter.setRenderHint(QPainter.TextAntialiasing)
+        pitch = self._layout()[0]
+        base = QFont(self.font())
         painter.setPen(self._muted())
         label_font = QFont(base)
         label_font.setPixelSize(max(int(pitch * 0.2), 8))
         painter.setFont(label_font)
-        for column, text in enumerate(GROUP_LABELS):
-            row = 0 if column in (0, 17) else (1 if column in (1, 12, 13, 14, 15, 16) else 3)
-            cell = self._cell(row, column, pitch, origin, gap)
+        for column in range(18):
+            row = 0 if column in (0, 17) else 1 if column in (1, 12, 13, 14, 15, 16) else 3
+            cell = self._cell(row, column)
             painter.drawText(QRectF(cell.left(), cell.top() - pitch * 0.34, cell.width(), pitch * 0.3),
-                             Qt.AlignHCenter | Qt.AlignBottom, text)
+                             Qt.AlignHCenter | Qt.AlignBottom, str(column + 1))
         for row in range(7):
-            cell = self._cell(row, 0, pitch, origin, gap)
+            cell = self._cell(row, 0)
             painter.drawText(QRectF(cell.left() - pitch * 0.42, cell.top(), pitch * 0.34, cell.height()),
                              Qt.AlignRight | Qt.AlignVCenter, str(row + 1))
-
-        # f-block markers
+        painter.setPen(QPen(self._muted(), 1, Qt.DashLine))
         for (row, column), text in F_BLOCK_MARKERS.items():
-            cell = self._cell(row, column, pitch, origin, gap)
-            painter.setPen(QPen(self._muted(), 1, Qt.DashLine))
-            painter.setBrush(Qt.NoBrush)
+            cell = self._cell(row, column)
             painter.drawRoundedRect(cell, pitch * 0.1, pitch * 0.1)
             painter.drawText(cell, Qt.AlignCenter, text)
-
+        self._tiles = {}
         for symbol, element in self.elements.items():
-            row, column = table_position(element["atomic_number"])
-            cell = self._cell(row, column, pitch, origin, gap)
+            cell = self._cell(*table_position(element.atomic_number))
             self._tiles[symbol] = cell
-            if symbol != self.hovered:
-                self._paint_tile(painter, symbol, element, cell, pitch, base)
-        if self.hovered in self.elements:
-            cell = self._tiles[self.hovered].adjusted(-pitch * 0.06, -pitch * 0.06, pitch * 0.06, pitch * 0.06)
-            self._paint_tile(painter, self.hovered, self.elements[self.hovered], cell, pitch, base, raised=True)
-
-        card = self._cell(CARD_ROWS[0], CARD_COLUMNS[0], pitch, origin, gap).united(
-            self._cell(CARD_ROWS[1], CARD_COLUMNS[1], pitch, origin, gap)
-        ).adjusted(pitch * 0.15, pitch * 0.05, -pitch * 0.15, -pitch * 0.2)
-        self._paint_card(painter, card, pitch, base)
-        bottom = self._cell(9, 0, pitch, origin, gap).bottom()
-        self._paint_legend(painter, QRectF(12, bottom + 14, self.width() - 24, 50), base)
+            self._paint_tile(painter, element, cell, pitch, base)
+        self._paint_legend(painter, QRectF(12, self._cell(9, 0).bottom() + 14, self.width() - 24, 50), base)
+        painter.end()
+        return pixmap
 
     def _paint_tile(
-        self, painter: QPainter, symbol: str, element: dict[str, Any], cell: QRectF,
-        pitch: float, base: QFont, raised: bool = False,
+        self, painter: QPainter, element: ElementResult, cell: QRectF, pitch: float, base: QFont,
+        raised: bool = False,
     ) -> None:
         radius = pitch * 0.12
         fill = self._fill(element)
@@ -220,49 +209,42 @@ class PeriodicTableCanvas(QWidget):
             border = fill.darker(135)
             border.setAlpha(fill.alpha())
             painter.setPen(QPen(border, 1))
-            text = QColor("#15181c")
-            if self.highlight_category and element["category"] != self.highlight_category:
-                text = self._muted()
+            dimmed = self.highlight_category and element.category != self.highlight_category
+            text = self._muted() if dimmed else QColor("#15181c")
         else:
-            background = QColor("#2b2d30" if self.dark else "#f4f5f7")
-            painter.fillPath(path, background)
+            painter.fillPath(path, QColor("#2b2d30" if self.dark else "#f4f5f7"))
             painter.setPen(QPen(self._muted(), 0.8, Qt.DotLine))
             text = self._muted()
         painter.drawPath(path)
-        if self.provisional(element):
-            # Dashed inner outline: provisional result (species left out or MP estimates used)
-            outline = QColor(255, 255, 255, 200) if fill is not None and fill.lightness() < 110 else QColor(20, 20, 20, 150)
+        if element.status.is_provisional:
+            dark_fill = fill is not None and fill.lightness() < 110
+            outline = QColor(255, 255, 255, 200) if dark_fill else QColor(20, 20, 20, 150)
             painter.setPen(QPen(outline, max(pitch * 0.025, 1.2), Qt.DashLine))
             painter.drawRoundedRect(cell.adjusted(3, 3, -3, -3), radius * 0.7, radius * 0.7)
-        if symbol == self.selected:
+        if element.symbol == self.selected:
             painter.setPen(QPen(self.palette().highlight().color(), max(pitch * 0.06, 2)))
             painter.drawRoundedRect(cell.adjusted(1, 1, -1, -1), radius, radius)
         if raised:
             painter.setPen(QPen(self._text_color(), 1.6))
             painter.drawPath(path)
-
         pad = cell.width() * 0.08
         painter.setPen(text)
         small = QFont(base)
         small.setPixelSize(max(int(cell.height() * 0.16), 7))
         painter.setFont(small)
         painter.drawText(cell.adjusted(pad, pad * 0.6, -pad, 0), Qt.AlignLeft | Qt.AlignTop,
-                         str(element["atomic_number"]))
+                         str(element.atomic_number))
         large = QFont(base)
         large.setPixelSize(max(int(cell.height() * 0.36), 9))
         painter.setFont(large)
         painter.drawText(QRectF(cell.left(), cell.top() + cell.height() * 0.14, cell.width(), cell.height() * 0.5),
-                         Qt.AlignCenter, symbol)
-        species = element.get("stable_species")
-        if species:
-            draw_formula(
-                painter,
-                QRectF(cell.left() + pad, cell.bottom() - cell.height() * 0.34, cell.width() - 2 * pad,
-                       cell.height() * 0.28),
-                species, small,
-            )
+                         Qt.AlignCenter, element.symbol)
+        if element.stable is not None:
+            draw_formula(painter, QRectF(cell.left() + pad, cell.bottom() - cell.height() * 0.34,
+                                         cell.width() - 2 * pad, cell.height() * 0.28), element.stable.species, small)
 
     def _paint_card(self, painter: QPainter, card: QRectF, pitch: float, base: QFont) -> None:
+        screen = self.screen
         element = self.elements.get(self.hovered or "") or self.elements.get(self.selected or "")
         painter.setPen(Qt.NoPen)
         painter.setBrush(QColor(255, 255, 255, 12) if self.dark else QColor(0, 0, 0, 8))
@@ -273,11 +255,6 @@ class PeriodicTableCanvas(QWidget):
         title.setPixelSize(max(int(pitch * 0.34), 10))
         body = QFont(base)
         body.setPixelSize(max(int(pitch * 0.2), 8))
-        conditions = self.screen["conditions"]
-        condition_text = (
-            f"pH {conditions['pH']:g}  ·  {conditions['potential_V_vs_SHE']:+.3f} V vs SHE"
-            f"  ·  {conditions['concentration_input_value']:g} {UNIT_LABELS.get(conditions['concentration_input_unit'], '')}"
-        )
         if element is None:
             painter.setPen(self._text_color())
             painter.setFont(title)
@@ -286,8 +263,9 @@ class PeriodicTableCanvas(QWidget):
             painter.setPen(self._muted())
             painter.drawText(
                 inner.adjusted(0, pitch * 0.5, 0, 0), Qt.AlignLeft | Qt.AlignTop | Qt.TextWordWrap,
-                f"{condition_text}\n{self.screen['calculated_system_count']} of "
-                f"{self.screen['supported_system_count']} supported systems calculated. "
+                f"pH {screen.pH:g}  ·  {screen.potential_V_vs_SHE:+.3f} V vs SHE  ·  "
+                f"{screen.concentration:g} {UNIT_LABELS.get(screen.concentration_unit, '')}\n"
+                f"{screen.calculated_count} of {screen.supported_count} supported systems calculated. "
                 "Hover over an element for details; click to open its Pourbaix diagram.",
             )
             return
@@ -295,45 +273,37 @@ class PeriodicTableCanvas(QWidget):
         swatch.setAlpha(255)
         painter.setBrush(swatch)
         painter.setPen(Qt.NoPen)
-        painter.drawRoundedRect(QRectF(inner.left(), inner.top() + pitch * 0.05, pitch * 0.18, pitch * 0.36),
-                                3, 3)
+        painter.drawRoundedRect(QRectF(inner.left(), inner.top() + pitch * 0.05, pitch * 0.18, pitch * 0.36), 3, 3)
         painter.setPen(self._text_color())
         painter.setFont(title)
-        name = element.get("system") or element["symbol"]
-        painter.drawText(inner.adjusted(pitch * 0.3, 0, 0, 0), Qt.AlignLeft | Qt.AlignTop, name)
-        labels = self.screen["category_labels"]
-        lines = [labels.get(element["category"], element["category"])]
-        if element.get("stable_species"):
-            phase = element.get("phase_detail") or element.get("phase") or ""
-            lines.append(("formula", f"Stable: {element['stable_species']}  ({phase})"))
-            margin = element.get("energy_margin_J_mol_metal")
-            if margin is not None:
-                lines.append(f"Margin to the next species: {margin / 1000:.2f} kJ/mol metal")
-            source = (element.get("gibbs_source") or {}).get("citation")
-            if source:
-                lines.append(f"ΔfG°: {source}")
-        else:
-            reason = element.get("coverage_reason") or element.get("reason")
-            if reason:
-                lines.append(reason)
-        if element["status"] == "calculated_with_gaps":
+        painter.drawText(inner.adjusted(pitch * 0.3, 0, 0, 0), Qt.AlignLeft | Qt.AlignTop,
+                         element.system or element.symbol)
+        lines: list[str | tuple[str, str]] = [element.category.label]
+        if element.stable is not None:
+            lines.append(("formula", f"Stable: {element.stable.species}  ({phase_label(element.stable)})"))
+            if element.energy_margin_J_mol_metal is not None:
+                lines.append(f"Margin to the next species: {element.energy_margin_J_mol_metal / 1000:.2f} kJ/mol metal")
+            if element.gibbs_source and element.gibbs_source.citation:
+                lines.append(f"ΔfG°: {element.gibbs_source.citation}")
+        elif element.reason:
+            lines.append(element.reason)
+        if element.status is ElementStatus.CALCULATED_WITH_GAPS:
             lines.append("Provisional: species that lack an experimental Gibbs energy are left out of this calculation")
-        elif element["status"] == "calculated_with_fallback":
+        elif element.status is ElementStatus.CALCULATED_WITH_FALLBACK:
             lines.append("Provisional: Materials Project 300 K estimates replace the missing experimental Gibbs energies")
-        if element.get("missing_record_ids"):
-            lines.append(f"{len(element['missing_record_ids'])} species lack a recommended Gibbs energy")
+        if element.missing_record_ids:
+            lines.append(f"{len(element.missing_record_ids)} species lack a recommended Gibbs energy")
         painter.setFont(body)
-        painter.setPen(self._muted())
         metrics = QFontMetricsF(body)
         top = inner.top() + pitch * 0.5
         for line in lines:
             if isinstance(line, tuple):
-                row = QRectF(inner.left(), top, inner.width(), metrics.height() * 1.3)
                 painter.setPen(self._text_color())
-                draw_formula(painter, row, line[1], body, Qt.AlignLeft | Qt.AlignTop)
-                painter.setPen(self._muted())
+                draw_formula(painter, QRectF(inner.left(), top, inner.width(), metrics.height() * 1.3),
+                             line[1], body, Qt.AlignLeft | Qt.AlignTop)
                 top += metrics.height() * 1.3
                 continue
+            painter.setPen(self._muted())
             bounds = painter.boundingRect(QRectF(inner.left(), top, inner.width(), 1000),
                                           Qt.AlignLeft | Qt.AlignTop | Qt.TextWordWrap, line)
             painter.drawText(bounds, Qt.AlignLeft | Qt.AlignTop | Qt.TextWordWrap, line)
@@ -345,7 +315,9 @@ class PeriodicTableCanvas(QWidget):
         font.setPixelSize(12)
         painter.setFont(font)
         metrics = QFontMetricsF(font)
-        counts = self.screen["category_counts"]
+        provisional = sum(item.status.is_provisional for item in self.elements.values())
+        key_text = f"{PROVISIONAL_LABEL}  {provisional}"
+        key_width = metrics.horizontalAdvance(key_text) + 40 if provisional else 0.0
         if self.color_mode == "margin":
             width = min(area.width() * 0.5, 420)
             bar = QRectF(area.center().x() - width / 2, area.top() + 6, width, 12)
@@ -358,74 +330,51 @@ class PeriodicTableCanvas(QWidget):
                 painter.drawText(QRectF(x - 30, bar.bottom() + 2, 60, 16), Qt.AlignCenter, f"{value}")
             painter.drawText(QRectF(bar.left(), bar.bottom() + 18, width, 16), Qt.AlignCenter,
                              "Energy margin to the next species (kJ/mol metal)")
-            self._paint_provisional_key(painter, QPointF(bar.right() + 36, area.top() + 4), metrics)
-            return
-        chips = [(key, f"{self.screen['category_labels'][key]}  {counts.get(key, 0)}")
-                 for key in CALCULATED_CATEGORIES if counts.get(key)]
-        widths = [metrics.horizontalAdvance(text) + 34 for _, text in chips]
-        key_width = self._provisional_key_width(metrics)
-        total = sum(widths) + 8 * (len(widths) - 1) + (key_width + 16 if key_width else 0)
-        x = area.center().x() - total / 2
-        for (key, text), width in zip(chips, widths):
-            chip = QRectF(x, area.top() + 4, width, 26)
-            self._chips[key] = chip
-            active = self.highlight_category in (None, key)
-            background = QColor(255, 255, 255, 18) if self.dark else QColor(0, 0, 0, 10)
-            if self.highlight_category == key:
-                background = QColor(self.palette().highlight().color())
-                background.setAlpha(60)
+            x = bar.right() + 36
+        else:
+            counts = self.screen.category_counts
+            chips = [(key, f"{key.label}  {counts[key]}") for key in CATEGORY_COLORS if counts.get(key)]
+            widths = [metrics.horizontalAdvance(text) + 34 for _, text in chips]
+            x = area.center().x() - (sum(widths) + 8 * (len(widths) - 1) + (key_width + 16 if key_width else 0)) / 2
+            for (key, text), width in zip(chips, widths):
+                chip = QRectF(x, area.top() + 4, width, 26)
+                self._chips[key] = chip
+                active = self.highlight_category in (None, key)
+                background = QColor(255, 255, 255, 18) if self.dark else QColor(0, 0, 0, 10)
+                if self.highlight_category == key:
+                    background = QColor(self.palette().highlight().color())
+                    background.setAlpha(60)
+                painter.setPen(Qt.NoPen)
+                painter.setBrush(background)
+                painter.drawRoundedRect(chip, 13, 13)
+                swatch = QColor(CATEGORY_COLORS[key])
+                if not active:
+                    swatch.setAlphaF(0.3)
+                painter.setBrush(swatch)
+                painter.drawEllipse(QRectF(chip.left() + 9, chip.center().y() - 6, 12, 12))
+                painter.setPen(self._text_color() if active else self._muted())
+                painter.drawText(chip.adjusted(27, 0, -6, 0), Qt.AlignVCenter | Qt.AlignLeft, text)
+                x += width + 8
+            x += 8
+        if provisional:
+            chip = QRectF(x, area.top() + 4, key_width, 26)
             painter.setPen(Qt.NoPen)
-            painter.setBrush(background)
+            painter.setBrush(QColor(255, 255, 255, 18) if self.dark else QColor(0, 0, 0, 10))
             painter.drawRoundedRect(chip, 13, 13)
-            swatch = QColor(CATEGORY_COLORS[key])
-            if not active:
-                swatch.setAlphaF(0.3)
-            painter.setBrush(swatch)
-            painter.drawEllipse(QRectF(chip.left() + 9, chip.center().y() - 6, 12, 12))
-            painter.setPen(self._text_color() if active else self._muted())
-            painter.drawText(chip.adjusted(27, 0, -6, 0), Qt.AlignVCenter | Qt.AlignLeft, text)
-            x += width + 8
-        self._paint_provisional_key(painter, QPointF(x + 8, area.top() + 4), metrics)
-
-    PROVISIONAL_LABEL = "Provisional: some species lack an experimental Gibbs energy"
-
-    def _provisional_count(self) -> int:
-        return sum(self.provisional(element) for element in self.elements.values())
-
-    def _provisional_key_width(self, metrics: QFontMetricsF) -> float:
-        if not self._provisional_count():
-            return 0.0
-        return metrics.horizontalAdvance(f"{self.PROVISIONAL_LABEL}  {self._provisional_count()}") + 40
-
-    def _paint_provisional_key(self, painter: QPainter, origin: QPointF, metrics: QFontMetricsF) -> None:
-        """Legend entry for the dashed outline, shown when some tiles are exploratory."""
-        width = self._provisional_key_width(metrics)
-        if not width:
-            return
-        chip = QRectF(origin.x(), origin.y(), width, 26)
-        painter.setPen(Qt.NoPen)
-        painter.setBrush(QColor(255, 255, 255, 18) if self.dark else QColor(0, 0, 0, 10))
-        painter.drawRoundedRect(chip, 13, 13)
-        painter.setPen(QPen(self._text_color(), 1.3, Qt.DashLine))
-        painter.setBrush(Qt.NoBrush)
-        painter.drawRoundedRect(QRectF(chip.left() + 9, chip.center().y() - 7, 16, 14), 3, 3)
-        painter.setPen(self._text_color())
-        painter.drawText(chip.adjusted(32, 0, -6, 0), Qt.AlignVCenter | Qt.AlignLeft,
-                         f"{self.PROVISIONAL_LABEL}  {self._provisional_count()}")
-
-    # -- interaction -------------------------------------------------------------------------
+            painter.setPen(QPen(self._text_color(), 1.3, Qt.DashLine))
+            painter.setBrush(Qt.NoBrush)
+            painter.drawRoundedRect(QRectF(chip.left() + 9, chip.center().y() - 7, 16, 14), 3, 3)
+            painter.setPen(self._text_color())
+            painter.drawText(chip.adjusted(32, 0, -6, 0), Qt.AlignVCenter | Qt.AlignLeft, key_text)
 
     def _symbol_at(self, position: QPointF) -> str | None:
-        for symbol, cell in self._tiles.items():
-            if cell.contains(position):
-                return symbol
-        return None
+        return next((symbol for symbol, cell in self._tiles.items() if cell.contains(position)), None)
 
     def mouseMoveEvent(self, event) -> None:
         symbol = self._symbol_at(event.position())
-        chip = any(rect.contains(event.position()) for rect in self._chips.values())
-        clickable = chip or (symbol is not None and self.clickable(self.elements[symbol]))
-        self.setCursor(Qt.PointingHandCursor if clickable else Qt.ArrowCursor)
+        over_chip = any(rect.contains(event.position()) for rect in self._chips.values())
+        opens = symbol is not None and self.elements[symbol].status.has_system
+        self.setCursor(Qt.PointingHandCursor if over_chip or opens else Qt.ArrowCursor)
         if symbol != self.hovered:
             self.hovered = symbol
             self.update()
@@ -440,10 +389,58 @@ class PeriodicTableCanvas(QWidget):
         for key, rect in self._chips.items():
             if rect.contains(event.position()):
                 self.highlight_category = None if self.highlight_category == key else key
-                self.update()
+                self._redraw()
                 return
         symbol = self._symbol_at(event.position())
-        if symbol is not None and self.clickable(self.elements[symbol]):
+        if symbol is not None and self.elements[symbol].status.has_system:
             self.elementClicked.emit(symbol)
         elif symbol is not None:
-            QToolTip.showText(event.globalPosition().toPoint(), "No calculated system for this element", self)
+            QToolTip.showText(event.globalPosition().toPoint(), "No pourbase system for this element", self)
+
+
+class OverviewPage(QWidget):
+    """Point conditions and the periodic table; ``changed`` asks for a new screen."""
+
+    changed = Signal()
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.pH = FloatSlider("pH", -2.0, 16.0, 7.0, decimals=2, step=0.25, label_width=24)
+        self.potential = FloatSlider("E", -2.5, 2.5, 0.0, decimals=3, step=0.05, unit="V", label_width=14)
+        self.reference = QComboBox()
+        self.reference.addItems(["vs SHE", "vs RHE"])
+        self.color = QComboBox()
+        for key, label in COLOR_MODES.items():
+            self.color.addItem(label, key)
+        self.allow_incomplete = QCheckBox("Allow incomplete systems")
+        self.allow_incomplete.setToolTip(
+            "Calculate elements whose species lack some Gibbs energies, leaving those species out"
+        )
+        self.note = QLabel()
+        self.note.setStyleSheet("color: gray;")
+        self.canvas = PeriodicTableCanvas()
+        for slider in (self.pH, self.potential):
+            slider.valueChanged.connect(lambda _value: self.changed.emit())
+        self.reference.currentIndexChanged.connect(lambda _index: self.changed.emit())
+        self.color.currentIndexChanged.connect(lambda _index: self.canvas.set_color_mode(self.color.currentData()))
+        controls = QHBoxLayout()
+        controls.addWidget(self.pH, 3)
+        controls.addSpacing(16)
+        controls.addWidget(self.potential, 3)
+        controls.addWidget(self.reference)
+        controls.addSpacing(16)
+        controls.addWidget(self.allow_incomplete)
+        controls.addSpacing(16)
+        controls.addWidget(QLabel("Color by"))
+        controls.addWidget(self.color)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(16, 12, 16, 8)
+        layout.addLayout(controls)
+        layout.addWidget(self.note)
+        layout.addWidget(self.canvas, 1)
+
+    def conditions(self) -> dict[str, object]:
+        return {
+            "pH": self.pH.value(), "potential_V": self.potential.value(),
+            "reference": "RHE" if self.reference.currentIndex() == 1 else "SHE",
+        }

@@ -8,12 +8,36 @@ from dataclasses import dataclass, field
 from enum import Enum
 from types import MappingProxyType
 
+import numpy as np
+import numpy.typing as npt
+
+from .exceptions import IncompleteSystemError
+
 
 class GibbsEnergyPolicy(str, Enum):
     """Choose which evidence layer may supply a calculation Gibbs energy."""
 
     EXPERIMENTAL_ONLY = "experimental_only"
     EXPERIMENTAL_THEN_MP = "experimental_then_mp"
+
+
+class EvidenceStatus(str, Enum):
+    """Evidence behind the Gibbs energy used in a calculation."""
+
+    VERIFIED = "verified"
+    SOURCE_VERIFIED_ESTIMATE = "source_verified_estimate"
+    DEFINED_REFERENCE_STATE = "defined_reference_state"
+    TERMINAL_EVIDENCE_GAP = "terminal_evidence_gap"
+    MATERIALS_PROJECT_FALLBACK = "materials_project_sisso_300K_fallback"
+
+
+class ExclusionReason(str, Enum):
+    """Why a database record is left out of a calculation."""
+
+    GIBBS_ENERGY_UNAVAILABLE = "recommended_gibbs_energy_unavailable"
+    LIGAND_NOT_SELECTED = "ligand_species_not_selected"
+    LIGAND_REFERENCE_UNAVAILABLE = "ligand_reference_unavailable"
+    POLYNUCLEAR_AQUEOUS = "mass_balance_nonmonometal_aqueous_unsupported"
 
 
 @dataclass(frozen=True, slots=True)
@@ -114,27 +138,16 @@ class LigandActivity:
         ):
             raise ValueError("standard_concentration_mol_L must be positive and finite")
 
-    def log10_activity_at(self, pH: float) -> float:
-        """Return the buffered deprotonated-ligand activity at one pH."""
-        if not math.isfinite(pH):
-            raise ValueError("pH must be finite")
+    def log10_activity(self, pH: npt.ArrayLike) -> np.ndarray:
+        """Buffered activity of the deprotonated ligand at each pH."""
+        pH_array = np.asarray(pH, dtype=np.float64)
         if self.log10_free_activity is not None:
-            return self.log10_free_activity
+            return np.full_like(pH_array, self.log10_free_activity)
         assert self.total_unbound_mol_L is not None
-        log_total = math.log10(
-            self.total_unbound_mol_L / self.standard_concentration_mol_L
-        )
+        log_total = math.log10(self.total_unbound_mol_L / self.standard_concentration_mol_L)
         if self.acid_pKa is None:
-            return log_total
-        # log10(alpha_L) for HL = H+ + L, evaluated stably.
-        exponent = self.acid_pKa - pH
-        if exponent > 300:
-            log_alpha = -exponent
-        elif exponent < -16:
-            log_alpha = 0.0
-        else:
-            log_alpha = -math.log10(1.0 + 10.0**exponent)
-        return log_total + log_alpha
+            return np.full_like(pH_array, log_total)
+        return log_total - np.logaddexp(0.0, (self.acid_pKa - pH_array) * math.log(10)) / math.log(10)
 
     def as_dict(self) -> dict[str, object]:
         return {
@@ -208,13 +221,14 @@ class ThermodynamicSpecies:
     ligand_count: float
     ligand_charge: float
     gibbs_energy_J_mol: float
-    gibbs_status: str
+    gibbs_status: EvidenceStatus
     source_id: str
     ligand_gibbs_energy_J_mol: float | None = None
     formal_metal_oxidation_state: float | None = None
     electron_coefficient_per_metal: float | None = None
 
     def __post_init__(self) -> None:
+        object.__setattr__(self, "gibbs_status", EvidenceStatus(self.gibbs_status))
         required_text = {
             "record_id": self.record_id,
             "system": self.system,
@@ -278,11 +292,6 @@ class ThermodynamicSpecies:
         return self.phase in {"solid", "liquid"}
 
     @property
-    def element_count(self) -> float:
-        """Number of atoms of the tracked element in one formula unit."""
-        return self.metal_count
-
-    @property
     def is_ligand_free(self) -> bool:
         return self.ligand_count == 0
 
@@ -318,7 +327,7 @@ class SpeciesExclusion:
 
     record_id: str
     species: str
-    reason: str
+    reason: ExclusionReason
     status: str
 
 
@@ -343,12 +352,23 @@ class MetalSystem:
             raise ValueError("Species record IDs must be unique")
 
     @property
-    def is_thermochemically_complete(self) -> bool:
-        """Whether every ligand-free record has a recommended Gibbs energy."""
-        return all(
-            item.reason != "recommended_gibbs_energy_unavailable"
-            for item in self.excluded
+    def missing_gibbs(self) -> tuple[SpeciesExclusion, ...]:
+        """Ligand-free records without a Gibbs energy for this calculation."""
+        return tuple(
+            item for item in self.excluded if item.reason is ExclusionReason.GIBBS_ENERGY_UNAVAILABLE
         )
+
+    @property
+    def is_thermochemically_complete(self) -> bool:
+        return not self.missing_gibbs
+
+    def require_complete(self) -> None:
+        """Raise :class:`IncompleteSystemError` when a Gibbs energy is missing."""
+        if missing := self.missing_gibbs:
+            raise IncompleteSystemError(
+                f"{self.symbol} has {len(missing)} species without a recommended Gibbs "
+                f"energy: {', '.join(item.record_id for item in missing)}"
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -500,71 +520,35 @@ class TotalMetalConcentration:
         }
 
 
-# Descriptive alias retained for users who prefer the longer name.
-IdealTotalMetalConcentration = TotalMetalConcentration
-TotalElementConcentration = TotalMetalConcentration
-ElementSystem = MetalSystem
-
-
 @dataclass(frozen=True, slots=True)
 class PourbaixConditions:
-    """Validated grid and activity conditions for the initial engine."""
+    """Validated grid and activity conditions of one calculation."""
 
     temperature_K: float = 298.15
     pressure_bar: float = 1.0
-    log10_aqueous_activity: float = -6.0
     pH_min: float = 0.0
     pH_max: float = 14.0
     eh_min_V: float = -1.5
     eh_max_V: float = 1.5
     pH_points: int = 281
     eh_points: int = 301
-    aqueous_activities: AqueousActivityModel | None = None
-    gas_fugacities: GasFugacityModel | None = None
+    aqueous_activities: AqueousActivityModel = field(default_factory=AqueousActivityModel)
+    gas_fugacities: GasFugacityModel = field(default_factory=GasFugacityModel)
     ligand_activities: LigandActivityModel | None = None
 
     def __post_init__(self) -> None:
-        activity_model = self.aqueous_activities
-        if activity_model is None:
-            activity_model = AqueousActivityModel(
-                default_log10_activity=self.log10_aqueous_activity
-            )
-        elif not isinstance(activity_model, AqueousActivityModel):
-            raise TypeError("aqueous_activities must be an AqueousActivityModel")
-        elif (
-            self.log10_aqueous_activity != -6.0
-            and self.log10_aqueous_activity
-            != activity_model.default_log10_activity
+        for name, kind in (
+            ("aqueous_activities", AqueousActivityModel),
+            ("gas_fugacities", GasFugacityModel),
         ):
-            raise ValueError(
-                "log10_aqueous_activity conflicts with the activity model default"
-            )
-        object.__setattr__(self, "aqueous_activities", activity_model)
-        object.__setattr__(
-            self,
-            "log10_aqueous_activity",
-            activity_model.default_log10_activity,
-        )
-        gas_model = self.gas_fugacities
-        if gas_model is None:
-            gas_model = GasFugacityModel()
-        elif not isinstance(gas_model, GasFugacityModel):
-            raise TypeError("gas_fugacities must be a GasFugacityModel")
-        object.__setattr__(self, "gas_fugacities", gas_model)
+            if not isinstance(getattr(self, name), kind):
+                raise TypeError(f"{name} must be a {kind.__name__}")
         if self.ligand_activities is not None and not isinstance(
             self.ligand_activities, LigandActivityModel
         ):
             raise TypeError("ligand_activities must be a LigandActivityModel")
-        for name, value in (
-            ("temperature_K", self.temperature_K),
-            ("pressure_bar", self.pressure_bar),
-            ("log10_aqueous_activity", self.log10_aqueous_activity),
-            ("pH_min", self.pH_min),
-            ("pH_max", self.pH_max),
-            ("eh_min_V", self.eh_min_V),
-            ("eh_max_V", self.eh_max_V),
-        ):
-            if not math.isfinite(value):
+        for name in ("temperature_K", "pressure_bar", "pH_min", "pH_max", "eh_min_V", "eh_max_V"):
+            if not math.isfinite(getattr(self, name)):
                 raise ValueError(f"{name} must be finite")
         if self.temperature_K <= 0 or self.pressure_bar <= 0:
             raise ValueError("temperature and pressure must be positive")
@@ -576,8 +560,7 @@ class PourbaixConditions:
             raise ValueError("each grid axis must contain at least two points")
 
     def as_dict(self) -> dict[str, object]:
-        """Return the complete calculation conditions as serializable metadata."""
-        assert self.aqueous_activities is not None
+        """The calculation conditions as serializable metadata."""
         return {
             "temperature_K": self.temperature_K,
             "pressure_bar": self.pressure_bar,
@@ -586,8 +569,6 @@ class PourbaixConditions:
             "aqueous_activity_model": self.aqueous_activities.as_dict(),
             "gas_fugacity_model": self.gas_fugacities.as_dict(),
             "ligand_activity_model": (
-                self.ligand_activities.as_dict()
-                if self.ligand_activities is not None
-                else None
+                self.ligand_activities.as_dict() if self.ligand_activities is not None else None
             ),
         }

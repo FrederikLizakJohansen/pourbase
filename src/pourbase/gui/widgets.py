@@ -67,7 +67,6 @@ class FloatSlider(QWidget):
         self.spin.valueChanged.connect(self._spin_changed)
         self.setValue(value)
 
-    # -- mapping -----------------------------------------------------------------------------------------------------
 
     def _to_position(self, value: float) -> int:
         lo, hi = self._minimum, self._maximum
@@ -84,7 +83,6 @@ class FloatSlider(QWidget):
             return math.exp(math.log(lo) + fraction * (math.log(hi) - math.log(lo)))
         return lo + fraction * (hi - lo)
 
-    # -- signals -----------------------------------------------------------------------------------------------------
 
     def _slider_moved(self, position: int) -> None:
         # Keeps the spin box in step while dragging when tracking is off
@@ -107,7 +105,6 @@ class FloatSlider(QWidget):
         self.slider.blockSignals(False)
         self.valueChanged.emit(value)
 
-    # -- public ------------------------------------------------------------------------------------------------------
 
     def value(self) -> float:
         return self.spin.value()
@@ -121,6 +118,16 @@ class FloatSlider(QWidget):
         self.slider.blockSignals(True)
         self.slider.setValue(self._to_position(self.spin.value()))
         self.slider.blockSignals(False)
+
+    def set_range(self, minimum: float, maximum: float, log: bool, decimals: int) -> None:
+        """Change the slider range and scale without emitting valueChanged."""
+        self._minimum, self._maximum, self._log = minimum, maximum, log
+        self._default_maximum = self._hard_maximum = maximum
+        self.spin.blockSignals(True)
+        self.spin.setDecimals(decimals)
+        self.spin.setRange(minimum, maximum)
+        self.spin.blockSignals(False)
+        self._update_tooltip()
 
     def setTracking(self, tracking: bool) -> None:
         """

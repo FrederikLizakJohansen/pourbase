@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
 )
 
 from ..models import LigandReference
-from .engine import LIGAND_MODES, LigandSetting
+from .state import LIGAND_MODES, LigandSetting
 
 
 class LigandRow(QWidget):

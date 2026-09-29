@@ -3,13 +3,18 @@
 from __future__ import annotations
 
 import argparse
-import base64
 import json
 from pathlib import Path
 
 from .database import ThermodynamicDatabase
+from .exceptions import PourbaseError
+from .export import diagram_figure, grid_csv, save_figure
+from .models import GibbsEnergyPolicy
 from .mp_thermochemistry import write_mp_thermochemistry_bundle
-from .service import calculate, calculate_sweep_with_image, render_grid_csv, render_png
+from .scenario import Mode, Scenario, calculate
+from .sweeps import ConcentrationSweepEngine, plot_concentration_sweep
+
+UNITS = ("log10_molar", "molar", "ppm", "wt_percent")
 
 
 def parser() -> argparse.ArgumentParser:
@@ -18,35 +23,28 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("systems", help="list available elemental systems")
     gui = commands.add_parser("gui", help="open the desktop application")
     gui.add_argument("symbol", nargs="?", help="element to open, for example Fe")
-    mp_figures = commands.add_parser(
-        "mp-thermo-figures", help="write phase-matched MP thermochemistry figures"
-    )
-    mp_figures.add_argument(
-        "--output-dir", type=Path, default=Path("mp-thermochemistry")
-    )
+    figures = commands.add_parser("mp-thermo-figures", help="write phase-matched MP thermochemistry figures")
+    figures.add_argument("--output-dir", type=Path, default=Path("mp-thermochemistry"))
+
+    def evidence(command: argparse.ArgumentParser) -> None:
+        command.add_argument("--allow-incomplete", action="store_true",
+                             help="omit species without a recommended Gibbs energy")
+        command.add_argument("--use-mp-fallbacks", action="store_true",
+                             help="fill missing solid Gibbs values with labelled MP 300 K estimates")
+
     plot = commands.add_parser("plot", help="write an experimental Pourbaix diagram")
     plot.add_argument("symbol")
-    plot.add_argument("--mode", choices=("fixed_activity", "mass_balance"), default="fixed_activity")
-    plot.add_argument("--log10-activity", type=float, default=-6.0)
-    plot.add_argument("--concentration", type=float)
-    plot.add_argument(
-        "--unit", choices=("log10_molar", "molar", "ppm", "wt_percent"),
-        default="log10_molar",
-    )
+    plot.add_argument("--mode", choices=[item.value for item in Mode], default=Mode.FIXED_ACTIVITY.value)
+    plot.add_argument("--concentration", type=float, default=-6.0,
+                      help="metal concentration in --unit (default: -6 log10 mol/L)")
+    plot.add_argument("--unit", choices=UNITS, default="log10_molar")
     plot.add_argument("--solution-density", type=float, default=1.0)
-    plot.add_argument("--total-metal", type=float, default=1e-6)
-    plot.add_argument("--davies-ionic-strength", type=float)
-    plot.add_argument("--allow-incomplete", action="store_true")
-    plot.add_argument(
-        "--use-mp-fallbacks", action="store_true",
-        help="fill six missing solid Gibbs values with labelled MP 300 K estimates",
-    )
-    plot.add_argument(
-        "--boltzmann-scale", type=float,
-        help="plot fixed-activity Boltzmann-like soft-min weights",
-    )
+    plot.add_argument("--davies-ionic-strength", type=float,
+                      help="Davies activity coefficients at this ionic strength (mass balance)")
+    plot.add_argument("--boltzmann-scale", type=float, help="plot Boltzmann-like soft-minimum weights")
     plot.add_argument("--output", type=Path, default=Path("pourbaix.png"))
     plot.add_argument("--grid-csv", type=Path)
+    evidence(plot)
     sweep = commands.add_parser("sweep", help="write a concentration-sweep figure")
     sweep.add_argument("symbol")
     sweep.add_argument("--minimum", type=float, default=-10.0)
@@ -54,79 +52,57 @@ def parser() -> argparse.ArgumentParser:
     sweep.add_argument("--points", type=int, default=7)
     sweep.add_argument("--probe-pH", type=float, default=7.0)
     sweep.add_argument("--probe-eh", type=float, default=0.0)
-    sweep.add_argument("--allow-incomplete", action="store_true")
-    sweep.add_argument("--use-mp-fallbacks", action="store_true")
     sweep.add_argument("--output", type=Path, default=Path("pourbaix-sweep.png"))
+    evidence(sweep)
     return root
 
 
+def _policy(args: argparse.Namespace) -> GibbsEnergyPolicy:
+    return GibbsEnergyPolicy.EXPERIMENTAL_THEN_MP if args.use_mp_fallbacks else GibbsEnergyPolicy.EXPERIMENTAL_ONLY
+
+
 def main() -> None:
-    args = parser().parse_args()
+    try:
+        run(parser().parse_args())
+    except (PourbaseError, ValueError) as error:
+        raise SystemExit(f"pourbase: {error}") from None
+
+
+def run(args: argparse.Namespace) -> None:
     if args.command == "gui":
-        from .gui import main as gui_main  # noqa: PLC0415
+        from .gui import main as gui_main
 
         raise SystemExit(gui_main([args.symbol] if args.symbol else []))
     database = ThermodynamicDatabase.bundled()
     if args.command == "systems":
         for symbol, name in database.available_systems():
             print(f"{symbol}\t{name}")
-        return
-    if args.command == "mp-thermo-figures":
-        metadata = write_mp_thermochemistry_bundle(database, args.output_dir)
-        print(json.dumps(metadata, indent=2))
+    elif args.command == "mp-thermo-figures":
+        print(json.dumps(write_mp_thermochemistry_bundle(database, args.output_dir), indent=2))
         print(f"Wrote {args.output_dir.resolve()}")
-        return
-    if args.command == "sweep":
-        result = calculate_sweep_with_image(
-            {
-                "symbol": args.symbol,
-                "sweep_log10_min": args.minimum,
-                "sweep_log10_max": args.maximum,
-                "sweep_points": args.points,
-                "probe_pH": args.probe_pH,
-                "probe_eh_V": args.probe_eh,
-                "allow_incomplete": args.allow_incomplete,
-                "energy_policy": (
-                    "experimental_then_mp" if args.use_mp_fallbacks
-                    else "experimental_only"
-                ),
-            },
-            database,
+    elif args.command == "sweep":
+        conditions = Scenario(args.symbol).conditions()
+        result = ConcentrationSweepEngine(database).calculate(
+            args.symbol, conditions, args.minimum, args.maximum, args.points,
+            allow_incomplete=args.allow_incomplete, energy_policy=_policy(args),
         )
-        args.output.write_bytes(base64.b64decode(result.pop("image_png_base64")))
-        print(json.dumps(result, indent=2))
-        print(f"Wrote {args.output.resolve()}")
-        return
-    payload = {
-        "symbol": args.symbol,
-        "mode": args.mode,
-        "log10_activity": args.log10_activity,
-        "total_metal_mol_L": args.total_metal,
-        "allow_incomplete": args.allow_incomplete,
-        "energy_policy": (
-            "experimental_then_mp" if args.use_mp_fallbacks
-            else "experimental_only"
-        ),
-        "boltzmann_scale": args.boltzmann_scale,
-        "activity_coefficient_model": "davies" if args.davies_ionic_strength is not None else "ideal",
-        "ionic_strength_mol_L": args.davies_ionic_strength or 0.01,
-    }
-    if args.mode == "mass_balance" and args.boltzmann_scale is not None:
-        raise SystemExit("--boltzmann-scale applies to fixed_activity mode")
-    if args.concentration is not None:
-        payload.update(
-            concentration_value=args.concentration,
-            concentration_unit=args.unit,
+        figure, _ = plot_concentration_sweep(result, probe_pH=args.probe_pH, probe_eh_V=args.probe_eh)
+        print(f"Wrote {save_figure(figure, args.output, dpi=150).resolve()}")
+    else:
+        if args.mode == Mode.MASS_BALANCE.value and args.boltzmann_scale is not None:
+            raise SystemExit("--boltzmann-scale applies to fixed_activity mode")
+        calculation = calculate(Scenario(
+            args.symbol, mode=args.mode, concentration=args.concentration, concentration_unit=args.unit,
             solution_density_kg_L=args.solution_density,
-        )
-    diagram, result = calculate(payload, database)
-    args.output.write_bytes(
-        render_png(diagram, args.mode, boltzmann_scale=args.boltzmann_scale)
-    )
-    if args.grid_csv is not None:
-        args.grid_csv.write_bytes(render_grid_csv(diagram))
-    print(json.dumps({key: value for key, value in result.items()}, indent=2))
-    print(f"Wrote {args.output.resolve()}")
+            davies_ionic_strength_mol_L=args.davies_ionic_strength,
+            allow_incomplete=args.allow_incomplete, energy_policy=_policy(args),
+        ), database)
+        figure = diagram_figure(calculation.diagram, boltzmann_scale=args.boltzmann_scale)
+        save_figure(figure, args.output, dpi=150)
+        if args.grid_csv is not None:
+            args.grid_csv.write_text(grid_csv(calculation.diagram))
+        print(json.dumps(calculation.as_dict(), indent=2, ensure_ascii=False))
+        print(f"Wrote {args.output.resolve()}")
 
 
 if __name__ == "__main__":

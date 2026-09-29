@@ -9,6 +9,7 @@ import numpy as np
 
 from .boltzmann import BoltzmannSmoothedDiagram
 from .engine import PourbaixDiagram
+from .grid import phase_boundary_segments
 from .mass_balance import MassBalancedPourbaixDiagram
 
 
@@ -22,45 +23,11 @@ def _plot_dependencies() -> tuple[Any, Any, Any]:
     return plt, ListedColormap, Patch
 
 
-def _record_colors(record_ids: tuple[str, ...]) -> dict[str, Any]:
+def species_colors(record_ids) -> dict[str, Any]:
+    """Colors for species keyed by record ID: tab20 over the sorted IDs."""
     plt, _, _ = _plot_dependencies()
     palette = plt.get_cmap("tab20")
-    return {
-        record_id: palette(index % palette.N)
-        for index, record_id in enumerate(sorted(set(record_ids)))
-    }
-
-
-def _cell_edges(coordinates: np.ndarray) -> np.ndarray:
-    """Return cell edges for monotonically increasing cell-centre coordinates."""
-    midpoints = (coordinates[:-1] + coordinates[1:]) / 2.0
-    return np.concatenate(
-        (
-            [coordinates[0] - (coordinates[1] - coordinates[0]) / 2.0],
-            midpoints,
-            [coordinates[-1] + (coordinates[-1] - coordinates[-2]) / 2.0],
-        )
-    )
-
-
-def _phase_boundary_segments(
-    regions: np.ndarray, pH: np.ndarray, eh_V: np.ndarray
-) -> list[list[tuple[float, float]]]:
-    """Create one line segment for each unlike pair of neighbouring cells."""
-    x_edges = _cell_edges(pH)
-    y_edges = _cell_edges(eh_V)
-    segments: list[list[tuple[float, float]]] = []
-    for row, column in zip(*np.nonzero(regions[:, 1:] != regions[:, :-1])):
-        x = float(x_edges[column + 1])
-        segments.append(
-            [(x, float(y_edges[row])), (x, float(y_edges[row + 1]))]
-        )
-    for row, column in zip(*np.nonzero(regions[1:, :] != regions[:-1, :])):
-        y = float(y_edges[row + 1])
-        segments.append(
-            [(float(x_edges[column]), y), (float(x_edges[column + 1]), y)]
-        )
-    return segments
+    return {record_id: palette(index % palette.N) for index, record_id in enumerate(sorted(set(record_ids)))}
 
 
 def plot_diagram(
@@ -80,7 +47,7 @@ def plot_diagram(
         _, ax = plt.subplots(figsize=(7.2, 5.4), constrained_layout=True)
     stable_indices = sorted(int(value) for value in np.unique(diagram.stable_species_index))
     stable_species = tuple(diagram.system.species[index] for index in stable_indices)
-    colors = colors or _record_colors(tuple(item.record_id for item in stable_species))
+    colors = colors or species_colors(tuple(item.record_id for item in stable_species))
     compact = np.zeros_like(diagram.stable_species_index)
     for display_index, species_index in enumerate(stable_indices):
         compact[diagram.stable_species_index == species_index] = display_index
@@ -92,8 +59,8 @@ def plot_diagram(
     if show_boundaries and len(stable_species) > 1:
         from matplotlib.collections import LineCollection
 
-        segments = _phase_boundary_segments(compact, diagram.pH, diagram.eh_V)
-        if segments:
+        segments = phase_boundary_segments(compact, diagram.pH, diagram.eh_V)
+        if len(segments):
             ax.add_collection(
                 LineCollection(
                     segments, colors="black", linewidths=0.65, zorder=3
@@ -159,7 +126,7 @@ def plot_boltzmann_diagram(
         _, ax = plt.subplots(figsize=(7.2, 5.4), constrained_layout=True)
     diagram = smoothed.diagram
     species = diagram.system.species
-    colors = colors or _record_colors(tuple(item.record_id for item in species))
+    colors = colors or species_colors(tuple(item.record_id for item in species))
     from matplotlib.colors import to_rgba
 
     rgb_palette = np.asarray(
@@ -180,10 +147,10 @@ def plot_boltzmann_diagram(
     if show_boundaries and len(diagram.stable_species) > 1:
         from matplotlib.collections import LineCollection
 
-        segments = _phase_boundary_segments(
+        segments = phase_boundary_segments(
             diagram.stable_species_index, diagram.pH, diagram.eh_V
         )
-        if segments:
+        if len(segments):
             ax.add_collection(
                 LineCollection(segments, colors="black", linewidths=0.65, zorder=3)
             )
@@ -295,7 +262,7 @@ def plot_official_materials_project_diagram(
         _, ax = plt.subplots(figsize=(7.2, 5.4), constrained_layout=True)
     stable_indices = sorted(int(value) for value in np.unique(diagram.stable_phase_index))
     stable_phases = tuple(diagram.phases[index] for index in stable_indices)
-    colors = colors or _record_colors(tuple(item.phase_id for item in stable_phases))
+    colors = colors or species_colors(tuple(item.phase_id for item in stable_phases))
     compact = np.zeros_like(diagram.stable_phase_index)
     for display_index, phase_index in enumerate(stable_indices):
         compact[diagram.stable_phase_index == phase_index] = display_index
@@ -307,8 +274,8 @@ def plot_official_materials_project_diagram(
     if len(stable_phases) > 1:
         from matplotlib.collections import LineCollection
 
-        segments = _phase_boundary_segments(compact, diagram.pH, diagram.eh_V)
-        if segments:
+        segments = phase_boundary_segments(compact, diagram.pH, diagram.eh_V)
+        if len(segments):
             ax.add_collection(LineCollection(
                 segments, colors="black", linewidths=0.65, zorder=3
             ))

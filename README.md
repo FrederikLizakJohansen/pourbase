@@ -48,102 +48,80 @@ key; the application can remember it in the system keyring.
 
 ## Python
 
+A `Scenario` describes one diagram in everyday units; `calculate` returns the diagram with its
+evidence:
+
 ```python
 import pourbase as pb
 
-diagram = pb.calculate_pourbaix("Fe")
-pb.plot_diagram(diagram)
-```
+calculation = pb.calculate(pb.Scenario("Fe", concentration=10, concentration_unit="ppm"))
+pb.plot_diagram(calculation.diagram)
 
-Set the conditions explicitly and list the boundary equations with their sources:
-
-```python
-from pourbase import (
-    AqueousActivityModel, PourbaixConditions, PourbaixEngine, ThermodynamicDatabase,
-    boundary_equations, plot_diagram,
-)
-
-database = ThermodynamicDatabase.bundled()
-conditions = PourbaixConditions(
-    pH_min=0, pH_max=14, eh_min_V=-1.5, eh_max_V=1.5,
-    aqueous_activities=AqueousActivityModel(default_log10_activity=-6),
-)
-diagram = PourbaixEngine(database).calculate("Fe", conditions)
-plot_diagram(diagram)
-
-for boundary in boundary_equations(diagram, database):
+for boundary in calculation.boundaries:
     print(boundary.reaction, boundary.equation, boundary.source_ids)
+
+probe = calculation.probe(pH=7, eh_V=0)
+record = pb.open_database().species_records([probe.species.record_id])[0]
+print(probe.species.species, record.thermochemistry.gibbs_energy_J_mol.source.citation)
 ```
 
-Convert a concentration in ppm, molarity or weight percent:
+Conserve a closed total-metal inventory, with Davies activity coefficients, and follow the species
+fractions along pH:
 
 ```python
-from pourbase import convert_concentration
-
-level = convert_concentration("Cu", 10, "ppm")
-print(level.molar_concentration, level.log10_standard_activity)
-```
-
-Conserve a closed total-metal inventory and follow the species fractions along pH:
-
-```python
-from pourbase import (
-    MassBalanceEngine, TotalMetalConcentration, plot_speciation_profile, speciation_profile,
-)
-
-diagram = MassBalanceEngine(database).calculate("Fe", conditions, TotalMetalConcentration(1e-6))
-plot_speciation_profile(speciation_profile(diagram, eh_V=0.0))
+calculation = pb.calculate(pb.Scenario(
+    "Zn", mode="mass_balance", concentration=1e-6, concentration_unit="molar",
+    davies_ionic_strength_mol_L=0.01,
+))
+pb.plot_speciation_profile(pb.speciation_profile(calculation.diagram, eh_V=0.0))
 ```
 
 Add buffered ligands, here chloride at a free activity of 10⁻²:
 
 ```python
-from pourbase import LigandActivity, LigandActivityModel
-
-with_chloride = PourbaixConditions(
-    aqueous_activities=AqueousActivityModel(default_log10_activity=-6),
-    ligand_activities=LigandActivityModel((
-        LigandActivity("chloride-cl", log10_free_activity=-2),
-    )),
-)
-plot_diagram(PourbaixEngine(database).calculate("Ag", with_chloride))
+chloride = pb.LigandActivity("chloride-cl", log10_free_activity=-2)
+pb.plot_diagram(pb.calculate(pb.Scenario("Ag", ligands=(chloride,))).diagram)
 ```
 
-Sweep the metal activity:
+Six solids lack a recommended experimental Gibbs energy. Such systems raise
+`IncompleteSystemError` unless you leave those species out or use the separately stored Materials
+Project 300 K estimates:
 
 ```python
-from pourbase import ConcentrationSweepEngine, plot_concentration_sweep
+exploratory = pb.calculate(pb.Scenario("Pt", allow_incomplete=True))
+estimated = pb.calculate(pb.Scenario("Pt", energy_policy="experimental_then_mp"))
+```
 
-sweep = ConcentrationSweepEngine(database).calculate(
-    "Fe", conditions, log10_activity_min=-10, log10_activity_max=0, points=7
-)
-plot_concentration_sweep(sweep, probe_pH=7, probe_eh_V=0)
+The stable species of every element at one pH and potential:
+
+```python
+screen = pb.screen_periodic_table(pH=7, potential_V=0.4, reference="RHE")
+print(screen.element("Fe").stable.species, screen.calculated_count)
+```
+
+Sweep the metal activity; levels are stored compactly and the progress callback can cancel:
+
+```python
+conditions = pb.Scenario("Fe").conditions()
+sweep = pb.ConcentrationSweepEngine(pb.open_database()).calculate("Fe", conditions, -10, 0, points=41)
+pb.plot_concentration_sweep(sweep, probe_pH=7, probe_eh_V=0)
 ```
 
 Compare with the official Materials Project diagram (needs the `materials-project` extra):
 
 ```python
-from pourbase import (
-    OfficialMaterialsProjectClient, OfficialMaterialsProjectComparator,
-    plot_official_materials_project_comparison,
-)
+from pourbase import OfficialMaterialsProjectClient, OfficialMaterialsProjectComparator, PourbaixEngine
 
 client = OfficialMaterialsProjectClient(api_key="your Materials Project API key")
-comparison = OfficialMaterialsProjectComparator(PourbaixEngine(database), client).compare("Fe", conditions)
-plot_official_materials_project_comparison(comparison)
+comparison = OfficialMaterialsProjectComparator(PourbaixEngine(pb.open_database()), client).compare(
+    "Fe", pb.Scenario("Fe").conditions()
+)
+pb.plot_official_materials_project_comparison(comparison)
 print(comparison.equivalent_domain_fraction, comparison.materials_project.database_version)
 ```
 
-Six solids lack a recommended experimental Gibbs energy. Their 300 K Materials Project estimates
-are stored separately and are used only on request:
-
-```python
-from pourbase import GibbsEnergyPolicy
-
-diagram = PourbaixEngine(database).calculate(
-    "Pt", conditions, energy_policy=GibbsEnergyPolicy.EXPERIMENTAL_THEN_MP
-)
-```
+The lower-level `PourbaixEngine`, `MassBalanceEngine` and `PourbaixConditions` take the same
+settings as explicit models, for custom calculations.
 
 ## Command line
 

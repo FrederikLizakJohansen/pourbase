@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 import html
 from typing import Any
 
@@ -91,8 +93,8 @@ class MaterialsProjectPage(QWidget):
     def show_comparison(self, comparison: Any, display: DisplayOptions, notes: list[str],
                         reset_range: bool = False) -> None:
         experimental, official = comparison.experimental, comparison.materials_project
-        # Three narrow panels: domain labels identify the species, so only the agreement map has a legend
-        display = DisplayOptions(**{**display.__dict__, "boltzmann": False, "plating": False, "legend": False})
+        # Domain labels identify the species; only the agreement map needs a legend
+        display = replace(display, boltzmann=False, plating=False, legend=False)
         experimental_colors = record_colors([item.record_id for item in experimental.stable_species])
         self.views["experimental"].show_diagram(experimental, display, colors=experimental_colors,
                                                 reset_range=reset_range)
@@ -107,7 +109,7 @@ class MaterialsProjectPage(QWidget):
         agreement_colors = {item.record_id: AGREEMENT_COLORS[item.record_id] for item in AGREEMENT}
         views["agreement"].show_grid(
             np.where(comparison.same_thermodynamic_species, 0, 1), experimental.pH, experimental.eh_V,
-            AGREEMENT, DisplayOptions(**{**display.__dict__, "labels": False, "legend": True}),
+            AGREEMENT, replace(display, labels=False, legend=True),
             colors=agreement_colors, reset_range=reset_range,
         )
         views["agreement"].set_water(experimental.pH, experimental.her_V, experimental.oer_V, display.water)

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from dataclasses import replace
 from typing import Any
 
 import numpy as np
@@ -14,6 +15,8 @@ from PySide6.QtWidgets import (
 )
 
 from .plots import DiagramView, DisplayOptions, record_colors
+from ..sweeps import MAX_SWEEP_POINTS
+from .state import MAX_GRID_POINTS, SweepSettings
 
 SLICES_SHOWN = 24  # evenly spaced slices drawn in the 3D view, plus the selected one
 AXES = {
@@ -152,7 +155,6 @@ class SweepView3D(QWidget):
         self.azimuth, self.elevation, self.zoom = math.radians(-38), math.radians(24), 1.0
         self.update()
 
-    # -- projection --------------------------------------------------------------------------
 
     def _project(self, x: float, y: float, z: float) -> tuple[QPointF, float]:
         """Map normalized (pH, level, Eh) in [-0.5, 0.5] to screen coordinates and view depth."""
@@ -168,7 +170,6 @@ class SweepView3D(QWidget):
         scale = min(self.width(), self.height()) * 0.62 * self.zoom
         return QPointF(self.width() / 2 + scale * x1, self.height() * 0.52 - scale * up), depth
 
-    # -- painting ----------------------------------------------------------------------------
 
     def paintEvent(self, _event) -> None:
         painter = QPainter(self)
@@ -243,7 +244,7 @@ class SweepView3D(QWidget):
             return point + direction * (distance / length)
 
         def label(point: QPointF, text: str, distance: float = 16, horizontal: bool = False) -> None:
-            if horizontal:  # the vertical axis: move sideways, away from the box
+            if horizontal:
                 side = -1.0 if point.x() < center.x() else 1.0
                 position = QPointF(point.x() + side * (distance + 12), point.y())
             else:
@@ -261,9 +262,9 @@ class SweepView3D(QWidget):
                     point = [0.0, 0.0, 0.0]
                     point[others[0]], point[others[1]] = u, v
                     screen, depth = self._project(*point)
-                    if axis == 2:  # vertical axis: leftmost, then nearest
+                    if axis == 2:
                         score = -screen.x() - 0.01 * depth
-                    else:  # horizontal axes: lowest on screen
+                    else:
                         score = screen.y()
                     if score > best_score:
                         best, best_score = (u, v), score
@@ -298,7 +299,6 @@ class SweepView3D(QWidget):
             else:
                 label(point_on(axis, 0.0, fixed), title, distance=40)
 
-    # -- interaction -------------------------------------------------------------------------
 
     def mousePressEvent(self, event) -> None:
         self._drag = event.position()
@@ -362,8 +362,6 @@ class SweepPage(QWidget):
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        from .engine import MAX_SWEEP_GRID_POINTS, MAX_SWEEP_POINTS
-
         self.minimum = QDoubleSpinBox()
         self.maximum = QDoubleSpinBox()
         for spin, value in ((self.minimum, -10.0), (self.maximum, 0.0)):
@@ -375,8 +373,8 @@ class SweepPage(QWidget):
         self.slice_counts: dict[str, QSpinBox] = {}
         for axis, maximum, value, tip in (
             ("level", MAX_SWEEP_POINTS, 21, "activity levels: slices and resolution along log₁₀ a"),
-            ("pH", MAX_SWEEP_GRID_POINTS, 141, "pH grid points: slices and resolution along pH"),
-            ("eh", MAX_SWEEP_GRID_POINTS, 151, "Eh grid points: slices and resolution along Eh"),
+            ("pH", MAX_GRID_POINTS, 141, "pH grid points: slices and resolution along pH"),
+            ("eh", MAX_GRID_POINTS, 151, "Eh grid points: slices and resolution along Eh"),
         ):
             spin = QSpinBox()
             spin.setRange(2, maximum)
@@ -464,10 +462,6 @@ class SweepPage(QWidget):
         self._update_hint()
 
     @property
-    def points(self) -> QSpinBox:
-        return self.slice_counts["level"]
-
-    @property
     def volume(self) -> SweepVolume | None:
         return self.volumes.get(self.source)
 
@@ -476,8 +470,6 @@ class SweepPage(QWidget):
         return self._sweep if self.volumes else None
 
     def settings(self):
-        from .engine import SweepSettings
-
         return SweepSettings(
             self.minimum.value(), self.maximum.value(), self.slice_counts["level"].value(),
             self.slice_counts["pH"].value(), self.slice_counts["eh"].value(),
@@ -489,7 +481,7 @@ class SweepPage(QWidget):
     ) -> None:
         """Show a new sweep; slices start at the current activity and the probe pH and Eh."""
         self._sweep = sweep
-        self.display = DisplayOptions(**{**display.__dict__, "boltzmann": False, "plating": False})
+        self.display = replace(display, boltzmann=False, plating=False)
         stable = {species.record_id for diagram in sweep.diagrams for species in diagram.stable_species}
         colors = record_colors(sorted(stable))
         self.volumes = {"experimental": SweepVolume.from_sweep(sweep, colors)}
@@ -558,7 +550,7 @@ class SweepPage(QWidget):
         grid, x, y, labels = volume.plane(axis, index)
         display = self.display
         if self.source == "agreement":
-            display = DisplayOptions(**{**display.__dict__, "labels": False})
+            display = replace(display, labels=False)
         self.view2d.show_grid(
             grid, x, y, volume.species, display, colors=volume.colors,
             reset_range=reset_range, axes=labels,

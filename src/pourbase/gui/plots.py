@@ -12,7 +12,7 @@ from PySide6.QtCore import QPointF, QRectF, Qt, Signal
 from PySide6.QtGui import QColor
 
 from ..boltzmann import boltzmann_smooth
-from ..plotting import _phase_boundary_segments
+from ..grid import phase_boundary_segments
 from .formula import phase_label, to_html
 
 LABEL_PT = 9.0
@@ -100,7 +100,6 @@ class DiagramView(pg.PlotWidget):
         self.scene().sigMouseMoved.connect(self._mouse_moved)
         self.scene().sigMouseClicked.connect(self._mouse_clicked)
 
-    # -- drawing -----------------------------------------------------------------------------
 
     def set_dark(self, dark: bool) -> None:
         self.dark = dark
@@ -168,7 +167,7 @@ class DiagramView(pg.PlotWidget):
         self.image.setRect(QRectF(x0, y0, x1 - x0, y1 - y0))
 
         if options.boundaries and len(stable) > 1:
-            points = np.array(_phase_boundary_segments(compact, x, y)).reshape(-1, 2)
+            points = np.array(phase_boundary_segments(compact, x, y)).reshape(-1, 2)
             self.boundaries.setData(points[:, 0], points[:, 1], pen=pg.mkPen("#000000", width=1))
         else:
             self.boundaries.setData([], [])
@@ -243,7 +242,6 @@ class DiagramView(pg.PlotWidget):
     def set_probe(self, pH: float, eh_V: float) -> None:
         self.probe.setPos(QPointF(pH, eh_V))
 
-    # -- interaction -------------------------------------------------------------------------
 
     def _species_text(self, x: float, y: float) -> str:
         grid = getattr(self, "_grid", None)

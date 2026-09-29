@@ -10,6 +10,7 @@ import numpy.typing as npt
 
 from .constants import GAS_CONSTANT_J_MOL_K
 from .engine import PourbaixDiagram
+from .grid import nearest_index
 from .models import ThermodynamicSpecies
 
 
@@ -67,16 +68,10 @@ class BoltzmannSmoothedDiagram:
         self, pH: float, eh_V: float
     ) -> tuple[tuple[ThermodynamicSpecies, float], ...]:
         """Return species and descending soft-min weight at one grid point."""
-        if not math.isfinite(pH) or not math.isfinite(eh_V):
-            raise ValueError("pH and eh_V must be finite")
-        if not self.diagram.pH[0] <= pH <= self.diagram.pH[-1]:
-            raise ValueError("pH lies outside the diagram")
-        if not self.diagram.eh_V[0] <= eh_V <= self.diagram.eh_V[-1]:
-            raise ValueError("eh_V lies outside the diagram")
-        pH_index = int(np.abs(self.diagram.pH - pH).argmin())
-        eh_index = int(np.abs(self.diagram.eh_V - eh_V).argmin())
+        row = nearest_index(self.diagram.eh_V, eh_V, "eh_V")
+        column = nearest_index(self.diagram.pH, pH, "pH")
         pairs = tuple(
-            (species, float(self.weights[index, eh_index, pH_index]))
+            (species, float(self.weights[index, row, column]))
             for index, species in enumerate(self.diagram.system.species)
         )
         return tuple(sorted(pairs, key=lambda item: item[1], reverse=True))
@@ -94,9 +89,7 @@ def boltzmann_smooth(
         raise ValueError("thermal_scale must be positive and finite")
     energy_stack = diagram.transformed_gibbs_J_mol_metal
     if energy_stack is None:
-        raise ValueError(
-            "the source diagram does not contain its transformed Gibbs grid"
-        )
+        raise ValueError("the diagram was calculated without store_energies")
     effective_rt = (
         thermal_scale * GAS_CONSTANT_J_MOL_K * diagram.conditions.temperature_K
     )

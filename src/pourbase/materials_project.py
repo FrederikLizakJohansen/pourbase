@@ -10,14 +10,10 @@ from typing import Any, Sequence
 import numpy as np
 import numpy.typing as npt
 
-from .constants import (
-    FARADAY_C_MOL,
-    GAS_CONSTANT_J_MOL_K,
-    LN_10,
-    REFERENCE_STATE_ABSOLUTE_TOLERANCE,
-)
+from .constants import REFERENCE_STATE_ABSOLUTE_TOLERANCE
 from .engine import PourbaixDiagram, PourbaixEngine
 from .exceptions import MaterialsProjectUnavailableError, UnsupportedConditionError
+from .grid import grid_axes, readonly, water_lines
 from .models import GibbsEnergyPolicy, PourbaixConditions, ThermodynamicSpecies
 
 
@@ -25,12 +21,6 @@ FloatArray = npt.NDArray[np.float64]
 IntegerArray = npt.NDArray[np.int_]
 BooleanArray = npt.NDArray[np.bool_]
 PhaseKey = tuple[str, float, float, float]
-
-
-def _readonly(array: npt.ArrayLike, dtype: Any) -> npt.NDArray[Any]:
-    result = np.asarray(array, dtype=dtype)
-    result.setflags(write=False)
-    return result
 
 
 def _rounded(value: float) -> float:
@@ -226,7 +216,6 @@ def evaluate_official_materials_project_entries(
     )
     phases = []
     activity_model = conditions.aqueous_activities
-    assert activity_model is not None
     for index, entry in enumerate(ordered_entries):
         normalization = float(entry.normalization_factor)
         metal_count = float(entry.composition.get(symbol, 0.0))
@@ -264,8 +253,7 @@ def evaluate_official_materials_project_entries(
                 if phase_type == "aqueous" else None
             ),
         ))
-    pH = np.linspace(conditions.pH_min, conditions.pH_max, conditions.pH_points)
-    eh_V = np.linspace(conditions.eh_min_V, conditions.eh_max_V, conditions.eh_points)
+    pH, eh_V = grid_axes(conditions)
     pH_grid, eh_grid = np.meshgrid(pH, eh_V)
     energy_stack = np.stack([
         np.asarray(entry.normalized_energy_at_conditions(pH_grid, eh_grid), dtype=np.float64)
@@ -275,15 +263,13 @@ def evaluate_official_materials_project_entries(
     minimum_energy = np.take_along_axis(
         energy_stack, stable_index[np.newaxis, :, :], axis=0
     )[0]
-    nernst_slope = GAS_CONSTANT_J_MOL_K * conditions.temperature_K * LN_10 / FARADAY_C_MOL
-    her_V = -nernst_slope * pH
-    oer_V = 1.229 - nernst_slope * pH
+    her_V, oer_V = water_lines(pH, conditions.temperature_K)
     return OfficialMaterialsProjectDiagram(
         symbol=symbol, conditions=conditions, phases=tuple(phases),
-        pH=_readonly(pH, np.float64), eh_V=_readonly(eh_V, np.float64),
-        stable_phase_index=_readonly(stable_index, np.int_),
-        minimum_energy_eV_metal=_readonly(minimum_energy, np.float64),
-        her_V=_readonly(her_V, np.float64), oer_V=_readonly(oer_V, np.float64),
+        pH=readonly(pH, np.float64), eh_V=readonly(eh_V, np.float64),
+        stable_phase_index=readonly(stable_index, np.int_),
+        minimum_energy_eV_metal=readonly(minimum_energy, np.float64),
+        her_V=readonly(her_V, np.float64), oer_V=readonly(oer_V, np.float64),
         database_version=database_version, mp_api_version=mp_api_version,
         pymatgen_version=pymatgen_version, filter_solids=filter_solids,
         use_gibbs_300K=use_gibbs_300K,
@@ -299,7 +285,6 @@ def apply_aqueous_activities(entries: Sequence[Any], conditions: PourbaixConditi
     every ion concentration to its own ``conc_dict``.
     """
     activity_model = conditions.aqueous_activities
-    assert activity_model is not None
     for entry in entries:
         if str(entry.phase_type).lower() == "ion":
             entry.concentration = activity_model.activity_for(

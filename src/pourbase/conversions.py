@@ -110,6 +110,22 @@ def convert_concentration(
     )
 
 
+def express_concentration(
+    symbol: str, molar: float, unit: str, *, solution_density_kg_L: float = 1.0
+) -> float:
+    """A molar metal concentration expressed in ``unit``; the inverse of :func:`convert_concentration`."""
+    grams_per_litre = molar * ATOMIC_WEIGHT_G_MOL[symbol]
+    values = {
+        "log10_molar": math.log10(molar),
+        "molar": molar,
+        "ppm": grams_per_litre * 1000.0,
+        "wt_percent": grams_per_litre / (10.0 * solution_density_kg_L),
+    }
+    if unit not in values:
+        raise ValueError("concentration unit must be log10_molar, molar, ppm, or wt_percent")
+    return values[unit]
+
+
 def metal_molarity_from_mass(
     symbol: str, mass_g: float, solution_volume_L: float
 ) -> float:
