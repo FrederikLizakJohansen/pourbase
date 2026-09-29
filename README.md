@@ -1,6 +1,9 @@
-<img src="docs/logo.svg" alt="pourbase logo" width="96" align="right">
-
-# pourbase
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/logo-wordmark-dark.svg">
+    <img src="docs/logo-wordmark.svg" alt="pourbase" width="330">
+  </picture>
+</p>
 
 pourbase is a source-linked database of experimental standard thermochemistry and a Python package
 for calculating Pourbaix diagrams at 298.15 K and 1 bar. The bundled SQLite database holds 460

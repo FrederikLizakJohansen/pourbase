@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 128" width="440" height="128" role="img" aria-label="pourbase">
+  <title>pourbase</title>
+  <defs>
+    <clipPath id="tile">
+      <rect x="8" y="8" width="112" height="112" rx="18"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#tile)" stroke-linejoin="round">
+    <polygon points="8,8 40,8 40,46 8,46" fill="#ee7d4f"/>
+    <polygon points="40,8 120,8 120,88 88,82 40,46" fill="#f5b75a"/>
+    <polygon points="8,46 40,46 88,82 96,92 8,92" fill="#5b9bd5"/>
+    <polygon points="88,82 120,88 120,102 96,92" fill="#79c07f"/>
+    <polygon points="8,92 96,92 120,102 120,120 8,120" fill="#a0aab5"/>
+    <g fill="none" stroke="#15181c" stroke-width="2.5">
+      <polyline points="40,8 40,46 88,82 120,88"/>
+      <polyline points="8,46 40,46"/>
+      <polyline points="8,92 96,92 120,102"/>
+      <polyline points="88,82 96,92"/>
+    </g>
+    <g stroke="#ffffff" stroke-width="2.5" stroke-dasharray="6 5">
+      <line x1="8" y1="22" x2="120" y2="42"/>
+      <line x1="8" y1="70" x2="120" y2="90"/>
+    </g>
+  </g>
+  <rect x="8" y="8" width="112" height="112" rx="18" fill="none" stroke="#15181c" stroke-width="3"/>
+  <text x="140" y="85" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="62" font-weight="600" letter-spacing="-1" fill="#1f2328">pourbase</text>
+</svg>
