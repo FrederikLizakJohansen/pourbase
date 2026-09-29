@@ -1,0 +1,42 @@
+name: Data correction or addition
+description: Report a wrong or missing thermochemical value, species, phase assignment or source.
+title: "[data] "
+labels: ["data"]
+body:
+  - type: input
+    id: record
+    attributes:
+      label: Record ID or species
+      description: The record ID from the Species tab (for example gfe-fe-fe2o3-q+0-solid-hematite), or the formula and phase of a missing species.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What should change
+      options:
+        - A recommended value is wrong
+        - A better or more direct source exists
+        - A species or phase is missing
+        - The phase or polymorph assignment is wrong
+        - A citation or locator is wrong
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: Proposed value
+      description: Property (Gibbs energy, enthalpy or entropy), value with units, temperature, pressure and standard state, and uncertainty if reported.
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: Full citation, DOI or link, and the exact table, row, column or page of the value.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Anything that affects comparability, such as ion convention, phase, measurement method or whether the value is derived.

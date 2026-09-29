@@ -173,6 +173,39 @@ Solids are compared with Materials Project on their O and H content per metal, a
 on their proton and electron coefficients and metal count. Differences between experimental Gibbs
 energies and DFT formation energies are diagnostics, not experimental error estimates.
 
+## Agentic curation and how to check it
+
+The literature search, source tracing and value review behind the database were carried out with
+agentic AI assistance, using GPT 5.6 Sol. The agent located candidate sources, read tables and
+reported values, compared them with the existing records and proposed corrections and additions,
+which were then recorded with their evidence.
+
+Every value therefore carries what you need to check it yourself:
+
+- the full citation, a link where one exists and the exact location in the source (table, row,
+  column or page) in `sources` and the property-specific locators;
+- an evidence status: `verified`, `source_verified_estimate`, `defined_reference_state` or
+  `terminal_evidence_gap`;
+- every retained alternative and superseded value in `reported_thermochemistry`, next to the
+  recommended value in `thermochemistry`;
+- scientific cautions in `warnings` and the phase and polymorph assignment in `phases`;
+- explicit gaps where no defensible value was found, and the six Materials Project estimates kept
+  separately in `computational_fallbacks`, used only when you ask for them.
+
+Automated literature work can misread a table, confuse phases or conventions, or copy an error
+from a secondary source. Check the cited source for any value your conclusions depend on; the
+Species tab of the application and `ThermodynamicDatabase.species_records` show the citation and
+locator of every value.
+
+### Contributing corrections and data
+
+Report a wrong value, a missing species or a better source by opening an
+[issue](https://github.com/FrederikLizakJohansen/pourbase/issues/new/choose) with the
+"Data correction or addition" form. Give the record ID (shown in the Species tab), the value and
+units you propose, the full citation, and the exact table, row or page. Reviewed changes enter the
+curation record with their source and a plain-language reason and appear in the next dataset
+release. Code issues and pull requests are welcome as usual.
+
 ## Concentration conventions
 
 - `log10_molar`: base-10 logarithm of the concentration relative to 1 mol L⁻¹.
