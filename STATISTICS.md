@@ -11,10 +11,10 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended Gibbs energies | 454 (99 %) |
 | Recommended entropies | 388 (84 %) |
 | Recommended formation enthalpies | 293 (64 %) |
-| Reported values retained | 1412 |
-| Source records | 400 (72 distinct citations) |
+| Reported values retained | 1414 |
+| Source records | 425 (66 distinct citations) |
 | Phase records | 126 (118 resolved) |
-| Warnings | 236 |
+| Warnings | 237 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 5 |
@@ -43,10 +43,10 @@ Species by phase:
 |---|---|---|
 | `species` | 460 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `thermochemistry` | 460 | One recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 1412 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 400 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 1414 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 425 | Full citations, links, locators and access dates |
 | `phases` | 126 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 236 | Scientific cautions attached to records |
+| `warnings` | 237 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -125,7 +125,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Mg | Magnesium (Mg) | 4 | 2 | 2 | 0 | 0 | 4 | 3 | 1 | 1 |
 | Mn | Manganese (Mn) | 10 | 5 | 5 | 0 | 0 | 10 | 9 | 6 | 7 |
 | Mo | Molybdenum (Mo) | 4 | 1 | 3 | 0 | 0 | 4 | 4 | 2 | 0 |
-| N | Nitrogen (N) | 8 | 5 | 0 | 3 | 0 | 8 | 8 | 8 | 15 |
+| N | Nitrogen (N) | 8 | 5 | 0 | 3 | 0 | 8 | 8 | 8 | 16 |
 | Na | Sodium (Na) | 2 | 1 | 1 | 0 | 0 | 2 | 2 | 0 | 0 |
 | Nb | Niobium (Nb) | 7 | 4 | 3 | 0 | 0 | 7 | 4 | 4 | 5 |
 | Nd | Neodymium (Nd) | 4 | 1 | 3 | 0 | 0 | 4 | 4 | 4 | 0 |

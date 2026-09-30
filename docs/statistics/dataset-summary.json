@@ -14,11 +14,11 @@
     "species": 460,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 1412,
+    "reported_thermochemistry": 1414,
     "recommended_values": 1135,
-    "source_records": 400,
-    "distinct_citations": 72,
-    "warnings": 236,
+    "source_records": 425,
+    "distinct_citations": 66,
+    "warnings": 237,
     "phase_records": 126,
     "resolved_phase_records": 118,
     "mp_matches": 105,
@@ -1423,7 +1423,7 @@
       "gibbs": 8,
       "entropy": 8,
       "enthalpy": 8,
-      "warnings": 15
+      "warnings": 16
     },
     {
       "symbol": "Na",
@@ -1904,6 +1904,10 @@
     {
       "warning_type": "computational_gibbs_fallback_available",
       "count": 6
+    },
+    {
+      "warning_type": "source_erratum",
+      "count": 1
     }
   ],
   "phase_identity": [

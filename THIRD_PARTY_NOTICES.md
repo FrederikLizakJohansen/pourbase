@@ -6,13 +6,17 @@ terms and scientific citation obligations remain in force.
 
 ## NIST and NBS
 
-Many values are traced to NIST Chemistry WebBook SRD 69, NIST-JANAF, and the NBS Tables of Chemical
-Thermodynamic Properties. Cite the exact source attached to each field. Consult NIST's current terms
-when redistributing derived data:
+Most NBS values come from the NIST Public Data Repository dataset *The NBS Tables of Chemical
+Thermodynamic Properties* (Wagman et al. 1982, with errata; doi:10.18434/M32124), published under
+the NIST open licence. NIST is acknowledged as the source of these data; the dataset is
+distributed without warranty. <https://www.nist.gov/open/license>
 
-- <https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications>
-- <https://webbook.nist.gov/chemistry/>
+Values from the NIST-JANAF Thermochemical Tables (SRD 13) and the NIST Chemistry WebBook (SRD 69)
+are NIST Standard Reference Data, © U.S. Secretary of Commerce on behalf of the United States of
+America. Cite the exact source attached to each field.
+
 - <https://janaf.nist.gov/>
+- <https://webbook.nist.gov/chemistry/>
 
 ## Other scientific sources
 
