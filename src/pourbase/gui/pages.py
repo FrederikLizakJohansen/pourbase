@@ -16,10 +16,12 @@ from PySide6.QtWidgets import (
 from ..database import ThermodynamicDatabase
 from ..records import PropertyValue, SourceReference, SpeciesRecord
 from ..scenario import Calculation, Probe
+from ..uncertainty import StabilityMargin
 from ..speciation import speciation_profile
 from .formula import formula_delegate, phase_label, to_html
 from .placeholder import StackedView
 from .plots import DiagramView, DisplayOptions, PhaseStripView, SpeciationView
+from .scales import to_scale
 
 PUBLIC_TABLES = (
     "species", "thermochemistry", "reported_thermochemistry", "sources", "phases", "warnings",
@@ -73,15 +75,18 @@ class DiagramPage(StackedView):
         super().__init__(body, parent)
         self.diagram, self.cursor, self.probe = diagram, cursor, probe
         self.dark = False
+        self.display = DisplayOptions()
         self.diagram.cursorMoved.connect(lambda text: self.cursor.setText(text or " "))
         self.diagram.probeMoved.connect(self.probeMoved)
 
     def show_calculation(self, calculation: Calculation, display: DisplayOptions, reset_range: bool) -> None:
         plating = calculation.plating[0].potential_V_vs_SHE if calculation.plating else None
+        self.display = display
         self.diagram.show_diagram(calculation.diagram, display, plating, reset_range=reset_range)
         self.show_view()
 
-    def show_probe(self, probe: Probe, record: SpeciesRecord | None, dft_phase: str | None) -> None:
+    def show_probe(self, probe: Probe, record: SpeciesRecord | None, dft_phase: str | None,
+                   margin: StabilityMargin | None = None) -> None:
         self.diagram.set_probe(probe.pH, probe.eh_V)
         species = probe.species
         muted = "#8c8f94" if self.dark else "#6a6f76"
@@ -114,16 +119,47 @@ class DiagramPage(StackedView):
             ]
             columns.append(f'<td valign="top" style="padding-left:18px"><b>Metal inventory</b>'
                            f'<table cellspacing="0" cellpadding="1">{"".join(inventory)}</table></td>')
+        if margin is not None:
+            columns.append(f'<td valign="top" style="padding-left:18px"><b>Stability</b>'
+                           f'<table cellspacing="0" cellpadding="1">{self._stability_rows(margin, row)}</table></td>')
         warnings = "".join(
             f'<div style="color:#c77700">⚠ {html.escape(item.message)}</div>' for item in (record.warnings if record else ())
         )
+        scale = self.display.potential_scale
+        scaled = (f" ({float(to_scale(probe.eh_V, probe.pH, scale)):+.3f} V vs {html.escape(scale)})"
+                  if scale != "SHE" else "")
         self.probe.setHtml(
             f'<span style="font-size:12pt"><b>{to_html(species.species, 12)}</b></span>'
             f"&nbsp; {html.escape(phase_label(species))}&nbsp;&nbsp;"
-            f'<span style="color:{muted}">at pH {probe.pH:.2f}, Eh {probe.eh_V:+.3f} V vs SHE</span>'
+            f'<span style="color:{muted}">at pH {probe.pH:.2f}, Eh {probe.eh_V:+.3f} V vs SHE{scaled}</span>'
             f'<table width="100%" cellspacing="0" cellpadding="0" style="margin-top:4px">'
             f"<tr>{''.join(columns)}</tr></table>{warnings}"
         )
+
+    def _stability_rows(self, margin: StabilityMargin, row: Callable[[str, str], str]) -> str:
+        rows = []
+        if margin.runner_up is not None and margin.margin_J_mol_metal is not None:
+            sigma = margin.margin_uncertainty_J_mol_metal or 0.0
+            text = (f"{to_html(margin.runner_up.species)} {margin.margin_J_mol_metal / 1000:.2f} "
+                    f"± {sigma / 1000:.2f} kJ/mol metal higher")
+            if margin.runner_up_uses_assumed_uncertainty:
+                text += " <small>(assumed σ)</small>"
+            rows.append(row("Runner-up", text))
+            if sigma > 0:
+                ratio = margin.margin_J_mol_metal / sigma
+                verdict = "distinct" if ratio >= 2 else "distinct within 1σ" if ratio >= 1 else "not distinguishable"
+                rows.append(row("Verdict", f"{verdict} ({ratio:.1f}σ)"))
+
+        def neighbour(boundary, unit: str, digits: int) -> str:
+            if boundary is None:
+                return "no change"
+            return f"{to_html(boundary.species.species)} at {boundary.distance:+.{digits}f} {unit}"
+
+        rows.append(row("Higher E", neighbour(margin.higher_potential, "V", 3)))
+        rows.append(row("Lower E", neighbour(margin.lower_potential, "V", 3)))
+        rows.append(row("Higher pH", neighbour(margin.higher_pH, "pH", 2) + " <small>at this Eh</small>"))
+        rows.append(row("Lower pH", neighbour(margin.lower_pH, "pH", 2) + " <small>at this Eh</small>"))
+        return "".join(rows)
 
 
 class SpeciesPage(QSplitter):

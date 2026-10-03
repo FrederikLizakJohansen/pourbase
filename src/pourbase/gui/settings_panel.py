@@ -12,6 +12,7 @@ from ..conversions import express_concentration
 from ..database import ThermodynamicDatabase
 from .ligands import LigandPanel
 from .plots import DisplayOptions
+from .scales import REFERENCE_ELECTRODES_V
 from .state import CONCENTRATION_UNITS, MAX_GRID_POINTS, MODES, Settings
 from .widgets import FloatSlider
 
@@ -201,6 +202,41 @@ class SettingsPanel(QTabWidget):
             self.display_checks[name] = check
             column.addWidget(check)
         layout.addWidget(box)
+        box = QGroupBox("Potential scale")
+        form = QFormLayout(box)
+        self.potential_scale = QComboBox()
+        for name, offset in REFERENCE_ELECTRODES_V.items():
+            detail = "pH-dependent" if offset is None else f"{offset:+.3f} V vs SHE"
+            self.potential_scale.addItem(f"{name}  ({detail})" if name != "SHE" else name, name)
+        self.potential_scale.currentIndexChanged.connect(
+            lambda _index: self._set_display("potential_scale", self.potential_scale.currentData()))
+        form.addRow("Diagram axis", self.potential_scale)
+        note = QLabel("Calculations and the probe position use the SHE. On the RHE scale, regions outside "
+                      "the calculated potential window stay empty.")
+        note.setWordWrap(True)
+        form.addRow(note)
+        layout.addWidget(box)
+        box = QGroupBox("Uncertainty (fixed activity)")
+        form = QFormLayout(box)
+        self.uncertainty = QCheckBox("Hatch where another species lies within")
+        self.uncertainty.toggled.connect(lambda value: self._set_display("uncertainty", value))
+        form.addRow(self.uncertainty)
+        self.uncertainty_sigma = QComboBox()
+        for sigma in (1.0, 2.0, 3.0):
+            self.uncertainty_sigma.addItem(f"{sigma:g} σ", sigma)
+        self.uncertainty_sigma.currentIndexChanged.connect(
+            lambda _index: self._set_display("uncertainty_sigma", self.uncertainty_sigma.currentData()))
+        form.addRow("Confidence", self.uncertainty_sigma)
+        self.assumed_uncertainty = FloatSlider("Assumed σ", 0.1, 20.0, self.display.assumed_uncertainty_kJ_mol,
+                                               decimals=1, unit="kJ/mol", label_width=70)
+        self.assumed_uncertainty.valueChanged.connect(
+            lambda value: self._set_display("assumed_uncertainty_kJ_mol", value))
+        form.addRow(self.assumed_uncertainty)
+        note = QLabel("Reported ΔfG° uncertainties are used where available and reference states are exact; "
+                      "other species take the assumed σ. The probe panel shows the margin to the runner-up.")
+        note.setWordWrap(True)
+        form.addRow(note)
+        layout.addWidget(box)
         box = QGroupBox("Boltzmann-like soft minimum (fixed activity)")
         form = QFormLayout(box)
         self.boltzmann = QCheckBox("Blend species colors by their weights")
@@ -289,6 +325,8 @@ class SettingsPanel(QTabWidget):
         self.density.setEnabled(self.settings.concentration_unit == "wt_percent")
         self.boltzmann.setEnabled(not mass_balance)
         self.boltzmann_scale.setEnabled(not mass_balance)
+        for widget in (self.uncertainty, self.uncertainty_sigma, self.assumed_uncertainty):
+            widget.setEnabled(not mass_balance)
         self.display_checks["plating"].setEnabled(not mass_balance)
 
     def _set(self, name: str, value: object, reset_range: bool = False) -> None:
@@ -305,8 +343,25 @@ class SettingsPanel(QTabWidget):
             self.changed.emit(False)
 
     def _set_display(self, name: str, value: object) -> None:
+        if self._updating:
+            return
         setattr(self.display, name, value)
         self.displayChanged.emit()
+
+    def set_display(self, display: DisplayOptions) -> None:
+        """Show ``display`` in the controls without emitting changes."""
+        self._updating = True
+        for name, check in self.display_checks.items():
+            check.setChecked(getattr(display, name))
+        self.potential_scale.setCurrentIndex(max(self.potential_scale.findData(display.potential_scale), 0))
+        self.uncertainty.setChecked(display.uncertainty)
+        self.uncertainty_sigma.setCurrentIndex(max(self.uncertainty_sigma.findData(display.uncertainty_sigma), 0))
+        self.assumed_uncertainty.setValue(display.assumed_uncertainty_kJ_mol)
+        self.boltzmann.setChecked(display.boltzmann)
+        self.boltzmann_scale.setValue(display.boltzmann_scale)
+        for name, value in vars(display).items():
+            setattr(self.display, name, value)
+        self._updating = False
 
     def _probe_edited(self) -> None:
         if not self._updating:

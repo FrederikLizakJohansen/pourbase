@@ -61,6 +61,7 @@ from .records import SourceReference, SpeciesRecord
 from .scenario import Calculation, Mode, Probe, Scenario, calculate
 from .speciation import SpeciationProfile, metal_fraction_grid, plot_speciation_profile, speciation_at, speciation_profile
 from .sweeps import ConcentrationSweep, ConcentrationSweepEngine, plot_concentration_sweep
+from .uncertainty import StabilityMargin, StabilityUncertainty, stability_margin, stability_uncertainty
 
 __version__ = "1.0.0rc2"
 
@@ -117,6 +118,8 @@ __all__ = [
     "SourceReference",
     "SpeciationProfile",
     "SpeciesRecord",
+    "StabilityMargin",
+    "StabilityUncertainty",
     "ThermodynamicDatabase",
     "ThermodynamicSpecies",
     "TotalMetalConcentration",
@@ -148,6 +151,8 @@ __all__ = [
     "screen_periodic_table",
     "speciation_at",
     "speciation_profile",
+    "stability_margin",
+    "stability_uncertainty",
     "species_colors",
     "thermodynamic_species_equivalence_key",
     "write_mp_thermochemistry_bundle",

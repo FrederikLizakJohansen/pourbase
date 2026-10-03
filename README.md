@@ -68,8 +68,14 @@ source; click it to open the system. For one system you get:
 - fixed-activity and closed total-metal (mass-balance) diagrams that update as you change settings;
 - concentration as log10 molarity, molarity, ppm or weight percent; ideal or Davies activity
   coefficients; gas fugacity; ligand reservoirs for the ligands that complex the element;
-- a probe with the stable species, its Gibbs energy, uncertainty and source, and in mass-balance
+- a probe with the stable species, its Gibbs energy, uncertainty and source, the runner-up species
+  with its energy margin, the next species above and below in potential and pH, and in mass-balance
   mode the dissolved and precipitated metal;
+- hatching of the regions where another species lies within 1, 2 or 3 combined uncertainties of the
+  stable one, using reported ΔfG° uncertainties and an adjustable assumed value where none is
+  reported;
+- the potential axis against the SHE, RHE, Ag/AgCl, SCE or Hg/HgO;
+- a side-by-side comparison with a second element or concentration on linked axes;
 - tables of every species with recommended and reported values and citations, and of the balanced
   boundary reactions and Nernst equations;
 - species fractions along pH;
@@ -77,6 +83,8 @@ source; click it to open the system. For one system you get:
   sliced along any axis;
 - a DFT comparison with the official Materials Project diagram: both diagrams and an agreement map
   side by side, also available in the sweep and speciation views;
+- sessions saved to and opened from `.pourbase.json` files (`pourbase-gui session.pourbase.json`
+  opens one directly); every exported figure gets one next to it;
 - export of figures (PNG, PDF, SVG), calculated grids (CSV) and the equivalent Python code.
 
 The DFT comparison needs the `materials-project` extra and a free API key from the
@@ -127,6 +135,17 @@ Project 300 K estimates:
 ```python
 exploratory = pb.calculate(pb.Scenario("Pt", allow_incomplete=True))
 estimated = pb.calculate(pb.Scenario("Pt", energy_policy="experimental_then_mp"))
+```
+
+How firmly a species is stable, given the Gibbs energy uncertainties (fixed activity):
+
+```python
+calculation = pb.calculate(pb.Scenario("Fe"))
+margin = pb.stability_margin(calculation.diagram, pH=7, eh_V=0.0)
+print(margin.runner_up.species, margin.margin_J_mol_metal, margin.margin_uncertainty_J_mol_metal)
+print(margin.higher_potential.species.species, margin.higher_potential.distance)
+uncertain = pb.stability_uncertainty(calculation.diagram, confidence_sigma=1.0)
+print(f"{uncertain.uncertain_fraction:.0%} of the grid is within 1σ of another species")
 ```
 
 The stable species of every element at one pH and potential:

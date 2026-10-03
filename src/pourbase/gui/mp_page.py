@@ -94,7 +94,8 @@ class MaterialsProjectPage(QWidget):
                         reset_range: bool = False) -> None:
         experimental, official = comparison.experimental, comparison.materials_project
         # Domain labels identify the species; only the agreement map needs a legend
-        display = replace(display, boltzmann=False, plating=False, legend=False)
+        display = replace(display, boltzmann=False, plating=False, legend=False,
+                          potential_scale="SHE", uncertainty=False)
         experimental_colors = record_colors([item.record_id for item in experimental.stable_species])
         self.views["experimental"].show_diagram(experimental, display, colors=experimental_colors,
                                                 reset_range=reset_range)

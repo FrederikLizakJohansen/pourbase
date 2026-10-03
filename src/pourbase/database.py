@@ -354,7 +354,7 @@ class ThermodynamicDatabase:
                    s.core_oxygen_count, s.core_hydrogen_count, s.ligand_id,
                    s.ligand_count, s.ligand_charge, s.metal_oxidation_state,
                    s.electron_coefficient_per_metal,
-                   t.gibbs_energy_J_mol, t.gibbs_status, t.gibbs_source_id,
+                   t.gibbs_energy_J_mol, t.gibbs_status, t.gibbs_source_id, t.gibbs_uncertainty_J_mol,
                    f.gibbs_energy_J_mol AS fallback_gibbs_energy_J_mol,
                    f.canonical_mp_id AS fallback_mp_id,
                    l.gibbs_energy_J_mol AS ligand_gibbs_energy_J_mol
@@ -404,6 +404,10 @@ class ThermodynamicDatabase:
                 ligand_gibbs_energy_J_mol=(
                     float(row["ligand_gibbs_energy_J_mol"])
                     if row["ligand_gibbs_energy_J_mol"] is not None else None
+                ),
+                gibbs_uncertainty_J_mol=(
+                    float(row["gibbs_uncertainty_J_mol"])
+                    if not fallback and row["gibbs_uncertainty_J_mol"] is not None else None
                 ),
             ))
         return MetalSystem(system=rows[0]["system"], symbol=symbol, species=tuple(included), excluded=tuple(excluded))

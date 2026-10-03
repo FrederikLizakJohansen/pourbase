@@ -226,6 +226,7 @@ class ThermodynamicSpecies:
     ligand_gibbs_energy_J_mol: float | None = None
     formal_metal_oxidation_state: float | None = None
     electron_coefficient_per_metal: float | None = None
+    gibbs_uncertainty_J_mol: float | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "gibbs_status", EvidenceStatus(self.gibbs_status))

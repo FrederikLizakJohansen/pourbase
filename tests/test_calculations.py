@@ -201,3 +201,33 @@ class CalculationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class UncertaintyTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.calculation = pb.calculate(pb.Scenario("Fe", **SMALL))
+
+    def test_margin_finds_the_exact_redox_boundary(self) -> None:
+        diagram = self.calculation.diagram
+        margin = pb.stability_margin(diagram, 1.0, 0.5)
+        self.assertEqual(margin.species.species, "Fe²⁺")
+        self.assertEqual(margin.higher_potential.species.species, "Fe³⁺")
+        species = {item.species: item for item in diagram.system.species}
+        # Both ions share one activity, so the boundary is the standard potential
+        standard = (species["Fe³⁺"].gibbs_energy_J_mol - species["Fe²⁺"].gibbs_energy_J_mol) / 96485.33212
+        self.assertAlmostEqual(0.5 + margin.higher_potential.distance, standard, places=6)
+        self.assertGreater(margin.margin_J_mol_metal, 0)
+
+    def test_hatched_region_grows_with_the_assumed_uncertainty(self) -> None:
+        diagram = self.calculation.diagram
+        small = pb.stability_uncertainty(diagram, 1.0, 100.0)
+        large = pb.stability_uncertainty(diagram, 1.0, 20_000.0)
+        self.assertLessEqual(small.uncertain_fraction, large.uncertain_fraction)
+        self.assertTrue(np.all(large.uncertain[small.uncertain]))
+        self.assertTrue(large.assumed_record_ids)
+
+    def test_mass_balance_diagrams_are_rejected(self) -> None:
+        calculation = pb.calculate(pb.Scenario("Fe", mode="mass_balance", **SMALL))
+        with self.assertRaises(ValueError):
+            pb.stability_uncertainty(calculation.diagram)

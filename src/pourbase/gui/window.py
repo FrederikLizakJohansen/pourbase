@@ -24,7 +24,9 @@ from ..export import diagram_figure, grid_csv, save_figure
 from ..models import ExclusionReason
 from ..records import SpeciesRecord
 from ..scenario import Calculation, Mode
+from ..uncertainty import stability_margin
 from . import logo_pixmap
+from .compare import ComparePage
 from .credentials import storage_description
 from .dft import DftController
 from .materials import matched_colors, phase_views, pretty_label
@@ -33,6 +35,8 @@ from .pages import BoundariesPage, DatabasePage, DiagramPage, SpeciationPage, Sp
 from .periodic import OverviewPage
 from .placeholder import StackedView
 from .plots import record_colors
+from .session import SUFFIX as SESSION_SUFFIX
+from .session import SessionError, read_session, sidecar_path, write_session
 from .settings_panel import SettingsPanel
 from .state import CONCENTRATION_UNITS, Session, Settings
 from .sweep import SweepPage
@@ -103,6 +107,9 @@ class MainWindow(QMainWindow):
         self.species_page = SpeciesPage()
         self.boundaries_page = BoundariesPage()
         self.speciation_page = SpeciationPage()
+        self.compare_page = ComparePage(self.systems)
+        self.compare_page.changed.connect(lambda: self.refresh_view())
+        self._compare_shown = False
         self.sweep_page = SweepPage()
         self.sweep_page.requested.connect(self.request_sweep)
         self.sweep_page.materialsProjectRequested.connect(self.request_dft_sweep)
@@ -124,7 +131,8 @@ class MainWindow(QMainWindow):
         self.views.setDocumentMode(True)
         for page, title in (
             (self.diagram_page, "Diagram"), (self.species_page, "Species"), (self.boundaries_page, "Boundaries"),
-            (self.speciation_page, "Speciation"), (self.sweep_stack, "Concentration sweep"),
+            (self.speciation_page, "Speciation"), (self.compare_page, "Compare"),
+            (self.sweep_stack, "Concentration sweep"),
             (self.dft_stack, "DFT comparison"),
         ):
             self.views.addTab(page, title)
@@ -168,6 +176,9 @@ class MainWindow(QMainWindow):
     def _build_menu(self) -> None:
         menu = self.menuBar().addMenu("&File")
         for text, slot, shortcut in (
+            ("Open session…", self.open_session, QKeySequence.Open),
+            ("Save session…", self.save_session, QKeySequence.SaveAs),
+            (None, None, None),
             ("Export figure…", self.export_figure, QKeySequence.Save),
             ("Export grid as CSV…", self.export_grid, None),
             ("Copy Python code", self.copy_python, None),
@@ -309,7 +320,14 @@ class MainWindow(QMainWindow):
                 dft_phase = pretty_label(self.comparison.materials_project.phase_at(probe.pH, probe.eh_V).label)
             except ValueError:
                 pass
-        self.diagram_page.show_probe(probe, self._record(probe.species.record_id), dft_phase)
+        margin = None
+        if not self.calculation.is_mass_balance:
+            try:
+                margin = stability_margin(self.calculation.diagram, probe.pH, probe.eh_V,
+                                          self.display.assumed_uncertainty_kJ_mol * 1000)
+            except ValueError:
+                margin = None
+        self.diagram_page.show_probe(probe, self._record(probe.species.record_id), dft_phase, margin)
 
     def _record(self, record_id: str) -> SpeciesRecord | None:
         return self._records_for([record_id]).get(record_id)
@@ -384,6 +402,8 @@ class MainWindow(QMainWindow):
             self._show_boundaries()
         elif current is self.speciation_page:
             self._show_speciation()
+        elif current is self.compare_page:
+            self._show_compare(reset_range)
         elif current is self.sweep_stack:
             self.request_sweep()
         elif current is self.dft_stack:
@@ -575,6 +595,57 @@ class MainWindow(QMainWindow):
         self._set_status(f"{self.systems[symbol]}: {self.comparison.equivalent_domain_fraction:.1%} of the grid "
                          f"agrees with Materials Project {entries.database_version}")
 
+    def _show_compare(self, reset_range: bool = False) -> None:
+        page = self.compare_page
+        if self.calculation is None:
+            page.show_message("No diagram", "The comparison appears once the diagram is calculated.")
+            return
+        if not self._compare_shown:
+            page.symbol.blockSignals(True)
+            page.symbol.setCurrentIndex(max(page.symbol.findData(self.settings.symbol), 0))
+            page.symbol.blockSignals(False)
+        try:
+            right = self.session.calculate(page.right_settings(self.settings).scenario())
+        except Exception as error:
+            page.show_message("The second diagram cannot be calculated",
+                              html.escape(f"{type(error).__name__}: {error}"), glyph="!")
+            return
+        page.show_calculations(self.calculation, right, self.display, reset_range or not self._compare_shown,
+                               (self.settings.probe_pH, self.settings.probe_eh_V))
+        self._compare_shown = True
+
+    def save_session(self) -> None:
+        path = self._save_path("Save session", f"pourbase-{self.settings.symbol.lower()}{SESSION_SUFFIX}",
+                               f"pourbase session (*{SESSION_SUFFIX} *.json)")
+        if path:
+            write_session(path, self.settings, self.display, self.sweep_page.settings())
+            self._set_status(f"Saved the session to {path}")
+
+    def open_session(self) -> None:
+        path, _ = QFileDialog.getOpenFileName(self, "Open session", "",
+                                              f"pourbase session (*{SESSION_SUFFIX} *.json);;All files (*)")
+        if path:
+            self.load_session(path)
+
+    def load_session(self, path: str) -> bool:
+        """Apply a saved session; returns False and reports the problem when it cannot be read."""
+        try:
+            settings, display, sweep = read_session(path)
+        except SessionError as error:
+            QMessageBox.warning(self, "Open session", str(error))
+            return False
+        if settings.symbol not in self.systems:
+            settings.symbol = self.settings.symbol
+        self.panel.set_settings(settings)
+        self.panel.set_display(display)
+        self.sweep_page.set_settings(sweep)
+        self._reset_range = True
+        self.pages.setCurrentIndex(1)
+        self.recalculate()
+        self.update_overview()
+        self._set_status(f"Opened the session {Path(path).name}")
+        return True
+
     def _comparison_scenario(self):
         """The experimental scenario compared with MP: the current one at fixed activity."""
         scenario = self.settings.scenario()
@@ -651,7 +722,9 @@ class MainWindow(QMainWindow):
                                  if fixed and display.plating and calculation.plating else None),
             boltzmann_scale=display.boltzmann_scale if fixed and display.boltzmann else None,
         )
-        self._set_status(f"Wrote {save_figure(figure, path)}")
+        written = save_figure(figure, path)
+        session = write_session(sidecar_path(written), self.settings, self.display, self.sweep_page.settings())
+        self._set_status(f"Wrote {written} and its settings to {session.name}")
 
     def export_grid(self) -> None:
         if self.calculation is None:
@@ -692,7 +765,7 @@ class MainWindow(QMainWindow):
         self.theme_actions[self.theme_mode].setChecked(True)
         self.diagram_page.dark = self.dark
         for widget in (self.diagram_page.diagram, self.speciation_page, self.sweep_page, self.dft_page,
-                       self.overview.canvas):
+                       self.compare_page, self.overview.canvas):
             widget.set_dark(self.dark)
         self.refresh_view()
         self._set_status(*self._status)

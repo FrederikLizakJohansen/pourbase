@@ -1,6 +1,7 @@
 """Desktop GUI for pourbase (Qt, via PySide6 and pyqtgraph).
 
-Start it with ``pourbase-gui [element]``, ``pourbase gui`` or ``python -m pourbase.gui``.
+Start it with ``pourbase-gui [element | session.pourbase.json]``, ``pourbase gui`` or
+``python -m pourbase.gui``.
 """
 
 from __future__ import annotations
@@ -32,8 +33,12 @@ def main(argv: list[str] | None = None) -> int:
     app.setApplicationName(APP_ID)
     QApplication.setDesktopFileName(APP_ID)
     app.setWindowIcon(application_icon())
-    window = MainWindow(symbol=argv[0] if argv else None)
+    argument = argv[0] if argv else None
+    session = argument if argument and argument.lower().endswith(".json") else None
+    window = MainWindow(symbol=None if session else argument)
     window.show()
+    if session:
+        window.load_session(session)
     return app.exec()
 
 

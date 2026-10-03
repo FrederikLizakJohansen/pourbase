@@ -469,6 +469,13 @@ class SweepPage(QWidget):
     def sweep(self) -> Any:
         return self._sweep if self.volumes else None
 
+    def set_settings(self, settings: SweepSettings) -> None:
+        """Show saved sweep settings in the controls."""
+        self.minimum.setValue(settings.log10_min)
+        self.maximum.setValue(settings.log10_max)
+        for axis, value in (("level", settings.levels), ("pH", settings.pH_points), ("eh", settings.eh_points)):
+            self.slice_counts[axis].setValue(value)
+
     def settings(self):
         return SweepSettings(
             self.minimum.value(), self.maximum.value(), self.slice_counts["level"].value(),

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Any
 
@@ -13,7 +14,9 @@ from PySide6.QtGui import QColor
 
 from ..boltzmann import boltzmann_smooth
 from ..grid import phase_boundary_segments
+from ..uncertainty import stability_uncertainty
 from .formula import phase_label, to_html
+from .scales import axis_label, from_scale, nernst_slope_V, resample, to_scale
 
 LABEL_PT = 9.0
 LEGEND_PT = 9.0
@@ -60,6 +63,10 @@ class DisplayOptions:
     plating: bool = False
     boltzmann: bool = False
     boltzmann_scale: float = 1.0
+    potential_scale: str = "SHE"
+    uncertainty: bool = False
+    uncertainty_sigma: float = 1.0
+    assumed_uncertainty_kJ_mol: float = 2.0
 
 
 class DiagramView(pg.PlotWidget):
@@ -77,6 +84,11 @@ class DiagramView(pg.PlotWidget):
         self.showGrid(x=False, y=False)
         self.image = pg.ImageItem(axisOrder="row-major")
         self.addItem(self.image)
+        self.hatch = pg.ImageItem(axisOrder="row-major")
+        self.hatch.setZValue(2)
+        self.addItem(self.hatch)
+        self.scale = "SHE"
+        self.uncertainty = None
         self.boundaries = pg.PlotDataItem(connect="pairs")
         self.boundaries.setZValue(3)
         self.addItem(self.boundaries)
@@ -113,25 +125,43 @@ class DiagramView(pg.PlotWidget):
         reset_range: bool = False,
         colors: dict[str, QColor] | None = None,
     ) -> None:
-        """Draw a pH-Eh diagram; ``colors`` keeps species colors fixed across several diagrams."""
+        """Draw a pH-Eh diagram; ``colors`` keeps species colors fixed across several diagrams.
+
+        The diagram is drawn on ``options.potential_scale``; fixed-activity diagrams can hatch
+        the points where another species lies within the chosen number of uncertainties.
+        """
         self.diagram = diagram
+        scale = options.potential_scale
+        temperature = diagram.conditions.temperature_K
+        axis, rows, valid = resample(diagram.pH, diagram.eh_V, scale, temperature)
+        columns = np.arange(diagram.pH.size)[np.newaxis, :]
+        fixed_activity = getattr(diagram, "transformed_gibbs_J_mol_metal", None) is not None
         rgb = None
-        if options.boltzmann and not hasattr(diagram, "state_at"):
-            rgb = self._boltzmann_rgb(diagram, options.boltzmann_scale, colors)
+        if options.boltzmann and fixed_activity:
+            rgb = self._boltzmann_rgb(diagram, options.boltzmann_scale, colors)[rows, columns]
+        hatch = None
+        self.uncertainty = None
+        if options.uncertainty and fixed_activity:
+            self.uncertainty = stability_uncertainty(
+                diagram, options.uncertainty_sigma, options.assumed_uncertainty_kJ_mol * 1000)
+            hatch = self.uncertainty.uncertain[rows, columns] & valid
         self.show_grid(
-            diagram.stable_species_index, diagram.pH, diagram.eh_V, diagram.system.species,
+            diagram.stable_species_index[rows, columns], diagram.pH, axis, diagram.system.species,
             options, colors=colors, reset_range=reset_range, rgb=rgb,
-            axes=("pH", "Eh (V vs SHE)"),
+            axes=("pH", axis_label(scale) if scale != "SHE" else "Eh (V vs SHE)"),
+            valid=valid, hatch=hatch, scale=scale,
         )
         line = "#dfe1e5" if self.dark else "#000000"
         water_pen = pg.mkPen(line, width=1.2, style=Qt.DashLine)
-        self.her.setData(diagram.pH, diagram.her_V, pen=water_pen)
-        self.oer.setData(diagram.pH, diagram.oer_V, pen=water_pen)
+        self.her.setData(diagram.pH, to_scale(diagram.her_V, diagram.pH, scale, temperature), pen=water_pen)
+        self.oer.setData(diagram.pH, to_scale(diagram.oer_V, diagram.pH, scale, temperature), pen=water_pen)
         self.her.setVisible(options.water)
         self.oer.setVisible(options.water)
         self.plating.setVisible(options.plating and plating_V is not None)
         if plating_V is not None:
-            self.plating.setPos(plating_V)
+            slope = nernst_slope_V(temperature) if scale == "RHE" else 0.0
+            self.plating.setAngle(math.degrees(math.atan(slope)))
+            self.plating.setPos(QPointF(0.0, float(to_scale(plating_V, 0.0, scale, temperature))))
             self.plating.setPen(pg.mkPen("#2e9d4a", width=1.5, style=Qt.DashDotLine))
         self.probe.setVisible(True)
 
@@ -146,13 +176,21 @@ class DiagramView(pg.PlotWidget):
         reset_range: bool = False,
         rgb: np.ndarray | None = None,
         axes: tuple[str, str] = ("pH", "Eh (V vs SHE)"),
+        valid: np.ndarray | None = None,
+        hatch: np.ndarray | None = None,
+        scale: str = "SHE",
     ) -> None:
-        """Draw any 2D grid of species indices (rows follow ``y``, columns follow ``x``)."""
-        self._grid, self._x, self._y, self._species = index, x, y, species
+        """Draw any 2D grid of species indices (rows follow ``y``, columns follow ``x``).
+
+        Points where ``valid`` is False stay empty; points where ``hatch`` is True are hatched.
+        """
+        valid = np.ones(index.shape, dtype=bool) if valid is None else valid
+        self._grid, self._x, self._y, self._species, self._valid = index, x, y, species, valid
         self._axes = axes
+        self.scale = scale
         self.setLabel("bottom", axes[0])
         self.setLabel("left", axes[1])
-        stable_indices = sorted(int(value) for value in np.unique(index))
+        stable_indices = sorted(int(value) for value in np.unique(index[valid]))
         stable = [species[item] for item in stable_indices]
         colors = colors or record_colors([item.record_id for item in stable])
         compact = np.zeros_like(index)
@@ -161,10 +199,23 @@ class DiagramView(pg.PlotWidget):
         if rgb is None:
             table = np.array([colors[item.record_id].getRgbF()[:3] for item in stable])
             rgb = table[compact]
-        self.image.setImage((np.clip(rgb, 0, 1) * 255).astype(np.ubyte), levels=(0, 255))
+        rgba = np.empty((*index.shape, 4), dtype=np.ubyte)
+        rgba[..., :3] = (np.clip(rgb, 0, 1) * 255).astype(np.ubyte)
+        rgba[..., 3] = np.where(valid, 255, 0)
+        self.image.setImage(rgba, levels=(0, 255))
         x0, x1 = _edges(x)
         y0, y1 = _edges(y)
         self.image.setRect(QRectF(x0, y0, x1 - x0, y1 - y0))
+        self.hatch.setVisible(hatch is not None and bool(hatch.any()))
+        if hatch is not None:
+            rows, columns = np.indices(index.shape)
+            stripes = ((rows + columns) // 3) % 3 == 0
+            overlay = np.zeros((*index.shape, 4), dtype=np.ubyte)
+            overlay[hatch & stripes] = (255, 255, 255, 150)
+            overlay[hatch & ~stripes] = (0, 0, 0, 22)
+            self.hatch.setImage(overlay, levels=(0, 255))
+            self.hatch.setRect(QRectF(x0, y0, x1 - x0, y1 - y0))
+        compact = np.where(valid, compact, -1)
 
         if options.boundaries and len(stable) > 1:
             points = np.array(phase_boundary_segments(compact, x, y)).reshape(-1, 2)
@@ -183,6 +234,8 @@ class DiagramView(pg.PlotWidget):
             scale_y = max(float(np.ptp(y)), 1e-9)
             for display_index, item in enumerate(stable):
                 mask = compact == display_index
+                if not mask.any():
+                    continue
                 target = (float(x_grid[mask].mean()), float(y_grid[mask].mean()))
                 coordinates = np.column_stack((x_grid[mask], y_grid[mask]))
                 distances = ((coordinates[:, 0] - target[0]) / scale_x) ** 2 + (
@@ -208,6 +261,10 @@ class DiagramView(pg.PlotWidget):
                     pen=pg.mkPen("#000000"),
                 )
                 self.legend.addItem(swatch, to_html(item.species, LEGEND_PT))
+            if hatch is not None and self.uncertainty is not None:
+                swatch = pg.ScatterPlotItem(symbol="s", size=11, brush=pg.mkBrush(255, 255, 255, 150),
+                                            pen=pg.mkPen("#000000", style=Qt.DotLine))
+                self.legend.addItem(swatch, f"within {self.uncertainty.confidence_sigma:g}σ of another species")
 
         view = self.getPlotItem().vb
         view.setLimits(xMin=None, xMax=None, yMin=None, yMax=None)
@@ -240,7 +297,11 @@ class DiagramView(pg.PlotWidget):
         self.oer.setVisible(visible)
 
     def set_probe(self, pH: float, eh_V: float) -> None:
-        self.probe.setPos(QPointF(pH, eh_V))
+        """Place the probe at a potential against the SHE."""
+        self.probe.setPos(QPointF(pH, float(to_scale(eh_V, pH, self.scale))))
+
+    def _she(self, pH: float, potential: float) -> float:
+        return float(from_scale(potential, pH, self.scale))
 
 
     def _species_text(self, x: float, y: float) -> str:
@@ -251,6 +312,8 @@ class DiagramView(pg.PlotWidget):
             return ""
         column = int(np.abs(self._x - x).argmin())
         row = int(np.abs(self._y - y).argmin())
+        if not self._valid[row, column]:
+            return ""
         species = self._species[int(grid[row, column])]
         x_name, y_name = (name.split(" (")[0] for name in self._axes)
         return (
@@ -270,12 +333,12 @@ class DiagramView(pg.PlotWidget):
             return
         point = self.getPlotItem().vb.mapSceneToView(event.scenePos())
         if self._species_text(point.x(), point.y()):
-            self.set_probe(point.x(), point.y())
-            self.probeMoved.emit(point.x(), point.y())
+            self.probe.setPos(point)
+            self.probeMoved.emit(point.x(), self._she(point.x(), point.y()))
 
     def _probe_moved(self) -> None:
         position = self.probe.pos()
-        self.probeMoved.emit(position.x(), position.y())
+        self.probeMoved.emit(position.x(), self._she(position.x(), position.y()))
 
 
 class SpeciationView(pg.PlotWidget):

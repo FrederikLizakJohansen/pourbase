@@ -53,6 +53,41 @@ class StateTests(unittest.TestCase):
 
 
 @unittest.skipIf(QApplication is None, "PySide6 is not installed")
+class ScaleAndSessionTests(unittest.TestCase):
+    """Potential scales and session files, without Qt widgets."""
+
+    def test_scales_round_trip_and_rhe_resampling(self) -> None:
+        from pourbase.gui.scales import REFERENCE_ELECTRODES_V, from_scale, resample, to_scale
+
+        for scale in REFERENCE_ELECTRODES_V:
+            self.assertAlmostEqual(float(from_scale(to_scale(0.3, 9.0, scale), 9.0, scale)), 0.3)
+        self.assertAlmostEqual(float(to_scale(0.0, 0.0, "SCE (sat. KCl)")), -0.241)
+        pH, eh = np.linspace(0, 14, 15), np.linspace(-1, 1, 201)
+        axis, rows, valid = resample(pH, eh, "RHE")
+        self.assertTrue(valid[:, 0].all())
+        self.assertFalse(valid[:, -1].all())
+        column = 7
+        self.assertAlmostEqual(eh[rows[150, column]], float(from_scale(axis[150], pH[column], "RHE")), delta=0.006)
+
+    @unittest.skipIf(QApplication is None, "PySide6 is not installed")
+    def test_session_round_trip_and_rejects_other_files(self) -> None:
+        from pourbase.gui.plots import DisplayOptions
+        from pourbase.gui.session import SessionError, read_session, sidecar_path, write_session
+
+        settings = Settings(symbol="Cu", concentration=-4.0, probe_pH=9.0)
+        display = DisplayOptions(potential_scale="RHE", uncertainty=True, uncertainty_sigma=2.0)
+        sweep = SweepSettings(levels=11)
+        with tempfile.TemporaryDirectory() as directory:
+            path = write_session(os.path.join(directory, "a.pourbase.json"), settings, display, sweep)
+            self.assertEqual(read_session(path), (settings, display, sweep))
+            other = os.path.join(directory, "other.json")
+            with open(other, "w") as handle:
+                handle.write('{"format": "something else"}')
+            with self.assertRaises(SessionError):
+                read_session(other)
+        self.assertEqual(sidecar_path("/tmp/fe.png").name, "fe.pourbase.json")
+
+
 class WindowTestCase(unittest.TestCase):
     """A fresh window per test class, with isolated stored settings."""
 
@@ -102,6 +137,49 @@ class WindowTests(WindowTestCase):
         window.views.setCurrentWidget(window.species_page)
         window.species_page.table.selectRow(0)
         self.assertTrue(window.species_page.details.toPlainText())
+
+    def test_scale_uncertainty_probe_and_compare(self) -> None:
+        window = self.window
+        self.open("Fe")
+        panel = window.panel
+        panel.potential_scale.setCurrentIndex(panel.potential_scale.findData("RHE"))
+        panel.uncertainty.setChecked(True)
+        self.app.processEvents()
+        view = window.diagram_page.diagram
+        self.assertEqual(view.scale, "RHE")
+        self.assertIsNotNone(view.uncertainty)
+        # The probe is placed and reported against the SHE whatever the axis shows
+        window.set_probe(7.0, 0.1)
+        view._probe_moved()
+        self.assertAlmostEqual(window.settings.probe_eh_V, 0.1, places=6)
+        text = window.diagram_page.probe.toPlainText()
+        self.assertIn("Runner-up", text)
+        self.assertIn("V vs RHE", text)
+        window.views.setCurrentWidget(window.compare_page)
+        self.app.processEvents()
+        self.assertIn("differs on", window.compare_page.summary.text())
+        compare = window.compare_page
+        compare.views[0].probe.setPos(compare.views[0].probe.pos().__class__(10.0, 0.8))
+        compare.views[0]._probe_moved()
+        self.assertAlmostEqual(compare.point[0], 10.0)
+        self.assertIn("species", compare.details.toPlainText())
+        self.assertAlmostEqual(compare.views[1].probe.pos().x(), 10.0)
+        panel.set_display(type(window.display)())
+        window.refresh_view()
+
+    def test_session_file_restores_the_settings(self) -> None:
+        from pourbase.gui.plots import DisplayOptions
+        from pourbase.gui.session import write_session
+
+        window = self.window
+        path = os.path.join(self.directory.name, "zn.pourbase.json")
+        write_session(path, Settings(symbol="Zn", concentration=-5.0),
+                      DisplayOptions(potential_scale="SCE (sat. KCl)"), SweepSettings(levels=9))
+        self.assertTrue(window.load_session(path))
+        self.assertEqual(window.settings.symbol, "Zn")
+        self.assertEqual(window.display.potential_scale, "SCE (sat. KCl)")
+        self.assertEqual(window.sweep_page.settings().levels, 9)
+        window.panel.set_display(DisplayOptions())
 
     def test_unavailable_views_explain_and_offer_the_change(self) -> None:
         window = self.window
