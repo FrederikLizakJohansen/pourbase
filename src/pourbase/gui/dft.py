@@ -5,6 +5,7 @@ from __future__ import annotations
 import html
 from collections import OrderedDict
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import QObject, QSettings, Signal
@@ -13,7 +14,8 @@ from ..materials_project import OfficialMaterialsProjectComparison, OfficialMate
 from ..models import PourbaixConditions
 from .credentials import clear_key, load_key, save_key, storage_description
 from .materials import (
-    FetchedEntries, MaterialsProjectSource, client_available, equivalence_matrix, matched_colors,
+    FetchedEntries, MaterialsProjectSource, client_available, equivalence_matrix, fetch_entries,
+    matched_colors, warm_up,
 )
 from .plots import record_colors
 from .tasks import TaskRunner
@@ -42,11 +44,12 @@ class DftController(QObject):
     changed = Signal()
     sweepReady = Signal(object)
 
-    def __init__(self, tasks: TaskRunner, settings: QSettings, parent: QObject | None = None) -> None:
+    def __init__(self, tasks: TaskRunner, settings: QSettings, parent: QObject | None = None,
+                 cache_dir: Path | None = None) -> None:
         super().__init__(parent)
         self.tasks = tasks
         self.settings = settings
-        self.source = MaterialsProjectSource()
+        self.source = MaterialsProjectSource(cache_dir=cache_dir)
         self.api_key, self.key_source = load_key(settings)
         self.filter_solids = True
         self.gibbs_300K = False
@@ -85,6 +88,12 @@ class DftController(QObject):
             api_key = self.api_key
             self.tasks.submit("dft-fetch", key, lambda _progress: self.source.fetch(symbol, api_key, *key[1:]))
         return None
+
+    def warm_up(self) -> None:
+        """Open the Materials Project client in the background before the first fetch."""
+        if self.source.fetcher is fetch_entries and self.api_key and client_available():
+            api_key = self.api_key
+            self.tasks.submit("dft-warm", api_key, lambda _progress: warm_up(api_key))
 
     def fetching(self, symbol: str) -> bool:
         return self.tasks.running("dft-fetch") == self.entry_key(symbol)

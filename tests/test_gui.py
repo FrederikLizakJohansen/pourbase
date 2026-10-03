@@ -66,11 +66,15 @@ class WindowTestCase(unittest.TestCase):
         cls.app = QApplication.instance() or QApplication([])
         cls.directory = tempfile.TemporaryDirectory()
         stored = QSettings(os.path.join(cls.directory.name, "settings.ini"), QSettings.IniFormat)
+        # Keep the user's stored Materials Project key out of the tests: no network access.
+        cls._no_key = mock.patch("pourbase.gui.dft.load_key", return_value=("", ""))
+        cls._no_key.start()
         cls.window = MainWindow(settings=stored)
 
     @classmethod
     def tearDownClass(cls) -> None:
         cls.window.close()
+        cls._no_key.stop()
         cls.directory.cleanup()
 
     def open(self, symbol: str, **values) -> None:

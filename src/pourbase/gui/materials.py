@@ -7,9 +7,13 @@ minimum gives the same stable phase at each point as pymatgen's stable-entry lis
 
 from __future__ import annotations
 
+import atexit
+import json
 import re
 import threading
+import time
 from dataclasses import dataclass
+from pathlib import Path
 from importlib.metadata import PackageNotFoundError, version
 from importlib.util import find_spec
 from typing import Any, Callable, Sequence
@@ -78,12 +82,56 @@ class FetchedEntries:
     pymatgen_version: str
     filter_solids: bool
     use_gibbs_300K: bool
+    retrieved_at: float | None = None
+
+
+CACHE_DAYS = 30
+_clients: dict[str, Any] = {}
+_clients_lock = threading.Lock()
+_fetch_lock = threading.Lock()
+
+
+def _client(api_key: str) -> Any:
+    """An open ``MPRester`` for this key, shared by every fetch.
+
+    Opening a client and loading the ion reference table take about ten seconds, and the
+    client keeps both for later fetches. Fetches through one client run one at a time.
+    """
+    from mp_api.client import MPRester
+
+    with _clients_lock:
+        if api_key not in _clients:
+            _clients[api_key] = MPRester(api_key, mute_progress_bars=True, notify_db_version=False)
+        return _clients[api_key]
+
+
+@atexit.register
+def close_clients() -> None:
+    with _clients_lock:
+        for client in _clients.values():
+            try:
+                client.__exit__(None, None, None)
+            except Exception:
+                pass
+        _clients.clear()
+
+
+def warm_up(api_key: str) -> None:
+    """Import the client libraries, open the client and load its ion reference table.
+
+    These take most of the time of a first fetch; the client keeps the table for every element.
+    """
+    from pymatgen.analysis.pourbaix_diagram import PourbaixDiagram  # noqa: F401
+
+    rester = _client(api_key)
+    with _fetch_lock:
+        rester.get_ion_reference_data()
 
 
 def fetch_entries(symbol: str, api_key: str, filter_solids: bool, use_gibbs_300K: bool) -> FetchedEntries:
     """Download the official Pourbaix entries for one element (network access)."""
     try:
-        from mp_api.client import MPRester
+        import mp_api.client  # noqa: F401
         from pymatgen.analysis.pourbaix_diagram import PourbaixDiagram as MPPourbaixDiagram
         mp_api_version = version("mp-api")
         pymatgen_version = version("pymatgen")
@@ -93,24 +141,33 @@ def fetch_entries(symbol: str, api_key: str, filter_solids: bool, use_gibbs_300K
             'pip install "pourbase[materials-project]"'
         ) from error
     try:
-        with MPRester(api_key, mute_progress_bars=True, notify_db_version=False) as rester:
+        rester = _client(api_key)
+        with _fetch_lock:
             entries = rester.get_pourbaix_entries([symbol], use_gibbs=300 if use_gibbs_300K else None)
             database_version = str(rester.db_version)
         filtered = MPPourbaixDiagram(entries, filter_solids=filter_solids).all_entries
     except Exception as error:
+        with _clients_lock:
+            _clients.pop(api_key, None)
         message = str(error).replace(api_key, "[redacted]")
         raise MaterialsProjectUnavailableError(
             f"Materials Project could not provide the {symbol} entries: {message}"
         ) from error
     return FetchedEntries(symbol, list(filtered), database_version, mp_api_version,
-                          pymatgen_version, filter_solids, use_gibbs_300K)
+                          pymatgen_version, filter_solids, use_gibbs_300K, retrieved_at=time.time())
 
 
 class MaterialsProjectSource:
-    """Cached MP entries per element, evaluated on demand for diagrams and sweeps."""
+    """Cached MP entries per element, evaluated on demand for diagrams and sweeps.
 
-    def __init__(self, fetcher: Callable[..., FetchedEntries] = fetch_entries) -> None:
+    With ``cache_dir``, downloaded entries are also stored on disk and reused for
+    ``CACHE_DAYS`` days, or until the installed pymatgen version changes.
+    """
+
+    def __init__(self, fetcher: Callable[..., FetchedEntries] = fetch_entries,
+                 cache_dir: Path | None = None) -> None:
         self.fetcher = fetcher
+        self.cache_dir = cache_dir
         self._fetched: dict[tuple, FetchedEntries] = {}
         self._lock = threading.Lock()
         self._evaluation_lock = threading.Lock()
@@ -127,15 +184,66 @@ class MaterialsProjectSource:
         """Download once per element and option set; later calls return the cached entries."""
         if (cached := self.fetched(symbol, filter_solids, use_gibbs_300K)) is not None:
             return cached
-        entries = self.fetcher(symbol, api_key, filter_solids, use_gibbs_300K)
+        key = self.key(symbol, filter_solids, use_gibbs_300K)
+        entries = self._read_cache(key)
+        if entries is None:
+            entries = self.fetcher(symbol, api_key, filter_solids, use_gibbs_300K)
+            self._write_cache(key, entries)
         with self._lock:
-            return self._fetched.setdefault(self.key(symbol, filter_solids, use_gibbs_300K), entries)
+            return self._fetched.setdefault(key, entries)
 
     def invalidate(self, symbol: str | None = None) -> None:
-        """Forget downloaded entries, for one element or all."""
+        """Forget downloaded entries, for one element or all, in memory and on disk."""
         with self._lock:
             for key in [key for key in self._fetched if symbol is None or key[0] == symbol]:
                 del self._fetched[key]
+        if self.cache_dir is not None and self.cache_dir.is_dir():
+            for path in self.cache_dir.glob(f"{symbol or '*'}-*.json"):
+                path.unlink(missing_ok=True)
+
+    def _cache_path(self, key: tuple) -> Path | None:
+        if self.cache_dir is None:
+            return None
+        symbol, filter_solids, use_gibbs_300K = key
+        return self.cache_dir / (f"{symbol}-{'filtered' if filter_solids else 'all'}-"
+                                 f"{'gibbs300K' if use_gibbs_300K else 'dft'}.json")
+
+    def _read_cache(self, key: tuple) -> FetchedEntries | None:
+        path = self._cache_path(key)
+        if path is None or not path.is_file():
+            return None
+        try:
+            from pymatgen.analysis.pourbaix_diagram import PourbaixEntry
+
+            stored = json.loads(path.read_text(encoding="utf-8"))
+            if (stored["pymatgen_version"] != version("pymatgen")
+                    or time.time() - stored["retrieved_at"] > CACHE_DAYS * 86400):
+                return None
+            entries = [PourbaixEntry.from_dict(item) for item in stored["entries"]]
+        except Exception:
+            return None
+        return FetchedEntries(key[0], entries, stored["database_version"], stored["mp_api_version"],
+                              stored["pymatgen_version"], key[1], key[2], stored["retrieved_at"])
+
+    def _write_cache(self, key: tuple, fetched: FetchedEntries) -> None:
+        path = self._cache_path(key)
+        if path is None:
+            return
+        try:
+            from monty.json import MontyEncoder
+
+            stored = {
+                "database_version": fetched.database_version, "mp_api_version": fetched.mp_api_version,
+                "pymatgen_version": fetched.pymatgen_version,
+                "retrieved_at": fetched.retrieved_at or time.time(),
+                "entries": [entry.as_dict() for entry in fetched.entries],
+            }
+            path.parent.mkdir(parents=True, exist_ok=True)
+            temporary = path.with_suffix(".tmp")
+            temporary.write_text(json.dumps(stored, cls=MontyEncoder), encoding="utf-8")
+            temporary.replace(path)
+        except Exception:
+            pass
 
     def diagram(self, fetched: FetchedEntries, conditions: PourbaixConditions) -> OfficialMaterialsProjectDiagram:
         """Evaluate the fetched entries at the activities and grid of ``conditions``."""

@@ -11,11 +11,11 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from PySide6.QtCore import QSettings, Qt, QTimer
-from PySide6.QtGui import QAction, QActionGroup, QGuiApplication, QKeySequence
+from PySide6.QtCore import QSettings, QStandardPaths, Qt, QTimer
+from PySide6.QtGui import QAction, QActionGroup, QFont, QGuiApplication, QKeySequence
 from PySide6.QtWidgets import (
     QCheckBox, QComboBox, QDialog, QDialogButtonBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit,
-    QMainWindow, QMessageBox, QSplitter, QTabWidget, QVBoxLayout,
+    QMainWindow, QMessageBox, QSplitter, QTabWidget, QVBoxLayout, QWidget,
 )
 
 from .. import __version__
@@ -24,6 +24,7 @@ from ..export import diagram_figure, grid_csv, save_figure
 from ..models import ExclusionReason
 from ..records import SpeciesRecord
 from ..scenario import Calculation, Mode
+from . import logo_pixmap
 from .credentials import storage_description
 from .dft import DftController
 from .materials import matched_colors, phase_views, pretty_label
@@ -50,9 +51,12 @@ class MainWindow(QMainWindow):
         self.database = self.session.database
         self.systems = dict(self.database.available_systems())
         self.tasks = TaskRunner(self)
-        self.dft = DftController(self.tasks, self.stored, self)
+        cache_root = (Path(QStandardPaths.writableLocation(QStandardPaths.CacheLocation)) if settings is None
+                      else Path(self.stored.fileName()).parent)
+        self.dft = DftController(self.tasks, self.stored, self, cache_dir=cache_root / "materials-project")
         self.calculation: Calculation | None = None
         self.comparison: Any = None
+        self._compared_scenario: Any = None
         self._records: dict[str, SpeciesRecord] = {}
         self._reset_range = True
         self._shown_sweep: Any = None
@@ -136,6 +140,7 @@ class MainWindow(QMainWindow):
         self.pages.addTab(self.overview, "Periodic table")
         self.pages.addTab(system, "System")
         self.pages.addTab(self.database_page, "Database")
+        self.pages.setCornerWidget(self._masthead(), Qt.TopLeftCorner)
         self.pages.currentChanged.connect(self._page_changed)
         self.setCentralWidget(self.pages)
         self.status_label = QLabel()
@@ -143,6 +148,22 @@ class MainWindow(QMainWindow):
         for combo in self.findChildren(QComboBox):
             combo.setMaxVisibleItems(15)
             combo.view().setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+
+    def _masthead(self) -> QWidget:
+        logo = QLabel()
+        logo.setPixmap(logo_pixmap(22, self.devicePixelRatioF()))
+        name = QLabel("pourbase")
+        font = name.font()
+        font.setPointSizeF(font.pointSizeF() * 1.25)
+        font.setWeight(QFont.DemiBold)
+        name.setFont(font)
+        masthead = QWidget()
+        layout = QHBoxLayout(masthead)
+        layout.setContentsMargins(10, 4, 18, 4)
+        layout.setSpacing(7)
+        layout.addWidget(logo)
+        layout.addWidget(name)
+        return masthead
 
     def _build_menu(self) -> None:
         menu = self.menuBar().addMenu("&File")
@@ -224,9 +245,6 @@ class MainWindow(QMainWindow):
         self.calculation = calculation
         self.panel.set_concentration_note(calculation.concentration.molar_concentration,
                                           calculation.concentration.log10_standard_activity)
-        self.diagram_page.show_calculation(calculation, self.display, self._reset_range)
-        self._reset_range = False
-        self._update_probe()
         self.refresh_view()
         self._set_status(self._summary(calculation, elapsed))
 
@@ -286,7 +304,7 @@ class MainWindow(QMainWindow):
             self.diagram_page.probe.setHtml(html.escape(str(error)))
             return
         dft_phase = None
-        if self.comparison is not None and self.comparison.experimental.system.symbol == settings.symbol:
+        if self.comparison is not None and self._compared_scenario == self._comparison_scenario():
             try:
                 dft_phase = pretty_label(self.comparison.materials_project.phase_at(probe.pH, probe.eh_V).label)
             except ValueError:
@@ -316,6 +334,8 @@ class MainWindow(QMainWindow):
     def _page_changed(self, index: int) -> None:
         if index == 0:
             self.update_overview()
+        elif index == 1:
+            self.dft.warm_up()
         elif index == 2:
             self.database_page.load()
 
@@ -350,7 +370,8 @@ class MainWindow(QMainWindow):
         current = self.views.currentWidget()
         calculation = self.calculation
         if current is self.diagram_page and calculation is not None:
-            self.diagram_page.show_calculation(calculation, self.display, reset_range)
+            self.diagram_page.show_calculation(calculation, self.display, reset_range or self._reset_range)
+            self._reset_range = False
             self._update_probe()
         elif current is self.species_page:
             if calculation is None:
@@ -534,15 +555,15 @@ class MainWindow(QMainWindow):
             )
             return
         notes = []
-        scenario = self.settings.scenario()
-        if scenario.mode is Mode.MASS_BALANCE:
-            scenario = replace(scenario, mode=Mode.FIXED_ACTIVITY, davies_ionic_strength_mol_L=None)
+        scenario = self._comparison_scenario()
+        if self.settings.mode == Mode.MASS_BALANCE.value:
             notes.append("MP diagrams use fixed activities, so the experimental panel shows the "
                          "fixed-activity diagram at the same concentration.")
         if scenario.ligands:
             notes.append("MP diagrams are ligand-free; the experimental panel includes the enabled ligands.")
         try:
             self.comparison = self.dft.compare(self.session.calculate(scenario).diagram, entries)
+            self._compared_scenario = scenario
         except Exception as error:
             self.dft_stack.show_message("The comparison cannot be calculated",
                                         html.escape(f"{type(error).__name__}: {error}"), glyph="!")
@@ -553,6 +574,13 @@ class MainWindow(QMainWindow):
         self.dft_page.set_probe(self.settings.probe_pH, self.settings.probe_eh_V)
         self._set_status(f"{self.systems[symbol]}: {self.comparison.equivalent_domain_fraction:.1%} of the grid "
                          f"agrees with Materials Project {entries.database_version}")
+
+    def _comparison_scenario(self):
+        """The experimental scenario compared with MP: the current one at fixed activity."""
+        scenario = self.settings.scenario()
+        if scenario.mode is Mode.MASS_BALANCE:
+            scenario = replace(scenario, mode=Mode.FIXED_ACTIVITY, davies_ionic_strength_mol_L=None)
+        return scenario
 
     def edit_api_key(self) -> None:
         dialog = QDialog(self)
