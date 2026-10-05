@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 493), ("reported_thermochemistry", 1630),
+            for table, count in (("species", 500), ("reported_thermochemistry", 1665),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -84,6 +84,38 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual((bicarbonate.electrons_per_metal, bicarbonate.protons_per_metal), (2.0, -1.0))
         self.assertEqual((bicarbonate.core_oxygen_count, bicarbonate.ligand_count), (0.0, 1.0))
         self.assertEqual(bicarbonate.ligand_gibbs_energy_J_mol, -527810.0)
+
+    def test_miron_silica_versions_preserve_preference_and_formula_basis(self) -> None:
+        neutral, charged, calcium = self.database.species_records((
+            "gfe-si-h4sio4-q+0-aqueous-aq", "gfe-si-h3sio4-q-1-aqueous-aq",
+            "gfe-ca-cah3sio4-q+1-aqueous-aq",
+        ))
+        self.assertEqual(neutral.thermochemistry.gibbs_energy_J_mol.value, -1316600.0)
+        self.assertGreaterEqual({r.value for r in neutral.reported
+                                 if r.property == "gibbs_energy_of_formation"},
+                                {-834103 - 2 * 237129, -834041 - 2 * 237129})
+        self.assertEqual(charged.thermochemistry.gibbs_energy_J_mol.value, -1015175 - 237129)
+        self.assertEqual({r.value for r in charged.reported},
+                         {-1015237 - 237129, -1015175 - 237129})
+        self.assertIsNone(charged.thermochemistry.entropy_J_mol_K.value)
+        self.assertIsNone(charged.thermochemistry.formation_enthalpy_J_mol.value)
+        self.assertTrue(any(w.type == "miron_appendix_entropy_source_hold" for w in charged.warnings))
+        self.assertEqual(calcium.thermochemistry.gibbs_energy_J_mol.value, -1575097 - 237129)
+        self.assertTrue(any(w.type == "miron_published_dataset_discrepancy" for w in calcium.warnings))
+
+    def test_miron_conductance_entropy_and_explicit_nbs_enthalpy_sources(self) -> None:
+        sodium = self.database.species_records(("gfe-na-naoh-q+0-aqueous-aq",))[0]
+        self.assertEqual(sodium.thermochemistry.entropy_J_mol_K.value, 42.4)
+        enthalpies = [r for r in sodium.reported if r.property == "enthalpy_of_formation"
+                     and r.source and r.source.source_id.startswith("Miron_R04_")]
+        self.assertEqual(len(enthalpies), 2)
+        self.assertEqual(sum(r.selected_as_recommended for r in enthalpies), 1)
+        self.assertEqual({r.value for r in enthalpies}, {
+            round(g + 298.15 * (42.4 - 65.342 - 102.569 - 51.21), 6)
+            for g in (-411567, -411594)
+        })
+        self.assertTrue(all("10.18434/M32124" in r.source.locator for r in enthalpies))
+        self.assertTrue(all("NBS-derived" in r.source.source_id for r in enthalpies))
 
     def test_mines_copper_evaluations_preserve_existing_preference(self) -> None:
         copper, trichloride = self.database.species_records((

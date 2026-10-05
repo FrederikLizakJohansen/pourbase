@@ -134,8 +134,18 @@ verification remain outside the Miron addition.
 - ThermoHub licence: <https://github.com/thermohub/thermohub/blob/c3e4acf4531204e4c2974c2d4ac5a1b96f37d5ba/LICENSE>
 - Miron, G. D. et al. (2016), *Geochimica et Cosmochimica Acta* 187, 41–78.
   <https://doi.org/10.1016/j.gca.2016.04.026>
-- Miron, G. D. et al. (2017), *American Journal of Science* 317, 755–806, Tables 2, 4 and 5.
+- Miron, G. D. et al. (2017), *American Journal of Science* 317, 755–806, Tables 2, 4, 5 and Appendix A1.
   <https://doi.org/10.2475/07.2017.01>
+
+The remaining-Miron continuation adds 14 individually verified Gibbs evaluations, three original
+conductance-fit entropies republished in Appendix A1, and 18 explicitly labelled enthalpy
+calculations from verified Miron G/S and open NBS elemental reference entropies. Hydrated
+formula conversions use the open NBS H2O(l) Gibbs value. Each calculated or normalized
+observation cites its original numerical inputs and NBS PDR DOI 10.18434/M32124 under the
+NIST open licence. Article text, images and complete tables remain outside the distribution.
+Inherited mineral calibration data and source-unresolved native H/S values remain in the
+external review inventory. Two new buffered ligand references carry their selected species'
+source attribution: H₃SiO₄⁻ from the normalized Miron evaluation and Al(OH)₄⁻ from the existing NBS record.
 
 The metal-complex continuation retains individually sourced Gibbs energies, entropies and
 published derived formation enthalpies from the original research below. Each value carries

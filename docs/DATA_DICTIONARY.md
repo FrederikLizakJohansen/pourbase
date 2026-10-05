@@ -72,12 +72,32 @@ species/property. Published/data-file discrepancies retain both representations 
 Existing preferred Gibbs energies are preserved. Original fits and correlation estimates use
 `source_verified_estimate`; Monte Carlo standard deviations describe parameter dispersion.
 
+The Miron continuation retains 14 additional Gibbs evaluations and three original conductance-fit
+entropies republished in the 2017 paper. Dehydrated silica, silicate and potassium aluminate
+formulas are normalized to the stored hydrated formulas with explicitly cited open NBS liquid-water
+Gibbs energy. Each locator gives the original value, added water count and resulting value.
+The source-defined NBS HSi(OH)6⁻ record retains its separate identity.
+
+Eighteen formation enthalpies are explicitly calculated from verified original Miron G/S and open
+NBS elemental reference entropies using `H=G+298.15*(S-sum(n_i*S_element_i)+q*S_H2/2)`.
+Their sources contain `NBS-derived`, identify every input and label the result
+`source_verified_estimate`. These calculated estimates have unavailable total uncertainty and
+G/S covariance. They fill missing enthalpy fields; existing preferred values are preserved.
+Native MINES enthalpies with unresolved original reference ancestry remain in the external review.
+The NaCl and HSiO3⁻ appendix/download entropy discrepancies remain held, with database warnings.
+
 MINES metal-complex evaluations retain individually verified G, H and S from Akinfiev and Zotov
 (2001), Liu and McPhail (2005), and Akinfiev and Tagirov (2014), with a separately verified older
 AuCl evaluation from Sverjensky et al. (1997). Each available property has one preferred value;
 existing preferences are preserved. Derived enthalpies and correlation estimates retain their
 estimate status and unavailable uncertainty. Source/data-file discrepancies awaiting verification
 are identified by warnings.
+
+The Au(OH)2- native MINES enthalpy is exactly reproduced from its stored Gibbs energy,
+entropy and Au/H/O/charge reference entropies using `H=G+298.15*(S-foS)`. The warning
+records this calculation difference and preserves the original 2001 published enthalpy
+as preferred. Admission of the native variant requires complete original provenance for
+its H/O reference records; its numerical representation is retained in the external review.
 
 Original nickel and iron solubility fits from González-Siso et al. (2018) and Fürst et al.
 (2025, 2026) provide derived Gibbs estimates with explicit parent-ion and water references.
@@ -98,3 +118,10 @@ reference. Every normalized property uses the species formula stored in `species
 The `carbonate-co3` ligand reference uses the existing NBS CO₃²⁻ formation energy. Its complexes
 are available when a buffered free carbonate activity is supplied. This activity is distinct from
 a total dissolved carbonate concentration, which also depends on protonation and mass balance.
+
+The `silicate-h3sio4` and `aluminate-aloh4` ligand references use the selected H₃SiO₄⁻ and
+Al(OH)₄⁻ Gibbs energies, respectively, with their source attribution. Their complexes require an
+explicit buffered free-ligand activity. Closed mass-balance calculations conserve the selected
+active metal; total silicon or aluminum as a ligand component requires additional acid/base
+speciation and component balances. Each complex records its complete formula, ligand count,
+formal charge and electron coefficient.

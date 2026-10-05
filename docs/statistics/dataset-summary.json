@@ -11,28 +11,28 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 493,
+    "species": 500,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 1630,
-    "recommended_values": 1212,
-    "source_records": 641,
-    "distinct_citations": 89,
-    "warnings": 363,
-    "phase_records": 159,
+    "reported_thermochemistry": 1665,
+    "recommended_values": 1237,
+    "source_records": 676,
+    "distinct_citations": 96,
+    "warnings": 399,
+    "phase_records": 166,
     "resolved_phase_records": 119,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
-    "ligands": 6
+    "ligands": 8
   },
   "phases": [
     {
       "phase": "aqueous",
-      "species": 287,
-      "gibbs": 287,
-      "entropy": 221,
-      "enthalpy": 152
+      "species": 294,
+      "gibbs": 294,
+      "entropy": 224,
+      "enthalpy": 167
     },
     {
       "phase": "solid",
@@ -59,20 +59,20 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 487
+      "available": 494
     },
     {
       "property": "Entropy",
-      "available": 413
+      "available": 416
     },
     {
       "property": "Formation enthalpy",
-      "available": 312
+      "available": 327
     }
   ],
   "gibbs_status": {
     "verified": 328,
-    "source_verified_estimate": 85,
+    "source_verified_estimate": 92,
     "defined_reference_state": 74,
     "terminal_evidence_gap": 6
   },
@@ -152,28 +152,28 @@
       "symbol": "Na",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 6
+      "species": 8
     },
     {
       "atomic_number": 12,
       "symbol": "Mg",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 8
+      "species": 9
     },
     {
       "atomic_number": 13,
       "symbol": "Al",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 8
+      "species": 9
     },
     {
       "atomic_number": 14,
       "symbol": "Si",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 5
+      "species": 6
     },
     {
       "atomic_number": 15,
@@ -208,14 +208,14 @@
       "symbol": "K",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 7
+      "species": 8
     },
     {
       "atomic_number": 20,
       "symbol": "Ca",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 8
+      "species": 9
     },
     {
       "atomic_number": 21,
@@ -921,15 +921,15 @@
     {
       "symbol": "Al",
       "system": "Aluminum (Al)",
-      "species": 8,
-      "aqueous": 5,
+      "species": 9,
+      "aqueous": 6,
       "solid": 3,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 8,
+      "gibbs": 9,
       "entropy": 5,
       "enthalpy": 2,
-      "warnings": 7
+      "warnings": 9
     },
     {
       "symbol": "As",
@@ -1038,15 +1038,15 @@
     {
       "symbol": "Ca",
       "system": "Calcium (Ca)",
-      "species": 8,
-      "aqueous": 6,
+      "species": 9,
+      "aqueous": 7,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 8,
+      "gibbs": 9,
       "entropy": 7,
-      "enthalpy": 1,
-      "warnings": 10
+      "enthalpy": 5,
+      "warnings": 17
     },
     {
       "symbol": "Cd",
@@ -1324,15 +1324,15 @@
     {
       "symbol": "K",
       "system": "Potassium (K)",
-      "species": 7,
-      "aqueous": 5,
+      "species": 8,
+      "aqueous": 6,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 7,
-      "entropy": 5,
-      "enthalpy": 1,
-      "warnings": 7
+      "gibbs": 8,
+      "entropy": 7,
+      "enthalpy": 5,
+      "warnings": 15
     },
     {
       "symbol": "La",
@@ -1376,15 +1376,15 @@
     {
       "symbol": "Mg",
       "system": "Magnesium (Mg)",
-      "species": 8,
-      "aqueous": 6,
+      "species": 9,
+      "aqueous": 7,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 8,
+      "gibbs": 9,
       "entropy": 7,
-      "enthalpy": 1,
-      "warnings": 9
+      "enthalpy": 5,
+      "warnings": 16
     },
     {
       "symbol": "Mn",
@@ -1428,15 +1428,15 @@
     {
       "symbol": "Na",
       "system": "Sodium (Na)",
-      "species": 6,
-      "aqueous": 5,
+      "species": 8,
+      "aqueous": 7,
       "solid": 1,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 6,
-      "entropy": 4,
-      "enthalpy": 0,
-      "warnings": 6
+      "gibbs": 8,
+      "entropy": 5,
+      "enthalpy": 3,
+      "warnings": 15
     },
     {
       "symbol": "Nb",
@@ -1662,15 +1662,15 @@
     {
       "symbol": "Si",
       "system": "Silicon (Si)",
-      "species": 5,
-      "aqueous": 3,
+      "species": 6,
+      "aqueous": 4,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 5,
+      "gibbs": 6,
       "entropy": 4,
       "enthalpy": 4,
-      "warnings": 1
+      "warnings": 4
     },
     {
       "symbol": "Sm",
@@ -1902,6 +1902,10 @@
       "count": 18
     },
     {
+      "warning_type": "miron_nbs_reference_derived_enthalpy",
+      "count": 15
+    },
+    {
       "warning_type": "gas_aqueous_reservoir_coupling",
       "count": 13
     },
@@ -1914,6 +1918,14 @@
       "count": 8
     },
     {
+      "warning_type": "miron_r04_model_and_hydration",
+      "count": 8
+    },
+    {
+      "warning_type": "miron_buffered_silicate_aluminate",
+      "count": 6
+    },
+    {
       "warning_type": "gibbs_energy_terminal_evidence_gap",
       "count": 6
     },
@@ -1922,11 +1934,19 @@
       "count": 6
     },
     {
+      "warning_type": "miron_published_dataset_discrepancy",
+      "count": 4
+    },
+    {
+      "warning_type": "miron_republished_conductance_entropy",
+      "count": 3
+    },
+    {
       "warning_type": "Furst_2025_2026_original_fit",
       "count": 3
     },
     {
-      "warning_type": "miron_published_dataset_discrepancy",
+      "warning_type": "miron_appendix_entropy_source_hold",
       "count": 2
     },
     {
@@ -1969,7 +1989,7 @@
     },
     {
       "identity_status": "aqueous_species_identified",
-      "count": 32
+      "count": 39
     },
     {
       "identity_status": "resolved_thermochemistry_gap",

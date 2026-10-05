@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -83,6 +84,45 @@ class CalculationTests(unittest.TestCase):
         self.assertAlmostEqual(values[1], -2 - np.log10(2))
         self.assertAlmostEqual(values[2], -2, places=4)
         self.assertTrue(np.all(np.isfinite(values)))
+
+    def test_miron_silicate_hydration_preserves_transformed_energy(self) -> None:
+        hydrated = next(s for s in self.database.load_system("Si").species
+                        if s.record_id == "gfe-si-h3sio4-q-1-aqueous-aq")
+        original = replace(hydrated, formula_ascii="HSiO3", core_oxygen_count=3.0,
+                           core_hydrogen_count=1.0, gibbs_energy_J_mol=-1015175.0)
+        conditions = pb.PourbaixConditions(**SMALL)
+        ph, eh = np.meshgrid(np.linspace(0, 14, 21), np.linspace(-1.5, 2, 23))
+        energies = [pb.PourbaixEngine.transformed_gibbs_J_mol_metal(
+            s, self.database.reference_state, conditions, ph, eh
+        ) for s in (hydrated, original)]
+        np.testing.assert_allclose(*energies, rtol=0, atol=1e-8)
+
+    def test_buffered_silicate_and_aluminate_complexes_conserve_active_metal(self) -> None:
+        for metal, ligand, formula, oxidation in (
+            ("Al", "silicate-h3sio4", "AlH3SiO4", 3),
+            ("Ca", "silicate-h3sio4", "CaH3SiO4", 2),
+            ("Mg", "silicate-h3sio4", "MgH3SiO4", 2),
+            ("Na", "silicate-h3sio4", "NaH3SiO4", 1),
+            ("Na", "aluminate-aloh4", "NaAl(OH)4", 1),
+            ("K", "aluminate-aloh4", "KAl(OH)4", 1),
+        ):
+            with self.subTest(metal=metal, ligand=ligand):
+                conditions = pb.PourbaixConditions(
+                    **SMALL, ligand_activities=pb.LigandActivityModel((
+                        pb.LigandActivity(ligand, log10_free_activity=-3.0),
+                    )),
+                )
+                diagram = pb.MassBalanceEngine(self.database).calculate(
+                    metal, conditions, pb.TotalMetalConcentration(1e-6)
+                )
+                species = next(s for s in diagram.system.species if s.formula_ascii == formula)
+                self.assertEqual((species.core_oxygen_count, species.core_hydrogen_count), (0, 0))
+                self.assertEqual((species.ligand_count, species.electrons_per_metal), (1, oxidation))
+                self.assertEqual(species.charge, oxidation + species.ligand_charge)
+                np.testing.assert_allclose(
+                    diagram.dissolved_metal_mol_L + diagram.precipitated_metal_fraction * 1e-6,
+                    1e-6, rtol=1e-12,
+                )
 
     def test_boundary_equations_match_the_energies(self) -> None:
         calculation = pb.calculate(pb.Scenario("Fe", pH_points=81, eh_points=81), self.database)
