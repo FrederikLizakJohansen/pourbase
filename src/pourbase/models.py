@@ -22,11 +22,12 @@ class GibbsEnergyPolicy(str, Enum):
 
 
 class EvidenceStatus(str, Enum):
-    """Evidence behind the Gibbs energy used in a calculation."""
+    """Evidence behind a Gibbs energy record."""
 
     VERIFIED = "verified"
     SOURCE_VERIFIED_ESTIMATE = "source_verified_estimate"
     DEFINED_REFERENCE_STATE = "defined_reference_state"
+    NOT_AVAILABLE = "not_available"
     TERMINAL_EVIDENCE_GAP = "terminal_evidence_gap"
     MATERIALS_PROJECT_FALLBACK = "materials_project_sisso_300K_fallback"
 

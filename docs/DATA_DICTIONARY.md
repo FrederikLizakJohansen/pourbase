@@ -37,7 +37,7 @@ thermochemical quantities use one formula unit as the molar basis.
 - `terminal_evidence_gap`: the source investigation did not establish a defensible value for the
   exact species, phase, and reference state.
 - `accepted`: an admitted formation enthalpy.
-- `not_available`: no admitted formation enthalpy is present.
+- `not_available`: no admitted value is present for the property.
 
 Join `thermochemistry` to `species` with `record_id` and join its source fields to `sources` with the
 corresponding `source_id`. Property-specific source locators in `thermochemistry` take precedence
@@ -147,3 +147,32 @@ columns and source uncertainty intervals. Boehmite and diaspore have separate Al
 and phase records. Adding diaspore changes the aluminum equilibrium diagram where it becomes
 the lowest-energy phase. Existing preferred fields remain selected. New values inherited from
 JANAF or unresolved CODATA compilations are held in the source review.
+
+The sulfate continuation retains 118 crystalline properties from the openly released NBS
+PDR, DOI 10.18434/M32124, and nine USGS properties with individually reviewed ancestry.
+Each source identifies the exact CSV record or printed table row. Hydrates retain every water
+in their formula unit; distinct calcium sulfate forms and green tetragonal nickel hexahydrate
+have separate phase records. The original NBS notes for thenardite, mirabilite and arcanite
+state that their G-H-S constraint was relaxed. These reported properties remain independent
+selections. All prior preferences are preserved; each available property has one preferred value.
+
+Eleven additional crystalline hydrate records retain their available NBS formation enthalpies.
+G and S remain `not_available`; these records appear as incomplete when sulfate is selected
+and require a sourced Gibbs energy for equilibrium calculations. The blue monoclinic nickel
+hexahydrate retains its own enthalpy and identity separately from green tetragonal retgersite.
+
+Fifteen rare-earth monosulfate Gibbs estimates use the original Schijf and Byrne (2004)
+Table 3 constants extrapolated to zero ionic strength. Their locators record
+`G_complex=G_metal+G_sulfate-R*T*ln(10)*log10(beta1)` and every open NBS parent reference.
+The source constant precision describes the reaction; total Gibbs uncertainty is unavailable.
+Ambient laboratory pressure is represented as nominal 1 bar with an unquantified correction.
+The preserved yttrium-ion preference differs from the NBS parent used in its derivation;
+a warning records the resulting shift in the implied constant. Entropy and enthalpy remain
+unavailable for these complexes. The 2016 neodymium constant discrepancy and the original
+2008 disulfate constants measured at 100 bar retain separate source/state holds.
+
+One crystalline ferric sulfate Gibbs estimate uses open NBS formation enthalpy, independently
+sourced USGS entropy and open elemental entropy references. Its locator gives the complete
+`G=H-T*formation_entropy` derivation and labels the total uncertainty unavailable. The native
+USGS H/G evaluation retains its separate ancestry review. Sulfate species participate when
+a buffered free sulfate activity is supplied; the existing model conserves the active metal.

@@ -544,6 +544,7 @@ def plot_dataset_overview(stats: dict[str, Any]) -> None:
         ("verified", "verified", BLUE),
         ("defined_reference_state", "reference state", GREEN),
         ("source_verified_estimate", "source estimate", ORANGE),
+        ("not_available", "unavailable", PALE),
         ("terminal_evidence_gap", "open gap", SPINE),
     ]
     left = 0

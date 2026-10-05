@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 544), ("reported_thermochemistry", 1860),
+            for table, count in (("species", 612), ("reported_thermochemistry", 2014),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -156,6 +156,59 @@ class DatasetSnapshotTests(unittest.TestCase):
         with closing(sqlite3.connect(self.database.path)) as connection:
             statuses = {row[0] for row in connection.execute("SELECT DISTINCT gibbs_status FROM thermochemistry")}
         self.assertLessEqual(statuses, {item.value for item in pb.EvidenceStatus})
+
+    def test_sulfate_gibbs_uses_original_zero_ionic_strength_constant(self) -> None:
+        neodymium = self.database.species_records((
+            "gfe-nd-ndso4-q+1-aqueous-aq",
+        ))[0]
+        factor = 8.31446261815324 * 298.15 * math.log(10)
+        self.assertAlmostEqual(neodymium.thermochemistry.gibbs_energy_J_mol.value,
+                               -671600 - 744530 - factor * 3.60, places=5)
+        self.assertEqual(neodymium.thermochemistry.gibbs_energy_J_mol.status,
+                         "source_verified_estimate")
+        self.assertIsNone(neodymium.thermochemistry.gibbs_energy_J_mol.uncertainty)
+        self.assertIsNone(neodymium.thermochemistry.entropy_J_mol_K.value)
+        self.assertIsNone(neodymium.thermochemistry.formation_enthalpy_J_mol.value)
+        self.assertIn("LAST COLUMN", neodymium.reported[0].source.locator)
+        self.assertTrue(any(w.type == "sulfate_2016_Nd_constant_discrepancy"
+                            for w in neodymium.warnings))
+
+    def test_yttrium_sulfate_preserves_and_exposes_parent_reference_difference(self) -> None:
+        system = self.database.load_system("Y", ligand_ids=("sulfate-so4",))
+        ion = next(s for s in system.species if s.formula_ascii == "Y" and s.charge == 3)
+        complex_ = next(s for s in system.species if s.formula_ascii == "YSO4")
+        factor = 8.31446261815324 * 298.15 * math.log(10)
+        self.assertEqual(ion.gibbs_energy_J_mol, -685339.2)
+        implied = (ion.gibbs_energy_J_mol + complex_.ligand_gibbs_energy_J_mol
+                   - complex_.gibbs_energy_J_mol) / factor
+        self.assertAlmostEqual(implied, 3.50 + (-685339.2 + 693800) / factor, places=9)
+        record = self.database.species_records((complex_.record_id,))[0]
+        self.assertTrue(any(w.type == "sulfate_parent_reference_mismatch"
+                            for w in record.warnings))
+
+    def test_sulfate_hydrates_preserve_water_counts_and_distinct_phases(self) -> None:
+        calcium = self.database.load_system("Ca", ligand_ids=("sulfate-so4",))
+        halves = [s for s in calcium.species if s.formula_ascii == "CaSO4(H2O)0.5"]
+        self.assertEqual(len(halves), 2)
+        for species in halves:
+            self.assertEqual((species.core_oxygen_count, species.core_hydrogen_count), (.5, 1))
+            self.assertEqual((species.electrons_per_metal, species.protons_per_metal), (2, 0))
+        self.assertEqual({s.gibbs_energy_J_mol for s in halves}, {-1436740, -1435780})
+        nickel = self.database.load_system("Ni", ligand_ids=("sulfate-so4",))
+        hydrate = next(s for s in nickel.species if s.formula_ascii == "NiSO4(H2O)6")
+        self.assertEqual((hydrate.core_oxygen_count, hydrate.core_hydrogen_count), (6, 12))
+        self.assertIn("alpha-green-tetragonal", hydrate.record_id)
+        self.assertEqual(hydrate.gibbs_energy_J_mol, -2224610)
+        ordinary = self.database.load_system("Ni")
+        self.assertFalse(any(s.record_id == hydrate.record_id for s in ordinary.species))
+        blue = self.database.species_records((
+            "gfe-ni-niso4-h2o-6-q+0-solid-nickel-sulfate-beta-blue-monoclinic-hexahydrate",
+        ))[0]
+        self.assertIsNone(blue.thermochemistry.gibbs_energy_J_mol.value)
+        self.assertEqual(blue.thermochemistry.gibbs_energy_J_mol.status,
+                         pb.EvidenceStatus.NOT_AVAILABLE.value)
+        self.assertEqual(blue.thermochemistry.formation_enthalpy_J_mol.value, -2672300)
+        self.assertFalse(any(s.record_id == blue.record_id for s in nickel.species))
 
     def test_rare_earth_chloride_fit_variants_and_derived_enthalpies(self) -> None:
         mono, double = self.database.species_records((
