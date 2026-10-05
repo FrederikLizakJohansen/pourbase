@@ -32,7 +32,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 - `defined_reference_state`: an elemental standard state with formation energy zero by definition.
 - `verified`: a recommended value supported by the cited source.
-- `source_verified_estimate`: a published or evaluated estimate, clearly labelled as such.
+- `source_verified_estimate`: a published or evaluated estimate, including a derived formation
+  enthalpy whose source locator and warning describe the derivation and reference properties.
 - `terminal_evidence_gap`: the source investigation did not establish a defensible value for the
   exact species, phase, and reference state.
 - `accepted`: an admitted formation enthalpy.
@@ -46,6 +47,12 @@ over the general locator in `sources`.
 calculation-facing `thermochemistry` table. Other rows preserve earlier reported values. These rows
 are observations and source records, not an automatically averaged population.
 
+Verified NBS fallback observations and the USGS plattnerite evaluation are retained as
+alternatives with `selected_as_recommended=0`. Each has a property-specific source record
+containing the exact table or CSV locator, standard state and reuse attribution. The existing
+preferred fields supply calculations. Reported USGS uncertainty intervals retain their source
+interpretation; they are not assigned an independent one-sigma convention or covariance.
+
 `computational_fallbacks` never overwrites `thermochemistry`. The package reads it only under the
 explicit `experimental_then_mp` energy policy, and only when the recommended experimental Gibbs
 field is empty.
@@ -55,3 +62,28 @@ field is empty.
 the formation reaction used by the Pourbaix calculation. A negative value means that the reaction
 consumes electrons. These values differ for metal hydrides. For example, TiH2 stores oxidation state
 +2 and electron coefficient -2.
+
+## Retained aqueous research evaluations
+
+Miron (2016, 2017) model evaluations retain their publication year, exact property locator,
+evidence status and reported uncertainty. Alternate evaluations remain in
+`reported_thermochemistry`; calculations use the single preferred value for each available
+species/property. Published/data-file discrepancies retain both representations with a warning.
+Existing preferred Gibbs energies are preserved. Original fits and correlation estimates use
+`source_verified_estimate`; Monte Carlo standard deviations describe parameter dispersion.
+
+MINES metal-complex evaluations retain individually verified G, H and S from Akinfiev and Zotov
+(2001), Liu and McPhail (2005), and Akinfiev and Tagirov (2014), with a separately verified older
+AuCl evaluation from Sverjensky et al. (1997). Each available property has one preferred value;
+existing preferences are preserved. Derived enthalpies and correlation estimates retain their
+estimate status and unavailable uncertainty. Source/data-file discrepancies awaiting verification
+are identified by warnings.
+
+The dehydrated source formulas ZnO(aq) and HZnO2⁻ correspond to the existing Zn(OH)2(aq) and
+Zn(OH)3⁻ representations after adding one H2O(l) formula unit. Their property locators document
+the original value, exact calorie conversion, water adjustment and openly licensed NBS water
+reference. Every normalized property uses the species formula stored in `species`.
+
+The `carbonate-co3` ligand reference uses the existing NBS CO₃²⁻ formation energy. Its complexes
+are available when a buffered free carbonate activity is supplied. This activity is distinct from
+a total dissolved carbonate concentration, which also depends on protonation and mass balance.

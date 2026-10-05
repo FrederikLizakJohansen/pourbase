@@ -2,7 +2,7 @@
   "metadata": {
     "database_role": "public_release",
     "dataset_version": "1.0.0",
-    "freeze_date": "2026-09-24",
+    "freeze_date": "2026-10-05",
     "publication_status": "release_candidate_pending_collaborator_review",
     "reference_pressure_bar": "1.0",
     "reference_temperature_K": "298.15",
@@ -11,28 +11,28 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 460,
+    "species": 490,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 1414,
-    "recommended_values": 1135,
-    "source_records": 425,
-    "distinct_citations": 66,
-    "warnings": 237,
-    "phase_records": 126,
+    "reported_thermochemistry": 1622,
+    "recommended_values": 1209,
+    "source_records": 633,
+    "distinct_citations": 86,
+    "warnings": 356,
+    "phase_records": 156,
     "resolved_phase_records": 118,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
-    "ligands": 5
+    "ligands": 6
   },
   "phases": [
     {
       "phase": "aqueous",
-      "species": 255,
-      "gibbs": 255,
-      "entropy": 196,
-      "enthalpy": 133
+      "species": 285,
+      "gibbs": 285,
+      "entropy": 221,
+      "enthalpy": 152
     },
     {
       "phase": "solid",
@@ -59,21 +59,21 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 454
+      "available": 484
     },
     {
       "property": "Entropy",
-      "available": 388
+      "available": 413
     },
     {
       "property": "Formation enthalpy",
-      "available": 293
+      "available": 312
     }
   ],
   "gibbs_status": {
     "verified": 328,
+    "source_verified_estimate": 82,
     "defined_reference_state": 74,
-    "source_verified_estimate": 52,
     "terminal_evidence_gap": 6
   },
   "element_coverage": [
@@ -152,21 +152,21 @@
       "symbol": "Na",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 2
+      "species": 6
     },
     {
       "atomic_number": 12,
       "symbol": "Mg",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 4
+      "species": 8
     },
     {
       "atomic_number": 13,
       "symbol": "Al",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 5
+      "species": 8
     },
     {
       "atomic_number": 14,
@@ -208,14 +208,14 @@
       "symbol": "K",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 3
+      "species": 7
     },
     {
       "atomic_number": 20,
       "symbol": "Ca",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 4
+      "species": 8
     },
     {
       "atomic_number": 21,
@@ -278,14 +278,14 @@
       "symbol": "Cu",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 9
+      "species": 13
     },
     {
       "atomic_number": 30,
       "symbol": "Zn",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 8
+      "species": 12
     },
     {
       "atomic_number": 31,
@@ -404,7 +404,7 @@
       "symbol": "Ag",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 13
+      "species": 14
     },
     {
       "atomic_number": 48,
@@ -628,7 +628,7 @@
       "symbol": "Au",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 10
+      "species": 12
     },
     {
       "atomic_number": 80,
@@ -908,28 +908,28 @@
     {
       "symbol": "Ag",
       "system": "Silver (Ag)",
-      "species": 13,
-      "aqueous": 5,
+      "species": 14,
+      "aqueous": 6,
       "solid": 8,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 13,
-      "entropy": 10,
-      "enthalpy": 7,
-      "warnings": 5
+      "gibbs": 14,
+      "entropy": 13,
+      "enthalpy": 11,
+      "warnings": 13
     },
     {
       "symbol": "Al",
       "system": "Aluminum (Al)",
-      "species": 5,
-      "aqueous": 2,
+      "species": 8,
+      "aqueous": 5,
       "solid": 3,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 5,
+      "gibbs": 8,
       "entropy": 5,
       "enthalpy": 2,
-      "warnings": 0
+      "warnings": 7
     },
     {
       "symbol": "As",
@@ -947,15 +947,15 @@
     {
       "symbol": "Au",
       "system": "Gold (Au)",
-      "species": 10,
-      "aqueous": 8,
+      "species": 12,
+      "aqueous": 10,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 9,
-      "entropy": 3,
-      "enthalpy": 1,
-      "warnings": 12
+      "gibbs": 11,
+      "entropy": 5,
+      "enthalpy": 3,
+      "warnings": 17
     },
     {
       "symbol": "B",
@@ -981,7 +981,7 @@
       "gibbs": 4,
       "entropy": 3,
       "enthalpy": 1,
-      "warnings": 1
+      "warnings": 2
     },
     {
       "symbol": "Be",
@@ -994,7 +994,7 @@
       "gibbs": 5,
       "entropy": 5,
       "enthalpy": 3,
-      "warnings": 1
+      "warnings": 4
     },
     {
       "symbol": "Bi",
@@ -1033,20 +1033,20 @@
       "gibbs": 7,
       "entropy": 7,
       "enthalpy": 7,
-      "warnings": 6
+      "warnings": 7
     },
     {
       "symbol": "Ca",
       "system": "Calcium (Ca)",
-      "species": 4,
-      "aqueous": 2,
+      "species": 8,
+      "aqueous": 6,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 4,
-      "entropy": 3,
+      "gibbs": 8,
+      "entropy": 7,
       "enthalpy": 1,
-      "warnings": 1
+      "warnings": 10
     },
     {
       "symbol": "Cd",
@@ -1098,7 +1098,7 @@
       "gibbs": 7,
       "entropy": 6,
       "enthalpy": 3,
-      "warnings": 4
+      "warnings": 6
     },
     {
       "symbol": "Cr",
@@ -1111,7 +1111,7 @@
       "gibbs": 7,
       "entropy": 6,
       "enthalpy": 1,
-      "warnings": 1
+      "warnings": 3
     },
     {
       "symbol": "Cs",
@@ -1124,20 +1124,20 @@
       "gibbs": 2,
       "entropy": 2,
       "enthalpy": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
       "symbol": "Cu",
       "system": "Copper (Cu)",
-      "species": 9,
-      "aqueous": 5,
+      "species": 13,
+      "aqueous": 9,
       "solid": 4,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 9,
-      "entropy": 9,
-      "enthalpy": 3,
-      "warnings": 4
+      "gibbs": 13,
+      "entropy": 13,
+      "enthalpy": 9,
+      "warnings": 21
     },
     {
       "symbol": "Dy",
@@ -1202,7 +1202,7 @@
       "gibbs": 14,
       "entropy": 11,
       "enthalpy": 4,
-      "warnings": 6
+      "warnings": 10
     },
     {
       "symbol": "Ga",
@@ -1215,7 +1215,7 @@
       "gibbs": 7,
       "entropy": 6,
       "enthalpy": 2,
-      "warnings": 4
+      "warnings": 5
     },
     {
       "symbol": "Gd",
@@ -1324,15 +1324,15 @@
     {
       "symbol": "K",
       "system": "Potassium (K)",
-      "species": 3,
-      "aqueous": 1,
+      "species": 7,
+      "aqueous": 5,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 3,
-      "entropy": 3,
+      "gibbs": 7,
+      "entropy": 5,
       "enthalpy": 1,
-      "warnings": 0
+      "warnings": 7
     },
     {
       "symbol": "La",
@@ -1358,7 +1358,7 @@
       "gibbs": 3,
       "entropy": 3,
       "enthalpy": 1,
-      "warnings": 0
+      "warnings": 1
     },
     {
       "symbol": "Lu",
@@ -1376,15 +1376,15 @@
     {
       "symbol": "Mg",
       "system": "Magnesium (Mg)",
-      "species": 4,
-      "aqueous": 2,
+      "species": 8,
+      "aqueous": 6,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 4,
-      "entropy": 3,
+      "gibbs": 8,
+      "entropy": 7,
       "enthalpy": 1,
-      "warnings": 1
+      "warnings": 9
     },
     {
       "symbol": "Mn",
@@ -1410,7 +1410,7 @@
       "gibbs": 4,
       "entropy": 4,
       "enthalpy": 2,
-      "warnings": 0
+      "warnings": 1
     },
     {
       "symbol": "N",
@@ -1428,15 +1428,15 @@
     {
       "symbol": "Na",
       "system": "Sodium (Na)",
-      "species": 2,
-      "aqueous": 1,
+      "species": 6,
+      "aqueous": 5,
       "solid": 1,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 2,
-      "entropy": 2,
+      "gibbs": 6,
+      "entropy": 4,
       "enthalpy": 0,
-      "warnings": 0
+      "warnings": 6
     },
     {
       "symbol": "Nb",
@@ -1475,7 +1475,7 @@
       "gibbs": 6,
       "entropy": 5,
       "enthalpy": 2,
-      "warnings": 7
+      "warnings": 8
     },
     {
       "symbol": "Os",
@@ -1514,7 +1514,7 @@
       "gibbs": 10,
       "entropy": 9,
       "enthalpy": 6,
-      "warnings": 3
+      "warnings": 7
     },
     {
       "symbol": "Pd",
@@ -1566,7 +1566,7 @@
       "gibbs": 2,
       "entropy": 2,
       "enthalpy": 0,
-      "warnings": 0
+      "warnings": 1
     },
     {
       "symbol": "Re",
@@ -1696,7 +1696,7 @@
       "gibbs": 7,
       "entropy": 5,
       "enthalpy": 3,
-      "warnings": 3
+      "warnings": 5
     },
     {
       "symbol": "Sr",
@@ -1709,7 +1709,7 @@
       "gibbs": 4,
       "entropy": 3,
       "enthalpy": 1,
-      "warnings": 1
+      "warnings": 2
     },
     {
       "symbol": "Ta",
@@ -1722,7 +1722,7 @@
       "gibbs": 4,
       "entropy": 2,
       "enthalpy": 1,
-      "warnings": 5
+      "warnings": 6
     },
     {
       "symbol": "Tb",
@@ -1761,7 +1761,7 @@
       "gibbs": 7,
       "entropy": 7,
       "enthalpy": 4,
-      "warnings": 6
+      "warnings": 9
     },
     {
       "symbol": "Tl",
@@ -1800,7 +1800,7 @@
       "gibbs": 14,
       "entropy": 12,
       "enthalpy": 7,
-      "warnings": 3
+      "warnings": 5
     },
     {
       "symbol": "W",
@@ -1813,7 +1813,7 @@
       "gibbs": 4,
       "entropy": 4,
       "enthalpy": 2,
-      "warnings": 2
+      "warnings": 5
     },
     {
       "symbol": "Y",
@@ -1844,15 +1844,15 @@
     {
       "symbol": "Zn",
       "system": "Zinc (Zn)",
-      "species": 8,
-      "aqueous": 5,
+      "species": 12,
+      "aqueous": 9,
       "solid": 3,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 8,
-      "entropy": 8,
-      "enthalpy": 2,
-      "warnings": 1
+      "gibbs": 12,
+      "entropy": 12,
+      "enthalpy": 9,
+      "warnings": 18
     },
     {
       "symbol": "Zr",
@@ -1882,6 +1882,22 @@
       "count": 52
     },
     {
+      "warning_type": "retained_nbs_evaluation",
+      "count": 45
+    },
+    {
+      "warning_type": "miron_model_evidence_and_consistency",
+      "count": 28
+    },
+    {
+      "warning_type": "mines_model_evaluation",
+      "count": 20
+    },
+    {
+      "warning_type": "mines_derived_enthalpy",
+      "count": 19
+    },
+    {
       "warning_type": "phase_identity_limit",
       "count": 18
     },
@@ -1906,7 +1922,27 @@
       "count": 6
     },
     {
+      "warning_type": "miron_published_dataset_discrepancy",
+      "count": 2
+    },
+    {
+      "warning_type": "mines_hydration_normalization",
+      "count": 2
+    },
+    {
       "warning_type": "source_erratum",
+      "count": 1
+    },
+    {
+      "warning_type": "retained_usgs_plattnerite_evaluation",
+      "count": 1
+    },
+    {
+      "warning_type": "mines_native_enthalpy_discrepancy",
+      "count": 1
+    },
+    {
+      "warning_type": "mines_later_evaluation_pending",
       "count": 1
     }
   ],
@@ -1914,6 +1950,10 @@
     {
       "identity_status": "resolved",
       "count": 108
+    },
+    {
+      "identity_status": "aqueous_species_identified",
+      "count": 30
     },
     {
       "identity_status": "resolved_thermochemistry_gap",

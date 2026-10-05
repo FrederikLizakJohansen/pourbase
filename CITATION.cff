@@ -16,7 +16,7 @@ keywords:
   - density functional theory
   - aqueous ions
 abstract: >-
-  A source-backed database of 460 aqueous, solid, liquid, and gas species across 74
+  A source-backed database of 490 aqueous, solid, liquid, and gas species across 74
   supported elemental systems. Version 1.0 provides recommended thermochemistry, retained reported
   values, source references, explicit evidence gaps, phase identities, selected Materials Project
   data, and an experimental Pourbaix calculation package at 298.15 K and 1 bar.
