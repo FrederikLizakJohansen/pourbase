@@ -6,7 +6,7 @@
 </p>
 
 pourbase is a source-linked database of experimental standard thermochemistry and a Python package
-for calculating Pourbaix diagrams at 298.15 K and 1 bar. The bundled SQLite database holds 500
+for calculating Pourbaix diagrams at 298.15 K and 1 bar. The bundled SQLite database holds 544
 aqueous, solid, liquid and gas species across 74 elemental systems. Every value keeps its citation,
 exact source location, evidence status, uncertainty when available, phase identity and scientific
 warnings. Reviewed crystalline phases are matched to Materials Project structures and DFT formation

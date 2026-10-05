@@ -125,3 +125,25 @@ explicit buffered free-ligand activity. Closed mass-balance calculations conserv
 active metal; total silicon or aluminum as a ligand component requires additional acid/base
 speciation and component balances. Each complex records its complete formula, ligand count,
 formal charge and electron coefficient.
+
+The MINES continuation retains original Migdisov (2009) rare-earth chloride and fluoride
+model evaluations. The 14 singly chlorinated species have two entropy fits: Table 7 supplies
+the preferred entropy, consistent with the authors' 2016 Table 3, and Table 5 remains available
+as an alternative. Shared Gibbs energies republished across tables and versions represent one
+evaluation. Source calories are converted using exactly 4.184 J/cal.
+
+Fifty-six formation enthalpies are explicitly derived from those original G/S fits and open
+NBS elemental entropies. They retain `source_verified_estimate`, their input locators, the
+conventional proton-reference correction and unavailable total uncertainty. The two entropy
+fits also produce two separately labelled enthalpy estimates. Native MINES enthalpies retain
+their own source-resolution requirements.
+
+The fluoride ligand reference matches the existing preferred F⁻ Gibbs energy, −278790 J/mol,
+and cites NBS PDR CSV logical record 119. Fluoride complexes use a supplied free-fluoride
+activity. Modeling total fluoride requires its acid-base speciation and component balance.
+
+Forty-one additional USGS Bulletin 2131 properties retain their property-specific reference
+columns and source uncertainty intervals. Boehmite and diaspore have separate AlOOH species
+and phase records. Adding diaspore changes the aluminum equilibrium diagram where it becomes
+the lowest-energy phase. Existing preferred fields remain selected. New values inherited from
+JANAF or unresolved CODATA compilations are held in the source review.

@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 500), ("reported_thermochemistry", 1665),
+            for table, count in (("species", 544), ("reported_thermochemistry", 1860),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -156,6 +156,63 @@ class DatasetSnapshotTests(unittest.TestCase):
         with closing(sqlite3.connect(self.database.path)) as connection:
             statuses = {row[0] for row in connection.execute("SELECT DISTINCT gibbs_status FROM thermochemistry")}
         self.assertLessEqual(statuses, {item.value for item in pb.EvidenceStatus})
+
+    def test_rare_earth_chloride_fit_variants_and_derived_enthalpies(self) -> None:
+        mono, double = self.database.species_records((
+            "gfe-la-lacl-q+2-aqueous-aq", "gfe-la-lacl2-q+1-aqueous-aq",
+        ))
+        self.assertAlmostEqual(mono.thermochemistry.gibbs_energy_J_mol.value, -196390 * 4.184)
+        entropies = [r for r in mono.reported if r.property == "absolute_entropy"]
+        self.assertEqual({r.value for r in entropies}, {
+            round(s * 4.184, 6) for s in (-47.06, -27.49)
+        })
+        selected = next(r for r in entropies if r.selected_as_recommended)
+        self.assertAlmostEqual(selected.value, -27.49 * 4.184)
+        self.assertIn("Table7", selected.source.source_id)
+        enthalpies = [r for r in mono.reported if r.property == "enthalpy_of_formation"]
+        self.assertEqual(len(enthalpies), 2)
+        for row in enthalpies:
+            self.assertIn("NBSderived", row.source.source_id)
+            self.assertIn("10.18434/M32124", row.source.locator)
+            self.assertIsNone(row.uncertainty)
+            self.assertEqual(row.status, "source_verified_estimate")
+        expected = -196390 * 4.184 + 298.15 * (-27.49 * 4.184 - 56.9 - 223.066 / 2 + 130.684)
+        self.assertAlmostEqual(mono.thermochemistry.formation_enthalpy_J_mol.value, expected, places=5)
+        loaded = self.database.load_system("La", ligand_ids=("chloride-cl",))
+        encoded = {r.record_id: r for r in loaded.species}
+        self.assertEqual((encoded[mono.record_id].charge, encoded[mono.record_id].ligand_count), (2, 1))
+        self.assertEqual((encoded[double.record_id].charge, encoded[double.record_id].ligand_count), (1, 2))
+        self.assertEqual(encoded[double.record_id].electrons_per_metal, 3)
+
+    def test_rare_earth_fluoride_reference_and_metal_inventory(self) -> None:
+        ordinary = self.database.load_system("La")
+        self.assertFalse(any(r.formula_ascii == "LaF" for r in ordinary.species))
+        enabled = self.database.load_system("La", ligand_ids=("fluoride-f",))
+        fluoride = next(r for r in enabled.species if r.formula_ascii == "LaF")
+        self.assertEqual((fluoride.charge, fluoride.ligand_count, fluoride.electrons_per_metal), (2, 1, 3))
+        self.assertEqual(fluoride.ligand_gibbs_energy_J_mol, -278790)
+        conditions = pb.PourbaixConditions(pH_points=5, eh_points=5,
+            ligand_activities=pb.LigandActivityModel((
+                pb.LigandActivity("fluoride-f", log10_free_activity=-3),
+            )))
+        total = 1e-6
+        balance = pb.MassBalanceEngine(self.database).calculate(
+            "La", conditions, pb.TotalMetalConcentration(total), allow_incomplete=True,
+        )
+        error = abs(balance.dissolved_metal_mol_L + total * balance.precipitated_metal_fraction - total)
+        self.assertLess(float(error.max()), 1e-15)
+
+    def test_aluminum_oxyhydroxide_polymorphs_have_separate_records(self) -> None:
+        boehmite, diaspore, gibbsite = self.database.species_records((
+            "gfe-al-alooh-q+0-solid-boehmite", "gfe-al-alooh-q+0-solid-diaspore",
+            "gfe-al-al-oh-3-q+0-solid-gibbsite",
+        ))
+        self.assertEqual(boehmite.formula_ascii, diaspore.formula_ascii)
+        self.assertEqual(boehmite.thermochemistry.gibbs_energy_J_mol.value, -918400)
+        self.assertEqual(diaspore.thermochemistry.gibbs_energy_J_mol.value, -922700)
+        self.assertEqual(boehmite.thermochemistry.gibbs_energy_J_mol.uncertainty, 2200)
+        self.assertEqual(gibbsite.thermochemistry.gibbs_energy_J_mol.value, -1155105)
+        self.assertTrue(all("10.3133/b2131" in r.source.url for r in boehmite.reported))
 
     def test_original_hydrolysis_fits_preserve_parent_and_hydration_basis(self) -> None:
         nickel, solid, iron, hydrated = self.database.species_records((

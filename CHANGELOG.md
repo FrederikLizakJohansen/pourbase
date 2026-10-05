@@ -4,7 +4,10 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
-- 460 species across 74 supported elemental systems, with recommended Gibbs energies for 454.
+- 544 species and 1860 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 538.
+- Original rare-earth chloride and fluoride fits, retained alternative entropy fits, explicitly
+  NBS-derived enthalpy estimates, and distinct boehmite and diaspore phases.
 - Six solid gaps with separately stored, opt-in Materials Project 300 K SISSO estimates.
 - 105 accepted Materials Project phase matches and 299 method-specific energy rows from MP
   database version 2026.04.13.

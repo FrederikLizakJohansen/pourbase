@@ -16,7 +16,7 @@ alternatives. Values in kJ/mol were converted to J/mol; entropy units were retai
 observation cites its digitized CSV logical record, formula, state and property column.
 The existing preferred properties remain selected for calculations.
 
-## USGS plattnerite evaluation
+## USGS mineral evaluations
 
 The database retains the plattnerite PbO2 Gibbs energy, formation enthalpy and absolute entropy
 from Robie and Hemingway (1995), USGS Bulletin 2131, printed pp. 18 and 209, at 298.15 K and
@@ -169,3 +169,35 @@ Property locators retain the original facts, conversion and NBS attribution.
 - Sverjensky, D. A., Shock, E. L. and Helgeson, H. C. (1997), *Geochimica et Cosmochimica
   Acta* 61(7), 1359–1412, Table 12, p. 1400, AuCl row and footnote h.
   <https://doi.org/10.1016/S0016-7037(97)00009-4>
+
+## Rare-earth MINES continuation
+
+The database retains 98 individually verified original model outputs from Migdisov,
+Williams-Jones and Wagner (2009): 42 Gibbs energies and 56 fitted entropies for 14 rare-earth
+monochloride, dichloride and monofluoride complexes. The alternative monochloride entropy
+fits are both retained; the preferred fit follows the authors' 2016 selection. Each numerical
+fact cites its original table, page, species, charge, unit and conversion. Shared evaluations
+republished in 2016 retain their original 2009 identity.
+
+An additional 56 enthalpies are explicitly calculated from these fits and the openly licensed
+NBS elemental entropies, with the conventional aqueous proton-reference correction. They are
+labelled estimates with unavailable total uncertainty and covariance. The new fluoride ligand
+reference cites NBS PDR logical record 119, F⁻(aq). NIST is acknowledged.
+
+The continuation also retains 41 property-specific USGS Bulletin 2131 evaluations, including
+the separate boehmite and diaspore phases. Their original research and government reference
+lineages and reported uncertainty intervals are cited. New JANAF-derived values and unresolved
+CODATA compilation candidates remain in the external source review. USGS is acknowledged.
+
+Scientific article text, images and complete tables are outside the distributed package.
+The retained entries consist of individually referenced numerical facts and labelled calculations.
+
+- Migdisov, A. A., Williams-Jones, A. E. and Wagner, T. (2009), *Geochimica et Cosmochimica
+  Acta* 73, 7087–7109, Tables 4–7. <https://doi.org/10.1016/j.gca.2009.08.023>
+- Migdisov, A. A. et al. (2016), *Chemical Geology* 439, 13–42, Tables 3 and 5.
+  <https://doi.org/10.1016/j.chemgeo.2016.06.005>
+- Original accepted manuscript: <https://www.osti.gov/biblio/1351190>
+- Robie and Hemingway (1995), USGS Bulletin 2131, pp. 15–20.
+  <https://doi.org/10.3133/b2131>
+- USGS data policy: <https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits>
+- NBS Tables with errata: <https://doi.org/10.18434/M32124>
