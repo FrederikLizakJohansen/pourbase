@@ -79,6 +79,17 @@ existing preferences are preserved. Derived enthalpies and correlation estimates
 estimate status and unavailable uncertainty. Source/data-file discrepancies awaiting verification
 are identified by warnings.
 
+Original nickel and iron solubility fits from González-Siso et al. (2018) and Fürst et al.
+(2025, 2026) provide derived Gibbs estimates with explicit parent-ion and water references.
+New aqueous Ni(OH)2, crystalline Fe(OH)2 and aqueous Fe(OH)4²⁻ records have one preferred
+Gibbs estimate. Existing-species evaluations remain alternatives. Warnings record crystallite
+size, nominal temperature and pressure, fitted-model dependencies and unavailable total uncertainty.
+
+The retained Sander (2023) nitrogen triplet is derived from its CC BY 4.0 numerical supplement,
+with open NBS molar-mass and gas-entropy references. Its absolute entropy includes N2(g)
+reference entropy. The existing preferred entropy's formation/absolute convention defect is
+identified by `absolute_entropy_convention_issue`; existing fallback preferences are preserved.
+
 The dehydrated source formulas ZnO(aq) and HZnO2⁻ correspond to the existing Zn(OH)2(aq) and
 Zn(OH)3⁻ representations after adding one H2O(l) formula unit. Their property locators document
 the original value, exact calorie conversion, water adjustment and openly licensed NBS water

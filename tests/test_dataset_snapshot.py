@@ -6,6 +6,7 @@ when the data change; they are not tests of the calculation code.
 
 from __future__ import annotations
 
+import math
 import sqlite3
 import tempfile
 import unittest
@@ -34,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 490), ("reported_thermochemistry", 1622),
+            for table, count in (("species", 493), ("reported_thermochemistry", 1630),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -123,6 +124,41 @@ class DatasetSnapshotTests(unittest.TestCase):
         with closing(sqlite3.connect(self.database.path)) as connection:
             statuses = {row[0] for row in connection.execute("SELECT DISTINCT gibbs_status FROM thermochemistry")}
         self.assertLessEqual(statuses, {item.value for item in pb.EvidenceStatus})
+
+    def test_original_hydrolysis_fits_preserve_parent_and_hydration_basis(self) -> None:
+        nickel, solid, iron, hydrated = self.database.species_records((
+            "gfe-ni-ni-oh-2-q+0-aqueous-aq", "gfe-ni-ni-oh-2-q+0-solid-s",
+            "gfe-fe-fe-q+2-aqueous-aq", "gfe-fe-hfeo2-q-1-aqueous-aq"
+        ))
+        rt_log10 = 8.31446261815324 * 298.15 * math.log(10)
+        original_solid = next(row for row in solid.reported if row.source
+                              and row.source.source_id.startswith("GonzalezSiso_2018_original_fit_"))
+        self.assertEqual(solid.thermochemistry.gibbs_energy_J_mol.value, -457100.0)
+        self.assertAlmostEqual(-(nickel.thermochemistry.gibbs_energy_J_mol.value
+                                 - original_solid.value) / rt_log10, -7.6, places=6)
+        self.assertEqual(nickel.thermochemistry.gibbs_energy_J_mol.status, "source_verified_estimate")
+        original_iron = next(row for row in hydrated.reported if row.source
+                            and row.source.source_id.startswith("Furst_2025_2026_original_fit_"))
+        self.assertEqual(hydrated.thermochemistry.gibbs_energy_J_mol.value, -370871.0)
+        self.assertAlmostEqual(-(original_iron.value - iron.thermochemistry.gibbs_energy_J_mol.value
+                                 - 2 * self.database.reference_state.water_gibbs_energy_J_mol)
+                               / rt_log10, -32.48, places=6)
+        self.assertIn("Fe(OH)3(-)=HFeO2(-)+H2O", original_iron.source.locator)
+
+    def test_open_nitrogen_estimate_uses_absolute_entropy(self) -> None:
+        nitrogen = self.database.species_records(("gfe-n-n2-q+0-aqueous-aq",))[0]
+        triplet = {row.property: row for row in nitrogen.reported
+                   if row.source and row.source.source_id.startswith("Sander_2023_N2_molal_estimate_")}
+        self.assertEqual(set(triplet), {
+            "gibbs_energy_of_formation", "enthalpy_of_formation", "absolute_entropy"
+        })
+        entropy = triplet["absolute_entropy"].value
+        self.assertGreater(entropy, 0)
+        self.assertAlmostEqual(entropy, 191.61 + (triplet["enthalpy_of_formation"].value
+                                                - triplet["gibbs_energy_of_formation"].value) / 298.15,
+                               places=5)
+        self.assertTrue(all(not row.selected_as_recommended for row in triplet.values()))
+        self.assertTrue(any(row.type == "absolute_entropy_convention_issue" for row in nitrogen.warnings))
 
     def test_open_evaluations_are_available_without_changing_preferences(self) -> None:
         lead, aluminum = self.database.species_records((

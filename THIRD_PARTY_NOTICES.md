@@ -72,6 +72,38 @@ that the analysis was made with pourbase from MP data when sharing a comparison.
 - Singh, A. K. et al. *Chemistry of Materials* 29, 10159-10167 (2017). <https://doi.org/10.1021/acs.chemmater.7b03980>
 - Bartel, C. J. et al. *Nature Communications* 9, 4168 (2018). <https://doi.org/10.1038/s41467-018-06682-4>
 
+## Original solubility fits and nitrogen estimates
+
+The database retains individually verified nickel solubility and hydrolysis fits from
+González-Siso et al. (2018), and derived iron formation energies from the original reaction
+fits of Fürst et al. (2025, 2026). The Fürst articles carry CC BY 3.0. Nickel uses individually
+cited original numerical facts; its article retains its copyright. Gibbs energies were
+calculated by pourbase using the documented parent-ion and water references, with model,
+temperature, pressure and specimen assumptions retained as estimate warnings. The iron parent
+uses the existing Parker/Khodakovskii (1995) evaluation, independently verified at its exact
+1-bar locator; that article retains its copyright. Original-paper numerical facts follow the
+project's individual-source policy. No article-wide open licence is asserted for these papers.
+
+The nitrogen estimates use Sander's CC BY 4.0 publisher supplement, traced to Rettich et al.
+(1984), and open NBS water molar mass and gas entropy. The original 1984 table was unavailable
+for independent verification; the immediate source is Sander's licensed transcription.
+Pourbase fitted the source points and converted to a molal basis on 5 October 2026. Source
+locators and warnings retain the nominal-pressure treatment and entropy convention.
+
+- González-Siso, M. R. et al. (2018), *Radiochimica Acta* 106, 31–45, section 4.3, pp. 38–39.
+  <https://doi.org/10.1515/ract-2017-2762>
+- Fürst, P. Q. et al. (2025), *RSC Advances* 15, 46308–46319, model-development fit and Table 2.
+  <https://doi.org/10.1039/D5RA07073B>
+- Fürst, P. Q. et al. (2026), *RSC Advances* 16, 36843–36849, Tables 1–2.
+  <https://doi.org/10.1039/D6RA02690G>
+- Parker, V. B. and Khodakovskii, I. L. (1995), *Journal of Physical and Chemical Reference
+  Data* 24, 1699–1745, section 6.1 and Table 8, p. 1719.
+  <https://doi.org/10.1063/1.555964>
+- Sander, R. (2023), *Atmospheric Chemistry and Physics* 23, 10901–12440, supplement ref2434.
+  <https://doi.org/10.5194/acp-23-10901-2023>
+- Rettich, T. R., Battino, R. and Wilhelm, E. (1984), *Journal of Solution Chemistry* 13, 335–348.
+  <https://doi.org/10.1007/BF00645706>
+
 ## Software dependencies
 
 Optional dependencies are installed from their own distributions and are not vendored:

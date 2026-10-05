@@ -11,16 +11,16 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 490,
+    "species": 493,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 1622,
-    "recommended_values": 1209,
-    "source_records": 633,
-    "distinct_citations": 86,
-    "warnings": 356,
-    "phase_records": 156,
-    "resolved_phase_records": 118,
+    "reported_thermochemistry": 1630,
+    "recommended_values": 1212,
+    "source_records": 641,
+    "distinct_citations": 89,
+    "warnings": 363,
+    "phase_records": 159,
+    "resolved_phase_records": 119,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
@@ -29,15 +29,15 @@
   "phases": [
     {
       "phase": "aqueous",
-      "species": 285,
-      "gibbs": 285,
+      "species": 287,
+      "gibbs": 287,
       "entropy": 221,
       "enthalpy": 152
     },
     {
       "phase": "solid",
-      "species": 194,
-      "gibbs": 188,
+      "species": 195,
+      "gibbs": 189,
       "entropy": 181,
       "enthalpy": 149
     },
@@ -59,7 +59,7 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 484
+      "available": 487
     },
     {
       "property": "Entropy",
@@ -72,7 +72,7 @@
   ],
   "gibbs_status": {
     "verified": 328,
-    "source_verified_estimate": 82,
+    "source_verified_estimate": 85,
     "defined_reference_state": 74,
     "terminal_evidence_gap": 6
   },
@@ -257,7 +257,7 @@
       "symbol": "Fe",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 14
+      "species": 16
     },
     {
       "atomic_number": 27,
@@ -271,7 +271,7 @@
       "symbol": "Ni",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 7
+      "species": 8
     },
     {
       "atomic_number": 29,
@@ -1194,15 +1194,15 @@
     {
       "symbol": "Fe",
       "system": "Iron (Fe)",
-      "species": 14,
-      "aqueous": 9,
-      "solid": 5,
+      "species": 16,
+      "aqueous": 10,
+      "solid": 6,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 14,
+      "gibbs": 16,
       "entropy": 11,
       "enthalpy": 4,
-      "warnings": 10
+      "warnings": 13
     },
     {
       "symbol": "Ga",
@@ -1423,7 +1423,7 @@
       "gibbs": 8,
       "entropy": 8,
       "enthalpy": 8,
-      "warnings": 16
+      "warnings": 18
     },
     {
       "symbol": "Na",
@@ -1467,15 +1467,15 @@
     {
       "symbol": "Ni",
       "system": "Nickel (Ni)",
-      "species": 7,
-      "aqueous": 2,
+      "species": 8,
+      "aqueous": 3,
       "solid": 5,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 6,
+      "gibbs": 7,
       "entropy": 5,
       "enthalpy": 2,
-      "warnings": 8
+      "warnings": 10
     },
     {
       "symbol": "Os",
@@ -1922,11 +1922,19 @@
       "count": 6
     },
     {
+      "warning_type": "Furst_2025_2026_original_fit",
+      "count": 3
+    },
+    {
       "warning_type": "miron_published_dataset_discrepancy",
       "count": 2
     },
     {
       "warning_type": "mines_hydration_normalization",
+      "count": 2
+    },
+    {
+      "warning_type": "GonzalezSiso_2018_original_fit",
       "count": 2
     },
     {
@@ -1944,16 +1952,24 @@
     {
       "warning_type": "mines_later_evaluation_pending",
       "count": 1
+    },
+    {
+      "warning_type": "absolute_entropy_convention_issue",
+      "count": 1
+    },
+    {
+      "warning_type": "Sander_2023_N2_molal_estimate",
+      "count": 1
     }
   ],
   "phase_identity": [
     {
       "identity_status": "resolved",
-      "count": 108
+      "count": 109
     },
     {
       "identity_status": "aqueous_species_identified",
-      "count": 30
+      "count": 32
     },
     {
       "identity_status": "resolved_thermochemistry_gap",

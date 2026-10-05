@@ -26,9 +26,10 @@
   "cache_role": "Cached input of the Fe comparison in STATISTICS.md; live comparisons use the official Materials Project API and the user's API key.",
   "experimental_dataset_version": "1.0.0",
   "equivalence_definition": "Solids match by H/O composition per metal; aqueous species match by proton and electron coefficients per metal.",
-  "equivalent_domain_fraction": 0.9041746964448281,
+  "equivalent_domain_fraction": 0.9029569288610917,
   "water_window_equivalent_domain_fraction": 0.8619501317656598,
   "stable_experimental_species": [
+    "Fe(OH)₂",
     "Fe",
     "Fe²⁺",
     "Fe³⁺",

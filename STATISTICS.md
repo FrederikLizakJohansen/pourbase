@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 490 |
+| Species | 493 |
 | Supported elemental systems | 74 of 118 elements |
-| Recommended Gibbs energies | 484 (99 %) |
+| Recommended Gibbs energies | 487 (99 %) |
 | Recommended entropies | 413 (84 %) |
-| Recommended formation enthalpies | 312 (64 %) |
-| Reported values retained | 1622 |
-| Source records | 633 (86 distinct citations) |
-| Phase records | 156 (118 resolved) |
-| Warnings | 356 |
+| Recommended formation enthalpies | 312 (63 %) |
+| Reported values retained | 1630 |
+| Source records | 641 (89 distinct citations) |
+| Phase records | 159 (119 resolved) |
+| Warnings | 363 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 6 |
@@ -24,7 +24,7 @@ Gibbs energies by evidence status:
 | Status | Species |
 |---|---|
 | `verified` | 328 |
-| `source_verified_estimate` | 82 |
+| `source_verified_estimate` | 85 |
 | `defined_reference_state` | 74 |
 | `terminal_evidence_gap` | 6 |
 
@@ -32,8 +32,8 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| aqueous | 285 | 285 | 221 | 152 |
-| solid | 194 | 188 | 181 | 149 |
+| aqueous | 287 | 287 | 221 | 152 |
+| solid | 195 | 189 | 181 | 149 |
 | gas | 9 | 9 | 9 | 9 |
 | liquid | 2 | 2 | 2 | 2 |
 
@@ -41,12 +41,12 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 490 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `thermochemistry` | 490 | One recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 1622 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 633 | Full citations, links, locators and access dates |
-| `phases` | 156 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 356 | Scientific cautions attached to records |
+| `species` | 493 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `thermochemistry` | 493 | One recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 1630 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 641 | Full citations, links, locators and access dates |
+| `phases` | 159 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 363 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -108,7 +108,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Er | Erbium (Er) | 3 | 1 | 2 | 0 | 0 | 3 | 3 | 3 | 0 |
 | Eu | Europium (Eu) | 7 | 2 | 5 | 0 | 0 | 7 | 7 | 7 | 0 |
 | F | Fluorine (F) | 4 | 3 | 0 | 1 | 0 | 4 | 4 | 4 | 1 |
-| Fe | Iron (Fe) | 14 | 9 | 5 | 0 | 0 | 14 | 11 | 4 | 10 |
+| Fe | Iron (Fe) | 16 | 10 | 6 | 0 | 0 | 16 | 11 | 4 | 13 |
 | Ga | Gallium (Ga) | 7 | 4 | 3 | 0 | 0 | 7 | 6 | 2 | 5 |
 | Gd | Gadolinium (Gd) | 3 | 1 | 2 | 0 | 0 | 3 | 3 | 3 | 0 |
 | Ge | Germanium (Ge) | 4 | 1 | 3 | 0 | 0 | 4 | 3 | 3 | 2 |
@@ -125,11 +125,11 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Mg | Magnesium (Mg) | 8 | 6 | 2 | 0 | 0 | 8 | 7 | 1 | 9 |
 | Mn | Manganese (Mn) | 10 | 5 | 5 | 0 | 0 | 10 | 9 | 6 | 7 |
 | Mo | Molybdenum (Mo) | 4 | 1 | 3 | 0 | 0 | 4 | 4 | 2 | 1 |
-| N | Nitrogen (N) | 8 | 5 | 0 | 3 | 0 | 8 | 8 | 8 | 16 |
+| N | Nitrogen (N) | 8 | 5 | 0 | 3 | 0 | 8 | 8 | 8 | 18 |
 | Na | Sodium (Na) | 6 | 5 | 1 | 0 | 0 | 6 | 4 | 0 | 6 |
 | Nb | Niobium (Nb) | 7 | 4 | 3 | 0 | 0 | 7 | 4 | 4 | 5 |
 | Nd | Neodymium (Nd) | 4 | 1 | 3 | 0 | 0 | 4 | 4 | 4 | 0 |
-| Ni | Nickel (Ni) | 7 | 2 | 5 | 0 | 0 | 6 | 5 | 2 | 8 |
+| Ni | Nickel (Ni) | 8 | 3 | 5 | 0 | 0 | 7 | 5 | 2 | 10 |
 | Os | Osmium (Os) | 8 | 3 | 4 | 1 | 0 | 8 | 5 | 5 | 8 |
 | P | Phosphorus (P) | 9 | 7 | 2 | 0 | 0 | 9 | 7 | 7 | 2 |
 | Pb | Lead (Pb) | 10 | 3 | 7 | 0 | 0 | 10 | 9 | 6 | 7 |
