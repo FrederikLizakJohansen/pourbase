@@ -239,6 +239,17 @@ the bibliography identifies the relevant lead-oxide paper as 129. The database
 records this mismatch and the government table's actual G/H/S ancestry. Original
 experimental tables, heat-capacity models and pressure corrections remain follow-ups.
 
+Anglesite retains six alternative G/H/S observations from the original NBS Technical
+Note 270-2 (1966), Table 27(4), and USGS Bulletin 1259 (1968), pages 22 and 197.
+Both sources retain their original 1 atm pressure as 1.01325 bar. The USGS observations
+carry their published intervals; the NBS observations have no supplied uncertainty.
+Their shared ancestry is recorded: USGS entropy cites Gallagher et al. (1960), and
+formation G/H cite the 1966 NBS evaluation. Each source representation is kept with
+its own precision and interval. All existing preferred properties and phase records
+are preserved. Preferred anglesite G/H/S are corroborated by open NBS PDR logical
+record 3277. The later USGS/MINES and Bureau of Mines representations that cite
+CODATA retain their source-rights holds in the external review.
+
 Forty-one additional USGS Bulletin 2131 properties retain their property-specific reference
 columns and source uncertainty intervals. Boehmite and diaspore have separate AlOOH species
 and phase records. Adding diaspore changes the aluminum equilibrium diagram where it becomes

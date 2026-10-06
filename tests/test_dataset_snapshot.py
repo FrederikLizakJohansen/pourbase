@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 646), ("reported_thermochemistry", 2159),
+            for table, count in (("species", 646), ("reported_thermochemistry", 2165),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,45 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_anglesite_retains_federal_evaluations_with_original_intervals_and_pressure(self) -> None:
+        rid = "gfe-pb-pbso4-q+0-solid-anglesite"
+        record = self.database.species_records((rid,))[0]
+        thermo = record.thermochemistry
+        self.assertEqual((thermo.gibbs_energy_J_mol.value,
+                          thermo.formation_enthalpy_J_mol.value,
+                          thermo.entropy_J_mol_K.value), (-813140, -919940, 148.57))
+        self.assertEqual(len(record.reported), 10)
+        self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
+        usgs = {row.property: row for row in record.reported
+                if row.source and row.source.source_id.startswith("Anglesite_R05_USGS1968")}
+        self.assertEqual({prop: (row.value, row.uncertainty) for prop, row in usgs.items()}, {
+            "gibbs_energy_of_formation": (-813202.24, 1046),
+            "enthalpy_of_formation": (-920023.944, 1087.84),
+            "absolute_entropy": (148.57384, 0.29288),
+        })
+        nbs = {row.property: row for row in record.reported
+               if row.source and row.source.source_id.startswith("Anglesite_R05_NBS1966")}
+        self.assertEqual({prop: row.value for prop, row in nbs.items()}, {
+            "gibbs_energy_of_formation": -813202.24,
+            "enthalpy_of_formation": -919936.08,
+            "absolute_entropy": 148.57384,
+        })
+        self.assertTrue(all(not row.selected_as_recommended
+                            for row in (*usgs.values(), *nbs.values())))
+        self.assertTrue(all(row.uncertainty is None for row in nbs.values()))
+        self.assertIn("Sref41", usgs["absolute_entropy"].source.locator)
+        self.assertIn("H/Gref159", usgs["enthalpy_of_formation"].source.locator)
+        self.assertEqual(record.phase_identity.spacegroup_symbol, "Pnma")
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            self.assertEqual(connection.execute(
+                "SELECT pressure_bar FROM reported_thermochemistry WHERE record_id=? "
+                "AND source_id LIKE 'Anglesite_R05_%'", (rid,),
+            ).fetchall(), [(1.01325,)] * 6)
+            self.assertEqual(connection.execute(
+                "SELECT count(*) FROM reported_thermochemistry WHERE record_id=? "
+                "AND source_id LIKE 'Anglesite_R05_%1995%'", (rid,),
+            ).fetchone()[0], 0)
 
     def test_litharge_retains_source_intervals_and_pressure_with_existing_preferences(self) -> None:
         rid = "gfe-pb-pbo-q+0-solid-litharge"

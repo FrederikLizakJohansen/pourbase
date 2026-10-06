@@ -14,11 +14,11 @@
     "species": 646,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2159,
+    "reported_thermochemistry": 2165,
     "recommended_values": 1584,
-    "source_records": 1173,
-    "distinct_citations": 166,
-    "warnings": 666,
+    "source_records": 1179,
+    "distinct_citations": 168,
+    "warnings": 669,
     "phase_records": 312,
     "resolved_phase_records": 207,
     "mp_matches": 105,
@@ -1515,7 +1515,7 @@
       "gibbs": 12,
       "entropy": 11,
       "enthalpy": 8,
-      "warnings": 16
+      "warnings": 19
     },
     {
       "symbol": "Pd",
@@ -2144,6 +2144,18 @@
     },
     {
       "warning_type": "cotunnite_chloride_reservoir",
+      "count": 1
+    },
+    {
+      "warning_type": "anglesite_shared_evaluation_representations",
+      "count": 1
+    },
+    {
+      "warning_type": "anglesite_preferred_open_NBS_corroboration",
+      "count": 1
+    },
+    {
+      "warning_type": "anglesite_native_CODATA_source_hold",
       "count": 1
     },
     {
