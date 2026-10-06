@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 642), ("reported_thermochemistry", 2110),
+            for table, count in (("species", 642), ("reported_thermochemistry", 2124),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -640,6 +640,46 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual(thermo.gibbs_energy_J_mol.value, -485000.0)
         self.assertEqual(thermo.entropy_J_mol_K.value, -321.7)
         self.assertTrue(any("different evaluations" in warning.message for warning in aluminum.warnings))
+
+    def test_silica_corrections_use_the_stored_hydrated_formula(self) -> None:
+        record = self.database.species_records(("gfe-si-h4sio4-q+0-aqueous-aq",))[0]
+        rows = [row for row in record.reported if row.source
+                and row.source.source_id.startswith("WoleryJoveColon2017_Table20_")]
+        self.assertEqual(len(rows), 11)
+        for model, gibbs, enthalpy, entropy in (
+            ("Rimstidt1997", -1309228.0, -1461166.0, None),
+            ("GunnarssonArnorsson2000", -1309187.0, -1461721.0, 178.871),
+            ("Stefansson2001", -1308817.0, -1458518.0, 188.374),
+            ("AppsSpycher2004", -1308801.0, -1459186.0, 186.080),
+        ):
+            values = {row.property: row.value for row in rows if model in row.source.source_id}
+            expected = {"gibbs_energy_of_formation": gibbs, "enthalpy_of_formation": enthalpy}
+            if entropy is not None:
+                expected["absolute_entropy"] = entropy
+            self.assertEqual(values, expected)
+        self.assertTrue(all(not row.selected_as_recommended and row.uncertainty is None
+                            for row in rows))
+        self.assertTrue(all("H4SiO4(aq) columns" in row.source.locator for row in rows))
+        self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, -1316600.0)
+        self.assertEqual(record.thermochemistry.entropy_J_mol_K.value, 180.0)
+        self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value, -1468600.0)
+        self.assertFalse(any(s.formula_ascii == "SiO2" and s.phase == "aqueous"
+                             for s in self.database.load_system("Si").species))
+
+    def test_rimstidt_original_outputs_preserve_one_sigma_and_entropy_identity(self) -> None:
+        record = self.database.species_records(("gfe-si-h4sio4-q+0-aqueous-aq",))[0]
+        rows = {row.property: row for row in record.reported if row.source
+                and row.source.source_id.startswith("Rimstidt1997_original_abstract_")}
+        for prop, value, uncertainty in (("gibbs_energy_of_formation", -1309231.0, 610.0),
+                                        ("enthalpy_of_formation", -1460913.0, 542.0),
+                                        ("absolute_entropy", 180.87, 0.49)):
+            self.assertEqual(rows[prop].value, value)
+            self.assertEqual(rows[prop].uncertainty, uncertainty)
+            self.assertIn("+/-1 standard deviation", rows[prop].source.locator)
+            self.assertIn("10.1016/S0016-7037(97)00103-8", rows[prop].source.locator)
+            self.assertFalse(rows[prop].selected_as_recommended)
+        self.assertEqual(sum(row.property == "absolute_entropy" and row.value == 180.87
+                             for row in record.reported), 1)
 
     def test_periodic_screen(self) -> None:
         screen = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE")

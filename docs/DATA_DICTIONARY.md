@@ -318,3 +318,31 @@ rows and calibration tables remain external, including the corundum H/S inputs.
 The recomputed corundum G coincides with CODATA because its H/S inputs coincide.
 Original Tagirov–Schott (2001) fluoride tables still await direct source verification;
 the new corrected evaluations are attributed to Wolery–Jové Colón (2017).
+
+Four silica models retain the Wolery–Jové Colón (2017) Table 20 reference corrections
+to the Rimstidt (1997), Gunnarsson–Arnórsson (2000), Stefánsson (2001) and
+Apps–Spycher (2004) evaluations. Eleven new corrected properties are attached to the
+existing neutral aqueous H₄SiO₄ record. Their sources identify manuscript page 50,
+each model row and property column, and the supporting calculation worksheets.
+They use the authors' quartz, water and elemental reference convention at
+298.15 K/1 bar, with `source_verified_estimate` status and unavailable total uncertainty.
+
+Rimstidt's original G/H/S solubility-fit outputs are retained separately, verified
+against the original publisher abstract, DOI 10.1016/S0016-7037(97)00103-8. Their
+reported one-standard-deviation intervals are 610 J/mol for G, 542 J/mol for H and
+0.49 J/(mol K) for S. The abstract's numerical content was retrieved through the
+indexed publisher page; full original methods remain a source follow-up. Its
+nominal 298.15 K/1 bar standard state is corroborated by the later original research
+paper. The unchanged Rimstidt entropy in Table 20 links to this original observation.
+The corrected G/H evaluations carry their own uncertainty interpretation.
+
+The table's SiO₂(aq) columns represent the same models with two liquid-water formula
+units removed. Their 12 property cells remain linked in the external review ledger
+to the H₄SiO₄ observations. This preserves their source representation and avoids
+adding a duplicate aqueous solute. The correction preserves quartz dissolution G/S
+and recalculates final formation H from G/S. Related evaluations share source inputs
+and must be assessed as models with dependencies. All 14 admitted observations
+remain alternatives; existing preferred values and calculation results are preserved.
+They follow the individually cited original research-fact route, with reference
+dependencies disclosed and article licences assessed separately. Copied compilation
+inputs and tentative silica-dimer corrections retain their external source holds.

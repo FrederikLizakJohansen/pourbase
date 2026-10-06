@@ -14,11 +14,11 @@
     "species": 642,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2110,
+    "reported_thermochemistry": 2124,
     "recommended_values": 1574,
-    "source_records": 1122,
-    "distinct_citations": 147,
-    "warnings": 648,
+    "source_records": 1136,
+    "distinct_citations": 149,
+    "warnings": 649,
     "phase_records": 308,
     "resolved_phase_records": 204,
     "mp_matches": 105,
@@ -1671,7 +1671,7 @@
       "gibbs": 6,
       "entropy": 4,
       "enthalpy": 4,
-      "warnings": 4
+      "warnings": 5
     },
     {
       "symbol": "Sm",
@@ -2072,6 +2072,10 @@
     },
     {
       "warning_type": "source_erratum",
+      "count": 1
+    },
+    {
+      "warning_type": "silica_reference_corrections_2017",
       "count": 1
     },
     {
