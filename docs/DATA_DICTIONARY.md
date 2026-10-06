@@ -203,3 +203,28 @@ can disagree with each other; no G-H-S consistency constraint is imposed.
 Seven separate rare-earth trifluoride monohydrates retain their open NBS enthalpies.
 Their unavailable G and S remain explicit. Fluoride solids enter calculations when a
 buffered free fluoride activity is supplied, and complete hydrate formulas retain every water.
+
+Two ferrihydrite records retain the original Majzlan et al. (2004) nominal Fe(OH)3 models,
+distinguished by their 2-line and 6-line XRD character. Each retains the original formation
+enthalpy, both published Gibbs bounds and both estimated entropy bounds. Bound observations
+share a physical/model range; they are not independent measurements or a statistical sample.
+The source's enthalpy uncertainty is propagated two standard deviations of the mean. Its
+Gibbs uncertainty omits unknown entropy error, and the entropy range has no scalar uncertainty.
+The ±0.6 entropy estimate for hypothetical ordered Fe(OH)3 is distinct from ferrihydrite.
+
+Each phase has two explicit NBS-reference Gibbs estimates from `G=H-298.15*(S-S_elements)`,
+using open NBS Fe(cr), H2(g) and O2(g) entropies. Lower-bound S=122.2 supplies the preferred
+G as an explicitly labelled least-stable limiting case; the upper-S result remains an
+alternative. This selection expresses a calculation policy, with no claim of a measured
+central value. Derived Gibbs uncertainty and covariance are unavailable. Source H/S are
+represented at nominal 298.15 K/1 bar with unquantified ambient-state corrections. Original
+published G bounds retain unspecified pressure as `NULL` in `reported_thermochemistry`.
+Their exact source conditions and interpretation are recorded in each source locator.
+
+The distinct Gysi–Stefansson (2011) Psat model, borrowed Holland–Powell volume/heat capacity
+and native MINES Gibbs variant retain separate source/state holds. Existing preferred values
+are preserved. Both nominal ferrihydrite phases have balanced three-oxygen/three-hydrogen
+formula units and formal Fe(III). They remain metastable to the existing goethite/water
+reference across the tested bounds; omitting more stable solids exposes their range-sensitive
+precipitation boundaries. Natural ferrihydrite with differing hydration, adsorbates,
+substitution or aggregation requires its own phase model.

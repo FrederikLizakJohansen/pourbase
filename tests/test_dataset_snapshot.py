@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 632), ("reported_thermochemistry", 2054),
+            for table, count in (("species", 634), ("reported_thermochemistry", 2068),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,58 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_ferrihydrite_phases_retain_physical_bounds_and_source_uncertainty(self) -> None:
+        for phase, energies, entropies, enthalpy in (
+            ("2-line", {-708500.0, -705200.0}, {122.2, 133.0}, -827100.0),
+            ("6-line", {-711000.0, -708500.0}, {122.2, 130.7}, -830300.0),
+        ):
+            rid = f"gfe-fe-fe-oh-3-q+0-solid-ferrihydrite-{phase}"
+            record = self.database.species_records((rid,))[0]
+            original = [r for r in record.reported if "_original-" in r.source.source_id]
+            self.assertEqual(len(original), 5)
+            self.assertEqual({r.value for r in original if r.property == "gibbs_energy_of_formation"}, energies)
+            self.assertEqual({r.value for r in original if r.property == "absolute_entropy"}, entropies)
+            self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value, enthalpy)
+            self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.uncertainty, 2000.0)
+            self.assertIsNone(record.thermochemistry.entropy_J_mol_K.uncertainty)
+            self.assertEqual(record.thermochemistry.entropy_J_mol_K.value, 122.2)
+            self.assertEqual(sum(r.selected_as_recommended for r in record.reported), 3)
+            self.assertIsNone(record.phase_identity.spacegroup_number)
+            self.assertTrue(any(w.type == "ferrihydrite_bounds_and_preference" for w in record.warnings))
+            self.assertTrue(all("Table 1" in r.source.locator for r in original))
+            # Unspecified original G pressure is retained without assigning the 2011 Psat state.
+            with closing(sqlite3.connect(self.database.path)) as connection:
+                pressures = connection.execute(
+                    "SELECT pressure_bar FROM reported_thermochemistry WHERE record_id=? "
+                    "AND property='gibbs_energy_of_formation' AND source_id LIKE '%_original-%'",
+                    (rid,),
+                ).fetchall()
+            self.assertEqual(pressures, [(None,), (None,)])
+
+    def test_ferrihydrite_gibbs_uses_open_references_and_balanced_nominal_formula(self) -> None:
+        system = self.database.load_system("Fe")
+        self.assertTrue(system.is_thermochemically_complete)
+        reference_entropy = 27.28 + 1.5 * 130.684 + 1.5 * 205.138
+        energies = []
+        goethite = next(s for s in system.species if s.phase_detail == "goethite")
+        for phase, enthalpy in (("2-line", -827100.0), ("6-line", -830300.0)):
+            rid = f"gfe-fe-fe-oh-3-q+0-solid-ferrihydrite-{phase}"
+            record = self.database.species_records((rid,))[0]
+            preferred = record.thermochemistry.gibbs_energy_J_mol
+            self.assertAlmostEqual(preferred.value, enthalpy - 298.15 * (122.2 - reference_entropy), places=6)
+            self.assertEqual(preferred.status, "source_verified_estimate")
+            self.assertIsNone(preferred.uncertainty)
+            self.assertIn("NBS-derived-upper-G", preferred.source.source_id)
+            self.assertIn("least-stable", preferred.source.locator)
+            self.assertIn("unquantified", preferred.source.locator)
+            solid = next(s for s in system.species if s.record_id == rid)
+            self.assertEqual((solid.core_oxygen_count, solid.core_hydrogen_count), (3, 3))
+            self.assertEqual((solid.electrons_per_metal, solid.protons_per_metal), (3, 3))
+            self.assertGreater(solid.gibbs_energy_J_mol - goethite.gibbs_energy_J_mol
+                               - self.database.reference_state.water_gibbs_energy_J_mol, 0)
+            energies.append(preferred.value)
+        self.assertAlmostEqual(energies[1] - energies[0], -3200.0)
 
     def test_miron_evaluations_and_discrepant_representations_are_retained(self) -> None:
         aluminum, calcium = self.database.species_records((

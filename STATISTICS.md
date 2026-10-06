@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 632 |
+| Species | 634 |
 | Supported elemental systems | 74 of 118 elements |
-| Recommended Gibbs energies | 615 (97 %) |
-| Recommended entropies | 507 (80 %) |
-| Recommended formation enthalpies | 433 (69 %) |
-| Reported values retained | 2054 |
-| Source records | 1066 (139 distinct citations) |
-| Phase records | 298 (194 resolved) |
-| Warnings | 621 |
+| Recommended Gibbs energies | 617 (97 %) |
+| Recommended entropies | 509 (80 %) |
+| Recommended formation enthalpies | 435 (69 %) |
+| Reported values retained | 2068 |
+| Source records | 1080 (141 distinct citations) |
+| Phase records | 300 (196 resolved) |
+| Warnings | 626 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 9 |
@@ -24,7 +24,7 @@ Gibbs energies by evidence status:
 | Status | Species |
 |---|---|
 | `verified` | 371 |
-| `source_verified_estimate` | 170 |
+| `source_verified_estimate` | 172 |
 | `defined_reference_state` | 74 |
 | `not_available` | 11 |
 | `terminal_evidence_gap` | 6 |
@@ -34,7 +34,7 @@ Species by phase:
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
 | aqueous | 351 | 351 | 266 | 209 |
-| solid | 270 | 253 | 230 | 213 |
+| solid | 272 | 255 | 232 | 215 |
 | gas | 9 | 9 | 9 | 9 |
 | liquid | 2 | 2 | 2 | 2 |
 
@@ -42,12 +42,12 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 632 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `thermochemistry` | 632 | One recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 2054 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1066 | Full citations, links, locators and access dates |
-| `phases` | 298 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 621 | Scientific cautions attached to records |
+| `species` | 634 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `thermochemistry` | 634 | One recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 2068 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1080 | Full citations, links, locators and access dates |
+| `phases` | 300 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 626 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -109,7 +109,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Er | Erbium (Er) | 8 | 5 | 3 | 0 | 0 | 8 | 6 | 7 | 10 |
 | Eu | Europium (Eu) | 12 | 6 | 6 | 0 | 0 | 11 | 10 | 11 | 8 |
 | F | Fluorine (F) | 4 | 3 | 0 | 1 | 0 | 4 | 4 | 4 | 1 |
-| Fe | Iron (Fe) | 21 | 10 | 11 | 0 | 0 | 21 | 16 | 9 | 23 |
+| Fe | Iron (Fe) | 23 | 10 | 13 | 0 | 0 | 23 | 18 | 11 | 28 |
 | Ga | Gallium (Ga) | 7 | 4 | 3 | 0 | 0 | 7 | 6 | 2 | 5 |
 | Gd | Gadolinium (Gd) | 9 | 5 | 4 | 0 | 0 | 8 | 6 | 7 | 10 |
 | Ge | Germanium (Ge) | 4 | 1 | 3 | 0 | 0 | 4 | 3 | 3 | 2 |

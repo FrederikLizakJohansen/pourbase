@@ -11,16 +11,16 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 632,
+    "species": 634,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2054,
-    "recommended_values": 1555,
-    "source_records": 1066,
-    "distinct_citations": 139,
-    "warnings": 621,
-    "phase_records": 298,
-    "resolved_phase_records": 194,
+    "reported_thermochemistry": 2068,
+    "recommended_values": 1561,
+    "source_records": 1080,
+    "distinct_citations": 141,
+    "warnings": 626,
+    "phase_records": 300,
+    "resolved_phase_records": 196,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
@@ -36,10 +36,10 @@
     },
     {
       "phase": "solid",
-      "species": 270,
-      "gibbs": 253,
-      "entropy": 230,
-      "enthalpy": 213
+      "species": 272,
+      "gibbs": 255,
+      "entropy": 232,
+      "enthalpy": 215
     },
     {
       "phase": "gas",
@@ -59,20 +59,20 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 615
+      "available": 617
     },
     {
       "property": "Entropy",
-      "available": 507
+      "available": 509
     },
     {
       "property": "Formation enthalpy",
-      "available": 433
+      "available": 435
     }
   ],
   "gibbs_status": {
     "verified": 371,
-    "source_verified_estimate": 170,
+    "source_verified_estimate": 172,
     "defined_reference_state": 74,
     "not_available": 11,
     "terminal_evidence_gap": 6
@@ -258,7 +258,7 @@
       "symbol": "Fe",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 21
+      "species": 23
     },
     {
       "atomic_number": 27,
@@ -1195,15 +1195,15 @@
     {
       "symbol": "Fe",
       "system": "Iron (Fe)",
-      "species": 21,
+      "species": 23,
       "aqueous": 10,
-      "solid": 11,
+      "solid": 13,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 21,
-      "entropy": 16,
-      "enthalpy": 9,
-      "warnings": 23
+      "gibbs": 23,
+      "entropy": 18,
+      "enthalpy": 11,
+      "warnings": 28
     },
     {
       "symbol": "Ga",
@@ -2011,6 +2011,14 @@
       "count": 2
     },
     {
+      "warning_type": "ferrihydrite_nominal_reference_conditions",
+      "count": 2
+    },
+    {
+      "warning_type": "ferrihydrite_bounds_and_preference",
+      "count": 2
+    },
+    {
       "warning_type": "GonzalezSiso_2018_original_fit",
       "count": 2
     },
@@ -2051,6 +2059,10 @@
       "count": 1
     },
     {
+      "warning_type": "ferrihydrite_native_variant_held",
+      "count": 1
+    },
+    {
       "warning_type": "absolute_entropy_convention_issue",
       "count": 1
     },
@@ -2062,7 +2074,7 @@
   "phase_identity": [
     {
       "identity_status": "resolved",
-      "count": 184
+      "count": 186
     },
     {
       "identity_status": "aqueous_species_identified",
