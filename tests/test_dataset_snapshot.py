@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 646), ("reported_thermochemistry", 2154),
+            for table, count in (("species", 646), ("reported_thermochemistry", 2159),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,39 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_litharge_retains_source_intervals_and_pressure_with_existing_preferences(self) -> None:
+        rid = "gfe-pb-pbo-q+0-solid-litharge"
+        record = self.database.species_records((rid,))[0]
+        thermo = record.thermochemistry
+        self.assertEqual((thermo.gibbs_energy_J_mol.value,
+                          thermo.formation_enthalpy_J_mol.value,
+                          thermo.entropy_J_mol_K.value), (-189283, -219409, 66.316))
+        self.assertEqual(len(record.reported), 14)
+        self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
+        usgs = {row.property: row for row in record.reported
+                if row.source and row.source.source_id.startswith("Litharge_R05_USGS1995")}
+        self.assertEqual({prop: (row.value, row.uncertainty) for prop, row in usgs.items()}, {
+            "gibbs_energy_of_formation": (-188900, 800),
+            "enthalpy_of_formation": (-219000, 800),
+        })
+        usbm = {row.property: row for row in record.reported
+                if row.source and row.source.source_id.startswith("Litharge_R05_USBM1982")}
+        self.assertEqual({prop: row.value for prop, row in usbm.items()}, {
+            "gibbs_energy_of_formation": -188936.888,
+            "enthalpy_of_formation": -218990.56,
+            "absolute_entropy": 66.5256,
+        })
+        self.assertTrue(all(not row.selected_as_recommended for row in (*usgs.values(), *usbm.values())))
+        self.assertTrue(all(row.uncertainty is None for row in usbm.values()))
+        self.assertIn("H/G reference column419 only", usgs["gibbs_energy_of_formation"].source.locator)
+        self.assertIn("King128", usbm["absolute_entropy"].source.locator)
+        self.assertEqual(record.phase_identity.spacegroup_symbol, "P4/nmm")
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            self.assertEqual(connection.execute(
+                "SELECT pressure_bar FROM reported_thermochemistry WHERE record_id=? "
+                "AND source_id LIKE 'Litharge_R05_USBM1982%'", (rid,),
+            ).fetchall(), [(1.01325,)] * 3)
 
     def test_cotunnite_retains_each_entropy_evaluation_and_source_state(self) -> None:
         rid = "gfe-pb-pbcl2-q+0-solid-cotunnite"

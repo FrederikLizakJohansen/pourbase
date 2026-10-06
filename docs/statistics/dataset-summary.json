@@ -14,11 +14,11 @@
     "species": 646,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2154,
+    "reported_thermochemistry": 2159,
     "recommended_values": 1584,
-    "source_records": 1168,
-    "distinct_citations": 164,
-    "warnings": 664,
+    "source_records": 1173,
+    "distinct_citations": 166,
+    "warnings": 666,
     "phase_records": 312,
     "resolved_phase_records": 207,
     "mp_matches": 105,
@@ -1515,7 +1515,7 @@
       "gibbs": 12,
       "entropy": 11,
       "enthalpy": 8,
-      "warnings": 14
+      "warnings": 16
     },
     {
       "symbol": "Pd",
@@ -2092,6 +2092,14 @@
     },
     {
       "warning_type": "mines_later_evaluation_pending",
+      "count": 1
+    },
+    {
+      "warning_type": "litharge_shared_evaluation_representations",
+      "count": 1
+    },
+    {
+      "warning_type": "litharge_USBM_Cp_reference_mismatch",
       "count": 1
     },
     {

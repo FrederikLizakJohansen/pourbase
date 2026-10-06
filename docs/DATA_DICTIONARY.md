@@ -225,6 +225,20 @@ one Pb and two buffered free Cl⁻ in `Pb(cr)+2Cl⁻(aq)=PbCl₂(cr)+2e⁻`. The
 chloride reference is corroborated by open NBS logical record 174. Total chloride
 conservation, other property models and exact space-group details remain follow-ups.
 
+Litharge retains five additional source representations alongside its earlier values:
+USGS Bulletin 2131 G = −188900 ± 800 J/mol and H = −219000 ± 800 J/mol, and
+Bureau of Mines Bulletin 672 G/H/S at the original 1 atm pressure (1.01325 bar).
+All five are alternatives; existing preferences, phase identity and earlier observations
+are preserved. The USGS formation values cite the NBS evaluation already retained
+from the open PDR. Their rounding and published uncertainty intervals remain attached
+to the USGS representation. Source overlap is documented; values are kept individually.
+
+The Bureau of Mines formation H and 298.15 K entropy cite the older NBS technical
+note. Its low-temperature heat-capacity citation points to King reference 128, while
+the bibliography identifies the relevant lead-oxide paper as 129. The database
+records this mismatch and the government table's actual G/H/S ancestry. Original
+experimental tables, heat-capacity models and pressure corrections remain follow-ups.
+
 Forty-one additional USGS Bulletin 2131 properties retain their property-specific reference
 columns and source uncertainty intervals. Boehmite and diaspore have separate AlOOH species
 and phase records. Adding diaspore changes the aluminum equilibrium diagram where it becomes
