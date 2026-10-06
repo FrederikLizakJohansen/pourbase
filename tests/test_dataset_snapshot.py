@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 643), ("reported_thermochemistry", 2128),
+            for table, count in (("species", 643), ("reported_thermochemistry", 2137),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,57 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_lanthanide_hydroxide_alternatives_preserve_preferred_evaluations(self) -> None:
+        for symbol, expected, count in (("La", (-1284200, -1416700, 117.8), 5),
+                                        ("Nd", (-1283000, -1415600, 129.9), 10)):
+            rid = f"gfe-{symbol.lower()}-{symbol.lower()}-oh-3-q+0-solid-hexagonal-ucl3-type"
+            record = self.database.species_records((rid,))[0]
+            t = record.thermochemistry
+            self.assertEqual((t.gibbs_energy_J_mol.value, t.formation_enthalpy_J_mol.value,
+                              t.entropy_J_mol_K.value), expected)
+            self.assertEqual(len(record.reported), count)
+            self.assertEqual(sum(r.selected_as_recommended for r in record.reported), 3)
+            alternatives = [r for r in record.reported if r.source.source_id.startswith("Hydroxide_R05_")]
+            self.assertEqual(len(alternatives), count - 3)
+            self.assertTrue(all(not r.selected_as_recommended and r.source.locator for r in alternatives))
+            if symbol == "La":
+                nbs = next(r for r in alternatives if "NBS_PDR" in r.source.source_id)
+                self.assertEqual(nbs.value, -1410000)
+                self.assertIsNone(nbs.uncertainty)
+            else:
+                wood = next(r for r in alternatives if "Wood2002_original" in r.source.source_id)
+                self.assertEqual((wood.value, wood.uncertainty), (-1414000, 5000))
+                self.assertTrue(all(r.uncertainty is None for r in alternatives if r != wood))
+
+    def test_wood_hydroxide_reaction_estimate_reproduces_original_solubility_boundary(self) -> None:
+        from dataclasses import replace
+        from pourbase.constants import GAS_CONSTANT_J_MOL_K, LN_10
+
+        system = self.database.load_system("Nd")
+        rid = "gfe-nd-nd-oh-3-q+0-solid-hexagonal-ucl3-type"
+        record = self.database.species_records((rid,))[0]
+        values = {r.property: r.value for r in record.reported
+                  if "Wood_NBS_reaction_derived" in r.source.source_id}
+        thermal = GAS_CONSTANT_J_MOL_K * 298.15
+        self.assertAlmostEqual(values["gibbs_energy_of_formation"],
+                               -671600 + 3 * -237129 + thermal * LN_10 * 17.92, places=6)
+        self.assertEqual(values["enthalpy_of_formation"], -696200 + 3 * -285830 + 140300)
+        self.assertAlmostEqual(values["absolute_entropy"], -206.7 + 3 * 69.91 + 130)
+        ion = next(s for s in system.species if s.formula_ascii == "Nd" and s.charge == 3)
+        solid = replace(next(s for s in system.species if s.record_id == rid),
+                        gibbs_energy_J_mol=values["gibbs_energy_of_formation"])
+        restricted = replace(system, species=(ion, solid), excluded=())
+        boundary = (17.92 + 6) / 3
+        for offset, winner in ((-0.01, ion), (0.01, solid)):
+            conditions = pb.PourbaixConditions(
+                pH_min=boundary + offset - 0.001, pH_max=boundary + offset + 0.001,
+                pH_points=3, eh_points=3,
+                aqueous_activities=pb.AqueousActivityModel(default_log10_activity=-6),
+            )
+            diagram = pb.PourbaixEngine(self.database).calculate_system(restricted, conditions)
+            self.assertEqual({diagram.system.species[int(i)].record_id
+                              for i in diagram.stable_species_index.flat}, {winner.record_id})
 
     def test_acanthite_preserves_original_entropy_and_critical_energy_evaluation(self) -> None:
         rid = "gfe-ag-ag2s-q+0-solid-acanthite"

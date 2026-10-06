@@ -142,6 +142,19 @@ The fluoride ligand reference matches the existing preferred F⁻ Gibbs energy, 
 and cites NBS PDR CSV logical record 119. Fluoride complexes use a supplied free-fluoride
 activity. Modeling total fluoride requires its acid-base speciation and component balance.
 
+La(OH)₃ and Nd(OH)₃ retain nine additional observations alongside their preferred
+calorimetric/critical evaluations. These include the open NBS crystalline La(OH)₃
+enthalpy, the original 2016 Wood-based Nd(OH)₃ G/S model, Wood's original 2002
+formation-enthalpy estimate, and separately labelled estimates using open NBS anchors.
+Each derivation records every input and its reference; total derived uncertainty is
+unavailable. Wood's published H interval remains ±5000 J/mol. His dissolution-reaction
+properties are converted to formation properties with explicit aqueous/water references.
+Rounded reaction entropy limits cross-property consistency. The NBS La row specifies
+crystalline material without a named polymorph; its source and phase uncertainty remain
+explicit. Original 1980 calorimetric entropies round to the existing preferred values and
+are linked in the source review. Native MINES enthalpies retain their original-reference
+follow-up. The preferred calculation values remain selected.
+
 The `sulfide-s` ligand reference uses the open NBS S²⁻ Gibbs energy, **+85800 J/mol**,
 CSV logical record 526, DOI 10.18434/M32124. Monoclinic acanthite Ag₂S enters calculations
 when a buffered free S²⁻ activity is supplied. Its balanced reaction is

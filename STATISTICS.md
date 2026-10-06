@@ -11,10 +11,10 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended Gibbs energies | 624 (97 %) |
 | Recommended entropies | 512 (80 %) |
 | Recommended formation enthalpies | 441 (69 %) |
-| Reported values retained | 2128 |
-| Source records | 1141 (152 distinct citations) |
+| Reported values retained | 2137 |
+| Source records | 1150 (158 distinct citations) |
 | Phase records | 309 (205 resolved) |
-| Warnings | 652 |
+| Warnings | 656 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 10 |
@@ -44,10 +44,10 @@ Species by phase:
 |---|---|---|
 | `species` | 643 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `thermochemistry` | 643 | One recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 2128 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1141 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 2137 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1150 | Full citations, links, locators and access dates |
 | `phases` | 309 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 652 | Scientific cautions attached to records |
+| `warnings` | 656 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -120,7 +120,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | In | Indium (In) | 7 | 4 | 3 | 0 | 0 | 6 | 5 | 2 | 7 |
 | Ir | Iridium (Ir) | 3 | 1 | 2 | 0 | 0 | 3 | 2 | 2 | 2 |
 | K | Potassium (K) | 9 | 6 | 3 | 0 | 0 | 9 | 8 | 6 | 17 |
-| La | Lanthanum (La) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 8 | 11 |
+| La | Lanthanum (La) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 8 | 13 |
 | Li | Lithium (Li) | 3 | 2 | 1 | 0 | 0 | 3 | 3 | 1 | 1 |
 | Lu | Lutetium (Lu) | 8 | 5 | 3 | 0 | 0 | 8 | 6 | 6 | 9 |
 | Mg | Magnesium (Mg) | 15 | 7 | 8 | 0 | 0 | 13 | 11 | 11 | 22 |
@@ -129,7 +129,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | N | Nitrogen (N) | 8 | 5 | 0 | 3 | 0 | 8 | 8 | 8 | 20 |
 | Na | Sodium (Na) | 10 | 7 | 3 | 0 | 0 | 10 | 7 | 5 | 22 |
 | Nb | Niobium (Nb) | 7 | 4 | 3 | 0 | 0 | 7 | 4 | 4 | 5 |
-| Nd | Neodymium (Nd) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 9 | 13 |
+| Nd | Neodymium (Nd) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 9 | 15 |
 | Ni | Nickel (Ni) | 14 | 3 | 11 | 0 | 0 | 12 | 10 | 8 | 18 |
 | Os | Osmium (Os) | 8 | 3 | 4 | 1 | 0 | 8 | 5 | 5 | 8 |
 | P | Phosphorus (P) | 9 | 7 | 2 | 0 | 0 | 9 | 7 | 7 | 2 |

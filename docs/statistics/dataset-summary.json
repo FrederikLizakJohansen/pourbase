@@ -14,11 +14,11 @@
     "species": 643,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2128,
+    "reported_thermochemistry": 2137,
     "recommended_values": 1577,
-    "source_records": 1141,
-    "distinct_citations": 152,
-    "warnings": 652,
+    "source_records": 1150,
+    "distinct_citations": 158,
+    "warnings": 656,
     "phase_records": 309,
     "resolved_phase_records": 205,
     "mp_matches": 105,
@@ -1346,7 +1346,7 @@
       "gibbs": 10,
       "entropy": 7,
       "enthalpy": 8,
-      "warnings": 11
+      "warnings": 13
     },
     {
       "symbol": "Li",
@@ -1463,7 +1463,7 @@
       "gibbs": 10,
       "entropy": 7,
       "enthalpy": 9,
-      "warnings": 13
+      "warnings": 15
     },
     {
       "symbol": "Ni",
@@ -2039,6 +2039,10 @@
       "count": 2
     },
     {
+      "warning_type": "hydroxide_native_H_and_original_source_review",
+      "count": 2
+    },
+    {
       "warning_type": "ferrihydrite_nominal_reference_conditions",
       "count": 2
     },
@@ -2088,6 +2092,14 @@
     },
     {
       "warning_type": "mines_later_evaluation_pending",
+      "count": 1
+    },
+    {
+      "warning_type": "hydroxide_Wood_model_reference_variants",
+      "count": 1
+    },
+    {
+      "warning_type": "hydroxide_NBS_phase_and_reference_estimate",
       "count": 1
     },
     {
