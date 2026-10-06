@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 634), ("reported_thermochemistry", 2068),
+            for table, count in (("species", 636), ("reported_thermochemistry", 2074),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,60 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_yttrium_fluoride_source_units_charge_and_derived_enthalpy(self) -> None:
+        for formula, charge, count, g_cal, s_cal in (
+            ("YF", 2, 1, -237220.0, -33.37),
+            ("YF2", 1, 2, -308470.0, -14.33),
+        ):
+            rid = f"gfe-y-{formula.lower()}-q+{charge}-aqueous-aq"
+            record = self.database.species_records((rid,))[0]
+            thermo = record.thermochemistry
+            self.assertEqual(thermo.gibbs_energy_J_mol.value, g_cal * 4.184)
+            self.assertAlmostEqual(thermo.entropy_J_mol_K.value, s_cal * 4.184, places=8)
+            formation_entropy = s_cal * 4.184 - 44.43 - count * 202.78 / 2 + charge * 130.684 / 2
+            self.assertAlmostEqual(thermo.formation_enthalpy_J_mol.value,
+                                   g_cal * 4.184 + 298.15 * formation_entropy, places=6)
+            self.assertIn("NBS_derived", thermo.formation_enthalpy_J_mol.source.source_id)
+            self.assertIn("Table 5", thermo.gibbs_energy_J_mol.source.locator)
+            self.assertEqual(len(record.reported), 3)
+            self.assertTrue(all(r.selected_as_recommended and r.uncertainty is None
+                                and r.status == "source_verified_estimate" for r in record.reported))
+            self.assertTrue(any(w.type == "loges_author_republication_provenance" for w in record.warnings))
+            self.assertTrue(any(w.type == "loges_native_precision_and_H_hold" for w in record.warnings))
+
+    def test_yttrium_fluoride_ligand_gating_and_analytical_crossover(self) -> None:
+        from dataclasses import replace
+
+        plain = self.database.load_system("Y")
+        full = self.database.load_system("Y", ligand_ids=["fluoride-f"])
+        complexes = sorted((s for s in full.species if s.ligand_id == "fluoride-f"),
+                           key=lambda s: s.ligand_count)
+        self.assertEqual(len(complexes), 2)
+        self.assertFalse(any(s.ligand_id == "fluoride-f" for s in plain.species))
+        for s in complexes:
+            self.assertEqual(s.charge + s.ligand_count, 3)
+            self.assertEqual((s.electrons_per_metal, s.protons_per_metal), (3, 0))
+            self.assertEqual((s.core_oxygen_count, s.core_hydrogen_count), (0, 0))
+        mono, bis = complexes
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            fluoride_g = connection.execute(
+                "SELECT gibbs_energy_J_mol FROM ligands WHERE ligand_id='fluoride-f'"
+            ).fetchone()[0]
+        crossover = (bis.gibbs_energy_J_mol - mono.gibbs_energy_J_mol - fluoride_g) / (
+            8.31446261815324 * 298.15 * math.log(10)
+        )
+        restricted = replace(full, species=tuple(complexes), excluded=())
+        for offset, winner in ((-0.1, mono), (0.1, bis)):
+            conditions = pb.PourbaixConditions(
+                pH_points=3, eh_points=3,
+                ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
+                    "fluoride-f", log10_free_activity=crossover + offset
+                ),)),
+            )
+            diagram = pb.PourbaixEngine(self.database).calculate_system(restricted, conditions)
+            self.assertEqual({diagram.system.species[int(i)].record_id
+                              for i in diagram.stable_species_index.flat}, {winner.record_id})
 
     def test_ferrihydrite_phases_retain_physical_bounds_and_source_uncertainty(self) -> None:
         for phase, energies, entropies, enthalpy in (

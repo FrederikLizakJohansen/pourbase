@@ -228,3 +228,24 @@ formula units and formal Fe(III). They remain metastable to the existing goethit
 reference across the tested bounds; omitting more stable solids exposes their range-sensitive
 precipitation boundaries. Natural ferrihydrite with differing hydration, adsorbates,
 substitution or aggregation requires its own phase model.
+
+Two aqueous yttrium fluoride records distinguish YF²⁺ (one fluoride, charge +2) and
+YF₂⁺ (two fluorides, charge +1). Their Gibbs energies and entropies are individually
+verified author-published model outputs in Migdisov et al. (2016), Table 5, manuscript
+p. 46 / OSTI PDF p. 47, attributed to Loges et al. (2013). Exact calorie-to-joule
+conversions use 4.184 J/cal. The conventional HKF reference state is represented at
+nominal 298.15 K/1 bar on the conventional ionic entropy scale. Full original 2013
+fit methods, calibration references and numerical uncertainties remain source follow-ups.
+The measured high-temperature constants retain their saturated-vapor-pressure state.
+
+Both enthalpies are separately labelled new NBS-reference estimates from
+`H=G+298.15*(S-S(Y,cr)-nF*S(F2,g)/2+q*S(H2,g)/2)`.
+The positive-ion charge term accounts for the conventional `S(H+)=0` scale. NIST is
+acknowledged; the derivations date from 6 October 2026 and use open NBS PDR data,
+DOI 10.18434/M32124. Total uncertainty and covariance are unavailable. All six
+observations have `source_verified_estimate` status and exact source/input locators.
+Native MINES rounded G/S representations remain in the external ledger; native H
+and its unresolved reference anchors retain their hold. Existing preferences are
+preserved. These article-derived values use the individually cited research-fact
+route; neither article is represented as an openly licensed database. The complexes
+enter calculations when buffered free fluoride is selected.

@@ -11,16 +11,16 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 634,
+    "species": 636,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2068,
-    "recommended_values": 1561,
-    "source_records": 1080,
-    "distinct_citations": 141,
-    "warnings": 626,
-    "phase_records": 300,
-    "resolved_phase_records": 196,
+    "reported_thermochemistry": 2074,
+    "recommended_values": 1567,
+    "source_records": 1086,
+    "distinct_citations": 143,
+    "warnings": 632,
+    "phase_records": 302,
+    "resolved_phase_records": 198,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
@@ -29,10 +29,10 @@
   "phases": [
     {
       "phase": "aqueous",
-      "species": 351,
-      "gibbs": 351,
-      "entropy": 266,
-      "enthalpy": 209
+      "species": 353,
+      "gibbs": 353,
+      "entropy": 268,
+      "enthalpy": 211
     },
     {
       "phase": "solid",
@@ -59,20 +59,20 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 617
+      "available": 619
     },
     {
       "property": "Entropy",
-      "available": 509
+      "available": 511
     },
     {
       "property": "Formation enthalpy",
-      "available": 435
+      "available": 437
     }
   ],
   "gibbs_status": {
     "verified": 371,
-    "source_verified_estimate": 172,
+    "source_verified_estimate": 174,
     "defined_reference_state": 74,
     "not_available": 11,
     "terminal_evidence_gap": 6
@@ -349,7 +349,7 @@
       "symbol": "Y",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 8
+      "species": 10
     },
     {
       "atomic_number": 40,
@@ -1819,15 +1819,15 @@
     {
       "symbol": "Y",
       "system": "Yttrium (Y)",
-      "species": 8,
-      "aqueous": 6,
+      "species": 10,
+      "aqueous": 8,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 8,
-      "entropy": 7,
-      "enthalpy": 7,
-      "warnings": 12
+      "gibbs": 10,
+      "entropy": 9,
+      "enthalpy": 9,
+      "warnings": 18
     },
     {
       "symbol": "Yb",
@@ -2011,6 +2011,18 @@
       "count": 2
     },
     {
+      "warning_type": "loges_reference_state_and_uncertainty",
+      "count": 2
+    },
+    {
+      "warning_type": "loges_native_precision_and_H_hold",
+      "count": 2
+    },
+    {
+      "warning_type": "loges_author_republication_provenance",
+      "count": 2
+    },
+    {
       "warning_type": "ferrihydrite_nominal_reference_conditions",
       "count": 2
     },
@@ -2074,7 +2086,7 @@
   "phase_identity": [
     {
       "identity_status": "resolved",
-      "count": 186
+      "count": 188
     },
     {
       "identity_status": "aqueous_species_identified",
