@@ -292,3 +292,29 @@ an eligible Gibbs energy, preserving carbon-screening coverage. Hydrogen, oxygen
 argon model outputs await component support; their values and source decisions are
 also retained externally. Preferred calculations and periodic-screen coverage are
 unchanged by this batch.
+
+Eleven Wolery–Jové Colón (2017) observations retain new research evaluations for
+Al³⁺, gibbsite and corundum, DOI 10.1016/j.gca.2016.09.028. Table 23 supplies two
+recomputed mineral formation Gibbs energies. Table 24 supplies separate G/H/S
+triplets for corrections to the Pokrovskii–Helgeson (1995) and Tagirov–Schott (2001)
+models. These corrections preserve the gibbsite dissolution reaction G and S while
+updating water and elemental references. Table 25 supplies a separate calorimetric
+reevaluation of Al³⁺ G/H/S. Exact citations identify the public author manuscript's
+pages 54–55, tables, rows and columns; G/H use the column-header kJ/mol units.
+
+The calorimetric uncertainties remain the source's reported two-standard-deviation
+intervals: 1623 J/mol for G, 862 J/mol for H and 4.610 J/(mol K) for S. Corrected
+model rows have unavailable uncertainty. All observations have
+`source_verified_estimate` status. The calorimetric H fills the previously missing
+preferred Al³⁺ enthalpy; existing preferred properties are preserved. A warning
+identifies the mixed preferred Al³⁺ G/S/H evaluations, which must be assessed
+separately from each internally related source triplet.
+
+These individually cited original research outputs follow the project's research-fact
+route. Public manuscript access establishes access to evidence; article and report
+licences require their own assessment. The numerical evaluations retain disclosed
+USGS, SUPCRT92, CODATA and calorimetric dependencies. Unchanged inherited comparison
+rows and calibration tables remain external, including the corundum H/S inputs.
+The recomputed corundum G coincides with CODATA because its H/S inputs coincide.
+Original Tagirov–Schott (2001) fluoride tables still await direct source verification;
+the new corrected evaluations are attributed to Wolery–Jové Colón (2017).

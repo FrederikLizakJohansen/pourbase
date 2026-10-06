@@ -14,11 +14,11 @@
     "species": 642,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2099,
-    "recommended_values": 1573,
-    "source_records": 1111,
-    "distinct_citations": 146,
-    "warnings": 645,
+    "reported_thermochemistry": 2110,
+    "recommended_values": 1574,
+    "source_records": 1122,
+    "distinct_citations": 147,
+    "warnings": 648,
     "phase_records": 308,
     "resolved_phase_records": 204,
     "mp_matches": 105,
@@ -32,7 +32,7 @@
       "species": 353,
       "gibbs": 353,
       "entropy": 268,
-      "enthalpy": 211
+      "enthalpy": 212
     },
     {
       "phase": "solid",
@@ -67,7 +67,7 @@
     },
     {
       "property": "Formation enthalpy",
-      "available": 439
+      "available": 440
     }
   ],
   "gibbs_status": {
@@ -929,8 +929,8 @@
       "liquid": 0,
       "gibbs": 13,
       "entropy": 9,
-      "enthalpy": 7,
-      "warnings": 15
+      "enthalpy": 8,
+      "warnings": 18
     },
     {
       "symbol": "As",
@@ -2000,6 +2000,10 @@
     },
     {
       "warning_type": "miron_republished_conductance_entropy",
+      "count": 3
+    },
+    {
+      "warning_type": "WoleryJoveColon2017_reference_evaluations",
       "count": 3
     },
     {

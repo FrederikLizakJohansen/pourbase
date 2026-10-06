@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 642), ("reported_thermochemistry", 2099),
+            for table, count in (("species", 642), ("reported_thermochemistry", 2110),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -596,6 +596,50 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual(entropy.value, 28.33)
         self.assertFalse(entropy.selected_as_recommended)
         self.assertIn("CSV logical record 3558", entropy.source.locator)
+
+    def test_aluminum_reference_corrections_retain_distinct_evaluations(self) -> None:
+        aluminum = self.database.species_records(("gfe-al-al-q+3-aqueous-aq",))[0]
+        for model, gibbs, enthalpy, entropy in (
+            ("PokrovskiiHelgeson1995", -487759.0, -538572.0, -338.148),
+            ("TagirovSchott2001", -487621.0, -538937.0, -339.834),
+        ):
+            rows = {row.property: row for row in aluminum.reported if row.source
+                    and row.source.source_id.startswith(f"WoleryJoveColon2017_Table24_{model}_")}
+            self.assertEqual({prop: row.value for prop, row in rows.items()}, {
+                "gibbs_energy_of_formation": gibbs,
+                "enthalpy_of_formation": enthalpy,
+                "absolute_entropy": entropy,
+            })
+            self.assertTrue(all(not row.selected_as_recommended and row.uncertainty is None
+                                for row in rows.values()))
+            self.assertTrue(all("10.1016/j.gca.2016.09.028" in row.source.locator
+                                and "Table24" in row.source.locator for row in rows.values()))
+        for rid, value in (("gfe-al-al-oh-3-q+0-solid-gibbsite", -1154903.0),
+                           ("gfe-al-al2o3-q+0-solid-alpha-al2o3-corundum", -1582257.0)):
+            record = self.database.species_records((rid,))[0]
+            rows = [row for row in record.reported if row.source
+                    and row.source.source_id.startswith("WoleryJoveColon2017_Table23_")]
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0].value, value)
+            self.assertFalse(rows[0].selected_as_recommended)
+
+    def test_aluminum_calorimetry_fills_missing_enthalpy_with_reported_uncertainty(self) -> None:
+        aluminum = self.database.species_records(("gfe-al-al-q+3-aqueous-aq",))[0]
+        rows = {row.property: row for row in aluminum.reported if row.source
+                and row.source.source_id.startswith("WoleryJoveColon2017_Table25_")}
+        for prop, value, uncertainty in (("gibbs_energy_of_formation", -490115.0, 1623.0),
+                                        ("enthalpy_of_formation", -538350.0, 862.0),
+                                        ("absolute_entropy", -329.5, 4.61)):
+            self.assertEqual(rows[prop].value, value)
+            self.assertEqual(rows[prop].uncertainty, uncertainty)
+            self.assertIn("TWO standard deviations", rows[prop].source.locator)
+            self.assertEqual(rows[prop].selected_as_recommended, prop == "enthalpy_of_formation")
+        thermo = aluminum.thermochemistry
+        self.assertEqual(thermo.formation_enthalpy_J_mol.value, -538350.0)
+        self.assertEqual(thermo.formation_enthalpy_J_mol.uncertainty, 862.0)
+        self.assertEqual(thermo.gibbs_energy_J_mol.value, -485000.0)
+        self.assertEqual(thermo.entropy_J_mol_K.value, -321.7)
+        self.assertTrue(any("different evaluations" in warning.message for warning in aluminum.warnings))
 
     def test_periodic_screen(self) -> None:
         screen = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE")

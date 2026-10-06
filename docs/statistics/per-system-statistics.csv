@@ -1,6 +1,6 @@
 symbol,system,species,aqueous,solid,gas,liquid,gibbs,entropy,enthalpy,warnings
 Ag,Silver (Ag),14,6,8,0,0,14,13,11,13
-Al,Aluminum (Al),14,6,8,0,0,13,9,7,15
+Al,Aluminum (Al),14,6,8,0,0,13,9,8,18
 As,Arsenic (As),12,9,3,0,0,12,11,11,1
 Au,Gold (Au),12,10,2,0,0,11,5,3,17
 B,Boron (B),6,4,2,0,0,6,6,6,0

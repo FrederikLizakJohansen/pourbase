@@ -10,11 +10,11 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Supported elemental systems | 74 of 118 elements |
 | Recommended Gibbs energies | 623 (97 %) |
 | Recommended entropies | 511 (80 %) |
-| Recommended formation enthalpies | 439 (68 %) |
-| Reported values retained | 2099 |
-| Source records | 1111 (146 distinct citations) |
+| Recommended formation enthalpies | 440 (69 %) |
+| Reported values retained | 2110 |
+| Source records | 1122 (147 distinct citations) |
 | Phase records | 308 (204 resolved) |
-| Warnings | 645 |
+| Warnings | 648 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 9 |
@@ -33,7 +33,7 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| aqueous | 353 | 353 | 268 | 211 |
+| aqueous | 353 | 353 | 268 | 212 |
 | solid | 278 | 259 | 232 | 217 |
 | gas | 9 | 9 | 9 | 9 |
 | liquid | 2 | 2 | 2 | 2 |
@@ -44,10 +44,10 @@ Species by phase:
 |---|---|---|
 | `species` | 642 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `thermochemistry` | 642 | One recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 2099 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1111 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 2110 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1122 | Full citations, links, locators and access dates |
 | `phases` | 308 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 645 | Scientific cautions attached to records |
+| `warnings` | 648 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -88,7 +88,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Element | System | Species | Aqueous | Solid | Gas | Liquid | Gibbs | Entropy | Enthalpy | Warnings |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Ag | Silver (Ag) | 14 | 6 | 8 | 0 | 0 | 14 | 13 | 11 | 13 |
-| Al | Aluminum (Al) | 14 | 6 | 8 | 0 | 0 | 13 | 9 | 7 | 15 |
+| Al | Aluminum (Al) | 14 | 6 | 8 | 0 | 0 | 13 | 9 | 8 | 18 |
 | As | Arsenic (As) | 12 | 9 | 3 | 0 | 0 | 12 | 11 | 11 | 1 |
 | Au | Gold (Au) | 12 | 10 | 2 | 0 | 0 | 11 | 5 | 3 | 17 |
 | B | Boron (B) | 6 | 4 | 2 | 0 | 0 | 6 | 6 | 6 | 0 |
