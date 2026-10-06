@@ -157,8 +157,9 @@ state that their G-H-S constraint was relaxed. These reported properties remain 
 selections. All prior preferences are preserved; each available property has one preferred value.
 
 Eleven additional crystalline hydrate records retain their available NBS formation enthalpies.
-G and S remain `not_available`; these records appear as incomplete when sulfate is selected
-and require a sourced Gibbs energy for equilibrium calculations. The blue monoclinic nickel
+Seven now also have sourced entropies and derived Gibbs estimates, described below. The other
+four retain `not_available` G and S and require a sourced Gibbs energy for equilibrium calculations.
+The blue monoclinic nickel
 hexahydrate retains its own enthalpy and identity separately from green tetragonal retgersite.
 
 Fifteen rare-earth monosulfate Gibbs estimates use the original Schijf and Byrne (2004)
@@ -176,3 +177,29 @@ sourced USGS entropy and open elemental entropy references. Its locator gives th
 `G=H-T*formation_entropy` derivation and labels the total uncertainty unavailable. The native
 USGS H/G evaluation retains its separate ancestry review. Sulfate species participate when
 a buffered free sulfate activity is supplied; the existing model conserves the active metal.
+
+Seven sulfate hydrates retain individual DeKock (1982), Bureau of Mines IC 8910 entropy
+evaluations or estimates: MnSO4 with one, four, five or seven waters, FeSO4 with one or four
+waters, and NiSO4 with four waters. Source calories are converted using exactly 4.184 J/cal.
+Their Gibbs energies are explicit estimates from the preserved open NBS enthalpies and
+elemental reference entropies: `G=H-298.15*(S-sum(n_i*S_element_i))`. Every locator records
+the full hydrate formula and all input references. The source entropy pressure is 1 atm;
+its correction to nominal 1 bar is unquantified. Total uncertainty and covariance are
+unavailable. Updated warnings record the filled properties and preserve the original H source.
+The report's native G/H values retain their separate CODATA/SRD ancestry review.
+
+Thirteen crystalline rare-earth trifluorides retain individually verified original solubility-fit
+Gibbs estimates from Migdisov et al. (2009), as published in the authors' 2016 Table 11.
+Each source identifies its formula row, G column and J/mol units. Calibration dependencies
+on Konings/Kovacs entropy and heat capacity are recorded; those copied handbook properties
+retain their separate source holds. The native MINES G differences have warnings. LuF3 uses
+the original LuF3 row; the native Lu-labelled YbF3 formula conflict remains documented.
+Synthetic crystalline phases have the original XRD evidence and no inferred spacegroup.
+
+Open NBS independently supplies four trifluoride enthalpies and CeF3 entropy. One CeF3
+enthalpy is explicitly derived from its original G fit and open NBS entropy references,
+with estimate status and unavailable total uncertainty. Independent property evaluations
+can disagree with each other; no G-H-S consistency constraint is imposed.
+Seven separate rare-earth trifluoride monohydrates retain their open NBS enthalpies.
+Their unavailable G and S remain explicit. Fluoride solids enter calculations when a
+buffered free fluoride activity is supplied, and complete hydrate formulas retain every water.

@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 612), ("reported_thermochemistry", 2014),
+            for table, count in (("species", 632), ("reported_thermochemistry", 2054),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -209,6 +209,57 @@ class DatasetSnapshotTests(unittest.TestCase):
                          pb.EvidenceStatus.NOT_AVAILABLE.value)
         self.assertEqual(blue.thermochemistry.formation_enthalpy_J_mol.value, -2672300)
         self.assertFalse(any(s.record_id == blue.record_id for s in nickel.species))
+
+    def test_hydrate_gibbs_estimate_preserves_open_enthalpy_and_water_basis(self) -> None:
+        record = self.database.species_records((
+            "gfe-mn-mnso4-h2o-4-q+0-solid-manganese-sulfate-tetrahydrate",
+        ))[0]
+        thermo = record.thermochemistry
+        self.assertEqual(thermo.formation_enthalpy_J_mol.value, -2258100)
+        self.assertAlmostEqual(thermo.entropy_J_mol_K.value, 65 * 4.184)
+        # Mn + S + 4 O2 + 4 H2 form the complete tetrahydrate formula unit.
+        reference_entropy = 32.01 + 31.80 + 4 * 205.138 + 4 * 130.684
+        self.assertAlmostEqual(thermo.gibbs_energy_J_mol.value,
+                               -2258100 - 298.15 * (65 * 4.184 - reference_entropy))
+        self.assertEqual(thermo.gibbs_energy_J_mol.status, "source_verified_estimate")
+        self.assertIsNone(thermo.gibbs_energy_J_mol.uncertainty)
+        self.assertTrue(any(w.type == "sulfate_hydrate_missing_properties_resolved"
+                            for w in record.warnings))
+        self.assertFalse(any(w.type == "sulfate_enthalpy_retained_G_unavailable"
+                             for w in record.warnings))
+        enabled = self.database.load_system("Mn", ligand_ids=("sulfate-so4",))
+        hydrate = next(s for s in enabled.species if s.record_id == record.record_id)
+        self.assertEqual((hydrate.core_oxygen_count, hydrate.core_hydrogen_count), (4, 8))
+        self.assertEqual((hydrate.electrons_per_metal, hydrate.protons_per_metal), (2, 0))
+
+    def test_original_fluoride_solid_rows_resolve_lutetium_formula_conflict(self) -> None:
+        lutetium, ytterbium = self.database.species_records((
+            "gfe-lu-luf3-q+0-solid-crystalline-rare-earth-trifluoride",
+            "gfe-yb-ybf3-q+0-solid-crystalline-rare-earth-trifluoride",
+        ))
+        self.assertEqual(lutetium.formula_ascii, "LuF3")
+        self.assertEqual(lutetium.thermochemistry.gibbs_energy_J_mol.value, -1610370)
+        self.assertEqual(ytterbium.thermochemistry.gibbs_energy_J_mol.value, -1587370)
+        self.assertTrue(any(w.type == "ree_fluoride_native_G_discrepancy"
+                            and "YbF3" in w.message for w in lutetium.warnings))
+        loaded = self.database.load_system("Lu", ligand_ids=("fluoride-f",))
+        solid = next(s for s in loaded.species if s.record_id == lutetium.record_id)
+        self.assertEqual((solid.charge, solid.ligand_count, solid.electrons_per_metal), (0, 3, 3))
+        self.assertEqual(solid.ligand_gibbs_energy_J_mol, -278790)
+        self.assertFalse(any(s.record_id == solid.record_id
+                             for s in self.database.load_system("Lu").species))
+
+    def test_fluoride_monohydrate_retains_h_without_borrowing_anhydrous_g(self) -> None:
+        record = self.database.species_records((
+            "gfe-la-laf3-h2o-q+0-solid-rare-earth-trifluoride-monohydrate",
+        ))[0]
+        self.assertEqual(record.formula_ascii, "LaF3(H2O)")
+        self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value, -1987400)
+        self.assertIsNone(record.thermochemistry.gibbs_energy_J_mol.value)
+        self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.status, "not_available")
+        self.assertIsNone(record.thermochemistry.entropy_J_mol_K.value)
+        self.assertFalse(any(s.record_id == record.record_id for s in
+                             self.database.load_system("La", ligand_ids=("fluoride-f",)).species))
 
     def test_rare_earth_chloride_fit_variants_and_derived_enthalpies(self) -> None:
         mono, double = self.database.species_records((
