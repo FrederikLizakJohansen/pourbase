@@ -194,6 +194,21 @@ The conflicting open NBS alpha phase label “orthorhombic” and distinct beta 
 retain identity holds outside this monoclinic record. Heat capacity, thermal enthalpy
 increments, Gibbs functions and transition properties remain external model candidates.
 
+Galena retains eight observations for anhydrous cubic crystalline PbS: open NBS G/H/S,
+Bureau of Mines Bulletin 689 G/H/S, and USGS Bulletin 2131 formation G/H. Preferred
+G = −96800 ± 2000 J/mol and H = −98300 ± 2000 J/mol are the USGS critical evaluations;
+preferred S = 91.2 J/(mol K) comes from open NBS PDR CSV logical record 3275.
+Each property has one preferred value. The warning identifies this mixed evaluation
+triplet and overlapping source ancestry; uncertainties retain their published meaning.
+
+The Bureau of Mines alternatives retain their original 1 atm pressure as 1.01325 bar
+and exact calorie conversions, with an unquantified condensed-phase pressure correction.
+The USGS/native entropy 91.7 J/(mol K) keeps its JANAF ancestry hold in the external
+review. Formation properties carry their own property-specific research references.
+Galena uses one Pb and one buffered free S²⁻ in `Pb(cr)+S²⁻(aq)=PbS(cr)+2e⁻`.
+Total sulfide speciation, additional property models and exact space-group details
+retain their separate follow-ups. All earlier observations and preferences are preserved.
+
 Forty-one additional USGS Bulletin 2131 properties retain their property-specific reference
 columns and source uncertainty intervals. Boehmite and diaspore have separate AlOOH species
 and phase records. Adding diaspore changes the aluminum equilibrium diagram where it becomes
