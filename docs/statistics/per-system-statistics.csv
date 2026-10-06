@@ -8,7 +8,7 @@ Ba,Barium (Ba),5,2,3,0,0,5,4,2,3
 Be,Beryllium (Be),5,2,3,0,0,5,5,3,4
 Bi,Bismuth (Bi),6,3,3,0,0,6,2,2,5
 Br,Bromine (Br),7,6,0,0,1,7,7,7,0
-C,Carbon (C),7,4,1,2,0,7,7,7,7
+C,Carbon (C),7,4,1,2,0,7,7,7,9
 Ca,Calcium (Ca),15,7,8,0,0,15,13,11,25
 Cd,Cadmium (Cd),10,7,3,0,0,10,4,4,6
 Ce,Cerium (Ce),11,6,5,0,0,10,9,10,12
@@ -38,7 +38,7 @@ Lu,Lutetium (Lu),8,5,3,0,0,8,6,6,9
 Mg,Magnesium (Mg),15,7,8,0,0,13,11,11,22
 Mn,Manganese (Mn),15,5,10,0,0,15,14,11,15
 Mo,Molybdenum (Mo),4,1,3,0,0,4,4,2,1
-N,Nitrogen (N),8,5,0,3,0,8,8,8,18
+N,Nitrogen (N),8,5,0,3,0,8,8,8,20
 Na,Sodium (Na),10,7,3,0,0,10,7,5,22
 Nb,Niobium (Nb),7,4,3,0,0,7,4,4,5
 Nd,Neodymium (Nd),11,5,6,0,0,10,7,9,13
@@ -53,7 +53,7 @@ Rb,Rubidium (Rb),2,1,1,0,0,2,2,0,1
 Re,Rhenium (Re),4,1,3,0,0,4,4,2,0
 Rh,Rhodium (Rh),9,6,3,0,0,9,8,8,13
 Ru,Ruthenium (Ru),5,2,3,0,0,5,5,2,5
-S,Sulfur (S),10,9,1,0,0,10,9,9,2
+S,Sulfur (S),10,9,1,0,0,10,9,9,3
 Sb,Antimony (Sb),8,4,4,0,0,8,6,6,2
 Sc,Scandium (Sc),8,5,3,0,0,8,8,8,10
 Se,Selenium (Se),7,6,1,0,0,7,7,7,0

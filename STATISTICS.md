@@ -11,10 +11,10 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended Gibbs energies | 623 (97 %) |
 | Recommended entropies | 511 (80 %) |
 | Recommended formation enthalpies | 439 (68 %) |
-| Reported values retained | 2080 |
-| Source records | 1092 (144 distinct citations) |
+| Reported values retained | 2099 |
+| Source records | 1111 (146 distinct citations) |
 | Phase records | 308 (204 resolved) |
-| Warnings | 640 |
+| Warnings | 645 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 9 |
@@ -44,10 +44,10 @@ Species by phase:
 |---|---|---|
 | `species` | 642 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `thermochemistry` | 642 | One recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 2080 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1092 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 2099 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1111 | Full citations, links, locators and access dates |
 | `phases` | 308 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 640 | Scientific cautions attached to records |
+| `warnings` | 645 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -96,7 +96,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Be | Beryllium (Be) | 5 | 2 | 3 | 0 | 0 | 5 | 5 | 3 | 4 |
 | Bi | Bismuth (Bi) | 6 | 3 | 3 | 0 | 0 | 6 | 2 | 2 | 5 |
 | Br | Bromine (Br) | 7 | 6 | 0 | 0 | 1 | 7 | 7 | 7 | 0 |
-| C | Carbon (C) | 7 | 4 | 1 | 2 | 0 | 7 | 7 | 7 | 7 |
+| C | Carbon (C) | 7 | 4 | 1 | 2 | 0 | 7 | 7 | 7 | 9 |
 | Ca | Calcium (Ca) | 15 | 7 | 8 | 0 | 0 | 15 | 13 | 11 | 25 |
 | Cd | Cadmium (Cd) | 10 | 7 | 3 | 0 | 0 | 10 | 4 | 4 | 6 |
 | Ce | Cerium (Ce) | 11 | 6 | 5 | 0 | 0 | 10 | 9 | 10 | 12 |
@@ -126,7 +126,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Mg | Magnesium (Mg) | 15 | 7 | 8 | 0 | 0 | 13 | 11 | 11 | 22 |
 | Mn | Manganese (Mn) | 15 | 5 | 10 | 0 | 0 | 15 | 14 | 11 | 15 |
 | Mo | Molybdenum (Mo) | 4 | 1 | 3 | 0 | 0 | 4 | 4 | 2 | 1 |
-| N | Nitrogen (N) | 8 | 5 | 0 | 3 | 0 | 8 | 8 | 8 | 18 |
+| N | Nitrogen (N) | 8 | 5 | 0 | 3 | 0 | 8 | 8 | 8 | 20 |
 | Na | Sodium (Na) | 10 | 7 | 3 | 0 | 0 | 10 | 7 | 5 | 22 |
 | Nb | Niobium (Nb) | 7 | 4 | 3 | 0 | 0 | 7 | 4 | 4 | 5 |
 | Nd | Neodymium (Nd) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 9 | 13 |
@@ -141,7 +141,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Re | Rhenium (Re) | 4 | 1 | 3 | 0 | 0 | 4 | 4 | 2 | 0 |
 | Rh | Rhodium (Rh) | 9 | 6 | 3 | 0 | 0 | 9 | 8 | 8 | 13 |
 | Ru | Ruthenium (Ru) | 5 | 2 | 3 | 0 | 0 | 5 | 5 | 2 | 5 |
-| S | Sulfur (S) | 10 | 9 | 1 | 0 | 0 | 10 | 9 | 9 | 2 |
+| S | Sulfur (S) | 10 | 9 | 1 | 0 | 0 | 10 | 9 | 9 | 3 |
 | Sb | Antimony (Sb) | 8 | 4 | 4 | 0 | 0 | 8 | 6 | 6 | 2 |
 | Sc | Scandium (Sc) | 8 | 5 | 3 | 0 | 0 | 8 | 8 | 8 | 10 |
 | Se | Selenium (Se) | 7 | 6 | 1 | 0 | 0 | 7 | 7 | 7 | 0 |

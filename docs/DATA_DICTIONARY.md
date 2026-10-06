@@ -267,3 +267,28 @@ endmembers at 200 °C/15.5 bar. Its carbonate heat capacities require separate p
 and temperature-model support. These source states and model identities are retained
 in the external candidate ledger. The independent NBS entries preserve all existing
 preferences and do not assign an anhydrous evaluation to a hydrate or solid solution.
+
+Nineteen Akinfiev–Diamond (2003) observations retain independent model evaluations for
+aqueous CH₄, CO₂, N₂, NH₃ and H₂S. Six separately cited Table 1 Henry-solubility fits
+produce Gibbs energies and absolute entropies through the rounded 298.15 K/1 bar
+relations in Appendix A.4, using explicitly open NBS gas references. Six enthalpies
+are new estimates from `H=G+298.15*(S-S_elements)` with open NBS elemental entropies.
+Both H₂S fit ranges are retained separately, together with the original printed
+below-200 °C entropy output, 29.96 cal/(mol K), converted using 4.184 J/cal.
+
+All 19 observations have `source_verified_estimate` status and remain alternatives;
+existing preferred values are preserved. Sources identify every fitted coefficient,
+gas and elemental reference row, molal standard state, derivation and conversion date.
+Entropy includes the gas entropy; the model's mole-fraction-to-molality conversion
+is applied once. Published coefficient rounding limits precision, and total uncertainty
+and covariance are unavailable. NIST is acknowledged for the open NBS PDR references,
+DOI 10.18434/M32124. The original model's Hill/Glushko solvent-calibration dependency
+is disclosed; no separate restricted calibration entries or copied Table 2 inputs
+are added. These individually cited research facts do not confer an open licence
+on the copyrighted paper. Native MINES reference variants remain externally held.
+
+Verified aqueous benzene entropy is retained in the external candidate ledger pending
+an eligible Gibbs energy, preserving carbon-screening coverage. Hydrogen, oxygen and
+argon model outputs await component support; their values and source decisions are
+also retained externally. Preferred calculations and periodic-screen coverage are
+unchanged by this batch.

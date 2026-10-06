@@ -14,11 +14,11 @@
     "species": 642,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2080,
+    "reported_thermochemistry": 2099,
     "recommended_values": 1573,
-    "source_records": 1092,
-    "distinct_citations": 144,
-    "warnings": 640,
+    "source_records": 1111,
+    "distinct_citations": 146,
+    "warnings": 645,
     "phase_records": 308,
     "resolved_phase_records": 204,
     "mp_matches": 105,
@@ -1034,7 +1034,7 @@
       "gibbs": 7,
       "entropy": 7,
       "enthalpy": 7,
-      "warnings": 7
+      "warnings": 9
     },
     {
       "symbol": "Ca",
@@ -1424,7 +1424,7 @@
       "gibbs": 8,
       "entropy": 8,
       "enthalpy": 8,
-      "warnings": 18
+      "warnings": 20
     },
     {
       "symbol": "Na",
@@ -1619,7 +1619,7 @@
       "gibbs": 10,
       "entropy": 9,
       "enthalpy": 9,
-      "warnings": 2
+      "warnings": 3
     },
     {
       "symbol": "Sb",
@@ -1980,6 +1980,10 @@
     },
     {
       "warning_type": "ree_fluoride_mixed_evaluations",
+      "count": 5
+    },
+    {
+      "warning_type": "AkinfievDiamond2003_NBS_model_alternatives",
       "count": 5
     },
     {

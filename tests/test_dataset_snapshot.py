@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 642), ("reported_thermochemistry", 2080),
+            for table, count in (("species", 642), ("reported_thermochemistry", 2099),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -499,6 +499,62 @@ class DatasetSnapshotTests(unittest.TestCase):
                                  - 2 * self.database.reference_state.water_gibbs_energy_J_mol)
                                / rt_log10, -32.48, places=6)
         self.assertIn("Fe(OH)3(-)=HFeO2(-)+H2O", original_iron.source.locator)
+
+    def test_akinfiev_diamond_alternatives_use_molal_gas_and_absolute_entropy(self) -> None:
+        for formula, symbol, element_entropy in (
+            ("CH4", "C", 5.740 + 2 * 130.684),
+            ("CO2", "C", 5.740 + 205.138),
+            ("N2", "N", 191.61),
+            ("NH3", "N", 191.61 / 2 + 1.5 * 130.684),
+        ):
+            record = self.database.species_records((
+                f"gfe-{symbol.lower()}-{formula.lower()}-q+0-aqueous-aq",
+            ))[0]
+            triplet = {row.property: row for row in record.reported
+                       if row.source and row.source.source_id.startswith(
+                           f"AkinfievDiamond2003_Table1_{formula}_")}
+            self.assertEqual(len(triplet), 3)
+            self.assertTrue(all(not row.selected_as_recommended for row in triplet.values()))
+            self.assertTrue(all(row.status == "source_verified_estimate" and row.uncertainty is None
+                                for row in triplet.values()))
+            self.assertTrue(all("Table1" in row.source.locator and "Appendix A.4" in row.source.locator
+                                and "10.18434/M32124" in row.source.locator
+                                for row in triplet.values()))
+            gibbs = triplet["gibbs_energy_of_formation"].value
+            entropy = triplet["absolute_entropy"].value
+            enthalpy = triplet["enthalpy_of_formation"].value
+            self.assertGreater(entropy, 0)
+            self.assertAlmostEqual(enthalpy, gibbs + 298.15 * (entropy - element_entropy),
+                                   delta=0.001)
+            if formula == "CH4":
+                # Independent Eq. 17 Henry-law check, including Nw exactly once.
+                temperature, density, water_mass = 298.15, 0.9970, 18.0152
+                log_henry = ((1 + 0.1131) * -3.4773
+                             - 0.1131 * math.log(83.1441 * temperature / water_mass * density)
+                             + density * (-11.8462 + 14.8615 * math.sqrt(1000 / temperature)))
+                henry_gibbs = -50720 + 1.9872 * 4.184 * temperature * (
+                    log_henry - math.log(1000 / water_mass))
+                self.assertAlmostEqual(gibbs, henry_gibbs, delta=5)
+                self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, -34330)
+            if formula == "CO2":
+                self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, -385980)
+        self.assertTrue(self.database.load_system("C").is_thermochemically_complete)
+
+    def test_akinfiev_diamond_preserves_both_hydrogen_sulfide_fits(self) -> None:
+        record = self.database.species_records(("gfe-s-h2s-q+0-aqueous-aq",))[0]
+        observations = [row for row in record.reported if row.source
+                        and row.source.source_id.startswith("AkinfievDiamond2003_")]
+        self.assertEqual(len(observations), 7)
+        self.assertTrue(all(not row.selected_as_recommended for row in observations))
+        entropies = {row.source.source_id: row.value for row in observations
+                     if row.property == "absolute_entropy"}
+        self.assertAlmostEqual(entropies["AkinfievDiamond2003_H2S_below200_printed_entropy"],
+                               29.96 * 4.184, places=6)
+        self.assertAlmostEqual(entropies["AkinfievDiamond2003_Table1_H2S_below200_entropy_NBS_estimate"],
+                               29.96 * 4.184, delta=0.02)
+        self.assertLess(entropies["AkinfievDiamond2003_Table1_H2S_all_entropy_NBS_estimate"], 117)
+        self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, -27830)
+        self.assertEqual(record.thermochemistry.entropy_J_mol_K.value, 121)
 
     def test_open_nitrogen_estimate_uses_absolute_entropy(self) -> None:
         nitrogen = self.database.species_records(("gfe-n-n2-q+0-aqueous-aq",))[0]
