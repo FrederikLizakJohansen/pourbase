@@ -142,6 +142,34 @@ The fluoride ligand reference matches the existing preferred F⁻ Gibbs energy, 
 and cites NBS PDR CSV logical record 119. Fluoride complexes use a supplied free-fluoride
 activity. Modeling total fluoride requires its acid-base speciation and component balance.
 
+The `sulfide-s` ligand reference uses the open NBS S²⁻ Gibbs energy, **+85800 J/mol**,
+CSV logical record 526, DOI 10.18434/M32124. Monoclinic acanthite Ag₂S enters calculations
+when a buffered free S²⁻ activity is supplied. Its balanced reaction is
+`2Ag(cr)+S²⁻(aq)=Ag₂S(cr)+2e⁻`; each formula unit contains two active silver atoms.
+The metal balance conserves silver. Total sulfide requires H₂S/HS⁻ protonation and a
+separate sulfur component balance.
+
+Acanthite retains preferred USGS Bulletin 2131 formation G = −39700 ± 1000 J/mol
+and H = −32000 ± 1000 J/mol, with exact property columns and original 1951/1988
+electrochemical/calorimetric ancestry. These are the government critical evaluations;
+the parent papers' full numerical tables remain source follow-ups. Original Grønvold–Westrum
+**1986** calorimetry supplies preferred S = 142.89 ± 0.44 J/(mol K). The MINES year 1985
+is corrected to the published year. The original entropy's pressure is unspecified and
+remains `NULL` in its reported row; calculations use nominal 1 bar with an unquantified
+condensed-phase correction. Source uncertainty intervals retain their reported meaning.
+The USGS rounded entropy 142.9 ± 0.3 links externally to the same original evaluation.
+
+A fourth observation retains the separately labelled new estimate
+`G=H−298.15*(S−2S(Ag,cr)−S(S,rhombic cr))` = −39748.9185 J/mol, with open NBS elemental
+entropies and unavailable total uncertainty/covariance. All three available properties
+have one preferred value; earlier records and preferences are preserved. Rights follow
+the government evaluation, explicit open NBS licence and individually cited original
+research-fact routes. The university deposit supplies access to the copyrighted 1986
+paper. Its article licence remains separate from reuse of its individual numerical fact.
+The conflicting open NBS alpha phase label “orthorhombic” and distinct beta phase values
+retain identity holds outside this monoclinic record. Heat capacity, thermal enthalpy
+increments, Gibbs functions and transition properties remain external model candidates.
+
 Forty-one additional USGS Bulletin 2131 properties retain their property-specific reference
 columns and source uncertainty intervals. Boehmite and diaspore have separate AlOOH species
 and phase records. Adding diaspore changes the aluminum equilibrium diagram where it becomes

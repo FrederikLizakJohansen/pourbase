@@ -11,20 +11,20 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 642,
+    "species": 643,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2124,
-    "recommended_values": 1574,
-    "source_records": 1136,
-    "distinct_citations": 149,
-    "warnings": 649,
-    "phase_records": 308,
-    "resolved_phase_records": 204,
+    "reported_thermochemistry": 2128,
+    "recommended_values": 1577,
+    "source_records": 1141,
+    "distinct_citations": 152,
+    "warnings": 652,
+    "phase_records": 309,
+    "resolved_phase_records": 205,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
-    "ligands": 9
+    "ligands": 10
   },
   "phases": [
     {
@@ -36,10 +36,10 @@
     },
     {
       "phase": "solid",
-      "species": 278,
-      "gibbs": 259,
-      "entropy": 232,
-      "enthalpy": 217
+      "species": 279,
+      "gibbs": 260,
+      "entropy": 233,
+      "enthalpy": 218
     },
     {
       "phase": "gas",
@@ -59,20 +59,20 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 623
+      "available": 624
     },
     {
       "property": "Entropy",
-      "available": 511
+      "available": 512
     },
     {
       "property": "Formation enthalpy",
-      "available": 440
+      "available": 441
     }
   ],
   "gibbs_status": {
     "verified": 375,
-    "source_verified_estimate": 174,
+    "source_verified_estimate": 175,
     "defined_reference_state": 74,
     "not_available": 13,
     "terminal_evidence_gap": 6
@@ -405,7 +405,7 @@
       "symbol": "Ag",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 14
+      "species": 15
     },
     {
       "atomic_number": 48,
@@ -909,15 +909,15 @@
     {
       "symbol": "Ag",
       "system": "Silver (Ag)",
-      "species": 14,
+      "species": 15,
       "aqueous": 6,
-      "solid": 8,
+      "solid": 9,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 14,
-      "entropy": 13,
-      "enthalpy": 11,
-      "warnings": 13
+      "gibbs": 15,
+      "entropy": 14,
+      "enthalpy": 12,
+      "warnings": 16
     },
     {
       "symbol": "Al",
@@ -2095,6 +2095,18 @@
       "count": 1
     },
     {
+      "warning_type": "acanthite_reference_evaluations",
+      "count": 1
+    },
+    {
+      "warning_type": "acanthite_native_citation_and_phase_holds",
+      "count": 1
+    },
+    {
+      "warning_type": "acanthite_buffered_sulfide",
+      "count": 1
+    },
+    {
       "warning_type": "absolute_entropy_convention_issue",
       "count": 1
     },
@@ -2106,7 +2118,7 @@
   "phase_identity": [
     {
       "identity_status": "resolved",
-      "count": 194
+      "count": 195
     },
     {
       "identity_status": "aqueous_species_identified",
