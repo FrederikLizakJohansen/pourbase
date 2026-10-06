@@ -209,6 +209,22 @@ Galena uses one Pb and one buffered free S²⁻ in `Pb(cr)+S²⁻(aq)=PbS(cr)+2e
 Total sulfide speciation, additional property models and exact space-group details
 retain their separate follow-ups. All earlier observations and preferences are preserved.
 
+Cotunnite retains eight observations for anhydrous orthorhombic PbCl₂. Preferred
+G = −314100 J/mol, H = −359410 J/mol and S = 136.0 J/(mol K) come from explicitly
+open NBS PDR CSV logical record 3241, at 298.15 K and 1 bar. Their uncertainties
+are unavailable. Bureau of Mines Bulletin 674 formation G/H alternatives retain
+their original 1 atm pressure as 1.01325 bar. Bulletin 592 supplies three separate
+entropy evaluations with their published intervals and unspecified pressure (`NULL`).
+Its adopted entropy also appears in Bulletin 674; that source repetition is linked
+in the review notes. Shared ancestry and pressure differences are documented.
+
+The USGS/MINES PbCl₂ thermochemical representations keep their JANAF source holds
+in the external review. The original USGS phase description corroborates cotunnite;
+its uncertainties are kept separate from the open NBS evaluation. Cotunnite uses
+one Pb and two buffered free Cl⁻ in `Pb(cr)+2Cl⁻(aq)=PbCl₂(cr)+2e⁻`. The existing
+chloride reference is corroborated by open NBS logical record 174. Total chloride
+conservation, other property models and exact space-group details remain follow-ups.
+
 Forty-one additional USGS Bulletin 2131 properties retain their property-specific reference
 columns and source uncertainty intervals. Boehmite and diaspore have separate AlOOH species
 and phase records. Adding diaspore changes the aluminum equilibrium diagram where it becomes

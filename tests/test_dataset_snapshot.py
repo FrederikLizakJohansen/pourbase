@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 645), ("reported_thermochemistry", 2146),
+            for table, count in (("species", 646), ("reported_thermochemistry", 2154),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,82 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_cotunnite_retains_each_entropy_evaluation_and_source_state(self) -> None:
+        rid = "gfe-pb-pbcl2-q+0-solid-cotunnite"
+        record = self.database.species_records((rid,))[0]
+        thermo = record.thermochemistry
+        self.assertEqual((thermo.gibbs_energy_J_mol.value,
+                          thermo.formation_enthalpy_J_mol.value,
+                          thermo.entropy_J_mol_K.value), (-314100, -359410, 136.0))
+        self.assertEqual(len(record.reported), 8)
+        self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
+        for value in (thermo.gibbs_energy_J_mol, thermo.formation_enthalpy_J_mol,
+                      thermo.entropy_J_mol_K):
+            self.assertIsNone(value.uncertainty)
+            self.assertIn("logical record3241", value.source.locator)
+        self.assertEqual(sorted((row.value, row.uncertainty) for row in record.reported
+                                if row.property == "absolute_entropy"),
+                         [(134.7248, 4.184), (135.98, 2.092), (136.0, None), (142.256, 4.184)])
+        self.assertEqual(record.phase_identity.status, "resolved")
+        self.assertIn("orthorhombic", record.phase_identity.identified_phase)
+        self.assertIsNone(record.phase_identity.spacegroup_number)
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            self.assertEqual(connection.execute(
+                "SELECT count(*) FROM reported_thermochemistry WHERE record_id=? "
+                "AND source_id LIKE '%USBM1961%' AND pressure_bar IS NULL", (rid,),
+            ).fetchone()[0], 3)
+            self.assertEqual(connection.execute(
+                "SELECT pressure_bar FROM reported_thermochemistry WHERE record_id=? "
+                "AND source_id LIKE '%USBM1984%'", (rid,),
+            ).fetchall(), [(1.01325,)] * 2)
+            self.assertEqual(connection.execute(
+                "SELECT count(*) FROM reported_thermochemistry WHERE record_id=? "
+                "AND source_id LIKE '%USGS%'", (rid,),
+            ).fetchone()[0], 0)
+
+    def test_cotunnite_solubility_and_boundaries_use_two_free_chlorides(self) -> None:
+        from dataclasses import replace
+        from pourbase.constants import FARADAY_C_MOL, GAS_CONSTANT_J_MOL_K, LN_10
+
+        rid = "gfe-pb-pbcl2-q+0-solid-cotunnite"
+        self.assertFalse(any(s.record_id == rid for s in self.database.load_system("Pb").species))
+        system = self.database.load_system("Pb", ligand_ids=("chloride-cl",))
+        solid = next(s for s in system.species if s.record_id == rid)
+        ion = next(s for s in system.species if s.formula_ascii == "Pb" and s.charge == 2)
+        metal = next(s for s in system.species if s.formula_ascii == "Pb" and s.phase == "solid")
+        self.assertEqual((solid.metal_count, solid.ligand_count, solid.ligand_charge,
+                          solid.electrons_per_metal, solid.protons_per_metal), (1, 2, -1, 2, 0))
+        thermal = GAS_CONSTANT_J_MOL_K * 298.15
+        chloride_g = -131228
+        ksp = math.exp(-(ion.gibbs_energy_J_mol + 2 * chloride_g
+                         - solid.gibbs_energy_J_mol) / thermal)
+        for ls in (-2, 0, 2):
+            conditions = pb.PourbaixConditions(
+                pH_points=3, eh_points=3,
+                ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
+                    "chloride-cl", log10_free_activity=ls
+                ),)),
+            )
+            inventory = pb.MassBalanceEngine(self.database).calculate_system(
+                replace(system, species=(ion, solid), excluded=()), conditions,
+                pb.TotalMetalConcentration(1e-4),
+            )
+            expected = min(1e-4, ksp / 10**(2 * ls))
+            for dissolved, precipitated in zip(inventory.dissolved_metal_mol_L.flat,
+                                               inventory.precipitated_metal_fraction.flat):
+                self.assertAlmostEqual(dissolved / expected, 1.0, places=10)
+                self.assertAlmostEqual((dissolved + 1e-4 * precipitated) / 1e-4, 1.0, places=10)
+            boundary = (solid.gibbs_energy_J_mol - 2 * chloride_g
+                        - 2 * thermal * LN_10 * ls) / (2 * FARADAY_C_MOL)
+            for offset, winner in ((-0.01, metal), (0.01, solid)):
+                diagram = pb.PourbaixEngine(self.database).calculate_system(
+                    replace(system, species=(metal, solid), excluded=()),
+                    replace(conditions, eh_min_V=boundary + offset - 0.001,
+                            eh_max_V=boundary + offset + 0.001),
+                )
+                self.assertEqual({diagram.system.species[int(i)].record_id
+                                  for i in diagram.stable_species_index.flat}, {winner.record_id})
 
     def test_galena_retains_government_and_open_nbs_evaluations(self) -> None:
         rid = "gfe-pb-pbs-q+0-solid-galena"

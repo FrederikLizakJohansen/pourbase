@@ -11,16 +11,16 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 645,
+    "species": 646,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2146,
-    "recommended_values": 1581,
-    "source_records": 1159,
-    "distinct_citations": 162,
-    "warnings": 661,
-    "phase_records": 311,
-    "resolved_phase_records": 206,
+    "reported_thermochemistry": 2154,
+    "recommended_values": 1584,
+    "source_records": 1168,
+    "distinct_citations": 164,
+    "warnings": 664,
+    "phase_records": 312,
+    "resolved_phase_records": 207,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
@@ -36,10 +36,10 @@
     },
     {
       "phase": "solid",
-      "species": 281,
-      "gibbs": 262,
-      "entropy": 234,
-      "enthalpy": 219
+      "species": 282,
+      "gibbs": 263,
+      "entropy": 235,
+      "enthalpy": 220
     },
     {
       "phase": "gas",
@@ -59,19 +59,19 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 626
+      "available": 627
     },
     {
       "property": "Entropy",
-      "available": 513
+      "available": 514
     },
     {
       "property": "Formation enthalpy",
-      "available": 442
+      "available": 443
     }
   ],
   "gibbs_status": {
-    "verified": 376,
+    "verified": 377,
     "source_verified_estimate": 176,
     "defined_reference_state": 74,
     "not_available": 13,
@@ -650,7 +650,7 @@
       "symbol": "Pb",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 11
+      "species": 12
     },
     {
       "atomic_number": 83,
@@ -1507,15 +1507,15 @@
     {
       "symbol": "Pb",
       "system": "Lead (Pb)",
-      "species": 11,
+      "species": 12,
       "aqueous": 3,
-      "solid": 8,
+      "solid": 9,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 11,
-      "entropy": 10,
-      "enthalpy": 7,
-      "warnings": 11
+      "gibbs": 12,
+      "entropy": 11,
+      "enthalpy": 8,
+      "warnings": 14
     },
     {
       "symbol": "Pd",
@@ -2127,6 +2127,18 @@
       "count": 1
     },
     {
+      "warning_type": "cotunnite_shared_ancestry_and_pressure",
+      "count": 1
+    },
+    {
+      "warning_type": "cotunnite_native_JANAF_source_hold",
+      "count": 1
+    },
+    {
+      "warning_type": "cotunnite_chloride_reservoir",
+      "count": 1
+    },
+    {
       "warning_type": "acanthite_reference_evaluations",
       "count": 1
     },
@@ -2150,7 +2162,7 @@
   "phase_identity": [
     {
       "identity_status": "resolved",
-      "count": 196
+      "count": 197
     },
     {
       "identity_status": "aqueous_species_identified",
