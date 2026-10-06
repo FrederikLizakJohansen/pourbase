@@ -11,15 +11,15 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 643,
+    "species": 644,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2137,
-    "recommended_values": 1577,
-    "source_records": 1150,
-    "distinct_citations": 158,
-    "warnings": 656,
-    "phase_records": 309,
+    "reported_thermochemistry": 2138,
+    "recommended_values": 1578,
+    "source_records": 1151,
+    "distinct_citations": 159,
+    "warnings": 658,
+    "phase_records": 310,
     "resolved_phase_records": 205,
     "mp_matches": 105,
     "mp_energy_rows": 299,
@@ -36,8 +36,8 @@
     },
     {
       "phase": "solid",
-      "species": 279,
-      "gibbs": 260,
+      "species": 280,
+      "gibbs": 261,
       "entropy": 233,
       "enthalpy": 218
     },
@@ -59,7 +59,7 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 624
+      "available": 625
     },
     {
       "property": "Entropy",
@@ -72,7 +72,7 @@
   ],
   "gibbs_status": {
     "verified": 375,
-    "source_verified_estimate": 175,
+    "source_verified_estimate": 176,
     "defined_reference_state": 74,
     "not_available": 13,
     "terminal_evidence_gap": 6
@@ -517,7 +517,7 @@
       "symbol": "Eu",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 12
+      "species": 13
     },
     {
       "atomic_number": 64,
@@ -1169,15 +1169,15 @@
     {
       "symbol": "Eu",
       "system": "Europium (Eu)",
-      "species": 12,
+      "species": 13,
       "aqueous": 6,
-      "solid": 6,
+      "solid": 7,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 11,
+      "gibbs": 12,
       "entropy": 10,
       "enthalpy": 11,
-      "warnings": 8
+      "warnings": 10
     },
     {
       "symbol": "F",
@@ -2107,6 +2107,14 @@
       "count": 1
     },
     {
+      "warning_type": "euf3_original_fit_reference_and_phase",
+      "count": 1
+    },
+    {
+      "warning_type": "euf3_native_G_S_H_source_holds",
+      "count": 1
+    },
+    {
       "warning_type": "acanthite_reference_evaluations",
       "count": 1
     },
@@ -2143,6 +2151,10 @@
     {
       "identity_status": "ambiguous",
       "count": 8
+    },
+    {
+      "identity_status": "phase_identity_incomplete",
+      "count": 1
     }
   ],
   "materials_project_comparison": {

@@ -142,6 +142,17 @@ The fluoride ligand reference matches the existing preferred F⁻ Gibbs energy, 
 and cites NBS PDR CSV logical record 119. Fluoride complexes use a supplied free-fluoride
 activity. Modeling total fluoride requires its acid-base speciation and component balance.
 
+Crystalline EuF₃ has a preferred Gibbs estimate derived from the original Migdisov
+(2009) Table 2 solubility extrapolation, `log10 Ksp = -19.28`, and open NBS Eu³⁺/F⁻
+reference energies. Its dissolution reaction, `EuF3(cr)=Eu3+(aq)+3F-(aq)`, retains all
+three fluoride ions. The extrapolation uses the authors' disclosed solid entropy and
+heat-capacity calibration. Total uncertainty and the source-specific condensed-phase
+pressure correction are unavailable; the exact polymorph remains unspecified.
+The original 2016 Table 11 omits EuF₃. Native MINES G differs from this reference-anchored
+estimate; native S and calculated H retain their original-source follow-ups. The
+anhydrous solid and the existing H-only EuF₃·H₂O record have separate identities.
+Calculations activate the anhydrous solid when a free-fluoride reservoir is supplied.
+
 La(OH)₃ and Nd(OH)₃ retain nine additional observations alongside their preferred
 calorimetric/critical evaluations. These include the open NBS crystalline La(OH)₃
 enthalpy, the original 2016 Wood-based Nd(OH)₃ G/S model, Wood's original 2002

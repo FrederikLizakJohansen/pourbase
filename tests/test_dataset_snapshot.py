@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 643), ("reported_thermochemistry", 2137),
+            for table, count in (("species", 644), ("reported_thermochemistry", 2138),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,69 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_europium_trifluoride_preserves_original_solubility_reference(self) -> None:
+        from pourbase.constants import GAS_CONSTANT_J_MOL_K, LN_10
+
+        rid = "gfe-eu-euf3-q+0-solid-crystalline-trifluoride"
+        record = self.database.species_records((rid,))[0]
+        expected = -574100 + 3 * -278790 + GAS_CONSTANT_J_MOL_K * 298.15 * LN_10 * -19.28
+        self.assertAlmostEqual(record.thermochemistry.gibbs_energy_J_mol.value, expected, places=6)
+        self.assertEqual(len(record.reported), 1)
+        observation = record.reported[0]
+        self.assertTrue(observation.selected_as_recommended)
+        self.assertEqual(observation.status, "source_verified_estimate")
+        self.assertIsNone(observation.uncertainty)
+        self.assertIsNone(record.thermochemistry.entropy_J_mol_K.value)
+        self.assertIsNone(record.thermochemistry.formation_enthalpy_J_mol.value)
+        self.assertIn("column[8]", observation.source.locator)
+        self.assertIn("logicalrecord119", observation.source.locator)
+        self.assertIsNone(record.phase_identity.spacegroup_number)
+        self.assertIn("polymorph unspecified", record.phase_identity.identified_phase)
+        hydrate = self.database.species_records((
+            "gfe-eu-euf3-h2o-q+0-solid-rare-earth-trifluoride-monohydrate",
+        ))[0]
+        self.assertIsNone(hydrate.thermochemistry.gibbs_energy_J_mol.value)
+        self.assertEqual(hydrate.thermochemistry.formation_enthalpy_J_mol.value, -1873600)
+
+    def test_europium_trifluoride_uses_three_free_fluorides_in_solubility(self) -> None:
+        from dataclasses import replace
+
+        rid = "gfe-eu-euf3-q+0-solid-crystalline-trifluoride"
+        self.assertFalse(any(s.record_id == rid for s in self.database.load_system("Eu").species))
+        system = self.database.load_system("Eu", ligand_ids=("fluoride-f",))
+        solid = next(s for s in system.species if s.record_id == rid)
+        ion = next(s for s in system.species if s.formula_ascii == "Eu" and s.charge == 3)
+        self.assertEqual((solid.metal_count, solid.ligand_count, solid.ligand_charge,
+                          solid.electrons_per_metal, solid.protons_per_metal), (1, 3, -1, 3, 0))
+        restricted = replace(system, species=(ion, solid), excluded=())
+        for lf in (-6, -3, -1):
+            conditions = pb.PourbaixConditions(
+                pH_points=3, eh_points=3,
+                ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
+                    "fluoride-f", log10_free_activity=lf
+                ),)),
+            )
+            inventory = pb.MassBalanceEngine(self.database).calculate_system(
+                restricted, conditions, pb.TotalMetalConcentration(1e-6),
+            )
+            expected = min(1e-6, 10 ** (-19.28 - 3 * lf))
+            for dissolved, precipitated in zip(inventory.dissolved_metal_mol_L.flat,
+                                               inventory.precipitated_metal_fraction.flat):
+                self.assertAlmostEqual(dissolved / expected, 1.0, places=10)
+                self.assertAlmostEqual((dissolved + 1e-6 * precipitated) / 1e-6, 1.0, places=10)
+        lf_boundary = (-19.28 + 6) / 3
+        for offset, winner in ((-0.01, ion), (0.01, solid)):
+            conditions = pb.PourbaixConditions(
+                pH_points=3, eh_points=3,
+                aqueous_activities=pb.AqueousActivityModel(default_log10_activity=-6),
+                ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
+                    "fluoride-f", log10_free_activity=lf_boundary + offset
+                ),)),
+            )
+            diagram = pb.PourbaixEngine(self.database).calculate_system(restricted, conditions)
+            self.assertEqual({diagram.system.species[int(i)].record_id
+                              for i in diagram.stable_species_index.flat}, {winner.record_id})
 
     def test_lanthanide_hydroxide_alternatives_preserve_preferred_evaluations(self) -> None:
         for symbol, expected, count in (("La", (-1284200, -1416700, 117.8), 5),
