@@ -249,3 +249,21 @@ and its unresolved reference anchors retain their hold. Existing preferences are
 preserved. These article-derived values use the individually cited research-fact
 route; neither article is represented as an openly licensed database. The complexes
 enter calculations when buffered free fluoride is selected.
+
+The Perry–Gysi (2020) carbonate-source review adds independent anhydrous crystalline
+NBS evaluations for Y₂(CO₃)₃, Sm₂(CO₃)₃, Nd₂(CO₃)₃ and La₂(CO₃)₃ Gibbs energies,
+and Tb₂(CO₃)₃ and Pr₂(CO₃)₃ enthalpies. Each observation cites its exact row and column
+in the openly released NIST PDR, DOI 10.18434/M32124, at 298.15 K/1 bar. Values use
+the full two-metal/three-carbonate formula unit. NIST is acknowledged; kJ-to-J
+conversions date from 6 October 2026. Source uncertainties and polymorph details are
+unavailable, with no inferred crystal structure. The two enthalpy-only records retain
+unavailable Gibbs energy and entropy and are excluded from equilibrium calculations.
+The four Gibbs records enter calculations when buffered free carbonate is selected.
+
+Perry–Gysi Appendix A.2 identifies its carbonate G/H values as inherited compilation
+or separately cited calorimetry inputs; those native representations keep their source
+holds in the external review. Its new Table 6 Gibbs models describe calcite solid-solution
+endmembers at 200 °C/15.5 bar. Its carbonate heat capacities require separate property
+and temperature-model support. These source states and model identities are retained
+in the external candidate ledger. The independent NBS entries preserve all existing
+preferences and do not assign an anhydrous evaluation to a hydrate or solid solution.

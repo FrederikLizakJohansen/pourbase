@@ -11,16 +11,16 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 636,
+    "species": 642,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2074,
-    "recommended_values": 1567,
-    "source_records": 1086,
-    "distinct_citations": 143,
-    "warnings": 632,
-    "phase_records": 302,
-    "resolved_phase_records": 198,
+    "reported_thermochemistry": 2080,
+    "recommended_values": 1573,
+    "source_records": 1092,
+    "distinct_citations": 144,
+    "warnings": 640,
+    "phase_records": 308,
+    "resolved_phase_records": 204,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
@@ -36,10 +36,10 @@
     },
     {
       "phase": "solid",
-      "species": 272,
-      "gibbs": 255,
+      "species": 278,
+      "gibbs": 259,
       "entropy": 232,
-      "enthalpy": 215
+      "enthalpy": 217
     },
     {
       "phase": "gas",
@@ -59,7 +59,7 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 619
+      "available": 623
     },
     {
       "property": "Entropy",
@@ -67,14 +67,14 @@
     },
     {
       "property": "Formation enthalpy",
-      "available": 437
+      "available": 439
     }
   ],
   "gibbs_status": {
-    "verified": 371,
+    "verified": 375,
     "source_verified_estimate": 174,
     "defined_reference_state": 74,
-    "not_available": 11,
+    "not_available": 13,
     "terminal_evidence_gap": 6
   },
   "element_coverage": [
@@ -349,7 +349,7 @@
       "symbol": "Y",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 10
+      "species": 11
     },
     {
       "atomic_number": 40,
@@ -475,7 +475,7 @@
       "symbol": "La",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 10
+      "species": 11
     },
     {
       "atomic_number": 58,
@@ -489,14 +489,14 @@
       "symbol": "Pr",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 11
+      "species": 12
     },
     {
       "atomic_number": 60,
       "symbol": "Nd",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 10
+      "species": 11
     },
     {
       "atomic_number": 61,
@@ -510,7 +510,7 @@
       "symbol": "Sm",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 10
+      "species": 11
     },
     {
       "atomic_number": 63,
@@ -531,7 +531,7 @@
       "symbol": "Tb",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 8
+      "species": 9
     },
     {
       "atomic_number": 66,
@@ -1338,15 +1338,15 @@
     {
       "symbol": "La",
       "system": "Lanthanum (La)",
-      "species": 10,
+      "species": 11,
       "aqueous": 5,
-      "solid": 5,
+      "solid": 6,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 9,
+      "gibbs": 10,
       "entropy": 7,
       "enthalpy": 8,
-      "warnings": 10
+      "warnings": 11
     },
     {
       "symbol": "Li",
@@ -1455,15 +1455,15 @@
     {
       "symbol": "Nd",
       "system": "Neodymium (Nd)",
-      "species": 10,
+      "species": 11,
       "aqueous": 5,
-      "solid": 5,
+      "solid": 6,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 9,
+      "gibbs": 10,
       "entropy": 7,
       "enthalpy": 9,
-      "warnings": 12
+      "warnings": 13
     },
     {
       "symbol": "Ni",
@@ -1533,15 +1533,15 @@
     {
       "symbol": "Pr",
       "system": "Praseodymium (Pr)",
-      "species": 11,
+      "species": 12,
       "aqueous": 7,
-      "solid": 4,
+      "solid": 5,
       "gas": 0,
       "liquid": 0,
       "gibbs": 10,
       "entropy": 5,
-      "enthalpy": 6,
-      "warnings": 13
+      "enthalpy": 7,
+      "warnings": 15
     },
     {
       "symbol": "Pt",
@@ -1676,15 +1676,15 @@
     {
       "symbol": "Sm",
       "system": "Samarium (Sm)",
-      "species": 10,
+      "species": 11,
       "aqueous": 6,
-      "solid": 4,
+      "solid": 5,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 9,
+      "gibbs": 10,
       "entropy": 6,
       "enthalpy": 8,
-      "warnings": 13
+      "warnings": 14
     },
     {
       "symbol": "Sn",
@@ -1728,15 +1728,15 @@
     {
       "symbol": "Tb",
       "system": "Terbium (Tb)",
-      "species": 8,
+      "species": 9,
       "aqueous": 5,
-      "solid": 3,
+      "solid": 4,
       "gas": 0,
       "liquid": 0,
       "gibbs": 8,
       "entropy": 6,
-      "enthalpy": 6,
-      "warnings": 9
+      "enthalpy": 7,
+      "warnings": 11
     },
     {
       "symbol": "Te",
@@ -1819,15 +1819,15 @@
     {
       "symbol": "Y",
       "system": "Yttrium (Y)",
-      "species": 10,
+      "species": 11,
       "aqueous": 8,
-      "solid": 2,
+      "solid": 3,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 10,
+      "gibbs": 11,
       "entropy": 9,
       "enthalpy": 9,
-      "warnings": 18
+      "warnings": 19
     },
     {
       "symbol": "Yb",
@@ -1975,6 +1975,10 @@
       "count": 6
     },
     {
+      "warning_type": "carbonate_NBS_source_state",
+      "count": 6
+    },
+    {
       "warning_type": "ree_fluoride_mixed_evaluations",
       "count": 5
     },
@@ -2000,6 +2004,10 @@
     },
     {
       "warning_type": "usgs_sulfate_evaluation_interval_gf",
+      "count": 2
+    },
+    {
+      "warning_type": "missing_recommended_gibbs",
       "count": 2
     },
     {
@@ -2086,7 +2094,7 @@
   "phase_identity": [
     {
       "identity_status": "resolved",
-      "count": 188
+      "count": 194
     },
     {
       "identity_status": "aqueous_species_identified",

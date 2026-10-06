@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 636), ("reported_thermochemistry", 2074),
+            for table, count in (("species", 642), ("reported_thermochemistry", 2080),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,62 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_open_nbs_rare_earth_carbonates_preserve_source_properties(self) -> None:
+        for symbol, gibbs, enthalpy, logical_record in (
+            ("Y", -3147900.0, None, 7259), ("Tb", None, -3329200.0, 7690),
+            ("Sm", -3101900.0, None, 7877), ("Nd", -3114800.0, None, 7954),
+            ("Pr", None, -3213000.0, 8046), ("La", -3141600.0, None, 8261),
+        ):
+            rid = f"gfe-{symbol.lower()}-{symbol.lower()}2-co3-3-q+0-solid-nbs-cr"
+            record = self.database.species_records((rid,))[0]
+            thermo = record.thermochemistry
+            self.assertEqual(thermo.gibbs_energy_J_mol.value, gibbs)
+            self.assertEqual(thermo.formation_enthalpy_J_mol.value, enthalpy)
+            self.assertIsNone(thermo.entropy_J_mol_K.value)
+            self.assertEqual(len(record.reported), 1)
+            self.assertTrue(record.reported[0].selected_as_recommended)
+            self.assertIsNone(record.reported[0].uncertainty)
+            self.assertIn(f"logical record {logical_record}", record.reported[0].source.locator)
+            self.assertIn("10.18434/M32124", record.reported[0].source.url)
+            self.assertIsNone(record.phase_identity.spacegroup_number)
+            self.assertIn("polymorph unspecified", record.phase_identity.identified_phase)
+            self.assertFalse(any(s.record_id == rid for s in self.database.load_system(symbol).species))
+            activated = self.database.load_system(symbol, ligand_ids=["carbonate-co3"])
+            if gibbs is None:
+                self.assertTrue(any(s.record_id == rid for s in activated.excluded))
+                self.assertFalse(any(s.record_id == rid for s in activated.species))
+            else:
+                s = next(s for s in activated.species if s.record_id == rid)
+                self.assertEqual((s.metal_count, s.ligand_count, s.ligand_charge), (2, 3, -2))
+                self.assertEqual((s.core_oxygen_count, s.core_hydrogen_count), (0, 0))
+                self.assertEqual(s.formula_ascii, f"{symbol}2(CO3)3")
+                self.assertEqual((s.electrons_per_metal, s.protons_per_metal), (3, 0))
+
+    def test_rare_earth_carbonate_boundary_uses_full_two_metal_formula(self) -> None:
+        from dataclasses import replace
+
+        system = self.database.load_system("La", ligand_ids=["carbonate-co3"])
+        solid = next(s for s in system.species if s.formula_ascii == "La2(CO3)3")
+        ion = next(s for s in system.species if s.formula_ascii == "La" and s.charge == 3)
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            carbonate_g = connection.execute(
+                "SELECT gibbs_energy_J_mol FROM ligands WHERE ligand_id='carbonate-co3'"
+            ).fetchone()[0]
+        factor = 8.31446261815324 * 298.15 * math.log(10)
+        boundary = (solid.gibbs_energy_J_mol - 2 * ion.gibbs_energy_J_mol - 3 * carbonate_g) / (3 * factor)
+        restricted = replace(system, species=(ion, solid), excluded=())
+        for offset, winner in ((-0.1, ion), (0.1, solid)):
+            conditions = pb.PourbaixConditions(
+                pH_points=3, eh_points=3,
+                aqueous_activities=pb.AqueousActivityModel(default_log10_activity=0),
+                ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
+                    "carbonate-co3", log10_free_activity=boundary + offset
+                ),)),
+            )
+            diagram = pb.PourbaixEngine(self.database).calculate_system(restricted, conditions)
+            self.assertEqual({diagram.system.species[int(i)].record_id
+                              for i in diagram.stable_species_index.flat}, {winner.record_id})
 
     def test_yttrium_fluoride_source_units_charge_and_derived_enthalpy(self) -> None:
         for formula, charge, count, g_cal, s_cal in (
