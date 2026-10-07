@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 646), ("reported_thermochemistry", 2185),
+            for table, count in (("species", 646), ("reported_thermochemistry", 2186),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,36 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_tio_original_entropy_preserves_specimen_basis_and_preferences(self) -> None:
+        rid = "gfe-ti-tio-q+0-solid-alpha-tio-vacancy-ordered-monoclinic"
+        record = self.database.species_records((rid,))[0]
+        thermo = record.thermochemistry
+        self.assertEqual((thermo.gibbs_energy_J_mol.value,
+                          thermo.formation_enthalpy_J_mol.value,
+                          thermo.entropy_J_mol_K.value), (-513278, -542665, 34.769))
+        alternatives = [row for row in record.reported if not row.selected_as_recommended]
+        self.assertEqual(len(alternatives), 1)
+        row = alternatives[0]
+        self.assertEqual((row.property, row.value, row.unit, row.uncertainty),
+                         ("absolute_entropy", 34.26, "J/(mol K)", 0.07))
+        self.assertEqual(row.source.source_id, "TiO_fallback_Beyer1982_entropy")
+        self.assertIn("1/(1.006+-0.002)", row.source.locator)
+        self.assertIn("one week at1180K", row.source.locator)
+        self.assertIn("Pressure not explicitly specified", row.source.locator)
+        self.assertEqual(record.phase_identity.spacegroup_symbol, "C2/m")
+        self.assertEqual(sum(value.selected_as_recommended for value in record.reported), 3)
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            pressure = connection.execute(
+                "SELECT pressure_bar FROM reported_thermochemistry WHERE value_id=?",
+                (row.value_id,),
+            ).fetchone()[0]
+            warnings = {value[0] for value in connection.execute(
+                "SELECT warning_type FROM warnings WHERE record_id=?", (rid,),
+            )}
+        self.assertIsNone(pressure)
+        self.assertIn("tio_original_specimen_and_nominal_composition", warnings)
+        self.assertIn("tio_formation_JANAF_and_NBS_source_holds", warnings)
 
     def test_ko2_historical_evaluations_preserve_entropy_warning_and_preferences(self) -> None:
         rid = "gfe-k-ko2-q+0-solid-crystalline-ko2-polymorph-not-assigned"

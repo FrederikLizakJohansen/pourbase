@@ -14,11 +14,11 @@
     "species": 646,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2185,
+    "reported_thermochemistry": 2186,
     "recommended_values": 1584,
-    "source_records": 1199,
-    "distinct_citations": 177,
-    "warnings": 683,
+    "source_records": 1200,
+    "distinct_citations": 178,
+    "warnings": 686,
     "phase_records": 312,
     "resolved_phase_records": 207,
     "mp_matches": 105,
@@ -1762,7 +1762,7 @@
       "gibbs": 7,
       "entropy": 7,
       "enthalpy": 4,
-      "warnings": 9
+      "warnings": 12
     },
     {
       "symbol": "Tl",
@@ -2068,6 +2068,18 @@
     },
     {
       "warning_type": "usgs_sulfate_evaluation_interval_hf",
+      "count": 1
+    },
+    {
+      "warning_type": "tio_original_specimen_and_nominal_composition",
+      "count": 1
+    },
+    {
+      "warning_type": "tio_formation_JANAF_and_NBS_source_holds",
+      "count": 1
+    },
+    {
+      "warning_type": "tio_entropy_extrapolation_and_pressure",
       "count": 1
     },
     {

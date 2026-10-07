@@ -522,3 +522,22 @@ values and the tetragonal I4/mmm phase record are preserved. The room-temperatur
 bulk-phase mapping is an explicit cross-source inference; historical specimen
 identity remains open. A separate warning tracks the legacy formal oxidation
 metadata; the balanced reaction retains four electrons and four protons per K.
+
+The α-TiO record retains the original Beyer et al. (1982) entropy evaluation,
+34.26 ± 0.07 J/(mol K), as an alternative. The Bureau of Mines study reports
+the calorimetric sample's O/Ti ratio as 1.006 ± 0.002 and identifies its monoclinic
+structure by powder XRD after one week of vacuum annealing at 1180 K. The authors
+use their measured entropy for nominal α-TiO in the discussion on page 965.
+The source locator preserves this nominal composition mapping, the sample-based
+molar mass, and the published uncertainty interval. A correction to exact O/Ti=1
+and a separate composition-mapping uncertainty remain unavailable.
+
+Table 5 reports S(T)−S(0); page 965 explicitly uses the measured value as absolute
+entropy. The authors extrapolate heat capacities below 5 K and omit the negligible
+superconducting contribution below 1 K. Standard-state pressure is unspecified
+and remains NULL; the calorimeter's helium backfill is recorded as apparatus
+information. The CDC archive labels the study Public Domain; this import retains
+one individually cited original research value. Its formation H/G results inherit
+JANAF formation enthalpy and remain outside this import. The NBS TiO G/H/S
+alternatives retain their original-specimen and evaluation-ancestry holds.
+All preferred values, source IDs, species fields and phase records are preserved.
