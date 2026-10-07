@@ -250,6 +250,25 @@ are preserved. Preferred anglesite G/H/S are corroborated by open NBS PDR logica
 record 3277. The later USGS/MINES and Bureau of Mines representations that cite
 CODATA retain their source-rights holds in the external review.
 
+Minium retains seven additional federal observations for crystalline Pb₃O₄: G/H/S
+from NBS Technical Note 270-2 (1966), Table 27(1), and USGS Bulletin 1259 (1968),
+page 18, plus the entropy recalculation in Bureau of Mines Bulletin 592 (1961),
+page 58. All retain the original 1 atm pressure as 1.01325 bar. Bulletin 592 states
+this entropy convention on page 4. Its S = 211.292 ± 6.6944 J/(mol K) includes
+a disclosed low-temperature extrapolation; the later USGS evaluation has the same
+rounded entropy with its own interval ±6.276 J/(mol K). Each interval remains
+attached to its source. NBS supplies no uncertainty. Shared evaluation ancestry
+and the difference between the older formation G representations are documented.
+
+All existing minium observations, preferred values and tetragonal phase identity
+are preserved. The later USGS/MINES and Bureau of Mines minium representations
+retain their JANAF ancestry holds in the external review. The full formula unit
+contains three Pb and four O atoms: `3Pb(cr)+4H₂O(l)=Pb₃O₄(cr)+8H⁺+8e⁻`.
+Original experimental tables and additional property models remain follow-ups.
+The newly verified Bulletin 592 pressure convention also supplies evidence for the
+three earlier cotunnite entropy rows whose pressure is currently `NULL`; a warning
+records this evidence and their separate metadata reconciliation follow-up.
+
 Forty-one additional USGS Bulletin 2131 properties retain their property-specific reference
 columns and source uncertainty intervals. Boehmite and diaspore have separate AlOOH species
 and phase records. Adding diaspore changes the aluminum equilibrium diagram where it becomes

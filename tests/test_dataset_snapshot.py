@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 646), ("reported_thermochemistry", 2165),
+            for table, count in (("species", 646), ("reported_thermochemistry", 2172),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,44 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_minium_retains_distinct_entropy_intervals_and_formula_unit(self) -> None:
+        rid = "gfe-pb-pb3o4-q+0-solid-minium"
+        record = self.database.species_records((rid,))[0]
+        thermo = record.thermochemistry
+        self.assertEqual((thermo.gibbs_energy_J_mol.value,
+                          thermo.formation_enthalpy_J_mol.value,
+                          thermo.entropy_J_mol_K.value), (-601606, -718686, 211.961))
+        self.assertEqual(len(record.reported), 15)
+        self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
+        retained = {row.source.source_id: row for row in record.reported
+                    if row.source and row.source.source_id.startswith("Minium_R05_")}
+        self.assertEqual({key: (row.value, row.uncertainty) for key, row in retained.items()}, {
+            "Minium_R05_USGS1968_gf": (-600956.288, 8619.04),
+            "Minium_R05_USGS1968_hf": (-718392.8, 8368),
+            "Minium_R05_USGS1968_entropy": (211.292, 6.276),
+            "Minium_R05_NBS1966_gf": (-601240.8, None),
+            "Minium_R05_NBS1966_hf": (-718392.8, None),
+            "Minium_R05_NBS1966_entropy": (211.292, None),
+            "Minium_R05_USBM1961_entropy": (211.292, 6.6944),
+        })
+        self.assertTrue(all(not row.selected_as_recommended for row in retained.values()))
+        self.assertIn("extrapolation12.67", retained["Minium_R05_USBM1961_entropy"].source.locator)
+        self.assertIn("H/Greference159 only", retained["Minium_R05_USGS1968_gf"].source.locator)
+        self.assertEqual(record.phase_identity.spacegroup_symbol, "P42/mbc")
+        solid = next(s for s in self.database.load_system("Pb").species if s.record_id == rid)
+        self.assertEqual((solid.metal_count, solid.core_oxygen_count), (3, 4))
+        self.assertAlmostEqual(solid.electrons_per_metal, 8 / 3)
+        self.assertAlmostEqual(solid.protons_per_metal, 8 / 3)
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            self.assertEqual(connection.execute(
+                "SELECT pressure_bar FROM reported_thermochemistry WHERE record_id=? "
+                "AND source_id LIKE 'Minium_R05_%'", (rid,),
+            ).fetchall(), [(1.01325,)] * 7)
+            self.assertEqual(connection.execute(
+                "SELECT count(*) FROM reported_thermochemistry WHERE record_id=? "
+                "AND source_id LIKE 'Minium_R05_%1995%'", (rid,),
+            ).fetchone()[0], 0)
 
     def test_anglesite_retains_federal_evaluations_with_original_intervals_and_pressure(self) -> None:
         rid = "gfe-pb-pbso4-q+0-solid-anglesite"

@@ -14,11 +14,11 @@
     "species": 646,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2165,
+    "reported_thermochemistry": 2172,
     "recommended_values": 1584,
-    "source_records": 1179,
-    "distinct_citations": 168,
-    "warnings": 669,
+    "source_records": 1186,
+    "distinct_citations": 171,
+    "warnings": 673,
     "phase_records": 312,
     "resolved_phase_records": 207,
     "mp_matches": 105,
@@ -1515,7 +1515,7 @@
       "gibbs": 12,
       "entropy": 11,
       "enthalpy": 8,
-      "warnings": 19
+      "warnings": 23
     },
     {
       "symbol": "Pd",
@@ -2087,6 +2087,18 @@
       "count": 1
     },
     {
+      "warning_type": "minium_shared_evaluations_and_intervals",
+      "count": 1
+    },
+    {
+      "warning_type": "minium_native_JANAF_source_hold",
+      "count": 1
+    },
+    {
+      "warning_type": "minium_formula_unit_and_phase",
+      "count": 1
+    },
+    {
       "warning_type": "mines_native_enthalpy_discrepancy",
       "count": 1
     },
@@ -2144,6 +2156,10 @@
     },
     {
       "warning_type": "cotunnite_chloride_reservoir",
+      "count": 1
+    },
+    {
+      "warning_type": "cotunnite_USBM1961_pressure_evidence",
       "count": 1
     },
     {

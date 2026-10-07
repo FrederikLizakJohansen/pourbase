@@ -11,10 +11,10 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended Gibbs energies | 627 (97 %) |
 | Recommended entropies | 514 (80 %) |
 | Recommended formation enthalpies | 443 (69 %) |
-| Reported values retained | 2165 |
-| Source records | 1179 (168 distinct citations) |
+| Reported values retained | 2172 |
+| Source records | 1186 (171 distinct citations) |
 | Phase records | 312 (207 resolved) |
-| Warnings | 669 |
+| Warnings | 673 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 10 |
@@ -44,10 +44,10 @@ Species by phase:
 |---|---|---|
 | `species` | 646 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `thermochemistry` | 646 | One recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 2165 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1179 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 2172 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1186 | Full citations, links, locators and access dates |
 | `phases` | 312 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 669 | Scientific cautions attached to records |
+| `warnings` | 673 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -133,7 +133,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Ni | Nickel (Ni) | 14 | 3 | 11 | 0 | 0 | 12 | 10 | 8 | 18 |
 | Os | Osmium (Os) | 8 | 3 | 4 | 1 | 0 | 8 | 5 | 5 | 8 |
 | P | Phosphorus (P) | 9 | 7 | 2 | 0 | 0 | 9 | 7 | 7 | 2 |
-| Pb | Lead (Pb) | 12 | 3 | 9 | 0 | 0 | 12 | 11 | 8 | 19 |
+| Pb | Lead (Pb) | 12 | 3 | 9 | 0 | 0 | 12 | 11 | 8 | 23 |
 | Pd | Palladium (Pd) | 4 | 1 | 3 | 0 | 0 | 3 | 3 | 1 | 4 |
 | Pr | Praseodymium (Pr) | 12 | 7 | 5 | 0 | 0 | 10 | 5 | 7 | 15 |
 | Pt | Platinum (Pt) | 4 | 1 | 3 | 0 | 0 | 2 | 2 | 0 | 9 |
