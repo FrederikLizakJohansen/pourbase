@@ -16,9 +16,9 @@
     "all_elements_documented": 118,
     "reported_thermochemistry": 2186,
     "recommended_values": 1584,
-    "source_records": 1202,
-    "distinct_citations": 180,
-    "warnings": 689,
+    "source_records": 1206,
+    "distinct_citations": 184,
+    "warnings": 694,
     "phase_records": 312,
     "resolved_phase_records": 207,
     "mp_matches": 105,
@@ -982,7 +982,7 @@
       "gibbs": 5,
       "entropy": 4,
       "enthalpy": 2,
-      "warnings": 3
+      "warnings": 8
     },
     {
       "symbol": "Be",
@@ -2224,6 +2224,26 @@
     },
     {
       "warning_type": "cotunnite_USBM1961_pressure_evidence",
+      "count": 1
+    },
+    {
+      "warning_type": "baoh2_thermal_increment_property_scope",
+      "count": 1
+    },
+    {
+      "warning_type": "baoh2_preferred_entropy_estimated_origin",
+      "count": 1
+    },
+    {
+      "warning_type": "baoh2_polymorph_and_isotope_crosswalk",
+      "count": 1
+    },
+    {
+      "warning_type": "baoh2_original_calorimetry_input_hold",
+      "count": 1
+    },
+    {
+      "warning_type": "baoh2_nbs_polymorph_source_hold",
       "count": 1
     },
     {

@@ -12,9 +12,9 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended entropies | 514 (80 %) |
 | Recommended formation enthalpies | 443 (69 %) |
 | Reported values retained | 2186 |
-| Source records | 1202 (180 distinct citations) |
+| Source records | 1206 (184 distinct citations) |
 | Phase records | 312 (207 resolved) |
-| Warnings | 689 |
+| Warnings | 694 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 10 |
@@ -45,9 +45,9 @@ Species by phase:
 | `species` | 646 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `thermochemistry` | 646 | One recommended Gibbs energy, entropy and enthalpy per species |
 | `reported_thermochemistry` | 2186 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1202 | Full citations, links, locators and access dates |
+| `sources` | 1206 | Full citations, links, locators and access dates |
 | `phases` | 312 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 689 | Scientific cautions attached to records |
+| `warnings` | 694 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -92,7 +92,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | As | Arsenic (As) | 12 | 9 | 3 | 0 | 0 | 12 | 11 | 11 | 1 |
 | Au | Gold (Au) | 12 | 10 | 2 | 0 | 0 | 11 | 5 | 3 | 17 |
 | B | Boron (B) | 6 | 4 | 2 | 0 | 0 | 6 | 6 | 6 | 0 |
-| Ba | Barium (Ba) | 5 | 2 | 3 | 0 | 0 | 5 | 4 | 2 | 3 |
+| Ba | Barium (Ba) | 5 | 2 | 3 | 0 | 0 | 5 | 4 | 2 | 8 |
 | Be | Beryllium (Be) | 5 | 2 | 3 | 0 | 0 | 5 | 5 | 3 | 4 |
 | Bi | Bismuth (Bi) | 6 | 3 | 3 | 0 | 0 | 6 | 2 | 2 | 5 |
 | Br | Bromine (Br) | 7 | 6 | 0 | 0 | 1 | 7 | 7 | 7 | 0 |

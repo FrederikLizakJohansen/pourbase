@@ -92,6 +92,21 @@ Bulletin 674 TiH₂ entry explicitly cites JANAF (reference 7), so it remains an
 inherited source hold. This review adds two source records and three warnings;
 all reported observations, preferred properties and species/phase rows are preserved.
 
+The anhydrous Ba(OH)₂ review adds four source records and five warnings. The
+existing α-phase assignment retains its structural crosswalk to deuterated
+Ba(OD)₂. The open NBS formation enthalpy remains in the external review ledger
+pending an α/β polymorph assignment. Djamali's (2009) original α-phase calorimetry
+provides a further enthalpy candidate whose extrapolation and auxiliary numerical
+inputs still require verification.
+
+The preferred JANAF entropy has an estimated origin: its source describes additive
+cation/anion entropy constants. That limitation is now explicit in a warning;
+the existing value, status and source ID are preserved. Powers and Blalock's
+original ORNL-1653 calorimetry supplies high-temperature heat-content increments
+and heat capacities. Those quantities remain distinct from the requested
+298.15 K formation properties and absolute entropy. This review admits zero
+numerical observations and preserves all earlier observations and preferences.
+
 ## Retained aqueous research evaluations
 
 Miron (2016, 2017) model evaluations retain their publication year, exact property locator,
