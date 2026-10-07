@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 646), ("reported_thermochemistry", 2181),
+            for table, count in (("species", 646), ("reported_thermochemistry", 2185),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,43 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_ko2_historical_evaluations_preserve_entropy_warning_and_preferences(self) -> None:
+        rid = "gfe-k-ko2-q+0-solid-crystalline-ko2-polymorph-not-assigned"
+        record = self.database.species_records((rid,))[0]
+        thermo = record.thermochemistry
+        self.assertEqual((thermo.gibbs_energy_J_mol.value,
+                          thermo.formation_enthalpy_J_mol.value,
+                          thermo.entropy_J_mol_K.value), (-240589, -284512, 122.499))
+        alternatives = {row.source.source_id: row for row in record.reported
+                        if row.source and not row.selected_as_recommended}
+        self.assertEqual({key: row.value for key, row in alternatives.items()}, {
+            "NBS_PDR_M32124_retained_nist-047-nbs-12098": -239400,
+            "NBS_PDR_M32124_retained_nist-048-nbs-12098": -284930,
+            "NBS_PDR_M32124_retained_nist-049-nbs-12098": 116.7,
+            "KO2_fallback_USBM1982_hf": -284512,
+        })
+        self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
+        for key in ("nist-047", "nist-049"):
+            row = next(value for source, value in alternatives.items() if key in source)
+            self.assertIn("convention limitations", row.source.locator)
+            self.assertIn("hypothesis", row.source.locator)
+        self.assertEqual(record.phase_identity.spacegroup_symbol, "I4/mmm")
+        solid = next(s for s in self.database.load_system("K").species if s.record_id == rid)
+        self.assertEqual((solid.metal_count, solid.core_oxygen_count,
+                          solid.electrons_per_metal, solid.protons_per_metal), (1, 2, 4, 4))
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            pressures = dict(connection.execute(
+                "SELECT source_id,pressure_bar FROM reported_thermochemistry "
+                "WHERE record_id=? AND selected_as_recommended=0", (rid,),
+            ))
+            warnings = {row[0] for row in connection.execute(
+                "SELECT warning_type FROM warnings WHERE record_id=?", (rid,),
+            )}
+        self.assertEqual(pressures, {key: 1.01325 if key == "KO2_fallback_USBM1982_hf"
+                                    else 1.0 for key in alternatives})
+        self.assertIn("ko2_historical_entropy_convention_unresolved", warnings)
+        self.assertIn("ko2_formal_oxidation_state_metadata_followup", warnings)
 
     def test_vo2_federal_alternatives_retain_formula_basis_phase_and_pressure(self) -> None:
         rid = "gfe-v-vo2-q+0-solid-m1-monoclinic"

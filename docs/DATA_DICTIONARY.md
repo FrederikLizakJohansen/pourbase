@@ -503,3 +503,22 @@ remain alternatives; existing preferred values and calculation results are prese
 They follow the individually cited original research-fact route, with reference
 dependencies disclosed and article licences assessed separately. Copied compilation
 inputs and tentative silica-dimer corrections retain their external source holds.
+
+KO₂ retains four additional federal evaluations: open NIST PDR formation G/H and
+entropy at 298.15 K/1 bar, and the Bureau of Mines Bulletin 672 (1982), page 208,
+formation H at 298.15 K/1 atm. Each is per mole of the full KO₂ formula unit.
+The Bureau of Mines enthalpy cites D'Orazio–Wood (1965) and Gilles–Margrave (1956)
+and equals the existing preferred enthalpy numerically; shared ancestry remains
+possible. Its JANAF-derived entropy and formation G remain outside this import.
+
+The historical NBS entropy is 116.7 J/(mol K), compared with the preferred
+122.499 J/(mol K). The difference is close to the spin-½ entropy R ln 2.
+Todd's original calorimetry began near 50 K; the full low-temperature integration
+and magnetic correction remain under review. A warning records this hypothesis
+and the convention limitation on the retained historical G/S evaluations.
+Their `verified` status establishes the reported source values. Compatibility as
+replacements requires a further review of their entropy basis. All preferred
+values and the tetragonal I4/mmm phase record are preserved. The room-temperature
+bulk-phase mapping is an explicit cross-source inference; historical specimen
+identity remains open. A separate warning tracks the legacy formal oxidation
+metadata; the balanced reaction retains four electrons and four protons per K.

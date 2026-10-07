@@ -14,11 +14,11 @@
     "species": 646,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2181,
+    "reported_thermochemistry": 2185,
     "recommended_values": 1584,
-    "source_records": 1195,
-    "distinct_citations": 175,
-    "warnings": 679,
+    "source_records": 1199,
+    "distinct_citations": 177,
+    "warnings": 683,
     "phase_records": 312,
     "resolved_phase_records": 207,
     "mp_matches": 105,
@@ -1333,7 +1333,7 @@
       "gibbs": 9,
       "entropy": 8,
       "enthalpy": 6,
-      "warnings": 17
+      "warnings": 21
     },
     {
       "symbol": "La",
@@ -2124,6 +2124,22 @@
     },
     {
       "warning_type": "litharge_USBM_Cp_reference_mismatch",
+      "count": 1
+    },
+    {
+      "warning_type": "ko2_historical_entropy_convention_unresolved",
+      "count": 1
+    },
+    {
+      "warning_type": "ko2_formal_oxidation_state_metadata_followup",
+      "count": 1
+    },
+    {
+      "warning_type": "ko2_USBM_property_lineage_and_JANAF_hold",
+      "count": 1
+    },
+    {
+      "warning_type": "ko2_298K_bulk_phase_inference",
       "count": 1
     },
     {
