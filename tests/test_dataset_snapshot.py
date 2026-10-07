@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 646), ("reported_thermochemistry", 2174),
+            for table, count in (("species", 646), ("reported_thermochemistry", 2181),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +61,43 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_vo2_federal_alternatives_retain_formula_basis_phase_and_pressure(self) -> None:
+        rid = "gfe-v-vo2-q+0-solid-m1-monoclinic"
+        record = self.database.species_records((rid,))[0]
+        thermo = record.thermochemistry
+        self.assertEqual((thermo.gibbs_energy_J_mol.value,
+                          thermo.formation_enthalpy_J_mol.value,
+                          thermo.entropy_J_mol_K.value), (-659222.5, -713581, 51.7625))
+        self.assertEqual(len(record.reported), 10)
+        self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
+        alternatives = {row.source.source_id: row for row in record.reported
+                        if row.source and not row.selected_as_recommended}
+        self.assertEqual({key: row.value for key, row in alternatives.items()}, {
+            "NBS_PDR_M32124_retained_nist-093-nbs-6798": -659150,
+            "NBS_PDR_M32124_retained_nist-094-nbs-6798": -713600,
+            "NBS_PDR_M32124_retained_nist-095-nbs-6798": 51.25,
+            "VO2_fallback_NBS1971_gf": -659189.2,
+            "VO2_fallback_NBS1971_hf": -713581.2,
+            "VO2_fallback_NBS1971_entropy": 51.254,
+            "VO2_fallback_USBM1982_entropy": 51.4632,
+        })
+        for row in alternatives.values():
+            self.assertIsNone(row.uncertainty)
+            self.assertIn("multiplied by0.5", row.source.locator)
+            self.assertIn("explicit cross-source inference", row.source.locator)
+        self.assertEqual(record.phase_identity.spacegroup_symbol, "P21/c")
+        solid = next(s for s in self.database.load_system("V").species if s.record_id == rid)
+        self.assertEqual((solid.metal_count, solid.core_oxygen_count,
+                          solid.electrons_per_metal, solid.protons_per_metal), (1, 2, 4, 4))
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            pressures = dict(connection.execute(
+                "SELECT source_id,pressure_bar FROM reported_thermochemistry "
+                "WHERE record_id=? AND selected_as_recommended=0", (rid,),
+            ))
+        self.assertEqual({key: pressures[key] for key in alternatives},
+                         {key: 1.0 if key.startswith("NBS_PDR_") else 1.01325
+                          for key in alternatives})
 
     def test_minium_retains_distinct_entropy_intervals_and_formula_unit(self) -> None:
         rid = "gfe-pb-pb3o4-q+0-solid-minium"

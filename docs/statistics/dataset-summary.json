@@ -14,11 +14,11 @@
     "species": 646,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2174,
+    "reported_thermochemistry": 2181,
     "recommended_values": 1584,
-    "source_records": 1188,
-    "distinct_citations": 172,
-    "warnings": 676,
+    "source_records": 1195,
+    "distinct_citations": 175,
+    "warnings": 679,
     "phase_records": 312,
     "resolved_phase_records": 207,
     "mp_matches": 105,
@@ -1801,7 +1801,7 @@
       "gibbs": 14,
       "entropy": 12,
       "enthalpy": 7,
-      "warnings": 5
+      "warnings": 8
     },
     {
       "symbol": "W",
@@ -2053,6 +2053,18 @@
     {
       "warning_type": "GonzalezSiso_2018_original_fit",
       "count": 2
+    },
+    {
+      "warning_type": "vo2_federal_alternatives_basis_and_shared_ancestry",
+      "count": 1
+    },
+    {
+      "warning_type": "vo2_alpha_M1_cross_source_phase_mapping",
+      "count": 1
+    },
+    {
+      "warning_type": "vo2_USBM1982_G_inherited_JANAF_hold",
+      "count": 1
     },
     {
       "warning_type": "usgs_sulfate_evaluation_interval_hf",

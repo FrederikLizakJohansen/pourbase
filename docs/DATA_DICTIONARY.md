@@ -53,6 +53,23 @@ containing the exact table or CSV locator, standard state and reuse attribution.
 preferred fields supply calculations. Reported USGS uncertainty intervals retain their source
 interpretation; they are not assigned an independent one-sigma convention or covariance.
 
+VO₂ retains seven alternative federal evaluations: G/H/S from the open NBS PDR
+release and NBS Technical Note 270-5 (1971), Table 54(2), plus the entropy
+reevaluation in Bureau of Mines Bulletin 672 (1982), page 459. Every source uses
+V₂O₄; all retained properties are divided by two to match the stored VO₂ formula
+unit. The PDR values retain 1 bar, and the older evaluations retain 1 atm as
+1.01325 bar. Their individual uncertainties are unavailable. Shared NBS ancestry
+and the identical Bureau of Mines/NBS 1971 formation enthalpy are documented;
+that repeated enthalpy is linked to the NBS observation.
+
+The source α phase maps to the existing monoclinic M1 record through its
+340 K transition branch and independently cited structural studies. Each locator
+identifies this as a cross-source inference; the original calorimetry specimen's
+diffraction record remains a follow-up. Existing preferred properties and the
+phase row are preserved. The Bureau of Mines formation G retains a JANAF
+elemental-reference hold in the external review. These additions cover the
+three previously unresolved VO₂ permission requests as retained alternatives.
+
 `computational_fallbacks` never overwrites `thermochemistry`. The package reads it only under the
 explicit `experimental_then_mp` energy policy, and only when the recommended experimental Gibbs
 field is empty.

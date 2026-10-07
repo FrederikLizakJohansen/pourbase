@@ -11,10 +11,10 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended Gibbs energies | 627 (97 %) |
 | Recommended entropies | 514 (80 %) |
 | Recommended formation enthalpies | 443 (69 %) |
-| Reported values retained | 2174 |
-| Source records | 1188 (172 distinct citations) |
+| Reported values retained | 2181 |
+| Source records | 1195 (175 distinct citations) |
 | Phase records | 312 (207 resolved) |
-| Warnings | 676 |
+| Warnings | 679 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 10 |
@@ -44,10 +44,10 @@ Species by phase:
 |---|---|---|
 | `species` | 646 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `thermochemistry` | 646 | One recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 2174 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1188 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 2181 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1195 | Full citations, links, locators and access dates |
 | `phases` | 312 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 676 | Scientific cautions attached to records |
+| `warnings` | 679 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -155,7 +155,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Ti | Titanium (Ti) | 7 | 2 | 5 | 0 | 0 | 7 | 7 | 4 | 9 |
 | Tl | Thallium (Tl) | 9 | 5 | 4 | 0 | 0 | 9 | 6 | 6 | 3 |
 | Tm | Thulium (Tm) | 8 | 5 | 3 | 0 | 0 | 8 | 6 | 6 | 9 |
-| V | Vanadium (V) | 14 | 9 | 5 | 0 | 0 | 14 | 12 | 7 | 5 |
+| V | Vanadium (V) | 14 | 9 | 5 | 0 | 0 | 14 | 12 | 7 | 8 |
 | W | Tungsten (W) | 4 | 1 | 3 | 0 | 0 | 4 | 4 | 2 | 5 |
 | Y | Yttrium (Y) | 11 | 8 | 3 | 0 | 0 | 11 | 9 | 9 | 19 |
 | Yb | Ytterbium (Yb) | 9 | 6 | 3 | 0 | 0 | 9 | 6 | 6 | 10 |
