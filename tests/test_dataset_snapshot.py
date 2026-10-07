@@ -36,6 +36,7 @@ class DatasetSnapshotTests(unittest.TestCase):
             )}
             self.assertEqual(tables, TABLES)
             for table, count in (("species", 646), ("reported_thermochemistry", 2186),
+                                 ("sources", 1202), ("warnings", 689),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -61,6 +62,29 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_tih2_review_preserves_hydride_basis_and_source_holds(self) -> None:
+        rid = "gfe-ti-tih2-q+0-solid-delta-tih2-cubic-near-298-15-k"
+        record = self.database.species_records((rid,))[0]
+        thermo = record.thermochemistry
+        self.assertEqual((thermo.gibbs_energy_J_mol.value,
+                          thermo.formation_enthalpy_J_mol.value,
+                          thermo.entropy_J_mol_K.value), (-105073, -144348, 29.711))
+        self.assertEqual(len(record.reported), 3)
+        self.assertTrue(all(row.selected_as_recommended for row in record.reported))
+        self.assertEqual(record.phase_identity.spacegroup_symbol, "Fm-3m")
+        solid = next(s for s in self.database.load_system("Ti").species if s.record_id == rid)
+        self.assertEqual((solid.core_hydrogen_count, solid.core_oxygen_count,
+                          solid.electrons_per_metal, solid.protons_per_metal), (2, 0, -2, -2))
+        warnings = {row.type: row for row in record.warnings}
+        phase = warnings["tih2_structural_specimen_crosswalk"]
+        self.assertIn("TiH1.99", phase.message)
+        self.assertIn("separate from the specimens", phase.message)
+        nbs = warnings["tih2_nbs_phase_and_composition_hold"]
+        self.assertIn("external review ledger", nbs.message)
+        inherited = warnings["tih2_inherited_JANAF_source_hold"]
+        self.assertIn("reference 7", inherited.message)
+        self.assertIn("JANAF", inherited.message)
 
     def test_tio_original_entropy_preserves_specimen_basis_and_preferences(self) -> None:
         rid = "gfe-ti-tio-q+0-solid-alpha-tio-vacancy-ordered-monoclinic"

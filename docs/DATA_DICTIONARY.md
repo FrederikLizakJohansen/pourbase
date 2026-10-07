@@ -80,6 +80,18 @@ the formation reaction used by the Pourbaix calculation. A negative value means 
 consumes electrons. These values differ for metal hydrides. For example, TiH2 stores oxidation state
 +2 and electron coefficient -2.
 
+The TiH₂ source review adds structural and provenance warnings. The original
+Padurets et al. (1999) X-ray study identifies TiH₁.₉₉ as cubic at 298 K and
+tetragonal at 288 K. Its specimen provides structural evidence for the existing
+phase assignment; a link to the specimens underlying the preferred thermochemistry
+remains unverified. The cubic/tetragonal phase names are cross-referenced explicitly.
+
+Three open NBS PDR candidates remain in the external review ledger because the
+generic crystalline row lacks specimen composition and polymorph evidence. The
+Bulletin 674 TiH₂ entry explicitly cites JANAF (reference 7), so it remains an
+inherited source hold. This review adds two source records and three warnings;
+all reported observations, preferred properties and species/phase rows are preserved.
+
 ## Retained aqueous research evaluations
 
 Miron (2016, 2017) model evaluations retain their publication year, exact property locator,

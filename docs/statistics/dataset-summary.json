@@ -16,9 +16,9 @@
     "all_elements_documented": 118,
     "reported_thermochemistry": 2186,
     "recommended_values": 1584,
-    "source_records": 1200,
-    "distinct_citations": 178,
-    "warnings": 686,
+    "source_records": 1202,
+    "distinct_citations": 180,
+    "warnings": 689,
     "phase_records": 312,
     "resolved_phase_records": 207,
     "mp_matches": 105,
@@ -1762,7 +1762,7 @@
       "gibbs": 7,
       "entropy": 7,
       "enthalpy": 4,
-      "warnings": 12
+      "warnings": 15
     },
     {
       "symbol": "Tl",
@@ -2080,6 +2080,18 @@
     },
     {
       "warning_type": "tio_entropy_extrapolation_and_pressure",
+      "count": 1
+    },
+    {
+      "warning_type": "tih2_structural_specimen_crosswalk",
+      "count": 1
+    },
+    {
+      "warning_type": "tih2_nbs_phase_and_composition_hold",
+      "count": 1
+    },
+    {
+      "warning_type": "tih2_inherited_JANAF_source_hold",
       "count": 1
     },
     {
