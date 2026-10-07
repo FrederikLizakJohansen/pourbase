@@ -36,7 +36,7 @@ class DatasetSnapshotTests(unittest.TestCase):
             )}
             self.assertEqual(tables, TABLES)
             for table, count in (("species", 646), ("reported_thermochemistry", 2186),
-                                 ("sources", 1206), ("warnings", 694),
+                                 ("sources", 1210), ("warnings", 698),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")

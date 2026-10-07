@@ -12,9 +12,9 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended entropies | 514 (80 %) |
 | Recommended formation enthalpies | 443 (69 %) |
 | Reported values retained | 2186 |
-| Source records | 1206 (184 distinct citations) |
+| Source records | 1210 (188 distinct citations) |
 | Phase records | 312 (207 resolved) |
-| Warnings | 694 |
+| Warnings | 698 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 10 |
@@ -45,9 +45,9 @@ Species by phase:
 | `species` | 646 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `thermochemistry` | 646 | One recommended Gibbs energy, entropy and enthalpy per species |
 | `reported_thermochemistry` | 2186 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1206 | Full citations, links, locators and access dates |
+| `sources` | 1210 | Full citations, links, locators and access dates |
 | `phases` | 312 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 694 | Scientific cautions attached to records |
+| `warnings` | 698 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -148,7 +148,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Si | Silicon (Si) | 6 | 4 | 2 | 0 | 0 | 6 | 4 | 4 | 5 |
 | Sm | Samarium (Sm) | 11 | 6 | 5 | 0 | 0 | 10 | 6 | 8 | 14 |
 | Sn | Tin (Sn) | 7 | 4 | 3 | 0 | 0 | 7 | 5 | 3 | 5 |
-| Sr | Strontium (Sr) | 5 | 2 | 3 | 0 | 0 | 5 | 4 | 2 | 3 |
+| Sr | Strontium (Sr) | 5 | 2 | 3 | 0 | 0 | 5 | 4 | 2 | 7 |
 | Ta | Tantalum (Ta) | 4 | 2 | 2 | 0 | 0 | 4 | 2 | 1 | 6 |
 | Tb | Terbium (Tb) | 9 | 5 | 4 | 0 | 0 | 8 | 6 | 7 | 11 |
 | Te | Tellurium (Te) | 4 | 2 | 2 | 0 | 0 | 4 | 3 | 3 | 2 |

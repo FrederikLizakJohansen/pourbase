@@ -16,9 +16,9 @@
     "all_elements_documented": 118,
     "reported_thermochemistry": 2186,
     "recommended_values": 1584,
-    "source_records": 1206,
-    "distinct_citations": 184,
-    "warnings": 694,
+    "source_records": 1210,
+    "distinct_citations": 188,
+    "warnings": 698,
     "phase_records": 312,
     "resolved_phase_records": 207,
     "mp_matches": 105,
@@ -1710,7 +1710,7 @@
       "gibbs": 5,
       "entropy": 4,
       "enthalpy": 2,
-      "warnings": 3
+      "warnings": 7
     },
     {
       "symbol": "Ta",
@@ -2108,6 +2108,22 @@
     },
     {
       "warning_type": "sulfate_2016_Nd_constant_discrepancy",
+      "count": 1
+    },
+    {
+      "warning_type": "sroh2_original_entropy_table_pending",
+      "count": 1
+    },
+    {
+      "warning_type": "sroh2_original_enthalpy_input_hold",
+      "count": 1
+    },
+    {
+      "warning_type": "sroh2_nbs_original_specimen_hold",
+      "count": 1
+    },
+    {
+      "warning_type": "sroh2_anhydrous_hydrate_crosswalk",
       "count": 1
     },
     {

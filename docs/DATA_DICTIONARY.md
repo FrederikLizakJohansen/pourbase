@@ -92,6 +92,18 @@ Bulletin 674 TiH₂ entry explicitly cites JANAF (reference 7), so it remains an
 inherited source hold. This review adds two source records and three warnings;
 all reported observations, preferred properties and species/phase rows are preserved.
 
+The anhydrous Sr(OH)₂ review adds four source records and four warnings.
+The original NBS powder standard identifies orthorhombic Pbnm material and
+flags an older pattern labelled anhydrous as the monohydrate. Its diffraction
+specimen is separate from the thermochemical evaluations. The original NBS
+Table 95:Sr formation enthalpy remains external pending specimen/evaluation
+mapping; its Gibbs-energy and entropy cells are empty. Konings et al. (1988)
+provides an original formation-enthalpy candidate whose auxiliary numerical
+inputs still need review. Konings et al. (1990) provides a low-temperature
+calorimetry lead; its numerical entropy table has not been retrieved. This
+review adds zero numerical observations. Existing preferred values, statuses,
+source IDs and phase/species records are preserved.
+
 The anhydrous Ba(OH)₂ review adds four source records and five warnings. The
 existing α-phase assignment retains its structural crosswalk to deuterated
 Ba(OD)₂. The open NBS formation enthalpy remains in the external review ledger
