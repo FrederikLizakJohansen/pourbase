@@ -35,7 +35,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 646), ("reported_thermochemistry", 2172),
+            for table, count in (("species", 646), ("reported_thermochemistry", 2174),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -323,8 +323,8 @@ class DatasetSnapshotTests(unittest.TestCase):
         record = self.database.species_records((rid,))[0]
         expected = -574100 + 3 * -278790 + GAS_CONSTANT_J_MOL_K * 298.15 * LN_10 * -19.28
         self.assertAlmostEqual(record.thermochemistry.gibbs_energy_J_mol.value, expected, places=6)
-        self.assertEqual(len(record.reported), 1)
-        observation = record.reported[0]
+        self.assertEqual(len(record.reported), 3)
+        observation = next(row for row in record.reported if row.selected_as_recommended)
         self.assertTrue(observation.selected_as_recommended)
         self.assertEqual(observation.status, "source_verified_estimate")
         self.assertIsNone(observation.uncertainty)
@@ -339,6 +339,37 @@ class DatasetSnapshotTests(unittest.TestCase):
         ))[0]
         self.assertIsNone(hydrate.thermochemistry.gibbs_energy_J_mol.value)
         self.assertEqual(hydrate.thermochemistry.formation_enthalpy_J_mol.value, -1873600)
+
+    def test_europium_trifluoride_retains_original_pressure_and_estimate_status(self) -> None:
+        rid = "gfe-eu-euf3-q+0-solid-crystalline-trifluoride"
+        record = self.database.species_records((rid,))[0]
+        alternatives = {row.property: row for row in record.reported
+                        if row.source and row.source.source_id.startswith("EuF3_R05_USBM1984_")}
+        enthalpy = alternatives["enthalpy_of_formation"]
+        entropy = alternatives["absolute_entropy"]
+        self.assertEqual((enthalpy.value, enthalpy.status), (-1584062.4, "verified"))
+        self.assertEqual((entropy.value, entropy.status), (107.1104, "source_verified_estimate"))
+        self.assertTrue(all(row.uncertainty is None and not row.selected_as_recommended
+                            for row in alternatives.values()))
+        self.assertIn("Kim/reference122", enthalpy.source.locator)
+        self.assertIn("S/Cp298 expressly estimated", entropy.source.locator)
+        self.assertIsNone(record.thermochemistry.formation_enthalpy_J_mol.value)
+        self.assertIsNone(record.thermochemistry.entropy_J_mol_K.value)
+        self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 1)
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            self.assertEqual(connection.execute(
+                "SELECT pressure_bar FROM reported_thermochemistry WHERE record_id=? "
+                "AND source_id LIKE 'EuF3_R05_USBM1984_%'", (rid,),
+            ).fetchall(), [(1.01325,)] * 2)
+            self.assertEqual(connection.execute(
+                "SELECT count(*) FROM reported_thermochemistry WHERE record_id=? "
+                "AND source_id='EuF3_R05_USBM1984_gf'", (rid,),
+            ).fetchone()[0], 0)
+            warning = connection.execute(
+                "SELECT message FROM warnings WHERE record_id=? "
+                "AND warning_type='euf3_USBM1984_G_inherited_JANAF_hold'", (rid,),
+            ).fetchone()[0]
+            self.assertIn("F2(g) entropy explicitly citesJANAF53", warning)
 
     def test_europium_trifluoride_uses_three_free_fluorides_in_solubility(self) -> None:
         from dataclasses import replace

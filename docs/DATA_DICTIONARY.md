@@ -148,6 +148,19 @@ reference energies. Its dissolution reaction, `EuF3(cr)=Eu3+(aq)+3F-(aq)`, retai
 three fluoride ions. The extrapolation uses the authors' disclosed solid entropy and
 heat-capacity calibration. Total uncertainty and the source-specific condensed-phase
 pressure correction are unavailable; the exact polymorph remains unspecified.
+EuF₃ also retains two alternatives from Bureau of Mines Bulletin 674 (1984),
+page 213: formation H = −1584062.4 J/mol and estimated S = 107.1104 J/(mol K).
+Both retain 298.15 K and the source's original 1 atm pressure as 1.01325 bar;
+their uncertainties are unavailable. H is the government critical evaluation
+citing Kim and Oishi (1979); S is explicitly marked as an estimate. The original
+parent's numerical tables and measurement ancestry remain follow-ups. These rows
+remain alternatives pending source, phase and standard-state reconciliation with
+the existing nominal 1 bar calculation record. Its preferred Gibbs estimate and
+unassigned H/S fields are preserved. The source's calculated formation G retains
+a JANAF ancestry hold: its elemental fluorine entropy comes through Bulletin 672.
+The low-temperature branch label and the separate 920 K EuF₃ transition are
+recorded without assigning a crystal structure to the solubility-study sample.
+
 The original 2016 Table 11 omits EuF₃. Native MINES G differs from this reference-anchored
 estimate; native S and calculated H retain their original-source follow-ups. The
 anhydrous solid and the existing H-only EuF₃·H₂O record have separate identities.

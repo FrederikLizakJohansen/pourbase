@@ -11,10 +11,10 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended Gibbs energies | 627 (97 %) |
 | Recommended entropies | 514 (80 %) |
 | Recommended formation enthalpies | 443 (69 %) |
-| Reported values retained | 2172 |
-| Source records | 1186 (171 distinct citations) |
+| Reported values retained | 2174 |
+| Source records | 1188 (172 distinct citations) |
 | Phase records | 312 (207 resolved) |
-| Warnings | 673 |
+| Warnings | 676 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 10 |
@@ -44,10 +44,10 @@ Species by phase:
 |---|---|---|
 | `species` | 646 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `thermochemistry` | 646 | One recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 2172 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1186 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 2174 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1188 | Full citations, links, locators and access dates |
 | `phases` | 312 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 673 | Scientific cautions attached to records |
+| `warnings` | 676 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -107,7 +107,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Cu | Copper (Cu) | 20 | 9 | 11 | 0 | 0 | 20 | 18 | 14 | 29 |
 | Dy | Dysprosium (Dy) | 8 | 5 | 3 | 0 | 0 | 8 | 6 | 6 | 9 |
 | Er | Erbium (Er) | 8 | 5 | 3 | 0 | 0 | 8 | 6 | 7 | 10 |
-| Eu | Europium (Eu) | 13 | 6 | 7 | 0 | 0 | 12 | 10 | 11 | 10 |
+| Eu | Europium (Eu) | 13 | 6 | 7 | 0 | 0 | 12 | 10 | 11 | 13 |
 | F | Fluorine (F) | 4 | 3 | 0 | 1 | 0 | 4 | 4 | 4 | 1 |
 | Fe | Iron (Fe) | 23 | 10 | 13 | 0 | 0 | 23 | 18 | 11 | 28 |
 | Ga | Gallium (Ga) | 7 | 4 | 3 | 0 | 0 | 7 | 6 | 2 | 5 |

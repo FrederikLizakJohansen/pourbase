@@ -14,11 +14,11 @@
     "species": 646,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2172,
+    "reported_thermochemistry": 2174,
     "recommended_values": 1584,
-    "source_records": 1186,
-    "distinct_citations": 171,
-    "warnings": 673,
+    "source_records": 1188,
+    "distinct_citations": 172,
+    "warnings": 676,
     "phase_records": 312,
     "resolved_phase_records": 207,
     "mp_matches": 105,
@@ -1177,7 +1177,7 @@
       "gibbs": 12,
       "entropy": 10,
       "enthalpy": 11,
-      "warnings": 10
+      "warnings": 13
     },
     {
       "symbol": "F",
@@ -2144,6 +2144,18 @@
     },
     {
       "warning_type": "euf3_native_G_S_H_source_holds",
+      "count": 1
+    },
+    {
+      "warning_type": "euf3_USBM1984_source_estimate_and_conditions",
+      "count": 1
+    },
+    {
+      "warning_type": "euf3_USBM1984_phase_and_thermal_followup",
+      "count": 1
+    },
+    {
+      "warning_type": "euf3_USBM1984_G_inherited_JANAF_hold",
       "count": 1
     },
     {
