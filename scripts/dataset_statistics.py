@@ -618,7 +618,7 @@ def plot_calculation_showcase() -> None:
         eh_points=metadata["eh_V_range"][2],
         aqueous_activities=AqueousActivityModel(metadata["log10_aqueous_activity"]),
     )
-    experimental = PourbaixEngine(database).calculate("Fe", conditions)
+    experimental = PourbaixEngine(database).calculate("Fe", conditions, allow_incomplete=True)
     with (PAPER_DATA / metadata["phase_file"]).open(newline="") as handle:
         cached_rows = list(csv.DictReader(handle))
     phases = tuple(

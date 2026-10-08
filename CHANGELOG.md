@@ -4,8 +4,12 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
-- 760 species and 2481 retained observations across 74 supported elemental systems, with
-  recommended Gibbs energies for 696.
+- 766 species and 2516 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 699.
+- Original Fe/Ni/Sn/Pb hydrolysis fits and entropy correlations, including both iron fits
+  and ten separately calculated NBS-reference enthalpies. Intra-paper NiO/PbOH entropy
+  conflicts remain held. Entropy-only Fe/Ni records require `allow_incomplete=True` for
+  calculations; examples and dataset snapshots record this choice.
 - Original SLOP aqueous-complex evaluations from the CC BY 4.0 GEOPIG release, with
   explicit hydration conversions, open NBS enthalpy derivations and buffered bromide support.
 - Original rare-earth chloride and fluoride fits, retained alternative entropy fits, explicitly

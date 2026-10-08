@@ -112,6 +112,26 @@ pyqtgraph (MIT) and keyring (MIT) for the desktop application.
 
 ## GEOPIG SLOP aqueous-complex evaluations
 
+The Fe/Ni/Sn/Pb continuation retains 25 individually checked original outputs from
+Shock et al. (1997), Tables 7 and 10, printed pp. 934 and 942–943, and ten separately
+labelled NBS-reference enthalpy calculations. Nineteen outputs match the CC BY 4.0
+GEOPIG numerical release. Six numerical facts from the alternative iron regression
+in Table 7, footnote d, are individually transcribed from the original paper and carry
+that exact citation. Four previously stored evaluations are linked to the same original
+source without adding duplicate observations.
+
+Hydration conversions add explicitly cited open NBS liquid-water properties. The new
+enthalpies use same-fit G/S pairs and open NBS elemental entropies. Correlation outputs
+identify inherited cation properties as calibration dependencies. Inherited simple-ion
+values, hydrolysis-compilation formation values and native enthalpies with
+Cox/Glushko/Wagman reference ancestry remain in the external review. NiO and PbOH⁺
+entropies disagree between the original tables; those entropy representations and
+dependent enthalpies remain held. Each available property retains one preferred value.
+
+- Shock, E. L., Sassani, D. C., Willis, M. and Sverjensky, D. A. (1997),
+  *Geochimica et Cosmochimica Acta* 61, 907–950.
+  <https://doi.org/10.1016/S0016-7037(96)00339-0>
+
 On 8 October 2026, pourbase retained 151 additional original Gibbs-energy and entropy
 evaluations from Sverjensky, Shock and Helgeson (1997), Tables 2, 3 and 12, printed
 pp. 1391–1392 and 1400. The numerical values were checked against the original paper

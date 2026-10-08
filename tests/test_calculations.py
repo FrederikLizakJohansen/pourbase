@@ -22,7 +22,7 @@ class CalculationTests(unittest.TestCase):
         cls.database = pb.ThermodynamicDatabase.bundled()
 
     def test_scenario_calculates_fixed_activity_and_mass_balance(self) -> None:
-        fixed = pb.calculate(pb.Scenario("Fe", **SMALL), self.database)
+        fixed = pb.calculate(pb.Scenario("Fe", allow_incomplete=True, **SMALL), self.database)
         self.assertEqual(fixed.diagram.stable_species_index.shape, (23, 21))
         self.assertTrue(fixed.boundaries and fixed.plating)
         balance = pb.calculate(pb.Scenario("Zn", mode="mass_balance", concentration=1e-6,
@@ -51,6 +51,9 @@ class CalculationTests(unittest.TestCase):
     def test_incomplete_systems_need_an_explicit_choice(self) -> None:
         with self.assertRaises(pb.IncompleteSystemError):
             pb.calculate(pb.Scenario("Pt", **SMALL), self.database)
+        for symbol in ("Fe", "Ni"):
+            with self.subTest(symbol=symbol), self.assertRaises(pb.IncompleteSystemError):
+                pb.calculate(pb.Scenario(symbol, **SMALL), self.database)
         gaps = pb.calculate(pb.Scenario("Pt", allow_incomplete=True, **SMALL), self.database)
         self.assertTrue(gaps.diagram.system.missing_gibbs)
         fallback = pb.calculate(pb.Scenario("Pt", energy_policy="experimental_then_mp", **SMALL), self.database)
@@ -125,7 +128,7 @@ class CalculationTests(unittest.TestCase):
                 )
 
     def test_boundary_equations_match_the_energies(self) -> None:
-        calculation = pb.calculate(pb.Scenario("Fe", pH_points=81, eh_points=81), self.database)
+        calculation = pb.calculate(pb.Scenario("Fe", pH_points=81, eh_points=81, allow_incomplete=True), self.database)
         nernst = next(item for item in calculation.boundaries if item.kind == "nernst")
         species = {item.record_id: item for item in calculation.diagram.system.species}
         eh = nernst.eh_intercept_V + nernst.eh_slope_V_per_pH * 5.0
@@ -139,7 +142,7 @@ class CalculationTests(unittest.TestCase):
         self.assertTrue(all("e-" in item.reaction for item in calculation.plating))
 
     def test_boltzmann_weights_follow_the_energies(self) -> None:
-        diagram = pb.PourbaixEngine(self.database).calculate("Fe", pb.PourbaixConditions(pH_points=19, eh_points=21))
+        diagram = pb.PourbaixEngine(self.database).calculate("Fe", pb.PourbaixConditions(pH_points=19, eh_points=21), allow_incomplete=True)
         smoothed = pb.boltzmann_smooth(diagram)
         np.testing.assert_allclose(smoothed.weights.sum(axis=0), 1.0, atol=1e-14)
         np.testing.assert_array_equal(np.argmax(smoothed.weights, axis=0), diagram.stable_species_index)
@@ -151,7 +154,7 @@ class CalculationTests(unittest.TestCase):
             places=12,
         )
         compact = pb.PourbaixEngine(self.database).calculate(
-            "Fe", pb.PourbaixConditions(pH_points=19, eh_points=21), store_energies=False
+            "Fe", pb.PourbaixConditions(pH_points=19, eh_points=21), store_energies=False, allow_incomplete=True
         )
         np.testing.assert_array_equal(compact.stable_species_index, diagram.stable_species_index)
         with self.assertRaises(ValueError):
@@ -159,12 +162,12 @@ class CalculationTests(unittest.TestCase):
 
     def test_sweeps_are_compact_and_cancellable(self) -> None:
         engine = pb.ConcentrationSweepEngine(self.database)
-        sweep = engine.calculate("Fe", pb.PourbaixConditions(**SMALL), -8.0, -2.0, 4)
+        sweep = engine.calculate("Fe", pb.PourbaixConditions(**SMALL), -8.0, -2.0, 4, allow_incomplete=True)
         self.assertEqual(len(sweep.diagrams), 4)
         self.assertIsNone(sweep.diagrams[0].transformed_gibbs_J_mol_metal)
         with self.assertRaises(pb.CalculationCancelled):
             engine.calculate("Fe", pb.PourbaixConditions(**SMALL), -8.0, -2.0, 4,
-                             progress=lambda fraction: fraction < 0.5)
+                             progress=lambda fraction: fraction < 0.5, allow_incomplete=True)
 
     def test_periodic_screen_statuses_and_rhe(self) -> None:
         strict = pb.screen_periodic_table(self.database, pH=14, potential_V=1.6, reference="RHE")
@@ -213,7 +216,7 @@ class CalculationTests(unittest.TestCase):
             database_version="test-db", mp_api_version="test", pymatgen_version="test",
             filter_solids=True, use_gibbs_300K=False,
         )
-        experimental = pb.PourbaixEngine(self.database).calculate("Fe", conditions)
+        experimental = pb.PourbaixEngine(self.database).calculate("Fe", conditions, allow_incomplete=True)
         np.testing.assert_allclose(official.oer_V, experimental.oer_V)
 
         class StubClient:
@@ -221,7 +224,7 @@ class CalculationTests(unittest.TestCase):
                 return official
 
         comparison = pb.OfficialMaterialsProjectComparator(pb.PourbaixEngine(self.database), StubClient()).compare(
-            "Fe", conditions
+            "Fe", conditions, allow_incomplete=True
         )
         self.assertTrue(0.0 <= comparison.equivalent_domain_fraction <= 1.0)
         import matplotlib.pyplot as plt
@@ -246,7 +249,7 @@ if __name__ == "__main__":
 class UncertaintyTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.calculation = pb.calculate(pb.Scenario("Fe", **SMALL))
+        cls.calculation = pb.calculate(pb.Scenario("Fe", allow_incomplete=True, **SMALL))
 
     def test_margin_finds_the_exact_redox_boundary(self) -> None:
         diagram = self.calculation.diagram
@@ -268,6 +271,6 @@ class UncertaintyTests(unittest.TestCase):
         self.assertTrue(large.assumed_record_ids)
 
     def test_mass_balance_diagrams_are_rejected(self) -> None:
-        calculation = pb.calculate(pb.Scenario("Fe", mode="mass_balance", **SMALL))
+        calculation = pb.calculate(pb.Scenario("Fe", mode="mass_balance", allow_incomplete=True, **SMALL))
         with self.assertRaises(ValueError):
             pb.stability_uncertainty(calculation.diagram)

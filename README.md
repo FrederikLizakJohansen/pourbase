@@ -99,7 +99,7 @@ evidence:
 ```python
 import pourbase as pb
 
-calculation = pb.calculate(pb.Scenario("Fe", concentration=10, concentration_unit="ppm"))
+calculation = pb.calculate(pb.Scenario("Fe", concentration=10, concentration_unit="ppm", allow_incomplete=True))
 pb.plot_diagram(calculation.diagram)
 
 for boundary in calculation.boundaries:
@@ -128,9 +128,12 @@ chloride = pb.LigandActivity("chloride-cl", log10_free_activity=-2)
 pb.plot_diagram(pb.calculate(pb.Scenario("Ag", ligands=(chloride,))).diagram)
 ```
 
-Six solids lack a recommended experimental Gibbs energy. Such systems raise
-`IncompleteSystemError` unless you leave those species out or use the separately stored Materials
-Project 300 K estimates:
+Six solids lack a recommended experimental Gibbs energy. Additional records retain verified
+entropy data while their formation energies await source review. Strict calculations report
+these gaps with `IncompleteSystemError`. Use `allow_incomplete=True` to calculate with the
+available Gibbs energies and inspect the excluded species. Fe and Ni now require this choice
+because each includes a new entropy-only aqueous record. The desktop application enables it
+by default. Separately stored Materials Project estimates cover the six solid gaps:
 
 ```python
 exploratory = pb.calculate(pb.Scenario("Pt", allow_incomplete=True))
@@ -140,7 +143,7 @@ estimated = pb.calculate(pb.Scenario("Pt", energy_policy="experimental_then_mp")
 How firmly a species is stable, given the Gibbs energy uncertainties (fixed activity):
 
 ```python
-calculation = pb.calculate(pb.Scenario("Fe"))
+calculation = pb.calculate(pb.Scenario("Fe", allow_incomplete=True))
 margin = pb.stability_margin(calculation.diagram, pH=7, eh_V=0.0)
 print(margin.runner_up.species, margin.margin_J_mol_metal, margin.margin_uncertainty_J_mol_metal)
 print(margin.higher_potential.species.species, margin.higher_potential.distance)
@@ -151,7 +154,7 @@ print(f"{uncertain.uncertain_fraction:.0%} of the grid is within 1σ of another 
 The stable species of every element at one pH and potential:
 
 ```python
-screen = pb.screen_periodic_table(pH=7, potential_V=0.4, reference="RHE")
+screen = pb.screen_periodic_table(pH=7, potential_V=0.4, reference="RHE", allow_incomplete=True)
 print(screen.element("Fe").stable.species, screen.calculated_count)
 ```
 
@@ -159,7 +162,7 @@ Sweep the metal activity; levels are stored compactly and the progress callback 
 
 ```python
 conditions = pb.Scenario("Fe").conditions()
-sweep = pb.ConcentrationSweepEngine(pb.open_database()).calculate("Fe", conditions, -10, 0, points=41)
+sweep = pb.ConcentrationSweepEngine(pb.open_database()).calculate("Fe", conditions, -10, 0, points=41, allow_incomplete=True)
 pb.plot_concentration_sweep(sweep, probe_pH=7, probe_eh_V=0)
 ```
 
@@ -170,7 +173,7 @@ from pourbase import OfficialMaterialsProjectClient, OfficialMaterialsProjectCom
 
 client = OfficialMaterialsProjectClient(api_key="your Materials Project API key")
 comparison = OfficialMaterialsProjectComparator(PourbaixEngine(pb.open_database()), client).compare(
-    "Fe", pb.Scenario("Fe").conditions()
+    "Fe", pb.Scenario("Fe").conditions(), allow_incomplete=True
 )
 pb.plot_official_materials_project_comparison(comparison)
 print(comparison.equivalent_domain_fraction, comparison.materials_project.database_version)
@@ -183,11 +186,11 @@ settings as explicit models, for custom calculations.
 
 ```bash
 pourbase systems
-pourbase plot Fe --output fe.png
+pourbase plot Fe --allow-incomplete --output fe.png
 pourbase plot Zn --mode mass_balance --total-metal 1e-6 --output zn.png
-pourbase plot Fe --concentration 10 --unit ppm --grid-csv fe-grid.csv
+pourbase plot Fe --allow-incomplete --concentration 10 --unit ppm --grid-csv fe-grid.csv
 pourbase plot Pt --use-mp-fallbacks --output pt.png
-pourbase sweep Fe --minimum -10 --maximum 0 --points 7 --output fe-sweep.png
+pourbase sweep Fe --allow-incomplete --minimum -10 --maximum 0 --points 7 --output fe-sweep.png
 pourbase mp-thermo-figures --output-dir mp-thermochemistry
 ```
 

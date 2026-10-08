@@ -147,6 +147,25 @@ numerical observations and preserves all earlier observations and preferences.
 
 ## Retained aqueous research evaluations
 
+The Shock et al. (1997) Fe/Ni/Sn/Pb continuation retains 35 observations: 11 original
+Gibbs energies, 14 original fitted/correlated entropies and ten newly calculated
+NBS-reference enthalpies. Both original Table 7 iron regressions retain their own
+G/S pairs and derived H. Hydrated formulas explicitly add open NBS water properties.
+Every earlier non-empty preferred property and source is preserved.
+
+Table 7 and Table 10 disagree on NiO(aq) and PbOH⁺ entropy. Their entropy and
+dependent enthalpy candidates remain external, with database warnings. Original
+correlation estimates retain their calibration dependencies; inherited hydrolysis
+formation values and native Cox/Glushko/Wagman-derived enthalpies remain held.
+Total uncertainty and covariance are unavailable. The general Table 7 entropy
+interval is recorded in locators with its unspecified confidence convention.
+
+New aqueous Fe(OH)₃, Ni(OH)₄²⁻ and Sn(OH)₂ have entropy only. They remain
+inspectable in `species_records`. Calculations omit them with
+`allow_incomplete=True`; strict mode reports the missing Gibbs energies. The strict
+periodic screen calculates 67 systems, or 71 with the six solid MP fallbacks.
+Allowing incomplete systems calculates all 74 supported systems.
+
 Miron (2016, 2017) model evaluations retain their publication year, exact property locator,
 evidence status and reported uncertainty. Alternate evaluations remain in
 `reported_thermochemistry`; calculations use the single preferred value for each available
