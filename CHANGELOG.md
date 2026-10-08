@@ -4,8 +4,10 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
-- 544 species and 1860 retained observations across 74 supported elemental systems, with
-  recommended Gibbs energies for 538.
+- 760 species and 2481 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 696.
+- Original SLOP aqueous-complex evaluations from the CC BY 4.0 GEOPIG release, with
+  explicit hydration conversions, open NBS enthalpy derivations and buffered bromide support.
 - Original rare-earth chloride and fluoride fits, retained alternative entropy fits, explicitly
   NBS-derived enthalpy estimates, and distinct boehmite and diaspore phases.
 - Six solid gaps with separately stored, opt-in Materials Project 300 K SISSO estimates.

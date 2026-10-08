@@ -110,6 +110,38 @@ Optional dependencies are installed from their own distributions and are not ven
 `mp-api` (BSD 3-Clause) and pymatgen (MIT) for the live comparison; PySide6 (LGPL-3.0),
 pyqtgraph (MIT) and keyring (MIT) for the desktop application.
 
+## GEOPIG SLOP aqueous-complex evaluations
+
+On 8 October 2026, pourbase retained 151 additional original Gibbs-energy and entropy
+evaluations from Sverjensky, Shock and Helgeson (1997), Tables 2, 3 and 12, printed
+pp. 1391–1392 and 1400. The numerical values were checked against the original paper
+and GEOPIG's author release, *GEOPIG slop files* (Arizona State University, 2019),
+distributed under CC BY 4.0. These portions retain that licence and attribution.
+The GPL-3.0 licence covers pourbase's code and compilation.
+
+Pourbase converted calorie units with the exact factor 4.184 and normalized identified
+HSiO3 species to their stored H3SiO4 formula by adding open NBS water. It also calculated
+52 separately labelled formation-enthalpy estimates from verified G/S pairs and open
+NBS elemental entropies. Each retained observation identifies its numerical row,
+property, conversion and source. Estimates have unknown total uncertainty. Existing
+preferred values remain selected; distinct original evaluations are retained as alternatives.
+
+The original article retains its publisher's copyright. Inherited properties with unresolved
+source ancestry remain in the external review. The author-release licence applies to
+the selected original outputs; it supplies no new permission for restricted third-party inputs.
+
+- GEOPIG (2019), *GEOPIG slop files*, Arizona State University.
+  <https://doi.org/10.5281/zenodo.2630820>
+- CC BY 4.0: <https://creativecommons.org/licenses/by/4.0/>
+- Sverjensky, D. A., Shock, E. L. and Helgeson, H. C. (1997), *Geochimica et Cosmochimica
+  Acta* 61, 1359–1412. <https://doi.org/10.1016/S0016-7037(97)00009-4>
+- NBS reference data: <https://doi.org/10.18434/M32124>
+
+Bromide complexes require an explicitly supplied free Br⁻ activity. The bromide reference
+G is −103960 J/mol from the existing open NBS record. A total bromide concentration
+requires a component balance. Entropy-only additions remain inspectable and are skipped
+by calculations that require a formation Gibbs energy.
+
 ## MINES and aq17 research evaluations
 
 The database retains individually verified aqueous Gibbs-energy and entropy evaluations from

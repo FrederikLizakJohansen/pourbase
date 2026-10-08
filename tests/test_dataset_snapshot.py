@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 681), ("reported_thermochemistry", 2278),
-                                 ("sources", 1303), ("warnings", 738),
+            for table, count in (("species", 760), ("reported_thermochemistry", 2481),
+                                 ("sources", 1506), ("warnings", 933),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -62,6 +62,63 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_slop_bromide_complex_uses_explicit_free_ligand(self) -> None:
+        rid = "r06-na-nabr-q+0-aq"
+        default = self.database.load_system("Na")
+        self.assertNotIn(rid, {s.record_id for s in default.species})
+        buffered = self.database.load_system("Na", ligand_ids=("bromide-br",))
+        complex_ = next(s for s in buffered.species if s.record_id == rid)
+        self.assertEqual((complex_.metal_count, complex_.ligand_count,
+                          complex_.electrons_per_metal), (1, 1, 1))
+        self.assertEqual(complex_.ligand_gibbs_energy_J_mol, -103960)
+        self.assertEqual(complex_.gibbs_energy_J_mol, -358192.24)
+        conditions = pb.PourbaixConditions(
+            pH_points=9, eh_points=7,
+            ligand_activities=pb.LigandActivityModel((
+                pb.LigandActivity("bromide-br", log10_free_activity=-3),)))
+        diagram = pb.PourbaixEngine(self.database).calculate("Na", conditions, allow_incomplete=True)
+        self.assertIn(rid, {s.record_id for s in diagram.system.species})
+
+    def test_slop_retains_zero_and_distinct_entropy_evaluations(self) -> None:
+        silver, barium = self.database.species_records((
+            "r06-ag-agco3-q-1-aq", "r06-ba-baf-q+1-aq"))
+        self.assertEqual(silver.thermochemistry.entropy_J_mol_K.value, 0)
+        self.assertEqual(silver.thermochemistry.formation_enthalpy_J_mol.value, -591845.34285)
+        entropies = [r for r in barium.reported if r.property == "absolute_entropy"]
+        self.assertEqual({r.value for r in entropies}, {23.012, 26.69392})
+        self.assertEqual([r.value for r in entropies if r.selected_as_recommended], [23.012])
+        self.assertTrue(all("CC BY 4.0" in r.source.citation for r in entropies))
+
+    def test_slop_hydration_uses_stored_formula_and_preserves_preferred_gibbs(self) -> None:
+        record = self.database.species_records(("gfe-si-h3sio4-q-1-aqueous-aq",))[0]
+        rows = {r.property: r for r in record.reported
+                if r.source and r.source.source_id.startswith("Sverjensky1997_R06_")}
+        self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, -1252304)
+        self.assertEqual(rows["gibbs_energy_of_formation"].value, -1253008.384)
+        self.assertFalse(rows["gibbs_energy_of_formation"].selected_as_recommended)
+        self.assertEqual(rows["absolute_entropy"].value, 90.83)
+        self.assertEqual(rows["enthalpy_of_formation"].value, -1431792.2426)
+        self.assertIn("Hydration", rows["absolute_entropy"].source.locator)
+        self.assertIn("NBS-reference", rows["enthalpy_of_formation"].source.citation)
+
+    def test_slop_entropy_only_records_keep_original_charge_and_missing_gibbs(self) -> None:
+        beryllium, thallium = self.database.species_records((
+            "r06-be-becl-q+1-aq", "r06-tl-tlcl-q+2-aq"))
+        self.assertIsNone(beryllium.thermochemistry.gibbs_energy_J_mol.value)
+        self.assertEqual(beryllium.thermochemistry.entropy_J_mol_K.value, 386.22504)
+        self.assertEqual(thallium.thermochemistry.entropy_J_mol_K.value, -77.48768)
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            charge, oxidation = connection.execute(
+                "SELECT charge,metal_oxidation_state FROM species WHERE record_id=?",
+                (thallium.record_id,)).fetchone()
+        self.assertEqual((charge, oxidation), (2, 3))
+        conditions = pb.PourbaixConditions(
+            pH_points=9, eh_points=7,
+            ligand_activities=pb.LigandActivityModel((
+                pb.LigandActivity("chloride-cl", log10_free_activity=-3),)))
+        diagram = pb.PourbaixEngine(self.database).calculate("Be", conditions, allow_incomplete=True)
+        self.assertNotIn(beryllium.record_id, {s.record_id for s in diagram.system.species})
 
     def test_sulfide_formula_basis_and_polymorphs_balance(self) -> None:
         arsenic = self.database.load_system("As", ligand_ids=("sulfide-s",))
@@ -862,7 +919,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         energies = {row.value for row in aluminum.reported if row.property == "gibbs_energy_of_formation"}
         self.assertGreaterEqual(energies, {-485000.0, -486627.0, -486594.0})
         calcium_energies = {row.value for row in calcium.reported if row.property == "gibbs_energy_of_formation"}
-        self.assertEqual(calcium_energies, {-689297.0, -689279.0})
+        self.assertEqual(calcium_energies, {-689297.0, -689279.0, -682410.4})
         self.assertEqual(calcium.thermochemistry.gibbs_energy_J_mol.value, -689297.0)
         self.assertEqual(calcium.thermochemistry.gibbs_energy_J_mol.status, "source_verified_estimate")
         self.assertTrue(any(row.type == "miron_published_dataset_discrepancy" for row in calcium.warnings))
@@ -887,10 +944,11 @@ class DatasetSnapshotTests(unittest.TestCase):
                                  if r.property == "gibbs_energy_of_formation"},
                                 {-834103 - 2 * 237129, -834041 - 2 * 237129})
         self.assertEqual(charged.thermochemistry.gibbs_energy_J_mol.value, -1015175 - 237129)
-        self.assertEqual({r.value for r in charged.reported},
+        miron_rows = [r for r in charged.reported if r.source
+                      and r.source.source_id.startswith("Miron_")]
+        self.assertEqual({r.value for r in miron_rows},
                          {-1015237 - 237129, -1015175 - 237129})
-        self.assertIsNone(charged.thermochemistry.entropy_J_mol_K.value)
-        self.assertIsNone(charged.thermochemistry.formation_enthalpy_J_mol.value)
+        self.assertTrue(all(r.property == "gibbs_energy_of_formation" for r in miron_rows))
         self.assertTrue(any(w.type == "miron_appendix_entropy_source_hold" for w in charged.warnings))
         self.assertEqual(calcium.thermochemistry.gibbs_energy_J_mol.value, -1575097 - 237129)
         self.assertTrue(any(w.type == "miron_published_dataset_discrepancy" for w in calcium.warnings))
