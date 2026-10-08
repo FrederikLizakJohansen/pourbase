@@ -147,6 +147,20 @@ numerical observations and preserves all earlier observations and preferences.
 
 ## Retained aqueous research evaluations
 
+The remaining Shock1997 Table 7/10 batch adds 67 observations and 26 species:
+eight fitted Gibbs energies, 51 fitted/correlated entropies and eight explicitly
+NBS-derived enthalpies. Seventeen existing original evaluations are linked once.
+Original-paper identities establish neutral HGaO₂ and singly negative YO₂⁻,
+correcting charge errors in the native release. Original Table 10 entropy source
+ambiguities for CdO₂²⁻, ZrO²⁺ and HfO²⁺ remain external. Earlier non-empty preferred
+properties and sources are preserved; each available property has one preference.
+
+Twenty-five new species retain entropy only. Strict calculations report these
+missing Gibbs energies; `allow_incomplete=True` calculates with the available
+Gibbs values and lists exclusions. The available-G-only diagrams for all 74 systems
+match the prior database on the checked grid. Existing closed-mass-balance support
+continues to require systems without a gas phase.
+
 The Shock et al. (1997) Fe/Ni/Sn/Pb continuation retains 35 observations: 11 original
 Gibbs energies, 14 original fitted/correlated entropies and ten newly calculated
 NBS-reference enthalpies. Both original Table 7 iron regressions retain their own
@@ -163,7 +177,7 @@ interval is recorded in locators with its unspecified confidence convention.
 New aqueous Fe(OH)₃, Ni(OH)₄²⁻ and Sn(OH)₂ have entropy only. They remain
 inspectable in `species_records`. Calculations omit them with
 `allow_incomplete=True`; strict mode reports the missing Gibbs energies. The strict
-periodic screen calculates 67 systems, or 71 with the six solid MP fallbacks.
+periodic screen calculates 56 systems, or 59 with the six solid MP fallbacks.
 Allowing incomplete systems calculates all 74 supported systems.
 
 Miron (2016, 2017) model evaluations retain their publication year, exact property locator,

@@ -131,9 +131,10 @@ pb.plot_diagram(pb.calculate(pb.Scenario("Ag", ligands=(chloride,))).diagram)
 Six solids lack a recommended experimental Gibbs energy. Additional records retain verified
 entropy data while their formation energies await source review. Strict calculations report
 these gaps with `IncompleteSystemError`. Use `allow_incomplete=True` to calculate with the
-available Gibbs energies and inspect the excluded species. Fe and Ni now require this choice
-because each includes a new entropy-only aqueous record. The desktop application enables it
-by default. Separately stored Materials Project estimates cover the six solid gaps:
+available Gibbs energies and inspect the excluded species. Systems with entropy-only
+records include Fe, Ni and several other metals; `load_system(symbol).missing_gibbs`
+lists the exact gaps. The desktop system view enables incomplete calculations by default.
+Separately stored Materials Project estimates cover the six solid gaps:
 
 ```python
 exploratory = pb.calculate(pb.Scenario("Pt", allow_incomplete=True))

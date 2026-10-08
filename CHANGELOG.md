@@ -4,8 +4,11 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
-- 766 species and 2516 retained observations across 74 supported elemental systems, with
-  recommended Gibbs energies for 699.
+- 792 species and 2583 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 700.
+- Remaining Shock1997 hydrolysis fits and entropy correlations: 67 observations,
+  26 species and eight NBS-reference enthalpy calculations. Original-paper identities
+  resolve two native charge errors; unresolved entropy ancestry remains held.
 - Original Fe/Ni/Sn/Pb hydrolysis fits and entropy correlations, including both iron fits
   and ten separately calculated NBS-reference enthalpies. Intra-paper NiO/PbOH entropy
   conflicts remain held. Entropy-only Fe/Ni records require `allow_incomplete=True` for

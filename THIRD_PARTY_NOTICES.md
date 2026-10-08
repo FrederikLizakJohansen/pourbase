@@ -112,6 +112,17 @@ pyqtgraph (MIT) and keyring (MIT) for the desktop application.
 
 ## GEOPIG SLOP aqueous-complex evaluations
 
+The remaining Shock1997 Table 7/10 continuation retains 59 further original
+fitted/correlated G/S outputs from the GEOPIG CC BY 4.0 release, independently
+checked against the original paper, and eight separately calculated NBS-reference
+enthalpies. Seventeen already stored evaluations retain their original identity.
+Conversions use the exact calorie factor and explicitly cited open NBS water and
+elemental entropy references. The original paper establishes the corrected neutral
+HGaO₂ and singly negative YO₂⁻ species identities. Unresolved original entropy
+ancestry and inherited hydrolysis/native-enthalpy inputs remain in the external
+review. These numerical portions retain CC BY 4.0 attribution; pourbase's code
+and compilation retain GPL-3.0.
+
 The Fe/Ni/Sn/Pb continuation retains 25 individually checked original outputs from
 Shock et al. (1997), Tables 7 and 10, printed pp. 934 and 942–943, and ten separately
 labelled NBS-reference enthalpy calculations. Nineteen outputs match the CC BY 4.0

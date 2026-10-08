@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 766), ("reported_thermochemistry", 2516),
-                                 ("sources", 1541), ("warnings", 974),
+            for table, count in (("species", 792), ("reported_thermochemistry", 2583),
+                                 ("sources", 1608), ("warnings", 1124),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -97,6 +97,47 @@ class DatasetSnapshotTests(unittest.TestCase):
                 self.assertIn("NBS-derived", row.source.source_id)
                 self.assertIn("same-variant", row.source.locator)
                 self.assertIsNone(row.uncertainty)
+
+    def test_shock_remaining_fits_preserve_preferences_and_hydration(self) -> None:
+        cobalt, zinc, aluminium = self.database.species_records((
+            "r06-co-cooh-q+1-aq", "gfe-zn-zn-oh-2-q+0-aqueous-aq",
+            "gfe-al-aloh-q+2-aqueous-aq"))
+        self.assertEqual(cobalt.thermochemistry.gibbs_energy_J_mol.value, -234408.6)
+        self.assertEqual(cobalt.thermochemistry.formation_enthalpy_J_mol.value, -286420.56935)
+        self.assertEqual(zinc.thermochemistry.gibbs_energy_J_mol.value, -525020)
+        self.assertEqual(aluminium.thermochemistry.gibbs_energy_J_mol.value, -695541)
+        rows = {r.property: r for r in zinc.reported
+                if r.source and r.source.source_id.startswith("Shock1997_R06_remaining-")}
+        self.assertEqual(rows["gibbs_energy_of_formation"].value, -519214.28)
+        self.assertEqual(rows["absolute_entropy"].value, 61.542)
+        self.assertEqual(rows["enthalpy_of_formation"].value, -613402.8465)
+        self.assertTrue(all(not r.selected_as_recommended for r in rows.values()))
+        self.assertIn("source formula + 1 H2O(l)", rows["absolute_entropy"].source.locator)
+
+    def test_shock_paper_identity_corrects_native_charge_errors(self) -> None:
+        gallium, yttrium = self.database.species_records((
+            "r06-ga-ga-oh-3-q+0-aq", "gfe-y-yo2-q-1-aqueous-aq"))
+        self.assertEqual(gallium.formula_ascii, "Ga(OH)3")
+        self.assertEqual(gallium.thermochemistry.entropy_J_mol_K.value, 82.0436)
+        self.assertIsNone(gallium.thermochemistry.gibbs_energy_J_mol.value)
+        self.assertIn("native release charge=1.0", gallium.reported[0].source.locator)
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            charges = dict(connection.execute(
+                "SELECT record_id,charge FROM species WHERE record_id IN (?,?)",
+                (gallium.record_id, yttrium.record_id)))
+        self.assertEqual(charges, {gallium.record_id: 0, yttrium.record_id: -1})
+        self.assertEqual(sum(r.property == "absolute_entropy" and r.value == 87.0272
+                             for r in yttrium.reported), 1)
+
+    def test_shock_unresolved_entropy_ancestry_adds_no_observations(self) -> None:
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            rows = connection.execute(
+                "SELECT value_id FROM reported_thermochemistry "
+                "WHERE record_id IN (?,?,?) AND property='absolute_entropy' "
+                "AND source_id LIKE 'Shock1997_R06_remaining-%'",
+                ("gfe-zr-zro-q+2-aqueous-aq", "gfe-hf-hfo-q+2-aqueous-aq",
+                 "gfe-cd-cdo2-q-2-aqueous-aq")).fetchall()
+        self.assertEqual(rows, [])
 
     def test_shock_entropy_conflicts_keep_dependent_properties_missing(self) -> None:
         records = self.database.species_records((
@@ -1422,7 +1463,7 @@ class DatasetSnapshotTests(unittest.TestCase):
 
     def test_periodic_screen(self) -> None:
         screen = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE")
-        self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 74, 67))
+        self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 74, 56))
         self.assertIs(screen.element("Fe").status, pb.ElementStatus.INCOMPLETE)
         relaxed = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                             allow_incomplete=True)
@@ -1433,7 +1474,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                          ("TiO₂", pb.Category.SOLID_OXIDE, "rutile"))
         fallback = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                             energy_policy="experimental_then_mp")
-        self.assertEqual(fallback.calculated_count, 71)
+        self.assertEqual(fallback.calculated_count, 59)
         platinum = self.database.load_system("Pt", energy_policy="experimental_then_mp")
         self.assertEqual({item.formula_ascii for item in platinum.species
                           if item.gibbs_status is pb.EvidenceStatus.MATERIALS_PROJECT_FALLBACK}, {"PtO", "PtO2"})
