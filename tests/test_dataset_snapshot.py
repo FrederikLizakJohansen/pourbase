@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 646), ("reported_thermochemistry", 2186),
-                                 ("sources", 1210), ("warnings", 698),
+            for table, count in (("species", 681), ("reported_thermochemistry", 2278),
+                                 ("sources", 1303), ("warnings", 738),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -62,6 +62,41 @@ class DatasetSnapshotTests(unittest.TestCase):
                     f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
                 ).fetchall()
                 self.assertEqual(missing, [], prop)
+
+    def test_sulfide_formula_basis_and_polymorphs_balance(self) -> None:
+        arsenic = self.database.load_system("As", ligand_ids=("sulfide-s",))
+        realgar = next(s for s in arsenic.species if s.record_id == "r05-as-as4s4-realgar")
+        self.assertEqual((realgar.metal_count, realgar.ligand_count,
+                          realgar.electrons_per_metal), (4, 4, 2))
+        self.assertEqual(realgar.gibbs_energy_J_mol, -118400)
+        iron = self.database.load_system("Fe", ligand_ids=("sulfide-s",))
+        marcasite = next(s for s in iron.species if s.record_id == "r05-fe-fes2-marcasite")
+        self.assertEqual((marcasite.metal_oxidation_state, marcasite.electrons_per_metal,
+                          marcasite.ligand_count), (2, 4, 2))
+        zinc = self.database.load_system("Zn", ligand_ids=("sulfide-s",))
+        phases = {s.record_id for s in zinc.species if s.formula_ascii == "ZnS"}
+        self.assertEqual(phases, {"r05-zn-zns-sphalerite", "r05-zn-zns-wurtzite"})
+        # An entropy-only phase remains accessible without an invented formation G.
+        pyrite = self.database.species_records(("r05-fe-fes2-pyrite",))[0]
+        self.assertIsNone(pyrite.thermochemistry.gibbs_energy_J_mol.value)
+        self.assertEqual(pyrite.thermochemistry.entropy_J_mol_K.value, 52.9)
+
+    def test_phosphate_buffer_and_hydroxyl_balance(self) -> None:
+        system = self.database.load_system("Ca", ligand_ids=("phosphate-po4",))
+        apatite = next(s for s in system.species if s.formula_ascii == "Ca5(PO4)3OH")
+        self.assertEqual((apatite.metal_count, apatite.ligand_count,
+                          apatite.core_oxygen_count, apatite.core_hydrogen_count), (5, 3, 1, 1))
+        self.assertEqual(apatite.electrons_per_metal, 2)
+        self.assertAlmostEqual(apatite.protons_per_metal, .2)
+        self.assertEqual(apatite.ligand_gibbs_energy_J_mol, -1018700)
+        default = self.database.load_system("Ca")
+        self.assertNotIn(apatite.record_id, {s.record_id for s in default.species})
+        conditions = pb.PourbaixConditions(
+            pH_points=11, eh_points=9,
+            ligand_activities=pb.LigandActivityModel((
+                pb.LigandActivity("phosphate-po4", log10_free_activity=-3),)))
+        diagram = pb.PourbaixEngine(self.database).calculate("Ca", conditions, allow_incomplete=True)
+        self.assertIn(apatite.record_id, {s.record_id for s in diagram.system.species})
 
     def test_tih2_review_preserves_hydride_basis_and_source_holds(self) -> None:
         rid = "gfe-ti-tih2-q+0-solid-delta-tih2-cubic-near-298-15-k"

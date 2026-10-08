@@ -47,6 +47,32 @@ over the general locator in `sources`.
 calculation-facing `thermochemistry` table. Other rows preserve earlier reported values. These rows
 are observations and source records, not an automatically averaged population.
 
+The final MINES R05 import adds 92 observations and 35 species. These include
+individual USGS mineral evaluations and original fitted outputs from Gysi et al.
+(2018) and Gysi and Harlov (2021). Existing non-empty preferred properties are
+preserved. Copied JANAF/CODATA cells, missing original tables, unresolved native
+variants and reaction-anchor derivations remain in the external source review.
+Entropy-only records retain an empty formation Gibbs energy.
+
+Realgar uses the full As₄S₄ formula unit: source AsS properties and uncertainty
+intervals are multiplied by four. Sphalerite and wurtzite have separate ZnS phase
+records. For FeS₂, formal Fe oxidation state +2 accompanies a four-electron
+reaction coefficient when the two sulfur atoms are represented by free S²⁻.
+
+The `phosphate-po4` ligand uses the explicitly open NBS PDR reference for free
+PO₄³⁻, G = −1,018,700 J/mol at 298.15 K and 1 bar. Its activity is specified
+directly. Total-phosphate concentrations, phosphate protonation and mineral solid
+solutions require their own models. Ideal beta-Ca₃(PO₄)₂ and hydroxyapatite use
+their full formula units; natural substituted whitlockite is a separate composition.
+
+The rare-earth phosphate and monohydroxo fit outputs have status
+`source_verified_estimate`. Modes I and II use different coupled calibrations;
+each output carries its mode, original table locator and reported Monte Carlo
+dispersion. The retained 2021 Fit 2 entropies and Fit 3 enthalpies are distinct
+constrained estimates. A preferred triplet assembled from these outputs does
+not establish a thermodynamically consistent joint model. Warnings describe
+these dependencies, and existing aqueous-ion preferences remain in place.
+
 Verified NBS fallback observations and the USGS plattnerite evaluation are retained as
 alternatives with `selected_as_recommended=0`. Each has a property-specific source record
 containing the exact table or CSV locator, standard state and reuse attribution. The existing
