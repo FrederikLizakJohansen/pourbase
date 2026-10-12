@@ -43,7 +43,9 @@ class Scenario:
     species; in mass-balance mode it sets the conserved total metal.
     ``davies_ionic_strength_mol_L`` selects Davies activity coefficients in mass-balance
     mode; None means ideal. ``activity_overrides`` maps species record IDs, names or
-    formulas to their own log10 activity in fixed-activity mode.
+    formulas to their own log10 activity in fixed-activity mode. Species without a recommended
+    Gibbs energy are left out and listed in ``Calculation.excluded``; ``allow_incomplete=False``
+    raises :class:`IncompleteSystemError` instead.
     """
 
     symbol: str
@@ -60,7 +62,7 @@ class Scenario:
     eh_max_V: float = 1.5
     pH_points: int = 281
     eh_points: int = 301
-    allow_incomplete: bool = False
+    allow_incomplete: bool = True
     energy_policy: GibbsEnergyPolicy = GibbsEnergyPolicy.EXPERIMENTAL_ONLY
     activity_overrides: tuple[tuple[str, float], ...] = ()
 

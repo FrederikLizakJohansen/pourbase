@@ -14,6 +14,7 @@ import numpy as np
 from PySide6.QtCore import QSettings, QStandardPaths, Qt, QTimer
 from PySide6.QtGui import QAction, QActionGroup, QFont, QGuiApplication, QKeySequence
 from PySide6.QtWidgets import (
+    QApplication,
     QCheckBox, QComboBox, QDialog, QDialogButtonBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit,
     QMainWindow, QMessageBox, QSplitter, QTabWidget, QVBoxLayout, QWidget,
 )
@@ -43,9 +44,10 @@ from .session import (
     SessionError, read_session, session_selection_policy, session_user_species, sidecar_path, write_session,
 )
 from .settings_panel import SettingsPanel
-from .state import CONCENTRATION_UNITS, Session, Settings
+from .state import CONCENTRATION_UNITS, LigandSetting, Session, Settings, python_code
 from .sweep import SweepPage
 from .tasks import TaskRunner
+from .widgets import LoadingOverlay, WheelGuard
 from .theme import THEME_MODES, apply_theme
 
 DEBOUNCE_MS = 30
@@ -53,12 +55,17 @@ DEBOUNCE_MS = 30
 
 class MainWindow(QMainWindow):
     def __init__(self, symbol: str | None = None, settings: QSettings | None = None,
-                 database: Any = None, dataset_name: str | None = None) -> None:
+                 database: Any = None, dataset_name: str | None = None, dataset_path: str | None = None) -> None:
         """``database`` replaces the bundled data, for example a user dataset from :func:`open_dataset`."""
         super().__init__()
         self.dataset_name = dataset_name
+        self.dataset_path = dataset_path
         self.setWindowTitle(f"pourbase {__version__}" + (f" — {dataset_name}" if dataset_name else ""))
         self.stored = settings if settings is not None else QSettings("pourbase", "pourbase")
+        application = QApplication.instance()
+        if application is not None and not hasattr(application, "_pourbase_wheel_guard"):
+            application._pourbase_wheel_guard = WheelGuard(application)
+            application.installEventFilter(application._pourbase_wheel_guard)
         self.session = Session(database)
         self.database = self.session.database
         self.user_species_path: str | None = None
@@ -80,8 +87,8 @@ class MainWindow(QMainWindow):
         self.theme_mode = str(self.stored.value("theme", "System"))
         self.dark = False
 
-        self._calculate_timer = QTimer(self, singleShot=True, interval=DEBOUNCE_MS, timeout=self.recalculate)
-        self._overview_timer = QTimer(self, singleShot=True, interval=DEBOUNCE_MS, timeout=self.update_overview)
+        self._calculate_timer = QTimer(self, singleShot=True, interval=DEBOUNCE_MS, timeout=self.calculate_in_background)
+        self._overview_timer = QTimer(self, singleShot=True, interval=DEBOUNCE_MS, timeout=self.screen_in_background)
         self._build()
         self._build_menu()
         restored = self._restored_settings()
@@ -109,7 +116,7 @@ class MainWindow(QMainWindow):
         self.overview = OverviewPage()
         self.overview.changed.connect(self._overview_timer.start)
         self.overview.canvas.elementClicked.connect(self.open_element)
-        self.overview.allow_incomplete.toggled.connect(self._overview_incomplete_toggled)
+        self.overview.ligandToggled.connect(self._overview_ligand_toggled)
         self.panel = SettingsPanel(self.database)
         self.panel.changed.connect(self._settings_changed)
         self.panel.displayChanged.connect(self.refresh_view)
@@ -149,6 +156,11 @@ class MainWindow(QMainWindow):
         ):
             self.views.addTab(page, title)
         self.views.currentChanged.connect(lambda _index: self.refresh_view())
+        self.views_loading = LoadingOverlay(self.views)
+        self.compare_loading = LoadingOverlay(self.compare_page)
+        self.overview_loading = LoadingOverlay(self.overview.canvas)
+        self._wanted: dict[str, Any] = {}
+        self._shown: dict[Any, Any] = {}
         system = QSplitter()
         system.addWidget(self.panel)
         system.addWidget(self.views)
@@ -221,6 +233,8 @@ class MainWindow(QMainWindow):
             self.theme_actions[mode] = action
         view.addAction("Reset zoom", lambda: self.refresh_view(reset_range=True)).setShortcut("Ctrl+0")
         tools = self.menuBar().addMenu("&Tools")
+        tools.addAction("Compare selection policies…", self.compare_policies)
+        tools.addSeparator()
         tools.addAction("DFT comparison (Materials Project)", self.show_dft)
         tools.addAction("Materials Project API key…", self.edit_api_key)
         self.menuBar().addMenu("&Help").addAction("About pourbase", self.about)
@@ -255,9 +269,17 @@ class MainWindow(QMainWindow):
         super().closeEvent(event)
 
 
-    def _overview_incomplete_toggled(self, checked: bool) -> None:
-        if checked != self.settings.allow_incomplete:
-            self.panel.allow_incomplete.setChecked(checked)
+    def _overview_ligand_toggled(self, ligand_id: str, checked: bool) -> None:
+        """A ligand reservoir switched on the periodic table: the same setting as in the element view."""
+        settings = self.settings
+        if ligand_id:
+            settings.ligands.setdefault(ligand_id, LigandSetting()).enabled = checked
+            if checked:
+                settings.use_ligands = True
+        else:
+            settings.use_ligands = checked
+        self.panel.set_settings(settings)
+        self._settings_changed(False)
 
     def _settings_changed(self, reset_range: bool) -> None:
         self._overview_timer.start()
@@ -274,7 +296,44 @@ class MainWindow(QMainWindow):
         except Exception as error:
             self._show_calculation_error(error)
             return
-        elapsed = time.perf_counter() - start
+        self._apply_calculation(calculation, time.perf_counter() - start)
+
+    def calculate_in_background(self) -> None:
+        """Calculate the current settings off the UI thread; the views grey out while it runs."""
+        scenario = self.settings.scenario()
+        key = (scenario, id(self.session))
+        if self.session.cached("calculation", scenario) is not None:
+            self._wanted.pop("calculate", None)
+            self.views_loading.stop()
+            self.recalculate()
+            return
+        self._wanted["calculate"] = key
+        self.pages.setTabText(1, self.systems.get(self.settings.symbol, self.settings.symbol))
+        self.views_loading.start()
+        session = self.session
+
+        def work(_progress):
+            start = time.perf_counter()
+            try:
+                return session.calculate(scenario), time.perf_counter() - start
+            except Exception as error:  # reported on the UI thread
+                return error, 0.0
+
+        self.tasks.submit("calculate", key, work)
+
+    def screen_in_background(self) -> None:
+        """Screen the periodic table off the UI thread; the table greys out while it runs."""
+        arguments = self._screen_arguments()
+        key = (tuple(sorted(arguments.items())), id(self.session))
+        if self.session.cached("screen", key[0]) is not None:
+            self.update_overview()
+            return
+        self._wanted["screen"] = key
+        self.overview_loading.start()
+        session = self.session
+        self.tasks.submit("screen", key, lambda _progress: session.screen(**arguments))
+
+    def _apply_calculation(self, calculation: Calculation, elapsed: float) -> None:
         self.calculation = calculation
         self.panel.set_concentration_note(calculation.concentration.molar_concentration,
                                           calculation.concentration.log10_standard_activity)
@@ -303,7 +362,7 @@ class MainWindow(QMainWindow):
         if self.policy_path:
             parts.append(f"selection policy: {self.policy.name}")
         text = "; ".join(parts)
-        return text if not (missing or calculation.fallback_species) else f"!{text}"
+        return text if not (missing or calculation.fallback_species) else f"~{text}"
 
     def _show_calculation_error(self, error: Exception) -> None:
         self.calculation = None
@@ -314,7 +373,7 @@ class MainWindow(QMainWindow):
                 f"{html.escape(str(error))}.<br><br>Species without a recommended Gibbs energy can be "
                 "left out for an exploratory diagram, or replaced by labelled Materials Project 300 K "
                 "estimates where those exist.",
-                ("Allow an incomplete system", lambda: self.panel.allow_incomplete.setChecked(True)),
+                ("Leave these species out", lambda: self.panel.require_complete.setChecked(False)),
                 glyph="!",
             )
         else:
@@ -362,7 +421,7 @@ class MainWindow(QMainWindow):
     def _records_for(self, record_ids) -> dict[str, SpeciesRecord]:
         missing = [item for item in record_ids if item not in self._records]
         if missing:
-            self._records.update({item.record_id: item for item in self.database.species_records(missing)})
+            self._records.update({item.record_id: item for item in self.session.database.species_records(missing)})
         return {item: self._records[item] for item in record_ids if item in self._records}
 
     def open_element(self, symbol: str) -> None:
@@ -384,36 +443,52 @@ class MainWindow(QMainWindow):
         elif index == 2:
             self.database_page.load()
 
+    def _screen_arguments(self) -> dict:
+        settings = self.settings
+        return dict(**self.overview.conditions(), concentration=settings.concentration,
+                    concentration_unit=settings.concentration_unit,
+                    solution_density_kg_L=settings.solution_density_kg_L,
+                    allow_incomplete=settings.allow_incomplete, energy_policy=settings.energy_policy.value,
+                    ligands=settings.ligand_activities())
+
     def update_overview(self) -> None:
         settings = self.settings
         try:
-            screen = self.session.screen(
-                **self.overview.conditions(), concentration=settings.concentration,
-                concentration_unit=settings.concentration_unit,
-                solution_density_kg_L=settings.solution_density_kg_L,
-                allow_incomplete=settings.allow_incomplete, energy_policy=settings.energy_policy.value,
-            )
+            screen = self.session.screen(**self._screen_arguments())
         except Exception as error:
             self._set_status(f"!{type(error).__name__}: {error}")
             return
-        checkbox = self.overview.allow_incomplete
-        checkbox.blockSignals(True)
-        checkbox.setChecked(settings.allow_incomplete)
-        checkbox.blockSignals(False)
+        self.overview.set_ligands(self.database.available_ligands(), settings)
         canvas = self.overview.canvas
         canvas.selected = settings.symbol
         canvas.show_screen(screen)
         self.overview.note.setText(
             f"Metal concentration {settings.concentration:g} {CONCENTRATION_UNITS[settings.concentration_unit]}"
-            + (", incomplete systems allowed" if settings.allow_incomplete else "")
+            + ("" if settings.allow_incomplete else ", a Gibbs energy required for every species")
+            + (f", {len(settings.ligand_activities())} ligand reservoir(s)" if settings.ligand_activities() else "")
             + (", MP estimates in use" if settings.use_mp_fallbacks else "")
             + ". These follow the System settings."
         )
 
 
+    def _unchanged(self, page: Any, *signature: Any) -> bool:
+        """True when ``page`` already shows exactly this content, so it need not be redrawn."""
+        key = (id(self.calculation), repr(self.display), self.dark, id(self.session), *signature)
+        if self._shown.get(page) == key:
+            return True
+        self._shown[page] = key
+        return False
+
     def refresh_view(self, reset_range: bool = False) -> None:
         current = self.views.currentWidget()
         calculation = self.calculation
+        if reset_range or self._reset_range:
+            self._shown.pop(current, None)
+        if current in (self.diagram_page, self.species_page, self.boundaries_page) and calculation is not None \
+                and self._unchanged(current, self.policy.fingerprint):
+            if current is self.diagram_page:
+                self._update_probe()
+            return
         if current is self.diagram_page and calculation is not None:
             self.diagram_page.show_calculation(calculation, self.display, reset_range or self._reset_range)
             self._reset_range = False
@@ -553,6 +628,24 @@ class MainWindow(QMainWindow):
             self.sweep_page.hint.setText(f"Evaluating the Materials Project sweep… {fraction:.0%}")
 
     def _task_finished(self, kind: str, key: Any, result: Any, error: str) -> None:
+        if kind in ("calculate", "screen", "compare"):
+            if self._wanted.get(kind) != key:
+                return  # superseded by a newer request
+            del self._wanted[kind]
+            if kind == "calculate":
+                self.views_loading.stop()
+                calculation, elapsed = result if result is not None else (RuntimeError(error), 0.0)
+                if isinstance(calculation, Exception):
+                    self._show_calculation_error(calculation)
+                else:
+                    self._apply_calculation(calculation, elapsed)
+            elif kind == "screen":
+                self.overview_loading.stop()
+                self.update_overview()
+            else:
+                self.compare_loading.stop()
+                self._show_compare()
+            return
         if kind != "sweep" or self.views.currentWidget() is not self.sweep_stack:
             return
         if error:
@@ -632,11 +725,30 @@ class MainWindow(QMainWindow):
             page.symbol.blockSignals(True)
             page.symbol.setCurrentIndex(max(page.symbol.findData(self.settings.symbol), 0))
             page.symbol.blockSignals(False)
+        scenario = page.right_settings(self.settings).scenario()
+        if self.session.cached("calculation", scenario) is None and page.calculations is not None:
+            key = (scenario, id(self.session))
+            self._wanted["compare"] = key
+            self.compare_loading.start()
+            session = self.session
+
+            def work(_progress):
+                try:
+                    return session.calculate(scenario)
+                except Exception as error:
+                    return error
+
+            self.tasks.submit("compare", key, work)
+            return
         try:
-            right = self.session.calculate(page.right_settings(self.settings).scenario())
+            right = self.session.calculate(scenario)
         except Exception as error:
             page.show_message("The second diagram cannot be calculated",
                               html.escape(f"{type(error).__name__}: {error}"), glyph="!")
+            return
+        same = (page.calculations is not None and page.calculations[0] is self.calculation
+                and page.calculations[1] is right and repr(page.display) == repr(self.display))
+        if same and not reset_range and self._compare_shown:
             return
         page.show_calculations(self.calculation, right, self.display, reset_range or not self._compare_shown,
                                (self.settings.probe_pH, self.settings.probe_eh_V))
@@ -668,6 +780,8 @@ class MainWindow(QMainWindow):
         self.session = Session(database)
         self.policy, self.policy_path, self.user_species_path = policy, policy_path, user_species_path
         self._selections = None
+        self._records = {}
+        self.database_page.set_database(database)
         self.recalculate()
         self.update_overview()
         return True
@@ -693,7 +807,8 @@ class MainWindow(QMainWindow):
         except (OSError, ValueError, DatabaseSchemaError) as error:
             QMessageBox.warning(self, "Open dataset", str(error))
             return None
-        window = MainWindow(settings=self.stored, database=database, dataset_name=Path(path).name)
+        window = MainWindow(settings=self.stored, database=database, dataset_name=Path(path).name,
+                            dataset_path=str(Path(path).resolve()))
         window.show()
         self._dataset_windows = [*getattr(self, "_dataset_windows", []), window]
         return window
@@ -713,7 +828,10 @@ class MainWindow(QMainWindow):
 
     def _policy_selections(self) -> dict:
         if self._selections is None:
-            self._selections = select(self.database, self.policy)
+            # the database derives its recommendations with the active policy and caches them
+            database = self.session.database
+            self._selections = (database.selections if getattr(database, "policy", None) is self.policy
+                                else select(self.database, self.policy))
         return self._selections
 
     def open_session(self) -> None:
@@ -848,8 +966,18 @@ class MainWindow(QMainWindow):
             self._set_status(f"Wrote {save_figure(figure, path)}")
 
     def copy_python(self) -> None:
-        QGuiApplication.clipboard().setText(self.settings.python_code())
+        QGuiApplication.clipboard().setText(self.python_code())
         self._set_status("Copied the equivalent Python code to the clipboard")
+
+    def compare_policies(self) -> None:
+        from .policy_compare import PolicyComparisonDialog
+
+        PolicyComparisonDialog(self.database, self.policy if self.policy_path else None, self.policy_path, self).exec()
+
+    def python_code(self) -> str:
+        """Python code that reproduces the current diagram, including the data, policy and view."""
+        return python_code(self.settings, self.display, dataset_path=self.dataset_path,
+                           policy_path=self.policy_path, user_species_path=self.user_species_path)
 
     def about(self) -> None:
         QMessageBox.about(
@@ -873,9 +1001,11 @@ class MainWindow(QMainWindow):
         self._set_status(*self._status)
 
     def _set_status(self, text: str, error: bool = False) -> None:
-        if text.startswith("!"):
-            text, error = text[1:], True
         self._status = (text, error)
-        color = ("#e06c75" if self.dark else "#b00020") if error else ""
+        warning = text.startswith("~")
+        if text.startswith(("!", "~")):
+            text, error = text[1:], text.startswith("!") or error
+        color = (("#e06c75" if self.dark else "#b00020") if error
+                 else ("#e5c07b" if self.dark else "#8a5a00") if warning else "")
         self.status_label.setStyleSheet(f"color: {color};" if color else "")
         self.status_label.setText(text)

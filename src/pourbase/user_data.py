@@ -154,6 +154,36 @@ class UserSpeciesDatabase(ThermodynamicDatabase):
         return MetalSystem(system=system.system, symbol=symbol, species=species, excluded=excluded)
 
 
+    def species_records(self, record_ids):
+        """Evidence records of bundled and user species; a user species has its single supplied value."""
+        from .records import PropertyValue, ReportedValue, SourceReference, SpeciesRecord, Thermochemistry
+
+        identifiers = list(record_ids)
+        user = {item.record_id: item for item in self.user_species}
+        records = {record.record_id: record for record in self.base.species_records(
+            [item for item in identifiers if item not in user])}
+        for record_id in identifiers:
+            item = user.get(record_id)
+            if item is None:
+                continue
+            species = item.thermodynamic_species(item.symbol)
+            source = SourceReference(item.citation, item.citation, None, "user CSV")
+            gibbs = PropertyValue(item.gibbs_energy_J_mol, EvidenceStatus.USER_SUPPLIED.value, item.uncertainty_J_mol,
+                                  source)
+            missing = PropertyValue(None, EvidenceStatus.NOT_AVAILABLE.value, None, None)
+            records[record_id] = SpeciesRecord(
+                record_id=record_id, system=species.system, symbol=item.symbol, species=item.species,
+                formula_ascii=item.formula, phase=item.phase, phase_detail="user supplied", charge=item.charge,
+                metal_oxidation_state=species.electrons_per_metal,
+                thermochemistry=Thermochemistry(298.15, 1.0, gibbs, missing, missing),
+                reported=(ReportedValue(f"{record_id}:gibbs", "gibbs_energy_of_formation", item.gibbs_energy_J_mol,
+                                        "J/mol", EvidenceStatus.USER_SUPPLIED.value, True, item.uncertainty_J_mol,
+                                        source, item.replaces),),
+                fallback=None, phase_identity=None, warnings=(),
+            )
+        return tuple(records[item] for item in identifiers if item in records)
+
+
 def with_user_species(database: ThermodynamicDatabase, species: str | Path | Iterable[UserSpecies]
                       ) -> UserSpeciesDatabase:
     """``database`` with user species from a CSV path or :class:`UserSpecies` objects."""

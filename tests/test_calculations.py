@@ -48,12 +48,12 @@ class CalculationTests(unittest.TestCase):
         np.testing.assert_allclose(pb.metal_fraction_grid(diagram).sum(axis=0), 1.0, atol=1e-12)
         self.assertAlmostEqual(sum(item["metal_fraction"] for item in pb.speciation_at(diagram, 7, 0)), 1.0)
 
-    def test_incomplete_systems_need_an_explicit_choice(self) -> None:
-        with self.assertRaises(pb.IncompleteSystemError):
-            pb.calculate(pb.Scenario("Pt", **SMALL), self.database)
-        for symbol in ("Fe", "Ni"):
+    def test_species_without_gibbs_energy_are_left_out_unless_strict(self) -> None:
+        for symbol in ("Pt", "Fe", "Ni"):
             with self.subTest(symbol=symbol), self.assertRaises(pb.IncompleteSystemError):
-                pb.calculate(pb.Scenario(symbol, **SMALL), self.database)
+                pb.calculate(pb.Scenario(symbol, allow_incomplete=False, **SMALL), self.database)
+            calculation = pb.calculate(pb.Scenario(symbol, **SMALL), self.database)
+            self.assertTrue(calculation.diagram.system.missing_gibbs)
         gaps = pb.calculate(pb.Scenario("Pt", allow_incomplete=True, **SMALL), self.database)
         self.assertTrue(gaps.diagram.system.missing_gibbs)
         fallback = pb.calculate(pb.Scenario("Pt", energy_policy="experimental_then_mp", **SMALL), self.database)
@@ -196,7 +196,8 @@ class CalculationTests(unittest.TestCase):
                              progress=lambda fraction: fraction < 0.5, allow_incomplete=True)
 
     def test_periodic_screen_statuses_and_rhe(self) -> None:
-        strict = pb.screen_periodic_table(self.database, pH=14, potential_V=1.6, reference="RHE")
+        strict = pb.screen_periodic_table(self.database, pH=14, potential_V=1.6, reference="RHE",
+                                          allow_incomplete=False)
         slope = GAS_CONSTANT_J_MOL_K * 298.15 * LN_10 / 96485.33212
         self.assertAlmostEqual(strict.potential_V_vs_SHE, 1.6 - slope * 14)
         self.assertIs(strict.element("Pt").status, pb.ElementStatus.INCOMPLETE)

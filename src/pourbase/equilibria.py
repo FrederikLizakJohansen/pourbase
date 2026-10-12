@@ -190,7 +190,8 @@ def _one_boundary(
     if not math.isclose(eh_coefficient, 0.0, abs_tol=1e-10):
         eh_intercept = -intercept / eh_coefficient
         slope = -pH_coefficient / eh_coefficient
-        equation = f"Eh = {eh_intercept:+.6g} {slope:+.6g}·pH V vs SHE"
+        equation = (f"Eh = {eh_intercept:+.4f} V vs SHE" if abs(slope) < 5e-7
+                    else f"Eh = {eh_intercept:+.4f} {slope:+.4f}·pH V vs SHE")
         return BoundaryEquation(
             left.record_id, right.record_id, left.species, right.species,
             reaction, "nernst", eh_intercept, slope, None, equation, sources,
@@ -199,7 +200,7 @@ def _one_boundary(
         pH = -intercept / pH_coefficient
         return BoundaryEquation(
             left.record_id, right.record_id, left.species, right.species,
-            reaction, "acid_base", None, None, pH, f"pH = {pH:.6g}", sources,
+            reaction, "acid_base", None, None, pH, f"pH = {pH:.3f}", sources,
         )
     return BoundaryEquation(
         left.record_id, right.record_id, left.species, right.species,

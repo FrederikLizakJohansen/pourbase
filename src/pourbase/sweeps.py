@@ -77,7 +77,7 @@ class ConcentrationSweepEngine:
         log10_activity_max: float,
         points: int = 7,
         *,
-        allow_incomplete: bool = False,
+        allow_incomplete: bool = True,
         energy_policy: GibbsEnergyPolicy | str = GibbsEnergyPolicy.EXPERIMENTAL_ONLY,
         store_energies: bool = False,
         progress: Callable[[float], bool | None] | None = None,

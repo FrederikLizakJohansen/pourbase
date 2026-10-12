@@ -211,7 +211,7 @@ class MassBalanceEngine:
         conditions: PourbaixConditions,
         total_metal: TotalMetalConcentration,
         *,
-        allow_incomplete: bool = False,
+        allow_incomplete: bool = True,
         energy_policy: GibbsEnergyPolicy | str = GibbsEnergyPolicy.EXPERIMENTAL_ONLY,
     ) -> MassBalancedPourbaixDiagram:
         """Load one elemental system and calculate its closed metal balance."""
@@ -235,7 +235,7 @@ class MassBalanceEngine:
         conditions: PourbaixConditions,
         total_metal: TotalMetalConcentration,
         *,
-        allow_incomplete: bool = False,
+        allow_incomplete: bool = True,
     ) -> MassBalancedPourbaixDiagram:
         """Calculate an already loaded or transformed metal system."""
         if not isinstance(total_metal, TotalMetalConcentration):

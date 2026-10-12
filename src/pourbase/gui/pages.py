@@ -7,7 +7,7 @@ from contextlib import closing
 from typing import Callable
 
 from PySide6.QtCore import QSortFilterProxyModel, Qt, Signal
-from PySide6.QtGui import QStandardItem, QStandardItemModel
+from PySide6.QtGui import QColor, QStandardItem, QStandardItemModel
 from PySide6.QtWidgets import (
     QAbstractItemView, QComboBox, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QPushButton, QSplitter,
     QTableView, QTableWidget, QTableWidgetItem, QTextBrowser, QVBoxLayout, QWidget,
@@ -24,10 +24,50 @@ from .plots import DiagramView, DisplayOptions, PhaseStripView, SpeciationView
 from .scales import to_scale
 
 PUBLIC_TABLES = (
-    "species", "thermochemistry", "reported_thermochemistry", "sources", "phases", "warnings",
+    "species", "selected_thermochemistry", "reported_thermochemistry", "sources", "phases", "warnings",
     "computational_fallbacks", "element_coverage", "materials_project_matches",
     "materials_project_energies", "ligands", "metadata",
 )
+
+
+STATUS_LABELS = {
+    "verified": "verified",
+    "source_verified_estimate": "published estimate",
+    "defined_reference_state": "reference state",
+    "not_available": "not available",
+    "terminal_evidence_gap": "evidence gap",
+    "materials_project_sisso_300K_fallback": "MP 300 K estimate",
+    "user_supplied": "user supplied",
+    "accepted": "accepted",
+    "superseded_source_value": "superseded",
+    "recommended_gibbs_energy_unavailable": "omitted: no Gibbs energy",
+    "ligand_species_not_selected": "omitted: ligand not selected",
+    "ligand_reference_unavailable": "omitted: no ligand reference",
+    "mass_balance_nonmonometal_aqueous_unsupported": "omitted: polynuclear (mass balance)",
+}
+
+
+def status_label(status: str | None) -> str:
+    return STATUS_LABELS.get(status or "", (status or "not available").replace("_", " "))
+
+
+def hold_label(status: str, record: SpeciesRecord) -> str:
+    """The status of a species row, naming a held Gibbs energy where the record documents one."""
+    if status == "recommended_gibbs_energy_unavailable" and any(
+            "formation_hold" in item.type for item in record.warnings):
+        return "omitted: Gibbs energy held (inherited source)"
+    return status_label(status)
+
+
+def short_citation(citation: str | None, source_id: str) -> str:
+    """``Robie (1995)`` from a full citation, or the source ID when there is none."""
+    if not citation:
+        return source_id
+    import re
+
+    surname = re.split(r"[,;.(]", citation.strip())[0].split()[0] if citation.strip() else source_id
+    years = re.findall(r"\b(1[89]\d\d|20\d\d)\b", citation)
+    return f"{surname} ({years[0]})" if years else surname
 
 
 def kilojoules(value: float | None) -> str:
@@ -165,7 +205,9 @@ class DiagramPage(StackedView):
 class SpeciesPage(QSplitter):
     """Every species of the system with its full evidence record."""
 
-    COLUMNS = ["Species", "Phase", "ΔfG° (kJ/mol)", "±", "Status", "Class", "Stable", "Warnings", "Record ID"]
+    COLUMNS = ["Species", "Phase", "Ligand", "ΔfG° (kJ/mol)", "±", "Status", "Class", "Spread (kJ/mol)", "Stable",
+               "Warnings", "Record ID"]
+    STATUS, SPREAD, RECORD = 5, 7, 10
     PROPERTIES = (("Gibbs energy of formation", "gibbs_energy_of_formation", "gibbs_energy_J_mol", "kJ/mol", 1000),
                   ("Formation enthalpy", "enthalpy_of_formation", "formation_enthalpy_J_mol", "kJ/mol", 1000),
                   ("Absolute entropy", "absolute_entropy", "entropy_J_mol_K", "J/(mol K)", 1))
@@ -198,10 +240,29 @@ class SpeciesPage(QSplitter):
         self.selections, self.policy_name = selections or {}, policy_name
         system = calculation.diagram.system
         stable = {item.record_id for item in calculation.stable_species}
+        database = calculation.database
+        ligand_of = {row["record_id"]: row["ligand_id"] for row in database._rows(
+            "SELECT record_id, ligand_id FROM species WHERE symbol = ?", (system.symbol,))}
+        ligand_names = {item.ligand_id: item.name for item in database.available_ligands()}
         rows = [(item.record_id, item.gibbs_energy_J_mol, item.gibbs_status.value, False) for item in system.species]
         rows += [(item.record_id, None, item.reason.value, True) for item in system.excluded]
+
+        def order(row) -> tuple:
+            record_id, _energy, status, excluded = row
+            ligand = ligand_of.get(record_id)
+            if not excluded:
+                group = 0 if ligand is None else 1
+            else:
+                group = 3 if status == "ligand_species_not_selected" else 2
+            return (group, ligand_names.get(ligand, ""), record_id not in stable, records[record_id].species)
+
+        rows = [row for row in rows if row[0] in records]
+        rows.sort(key=order)
         table = self.table
         table.blockSignals(True)
+        table.setUpdatesEnabled(False)
+        header = table.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Interactive)  # measure once at the end, not per cell
         table.clearSelection()
         table.setSortingEnabled(False)
         table.setRowCount(len(rows))
@@ -209,26 +270,42 @@ class SpeciesPage(QSplitter):
             record = records[record_id]
             gibbs = record.thermochemistry.gibbs_energy_J_mol
             selection = self.selections.get((record_id, "gibbs_energy_of_formation"))
+            spread = selection.spread_J_mol if selection and len(selection.candidates) > 1 else None
+            flagged = bool(selection and selection.needs_review)
+            ligand = ligand_of.get(record_id)
             values = [
-                record.species, record.phase_detail or record.phase,
+                record.species, record.phase_detail or record.phase, ligand_names.get(ligand, ligand or ""),
                 kilojoules(energy if energy is not None else gibbs.value), kilojoules(gibbs.uncertainty),
-                status, selection.chosen.evidence_class if selection else "",
+                hold_label(status, record), selection.chosen.evidence_class if selection else "",
+                kilojoules(spread) if spread is not None else "",
                 "yes" if record_id in stable else "", str(len(record.warnings)), record_id,
             ]
             for column, value in enumerate(values):
                 cell = QTableWidgetItem(value)
-                if column == 2 and value:
+                if column in (3, self.SPREAD) and value:
                     cell.setData(Qt.EditRole, float(value))
+                if column == self.SPREAD and flagged:
+                    font = cell.font()
+                    font.setBold(True)
+                    cell.setFont(font)
+                    cell.setForeground(QColor("#b26a00"))
+                    cell.setToolTip(f"The eligible values differ by more than the policy's review threshold "
+                                    f"({len(selection.candidates)} values)")
                 if excluded:
                     cell.setForeground(Qt.gray)
                 table.setItem(index, column, cell)
+        table.horizontalHeader().setSortIndicator(-1, Qt.AscendingOrder)
         table.setSortingEnabled(True)
+        table.resizeColumnsToContents()
+        table.setUpdatesEnabled(True)
         table.blockSignals(False)
         self.details.clear()
+        if rows:
+            table.selectRow(0)
 
     def _show_details(self) -> None:
         selected = self.table.selectedItems()
-        record = self.records.get(self.table.item(selected[0].row(), 8).text()) if selected else None
+        record = self.records.get(self.table.item(selected[0].row(), self.RECORD).text()) if selected else None
         if record is None:
             return
         parts = [f"<h3>{to_html(record.species, 13)} <small>({html.escape((record.phase_detail or record.phase).strip('()'))})"
@@ -248,11 +325,11 @@ class SpeciesPage(QSplitter):
                             else "") + "</small>")
                 source = next((item.source for item in record.reported if item.source
                                and item.source.source_id == chosen.source_id), value.source)
-                parts.append(f"<p><b>{label}:</b> {text} <i>({html.escape(chosen.status)})</i>"
+                parts.append(f"<p><b>{label}:</b> {text} <i>({html.escape(status_label(chosen.status))})</i>"
                              f"<br>{source_html(source)}{basis}</p>")
                 continue
             text = "—" if value.value is None else f"{value.value / divisor:.3f} {unit}"
-            parts.append(f"<p><b>{label}:</b> {text} <i>({value.status or 'not available'})</i>"
+            parts.append(f"<p><b>{label}:</b> {text} <i>({html.escape(status_label(value.status))})</i>"
                          f"<br>{source_html(value.source)}</p>")
         if record.fallback:
             fallback = record.fallback
@@ -284,7 +361,7 @@ class SpeciesPage(QSplitter):
                 origin = (f"{candidate.evidence_class}, {html.escape(candidate.family)}" if candidate
                           else "<i>not eligible</i>")
                 return (f"<tr><td>{html.escape(item.property)}</td><td>{item.value}</td><td>{html.escape(item.unit)}</td>"
-                        f"<td>{html.escape(item.status)}</td><td>{origin}</td><td>{'✓' if recommended else ''}</td>"
+                        f"<td>{html.escape(status_label(item.status))}</td><td>{origin}</td><td>{'✓' if recommended else ''}</td>"
                         f"<td>{html.escape(item.source.citation or '') if item.source else ''}</td></tr>")
 
             parts.append("<p><b>Reported values</b></p><table border='1' cellspacing='0' cellpadding='3'>"
@@ -295,7 +372,7 @@ class SpeciesPage(QSplitter):
 
 class BoundariesPage(StackedView):
     def __init__(self, parent=None) -> None:
-        table = _table(["Reaction", "Equation", "Kind", "Gibbs sources"])
+        table = _table(["Reaction", "Equation", "Kind", "Sources of the Gibbs energies"])
         body = QWidget()
         layout = QVBoxLayout(body)
         layout.addWidget(QLabel("Balanced reactions and activity-conditioned Nernst equations for adjacent domains."))
@@ -305,10 +382,23 @@ class BoundariesPage(StackedView):
 
     def show_calculation(self, calculation: Calculation) -> None:
         rows = calculation.boundaries
+        kinds = {"nernst": "redox", "acid_base": "acid–base", "numerical": "numerical", "degenerate": "degenerate"}
+        self.table.setUpdatesEnabled(False)
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.table.setRowCount(len(rows))
         for index, item in enumerate(rows):
-            for column, value in enumerate((item.reaction, item.equation, item.kind, ", ".join(item.source_ids))):
-                self.table.setItem(index, column, QTableWidgetItem(value))
+            sources = [calculation.database.source(source_id) for source_id in item.source_ids]
+            short = ", ".join(dict.fromkeys(short_citation(source.citation if source else None, source_id)
+                                            for source, source_id in zip(sources, item.source_ids)))
+            full = "\n".join((source.citation or source_id) if source else source_id
+                              for source, source_id in zip(sources, item.source_ids))
+            for column, value in enumerate((item.reaction, item.equation, kinds.get(item.kind, item.kind), short)):
+                cell = QTableWidgetItem(value)
+                if column == 3:
+                    cell.setToolTip(full)
+                self.table.setItem(index, column, cell)
+        self.table.resizeColumnsToContents()
+        self.table.setUpdatesEnabled(True)
         self.show_view()
 
 
@@ -353,6 +443,12 @@ class SpeciationPage(StackedView):
 class DatabasePage(QWidget):
     """Every public table, with filtering and sorting."""
 
+    def set_database(self, database: ThermodynamicDatabase) -> None:
+        """Show ``database``, for example after a selection policy or own species were loaded."""
+        self.database = database
+        self._loaded = None
+        self.load()
+
     def __init__(self, database: ThermodynamicDatabase, parent=None) -> None:
         super().__init__(parent)
         self.database = database
@@ -373,6 +469,11 @@ class DatabasePage(QWidget):
         self.view.setSortingEnabled(True)
         self.view.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.count = QLabel()
+        self.note = QLabel("Derived when the database is opened: the recommended value of every species and "
+                           "property under the active selection policy. The file itself stores only the "
+                           "reported values.")
+        self.note.setWordWrap(True)
+        self.note.hide()
         row = QHBoxLayout()
         row.addWidget(QLabel("Table"))
         row.addWidget(self.tables)
@@ -380,6 +481,7 @@ class DatabasePage(QWidget):
         row.addWidget(self.count)
         layout = QVBoxLayout(self)
         layout.addLayout(row)
+        layout.addWidget(self.note)
         layout.addWidget(self.view, 1)
         self._loaded: str | None = None
 
@@ -387,6 +489,7 @@ class DatabasePage(QWidget):
         name = self.tables.currentText()
         if name == self._loaded:
             return
+        self.note.setVisible(name == "selected_thermochemistry")
         with closing(self.database.connect()) as connection:
             cursor = connection.execute(f'SELECT * FROM "{name}"')
             columns = [item[0] for item in cursor.description]

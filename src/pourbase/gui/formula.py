@@ -38,6 +38,21 @@ def segments(text: str) -> list[tuple[str, str]]:
     return runs
 
 
+SUBSCRIPT_DIGITS = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+
+
+def pretty_formula(text: str) -> str:
+    """Subscript the stoichiometric digits of a plain formula such as ``FeCl3`` or ``ZnCO3``.
+
+    Names that already use Unicode subscripts or superscripts are returned unchanged.
+    """
+    import re
+
+    if any(character in text for character in "₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻"):
+        return text
+    return re.sub(r"(?<=[A-Za-z)])(\d+)", lambda match: match.group(1).translate(SUBSCRIPT_DIGITS), text)
+
+
 def to_html(text: str, base_pt: float = 9.0) -> str:
     """Rich text with enlarged sub- and superscripts, for a surrounding font of ``base_pt``."""
     size = base_pt * RICH_TEXT_SCALE

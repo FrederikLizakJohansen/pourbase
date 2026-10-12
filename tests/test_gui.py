@@ -203,7 +203,7 @@ class WindowTests(WindowTestCase):
         window.views.setCurrentWidget(window.species_page)
         self.app.processEvents()
         row = next(index for index in range(window.species_page.table.rowCount())
-                   if window.species_page.table.item(index, 8).text() == hematite)
+                   if window.species_page.table.item(index, window.species_page.RECORD).text() == hematite)
         window.species_page.table.selectRow(row)
         self.assertIn("JANAF first", window.species_page.details.toPlainText())
         self.assertIn("NIST-JANAF before NBS Tables", window.species_page.details.toPlainText())
@@ -241,6 +241,7 @@ class WindowTests(WindowTestCase):
     def test_incomplete_system_offers_an_exploratory_diagram(self) -> None:
         window = self.window
         self.open("Pt", allow_incomplete=False)
+        self.assertTrue(window.panel.require_complete.isChecked())
         self.assertIs(window.diagram_page.currentWidget(), window.diagram_page.placeholder)
         window.diagram_page.placeholder.button.click()
         window.recalculate()
@@ -275,12 +276,73 @@ class WindowTests(WindowTestCase):
             screen = window.overview.canvas.screen
             self.assertEqual(screen.pH, 12.0)
             self.assertTrue(screen.element("In").status.has_system)
-            self.assertIs(window.overview.allow_incomplete.isChecked(), allow)
-        window.overview.allow_incomplete.setChecked(True)
-        self.assertTrue(window.settings.allow_incomplete)
+        self.open("Fe")
         window.open_element("Cu")
         self.assertEqual((window.settings.symbol, window.pages.currentIndex()), ("Cu", 1))
         self.assertAlmostEqual(window.settings.probe_pH, 12.0)
+
+    def test_ligands_switch_globally_from_the_periodic_table(self) -> None:
+        window = self.window
+        self.open("Cu")
+        window.pages.setCurrentIndex(0)
+        window.update_overview()
+        menu = window.overview.ligand_actions
+        self.assertIn("chloride-cl", menu)
+        menu["chloride-cl"].setChecked(True)
+        window.update_overview()
+        self.assertTrue(window.settings.ligands["chloride-cl"].enabled)
+        self.assertIn("chloride-cl", [item.ligand_id for item in window.settings.ligand_activities()])
+        self.assertIn("1 on", window.overview.ligand_button.text())
+        self.assertTrue(window.panel.ligands.rows["chloride-cl"].enabled.isChecked())
+        window.recalculate()
+        self.assertTrue(any(item.ligand_id == "chloride-cl" for item in window.calculation.diagram.system.species))
+        menu[""].setChecked(False)
+        window.update_overview()
+        self.assertEqual(window.settings.ligand_activities(), ())
+        self.assertTrue(window.settings.ligands["chloride-cl"].enabled)
+        self.assertFalse(window.panel.use_ligands.isChecked())
+        menu[""].setChecked(True)
+        menu["chloride-cl"].setChecked(False)
+        window.update_overview()
+
+    def test_calculations_run_in_the_background_behind_a_loading_overlay(self) -> None:
+        window = self.window
+        self.open("Fe")
+        settings = window.settings
+        settings.concentration = -2.5
+        window.panel.set_settings(settings)
+        window.calculate_in_background()
+        self.assertTrue(window.views_loading.active)
+        self.wait(lambda: not window.views_loading.active)
+        self.assertAlmostEqual(window.calculation.scenario.concentration, -2.5)
+        window.views.setCurrentWidget(window.compare_page)
+        self.app.processEvents()
+        window.compare_page.concentration.setValue(-7.25)
+        window._show_compare()
+        self.wait(lambda: not window.compare_loading.active)
+        right = window.compare_page.calculations[1]
+        self.assertAlmostEqual(right.concentration.log10_standard_activity, -7.25)
+        window.pages.setCurrentIndex(0)
+        window.overview.pH.setValue(3.5)
+        window.screen_in_background()
+        self.wait(lambda: not window.overview_loading.active)
+        self.assertEqual(window.overview.canvas.screen.pH, 3.5)
+        window.pages.setCurrentIndex(1)
+
+    def test_the_mouse_wheel_does_not_change_value_inputs(self) -> None:
+        from PySide6.QtCore import QPoint, QPointF, Qt
+        from PySide6.QtGui import QWheelEvent
+
+        window = self.window
+        self.open("Fe")
+        for widget in (window.panel.concentration.spin, window.panel.concentration.slider,
+                       window.panel.mode, window.compare_page.symbol):
+            before = widget.value() if hasattr(widget, "value") else widget.currentIndex()
+            event = QWheelEvent(QPointF(5, 5), QPointF(5, 5), QPoint(0, 0), QPoint(0, -120),
+                                Qt.NoButton, Qt.NoModifier, Qt.NoScrollPhase, False)
+            QApplication.sendEvent(widget, event)
+            after = widget.value() if hasattr(widget, "value") else widget.currentIndex()
+            self.assertEqual(before, after, type(widget).__name__)
 
     def test_sweep_runs_in_the_background_and_is_cached(self) -> None:
         window = self.window
@@ -309,6 +371,67 @@ class WindowTests(WindowTestCase):
         window.database_page.tables.setCurrentText("sources")
         window.database_page.filter.setText("JANAF")
         self.assertGreater(window.database_page.proxy.rowCount(), 0)
+        window.database_page.filter.setText("")
+        window.database_page.tables.setCurrentText("selected_thermochemistry")
+        self.assertEqual(window.database_page.proxy.rowCount(), 785)
+        self.assertFalse(window.database_page.note.isHidden())
+
+    def test_copied_code_reproduces_the_diagram_with_policy_and_own_species(self) -> None:
+        import pourbase as pb
+
+        window = self.window
+        policy = os.path.join(self.directory.name, "janaf.toml")
+        with open(policy, "w", encoding="utf-8") as handle:
+            handle.write(pb.SelectionPolicy.default().source_text.replace(
+                'families = ["NBS Tables", "NBS Technical Notes", "NIST-JANAF"',
+                'families = ["NIST-JANAF", "NBS Tables", "NBS Technical Notes"'))
+        own = os.path.join(self.directory.name, "own-fe.csv")
+        with open(own, "w", encoding="utf-8") as handle:
+            handle.write("symbol,species,formula,charge,phase,gibbs_energy_kJ_mol,uncertainty_kJ_mol,citation,replaces\n"
+                         "Fe,Fe(OH)2 (fresh),Fe(OH)2,0,solid,-500.0,,test,\n")
+        self.open("Fe", concentration=-4.0)
+        self.assertTrue(window.load_policy(policy))
+        self.assertTrue(window.load_user_species(own))
+        code = window.python_code()
+        self.assertIn("pb.with_policy(database", code)
+        self.assertIn("pb.with_user_species(database", code)
+        namespace: dict = {}
+        exec(code.split("\nax = ")[0], namespace)
+        ours = window.calculation.diagram.stable_species_index
+        theirs = namespace["calculation"].diagram.stable_species_index
+        self.assertTrue(np.array_equal(ours, theirs))
+        self.assertEqual([item.record_id for item in window.calculation.diagram.system.species],
+                         [item.record_id for item in namespace["calculation"].diagram.system.species])
+        window.load_user_species(None)
+        window.load_policy(None)
+
+    def test_policy_comparison_lists_every_changed_value(self) -> None:
+        import pourbase as pb
+        from pourbase.gui.policy_compare import PolicyComparisonDialog
+
+        policy = pb.SelectionPolicy.default().with_family_order(
+            "B", ["NIST-JANAF", "NBS Tables", "NBS Technical Notes", "Robie & Hemingway", "Miron", "NIST WebBook"])
+        dialog = PolicyComparisonDialog(self.window.database, policy, "janaf.toml")
+        expected = pb.compare_policies(self.window.database, pb.SelectionPolicy.default(), policy)
+        self.assertEqual(dialog.table.rowCount(), len(expected))
+        self.assertGreater(len(expected), 0)
+        dialog.close()
+
+    def test_species_tab_flags_disagreeing_sources_and_boundaries_cite_them(self) -> None:
+        window = self.window
+        self.open("Co")
+        window.views.setCurrentWidget(window.species_page)
+        self.app.processEvents()
+        page = window.species_page
+        flagged = [page.table.item(row, 0).text() for row in range(page.table.rowCount())
+                   if page.table.item(row, page.SPREAD).font().bold()]
+        self.assertIn("Co₃O₄", flagged)
+        statuses = {page.table.item(row, page.STATUS).text() for row in range(page.table.rowCount())}
+        self.assertFalse(any("_" in status for status in statuses))
+        window.views.setCurrentWidget(window.boundaries_page)
+        self.app.processEvents()
+        sources = window.boundaries_page.table.item(0, 3).text()
+        self.assertRegex(sources, r"\(\d{4}\)")
 
 
 @unittest.skipUnless(QApplication is not None and PYMATGEN, "PySide6 or pymatgen is not installed")

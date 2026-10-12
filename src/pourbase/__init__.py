@@ -55,8 +55,7 @@ from .plotting import (
     plot_mass_balance_summary,
     plot_official_materials_project_comparison,
     plot_official_materials_project_diagram,
-    species_colors,
-)
+    species_colors, plot_uncertainty)
 from .records import SourceReference, SpeciesRecord
 from .scenario import Calculation, Mode, Probe, Scenario, calculate
 from .speciation import SpeciationProfile, dissolved_blend_weights, metal_fraction_grid, plot_speciation_profile, speciation_at, speciation_profile
@@ -159,6 +158,7 @@ __all__ = [
     "plot_official_materials_project_comparison",
     "plot_official_materials_project_diagram",
     "plot_speciation_profile",
+    "plot_uncertainty",
     "read_user_species",
     "save_figure",
     "screen_periodic_table",

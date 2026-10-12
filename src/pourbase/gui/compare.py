@@ -7,7 +7,7 @@ from dataclasses import replace
 from typing import Any
 
 import numpy as np
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtWidgets import (
     QComboBox,
     QFormLayout,
@@ -74,7 +74,10 @@ class ComparePage(StackedView):
         self.display = DisplayOptions()
         self.point: tuple[float, float] | None = None
         self.symbol.currentIndexChanged.connect(lambda _index: self.changed.emit())
-        self.concentration.valueChanged.connect(lambda _value: self.changed.emit())
+        # wait until the slider settles before recalculating the right diagram
+        self._settle = QTimer(self, singleShot=True, interval=120)
+        self._settle.timeout.connect(self.changed.emit)
+        self.concentration.valueChanged.connect(lambda _value: self._settle.start())
 
     def set_dark(self, dark: bool) -> None:
         for view in self.views:
@@ -157,8 +160,10 @@ class ComparePage(StackedView):
         a, b = left.diagram, right.diagram
         if a.system.symbol != b.system.symbol or a.stable_species_index.shape != b.stable_species_index.shape:
             return "The axes are linked: zooming or panning one diagram moves the other."
-        ids_a = np.asarray([item.record_id for item in a.system.species])[a.stable_species_index]
-        ids_b = np.asarray([item.record_id for item in b.system.species])[b.stable_species_index]
-        differ = float((ids_a != ids_b).mean())
+        codes = {record_id: code for code, record_id in enumerate(
+            dict.fromkeys(item.record_id for item in (*a.system.species, *b.system.species)))}
+        code_a = np.array([codes[item.record_id] for item in a.system.species])[a.stable_species_index]
+        code_b = np.array([codes[item.record_id] for item in b.system.species])[b.stable_species_index]
+        differ = float((code_a != code_b).mean())
         return (f"The stable species differs on {differ:.1%} of the grid. The axes are linked: zooming or "
                 "panning one diagram moves the other.")

@@ -21,7 +21,7 @@ def calculate_pourbaix(
     conditions: PourbaixConditions | None = None,
     *,
     database: ThermodynamicDatabase | str | Path | None = None,
-    allow_incomplete: bool = False,
+    allow_incomplete: bool = True,
     energy_policy: GibbsEnergyPolicy | str = GibbsEnergyPolicy.EXPERIMENTAL_ONLY,
 ) -> PourbaixDiagram:
     """Calculate a fixed-activity diagram with the bundled data by default."""

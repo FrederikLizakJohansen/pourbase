@@ -374,7 +374,7 @@ class OfficialMaterialsProjectComparator:
         *,
         filter_solids: bool = True,
         use_gibbs_300K: bool = False,
-        allow_incomplete: bool = False,
+        allow_incomplete: bool = True,
         energy_policy: GibbsEnergyPolicy | str = GibbsEnergyPolicy.EXPERIMENTAL_ONLY,
     ) -> OfficialMaterialsProjectComparison:
         experimental = self.engine.calculate(

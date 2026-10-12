@@ -1468,8 +1468,11 @@ class DatasetSnapshotTests(unittest.TestCase):
                              for row in record.reported), 1)
 
     def test_periodic_screen(self) -> None:
-        screen = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE")
+        screen = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
+                                          allow_incomplete=False)
         self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 74, 56))
+        default = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE")
+        self.assertEqual(sum(item.stable is not None for item in default.elements), 74)
         self.assertIs(screen.element("Fe").status, pb.ElementStatus.INCOMPLETE)
         relaxed = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                             allow_incomplete=True)
@@ -1479,7 +1482,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual((titanium.stable.species, titanium.category, titanium.structure_label),
                          ("TiO₂", pb.Category.SOLID_OXIDE, "rutile"))
         fallback = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
-                                            energy_policy="experimental_then_mp")
+                                            energy_policy="experimental_then_mp", allow_incomplete=False)
         self.assertEqual(fallback.calculated_count, 59)
         platinum = self.database.load_system("Pt", energy_policy="experimental_then_mp")
         self.assertEqual({item.formula_ascii for item in platinum.species

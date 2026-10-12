@@ -15,7 +15,7 @@ from .models import (
     GasFugacityModel,
     GibbsEnergyPolicy,
     PourbaixConditions,
-    ThermodynamicSpecies,
+    ThermodynamicSpecies, LigandActivity, LigandActivityModel,
 )
 from .conversions import convert_concentration
 from .records import RecordWarning, SourceReference
@@ -145,10 +145,16 @@ def screen_periodic_table(
     concentration_unit: str = "log10_molar",
     solution_density_kg_L: float = 1.0,
     log10_gas_fugacity: float = 0.0,
-    allow_incomplete: bool = False,
+    allow_incomplete: bool = True,
     energy_policy: GibbsEnergyPolicy | str = GibbsEnergyPolicy.EXPERIMENTAL_ONLY,
+    ligands: tuple[LigandActivity, ...] = (),
 ) -> PeriodicScreen:
-    """The lowest-energy species of every element at one pH and potential."""
+    """The lowest-energy species of every element at one pH and potential.
+
+    ``ligands`` are buffered ligand reservoirs; their complexes take part for every element that
+    forms them. Species without a recommended Gibbs energy are left out unless
+    ``allow_incomplete`` is False, which marks such elements as incomplete instead.
+    """
     database = database or ThermodynamicDatabase.bundled()
     reference = reference.upper()
     if reference not in ("SHE", "RHE"):
@@ -160,9 +166,13 @@ def screen_periodic_table(
     energy_policy = GibbsEnergyPolicy(energy_policy)
     gases = GasFugacityModel(log10_gas_fugacity)
     systems = dict(database.available_systems())
+    ligands = tuple(ligands)
+    known = {item.ligand_id for item in database.available_ligands()}
+    ligand_ids = tuple(item.ligand_id for item in ligands if item.ligand_id in known)
+    ligand_model = LigandActivityModel(tuple(item for item in ligands if item.ligand_id in known)) if ligand_ids else None
     calculated: dict[str, tuple] = {}
     for symbol in systems:
-        system = database.load_system(symbol, energy_policy=energy_policy)
+        system = database.load_system(symbol, ligand_ids=ligand_ids, energy_policy=energy_policy)
         missing = tuple(item.record_id for item in system.missing_gibbs)
         if missing and not allow_incomplete:
             calculated[symbol] = (ElementStatus.INCOMPLETE, None, None, missing)
@@ -173,6 +183,7 @@ def screen_periodic_table(
                 symbol, concentration, concentration_unit, solution_density_kg_L=solution_density_kg_L,
             ).log10_standard_activity),
             gas_fugacities=gases,
+            ligand_activities=ligand_model,
         )
         validate_reference_conditions(conditions, state)
         energies = sorted(

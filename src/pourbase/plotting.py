@@ -102,6 +102,29 @@ def plot_diagram(
     return ax
 
 
+def plot_uncertainty(
+    diagram: PourbaixDiagram,
+    *,
+    ax: Any,
+    confidence_sigma: float = 1.0,
+    assumed_uncertainty_kJ_mol: float = 2.0,
+    color: Any = "black",
+) -> Any:
+    """Hatch the points where another species lies within ``confidence_sigma`` combined uncertainties (Eq. 12).
+
+    Species without a reported uncertainty take ``assumed_uncertainty_kJ_mol``. Draws on ``ax``, the
+    axes of a diagram plotted with :func:`plot_diagram`, and returns it.
+    """
+    from .uncertainty import stability_uncertainty
+
+    uncertain = stability_uncertainty(diagram, confidence_sigma, assumed_uncertainty_kJ_mol * 1000).uncertain
+    ax.contourf(diagram.pH, diagram.eh_V, uncertain.astype(float), levels=[0.5, 1.5], colors="none",
+                hatches=["////"], zorder=3)
+    ax.contour(diagram.pH, diagram.eh_V, uncertain.astype(float), levels=[0.5], colors=[color],
+               linewidths=0.6, zorder=3)
+    return ax
+
+
 def plot_boltzmann_diagram(
     smoothed: BoltzmannSmoothedDiagram,
     *,

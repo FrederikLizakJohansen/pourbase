@@ -27,8 +27,10 @@ def parser() -> argparse.ArgumentParser:
     figures.add_argument("--output-dir", type=Path, default=Path("mp-thermochemistry"))
 
     def evidence(command: argparse.ArgumentParser) -> None:
-        command.add_argument("--allow-incomplete", action="store_true",
-                             help="omit species without a recommended Gibbs energy")
+        command.add_argument("--require-complete", action="store_true",
+                             help="stop when a species of the system has no recommended Gibbs energy "
+                                  "(by default such species are left out and reported)")
+        command.add_argument("--allow-incomplete", action="store_true", help=argparse.SUPPRESS)
         command.add_argument("--use-mp-fallbacks", action="store_true",
                              help="fill missing solid Gibbs values with labelled MP 300 K estimates")
 
@@ -86,7 +88,7 @@ def run(args: argparse.Namespace) -> None:
         conditions = Scenario(args.symbol).conditions()
         result = ConcentrationSweepEngine(database).calculate(
             args.symbol, conditions, args.minimum, args.maximum, args.points,
-            allow_incomplete=args.allow_incomplete, energy_policy=_policy(args),
+            allow_incomplete=not args.require_complete, energy_policy=_policy(args),
         )
         figure, _ = plot_concentration_sweep(result, probe_pH=args.probe_pH, probe_eh_V=args.probe_eh)
         print(f"Wrote {save_figure(figure, args.output, dpi=150).resolve()}")
@@ -97,7 +99,7 @@ def run(args: argparse.Namespace) -> None:
             args.symbol, mode=args.mode, concentration=args.concentration, concentration_unit=args.unit,
             solution_density_kg_L=args.solution_density,
             davies_ionic_strength_mol_L=args.davies_ionic_strength,
-            allow_incomplete=args.allow_incomplete, energy_policy=_policy(args),
+            allow_incomplete=not args.require_complete, energy_policy=_policy(args),
         ), database)
         figure = diagram_figure(calculation.diagram, blend_width_kJ_mol=args.blend_width,
                                 boltzmann_scale=args.boltzmann_scale)

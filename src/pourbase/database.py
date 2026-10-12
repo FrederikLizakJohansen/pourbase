@@ -88,10 +88,25 @@ class ThermodynamicDatabase:
         if self._stores_recommendations:
             connection.execute("CREATE TEMP VIEW selected_thermochemistry AS SELECT * FROM main.thermochemistry")
         else:
-            connection.execute(RECOMMENDED_TABLE)
-            connection.executemany(
-                f"INSERT INTO temp.selected_thermochemistry VALUES ({','.join('?' * 21)})", self._recommended_rows)
+            connection.execute("ATTACH DATABASE ? AS derived", (self._derived_uri,))
+            connection.execute("CREATE TEMP VIEW selected_thermochemistry AS SELECT * FROM derived.selected_thermochemistry")
         return connection
+
+    @cached_property
+    def _derived_uri(self) -> str:
+        """A shared in-memory database holding the recommended values, built once per database object.
+
+        Every connection attaches it, so the policy runs once and connecting stays cheap. The
+        connection kept here holds the in-memory database open for the lifetime of this object.
+        """
+        uri = f"file:pourbase-derived-{id(self)}-{self.policy.fingerprint}?mode=memory&cache=shared"
+        keeper = sqlite3.connect(uri, uri=True, check_same_thread=False)
+        keeper.execute(RECOMMENDED_TABLE.replace("CREATE TEMP TABLE", "CREATE TABLE"))
+        keeper.executemany(f"INSERT INTO selected_thermochemistry VALUES ({','.join('?' * 21)})",
+                           self._recommended_rows)
+        keeper.commit()
+        self._derived_keeper = keeper
+        return uri
 
     def _rows(self, query: str, parameters: Iterable[object] = ()) -> list[sqlite3.Row]:
         with closing(self.connect()) as connection:

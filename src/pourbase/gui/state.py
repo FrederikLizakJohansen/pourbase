@@ -67,12 +67,15 @@ class Settings:
     probe_pH: float = 7.0
     probe_eh_V: float = 0.0
     ligands: dict[str, LigandSetting] = field(default_factory=dict)
+    use_ligands: bool = True
 
     @property
     def energy_policy(self) -> GibbsEnergyPolicy:
         return GibbsEnergyPolicy.EXPERIMENTAL_THEN_MP if self.use_mp_fallbacks else GibbsEnergyPolicy.EXPERIMENTAL_ONLY
 
     def ligand_activities(self) -> tuple[LigandActivity, ...]:
+        if not self.use_ligands:
+            return ()
         return tuple(setting.activity(key) for key, setting in sorted(self.ligands.items()) if setting.enabled)
 
     def scenario(self) -> Scenario:
@@ -107,8 +110,8 @@ class Settings:
             return cls()
         return settings
 
-    def python_code(self) -> str:
-        """The equivalent library call."""
+    def scenario_code(self) -> str:
+        """The ``pb.Scenario(...)`` expression of these settings."""
         scenario = self.scenario()
         defaults = Scenario(scenario.symbol)
         arguments = [repr(scenario.symbol)]
@@ -128,12 +131,42 @@ class Settings:
                 for ligand in scenario.ligands
             )
             arguments.append(f"ligands=({ligands},)")
+        return f"pb.Scenario({', '.join(arguments)})"
+
+    def python_code(self) -> str:
+        """The equivalent library call with the bundled data and the default policy."""
         return "\n".join((
             "import pourbase as pb",
             "",
-            f"calculation = pb.calculate(pb.Scenario({', '.join(arguments)}))",
+            f"calculation = pb.calculate({self.scenario_code()})",
             "pb.plot_diagram(calculation.diagram)",
         ))
+
+
+def python_code(settings: Settings, display, *, dataset_path: str | None = None, policy_path: str | None = None,
+                user_species_path: str | None = None) -> str:
+    """Python code that reproduces the diagram on screen: data, policy, own species, scenario and view."""
+    lines = ["import pourbase as pb", ""]
+    lines.append(f"database = pb.open_dataset({dataset_path!r})" if dataset_path else "database = pb.open_database()")
+    if policy_path:
+        lines.append(f"database = pb.with_policy(database, {policy_path!r})")
+    if user_species_path:
+        lines.append(f"database = pb.with_user_species(database, {user_species_path!r})")
+    lines.append(f"calculation = pb.calculate({settings.scenario_code()}, database)")
+    if settings.mode == Mode.MASS_BALANCE.value:
+        lines.append("figure, axes = pb.plot_mass_balance_summary(calculation.diagram)")
+    elif display.boltzmann:
+        lines.append(f"ax = pb.plot_boltzmann_diagram(pb.boltzmann_smooth(calculation.diagram, "
+                     f"{display.blend_width_kJ_mol * 1000:g}))")
+    else:
+        lines.append("ax = pb.plot_diagram(calculation.diagram)")
+    if display.uncertainty and settings.mode != Mode.MASS_BALANCE.value:
+        lines.append(f"pb.plot_uncertainty(calculation.diagram, ax=ax, confidence_sigma={display.uncertainty_sigma:g}, "
+                     f"assumed_uncertainty_kJ_mol={display.assumed_uncertainty_kJ_mol:g})")
+    if display.potential_scale != "SHE":
+        lines.append(f"# The application shows potentials against {display.potential_scale}; "
+                     "pourbase calculates against SHE.")
+    return "\n".join(lines)
 
 
 @dataclass(frozen=True)

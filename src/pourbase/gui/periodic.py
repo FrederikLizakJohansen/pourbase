@@ -8,10 +8,12 @@ from PySide6.QtCore import QPointF, QRectF, Qt, Signal
 from PySide6.QtGui import (
     QBrush, QColor, QFont, QFontMetricsF, QLinearGradient, QPainter, QPainterPath, QPen, QPixmap,
 )
-from PySide6.QtWidgets import QCheckBox, QComboBox, QHBoxLayout, QLabel, QSizePolicy, QToolTip, QVBoxLayout, QWidget
+from PySide6.QtWidgets import (
+    QComboBox, QHBoxLayout, QLabel, QMenu, QSizePolicy, QToolButton, QToolTip, QVBoxLayout, QWidget,
+)
 
 from ..overview import Category, ElementResult, ElementStatus, PeriodicScreen
-from .formula import draw_formula, phase_label
+from .formula import draw_formula, phase_label, pretty_formula
 from .widgets import FloatSlider
 
 CATEGORY_COLORS = {
@@ -27,7 +29,14 @@ COLOR_MODES = {"category": "Stable species category", "margin": "Stability margi
 UNIT_LABELS = {"log10_molar": "log₁₀ M", "molar": "M", "ppm": "ppm", "wt_percent": "wt %"}
 F_BLOCK_MARKERS = {(5, 2): "57–71", (6, 2): "89–103"}
 CARD_CELLS = ((0, 2), (2, 11))
-PROVISIONAL_LABEL = "Provisional: some species lack an experimental Gibbs energy"
+PROVISIONAL_LABEL = "Some species without a Gibbs energy are left out"
+
+
+def formula_only(name: str) -> str:
+    """The formula of a species name without a trailing qualifier: ``Y₂(CO₃)₃ (crystalline, NBS)`` → ``Y₂(CO₃)₃``."""
+    import re
+
+    return re.sub(r"\s+\([^()]*\)$", "", name)
 
 
 def table_position(atomic_number: int) -> tuple[int, int]:
@@ -241,7 +250,7 @@ class PeriodicTableCanvas(QWidget):
                          Qt.AlignCenter, element.symbol)
         if element.stable is not None:
             draw_formula(painter, QRectF(cell.left() + pad, cell.bottom() - cell.height() * 0.34,
-                                         cell.width() - 2 * pad, cell.height() * 0.28), element.stable.species, small)
+                                         cell.width() - 2 * pad, cell.height() * 0.28), pretty_formula(formula_only(element.stable.species)), small)
 
     def _paint_card(self, painter: QPainter, card: QRectF, pitch: float, base: QFont) -> None:
         screen = self.screen
@@ -280,23 +289,30 @@ class PeriodicTableCanvas(QWidget):
                          element.system or element.symbol)
         lines: list[str | tuple[str, str]] = [element.category.label]
         if element.stable is not None:
-            lines.append(("formula", f"Stable: {element.stable.species}  ({phase_label(element.stable)})"))
+            phase = phase_label(element.stable)
+            phase = phase if len(phase) <= 48 else phase[:46].rstrip(" ,;(") + "…"
+            lines.append(("formula", f"Stable: {element.stable.species}  ({phase})"))
             if element.energy_margin_J_mol_metal is not None:
                 lines.append(f"Margin to the next species: {element.energy_margin_J_mol_metal / 1000:.2f} kJ/mol metal")
             if element.gibbs_source and element.gibbs_source.citation:
                 lines.append(f"ΔfG°: {element.gibbs_source.citation}")
         elif element.reason:
             lines.append(element.reason)
-        if element.status is ElementStatus.CALCULATED_WITH_GAPS:
-            lines.append("Provisional: species that lack an experimental Gibbs energy are left out of this calculation")
-        elif element.status is ElementStatus.CALCULATED_WITH_FALLBACK:
-            lines.append("Provisional: Materials Project 300 K estimates replace the missing experimental Gibbs energies")
+        if element.status is ElementStatus.CALCULATED_WITH_FALLBACK:
+            lines.append("Materials Project 300 K estimates replace the missing experimental Gibbs energies")
         if element.missing_record_ids:
-            lines.append(f"{len(element.missing_record_ids)} species lack a recommended Gibbs energy")
+            count = len(element.missing_record_ids)
+            lines.append(f"{count} species without a recommended Gibbs energy {'is' if count == 1 else 'are'} "
+                         "left out of this calculation")
         painter.setFont(body)
         metrics = QFontMetricsF(body)
         top = inner.top() + pitch * 0.5
+        painter.save()
+        painter.setClipRect(inner)
+        flags = Qt.AlignLeft | Qt.AlignTop | Qt.TextWordWrap
         for line in lines:
+            if top + metrics.height() > inner.bottom():
+                break
             if isinstance(line, tuple):
                 painter.setPen(self._text_color())
                 draw_formula(painter, QRectF(inner.left(), top, inner.width(), metrics.height() * 1.3),
@@ -304,10 +320,15 @@ class PeriodicTableCanvas(QWidget):
                 top += metrics.height() * 1.3
                 continue
             painter.setPen(self._muted())
-            bounds = painter.boundingRect(QRectF(inner.left(), top, inner.width(), 1000),
-                                          Qt.AlignLeft | Qt.AlignTop | Qt.TextWordWrap, line)
-            painter.drawText(bounds, Qt.AlignLeft | Qt.AlignTop | Qt.TextWordWrap, line)
+            # at most two wrapped lines per entry; longer text, such as a full citation, ends in "…"
+            bounds = painter.boundingRect(QRectF(inner.left(), top, inner.width(), 1000), flags, line)
+            if bounds.height() > metrics.lineSpacing() * 2.2:
+                line = metrics.elidedText(line, Qt.ElideRight, inner.width() * 1.85)
+                bounds = painter.boundingRect(QRectF(inner.left(), top, inner.width(), 1000), flags, line)
+            bounds.setBottom(min(bounds.bottom(), inner.bottom()))
+            painter.drawText(bounds, flags, line)
             top = bounds.bottom() + metrics.height() * 0.15
+        painter.restore()
 
     def _paint_legend(self, painter: QPainter, area: QRectF, base: QFont) -> None:
         self._chips = {}
@@ -402,6 +423,7 @@ class OverviewPage(QWidget):
     """Point conditions and the periodic table; ``changed`` asks for a new screen."""
 
     changed = Signal()
+    ligandToggled = Signal(str, bool)  # ligand ID, or "" for every reservoir at once
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -412,10 +434,12 @@ class OverviewPage(QWidget):
         self.color = QComboBox()
         for key, label in COLOR_MODES.items():
             self.color.addItem(label, key)
-        self.allow_incomplete = QCheckBox("Allow incomplete systems")
-        self.allow_incomplete.setToolTip(
-            "Calculate elements whose species lack some Gibbs energies, leaving those species out"
-        )
+        self.ligand_button = QToolButton()
+        self.ligand_button.setText("Ligands: off")
+        self.ligand_button.setPopupMode(QToolButton.InstantPopup)
+        self.ligand_menu = QMenu(self.ligand_button)
+        self.ligand_button.setMenu(self.ligand_menu)
+        self.ligand_actions: dict[str, object] = {}
         self.note = QLabel()
         self.note.setStyleSheet("color: gray;")
         self.canvas = PeriodicTableCanvas()
@@ -429,7 +453,7 @@ class OverviewPage(QWidget):
         controls.addWidget(self.potential, 3)
         controls.addWidget(self.reference)
         controls.addSpacing(16)
-        controls.addWidget(self.allow_incomplete)
+        controls.addWidget(self.ligand_button)
         controls.addSpacing(16)
         controls.addWidget(QLabel("Color by"))
         controls.addWidget(self.color)
@@ -438,6 +462,34 @@ class OverviewPage(QWidget):
         layout.addLayout(controls)
         layout.addWidget(self.note)
         layout.addWidget(self.canvas, 1)
+
+    def set_ligands(self, references, settings) -> None:
+        """Show the ligand reservoirs of ``settings`` for the ligands in ``references``."""
+        if not self.ligand_actions:
+            master = self.ligand_menu.addAction("Use ligand reservoirs")
+            master.setCheckable(True)
+            master.toggled.connect(lambda checked: self.ligandToggled.emit("", checked))
+            self.ligand_actions[""] = master
+            self.ligand_menu.addSeparator()
+            for reference in sorted(references, key=lambda item: item.name):
+                action = self.ligand_menu.addAction(reference.name)
+                action.setCheckable(True)
+                action.toggled.connect(lambda checked, key=reference.ligand_id: self.ligandToggled.emit(key, checked))
+                self.ligand_actions[reference.ligand_id] = action
+        enabled = [key for key, setting in settings.ligands.items() if setting.enabled]
+        for key, action in self.ligand_actions.items():
+            action.blockSignals(True)
+            if key == "":
+                action.setChecked(settings.use_ligands)
+            else:
+                action.setChecked(key in enabled)
+                action.setEnabled(settings.use_ligands)
+            action.blockSignals(False)
+        names = [self.ligand_actions[key].text() for key in sorted(enabled) if key in self.ligand_actions]
+        active = settings.use_ligands and names
+        self.ligand_button.setText(f"Ligands: {len(names)} on" if active else "Ligands: off")
+        self.ligand_button.setToolTip("Buffered ligand reservoirs for every element, here and in the element "
+                                      "view: " + (", ".join(names) if active else "none"))
 
     def conditions(self) -> dict[str, object]:
         return {

@@ -2,13 +2,26 @@
 
 from __future__ import annotations
 
-from PySide6.QtCore import Signal
+import re
+
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QCheckBox, QComboBox, QDoubleSpinBox, QGridLayout, QLabel, QVBoxLayout, QWidget,
 )
 
 from ..models import LigandReference
+from .formula import pretty_formula, to_html
 from .state import LIGAND_MODES, LigandSetting
+
+SHOWN = 6  # complexes listed before "+ N more"
+SUPERSCRIPTS = "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻"
+
+
+def complex_order(name: str) -> tuple:
+    """Simpler complexes first: by formula length without charge, then by charge."""
+    base = re.sub(r"\s+\([^()]*\)$", "", name)
+    core = "".join(character for character in base if character not in SUPERSCRIPTS)
+    return (len(core), core, base)
 
 
 class LigandRow(QWidget):
@@ -33,14 +46,20 @@ class LigandRow(QWidget):
         self.pKa.setRange(-5.0, 20.0)
         self.pKa.setDecimals(2)
         self.pKa.setKeyboardTracking(False)
+        self.count = QLabel()
+        self.count.setStyleSheet("color: gray;")
+        self.count.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.species = QLabel()
+        self.species.setTextFormat(Qt.RichText)
         self.species.setWordWrap(True)
+        self.species.setStyleSheet("color: gray;")
         grid.addWidget(self.enabled, row, 0, 1, 2)
-        grid.addWidget(self.species, row, 2, 1, 2)
-        grid.addWidget(self.mode, row + 1, 0)
-        grid.addWidget(self.value, row + 1, 1)
-        grid.addWidget(self.use_pKa, row + 1, 2)
-        grid.addWidget(self.pKa, row + 1, 3)
+        grid.addWidget(self.count, row, 2, 1, 2)
+        grid.addWidget(self.species, row + 1, 0, 1, 4)
+        grid.addWidget(self.mode, row + 2, 0)
+        grid.addWidget(self.value, row + 2, 1)
+        grid.addWidget(self.use_pKa, row + 2, 2)
+        grid.addWidget(self.pKa, row + 2, 3)
         self._setting = LigandSetting()
         self._changed = changed
         self._updating = False
@@ -62,8 +81,18 @@ class LigandRow(QWidget):
         self._update_enabled()
 
     def set_relevant(self, species: list[str] | None) -> None:
-        self.species.setText("forms " + ", ".join(species) if species else "")
-        self.setVisible(bool(species))
+        ordered = sorted(dict.fromkeys(species or []), key=complex_order)
+        self.setVisible(bool(ordered))
+        if not ordered:
+            return
+        shown = " · ".join(to_html(pretty_formula(name), 8.0) for name in ordered[:SHOWN])
+        more = len(ordered) - SHOWN
+        self.species.setText(f"<span style='font-size:8pt'>{shown}"
+                             + (f" · + {more} more" if more > 0 else "") + "</span>")
+        self.count.setText(f"{len(ordered)} complex{'es' if len(ordered) != 1 else ''}")
+        tooltip = "Complexes with this ligand:\n" + "\n".join(ordered)
+        for widget in (self.species, self.count, self.enabled):
+            widget.setToolTip(tooltip)
 
     def _configure_value(self) -> None:
         if self._setting.mode == "free":

@@ -186,7 +186,7 @@ class PourbaixEngine:
         symbol: str,
         conditions: PourbaixConditions,
         *,
-        allow_incomplete: bool = False,
+        allow_incomplete: bool = True,
         energy_policy: GibbsEnergyPolicy | str = GibbsEnergyPolicy.EXPERIMENTAL_ONLY,
         store_energies: bool = True,
     ) -> PourbaixDiagram:
@@ -202,7 +202,7 @@ class PourbaixEngine:
         system: MetalSystem,
         conditions: PourbaixConditions,
         *,
-        allow_incomplete: bool = False,
+        allow_incomplete: bool = True,
         store_energies: bool = True,
     ) -> PourbaixDiagram:
         """Calculate a previously loaded or transformed system."""

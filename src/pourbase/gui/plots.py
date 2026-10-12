@@ -294,9 +294,16 @@ class DiagramView(pg.PlotWidget):
                 self.addItem(label)
                 self.labels.append(label)
 
-        self.legend.clear()
+        legend_key = (options.legend, tuple((item.record_id, colors[item.record_id].name()) for item in stable),
+                      tuple(item.record_id for item in blended_in or ()),
+                      self.uncertainty.confidence_sigma if hatch is not None and self.uncertainty is not None else None,
+                      self.dark)
+        rebuild = legend_key != getattr(self, "_legend_key", None)
+        self._legend_key = legend_key
+        if rebuild:
+            self.legend.clear()
         self.legend.setVisible(options.legend)
-        if options.legend:
+        if options.legend and rebuild:
             for item in stable:
                 swatch = pg.ScatterPlotItem(
                     symbol="s", size=11, brush=pg.mkBrush(colors[item.record_id]),

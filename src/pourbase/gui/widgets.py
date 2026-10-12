@@ -3,8 +3,9 @@
 import math
 from typing import Optional
 
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QCoreApplication, QEvent, QObject, Qt, Signal
 from PySide6.QtWidgets import (
+    QAbstractScrollArea, QAbstractSlider, QAbstractSpinBox, QComboBox, QScrollBar,
     QDoubleSpinBox, QHBoxLayout, QLabel, QSlider, QToolButton, QWidget,
 )
 
@@ -153,3 +154,96 @@ class FloatSlider(QWidget):
                                f"{self._hard_maximum:g} in the box")
         if self.extend_button is not None:
             self.extend_button.setEnabled(self._maximum < self._hard_maximum)
+
+
+class LoadingOverlay(QWidget):
+    """Greys out a widget and draws a spinner while its content is being calculated.
+
+    ``start()`` shows the overlay after ``delay_ms``, so quick updates do not flicker;
+    ``stop()`` hides it. The overlay follows the size of the widget it covers.
+    """
+
+    def __init__(self, target: QWidget, delay_ms: int = 150) -> None:
+        super().__init__(target)
+        from PySide6.QtCore import QEvent, QTimer
+
+        self._event_resize = QEvent.Resize
+        self.setAttribute(Qt.WA_TransparentForMouseEvents, False)
+        self.hide()
+        self._angle = 0
+        self._spin = QTimer(self, interval=40)
+        self._spin.timeout.connect(self._advance)
+        self._delay = QTimer(self, singleShot=True, interval=delay_ms)
+        self._delay.timeout.connect(self._appear)
+        target.installEventFilter(self)
+
+    def eventFilter(self, watched, event) -> bool:
+        if event.type() == self._event_resize:
+            self.setGeometry(watched.rect())
+        return False
+
+    @property
+    def active(self) -> bool:
+        return self._delay.isActive() or self.isVisible()
+
+    def start(self) -> None:
+        if not self.active:
+            self._delay.start()
+
+    def stop(self) -> None:
+        self._delay.stop()
+        self._spin.stop()
+        self.hide()
+
+    def _appear(self) -> None:
+        self.setGeometry(self.parentWidget().rect())
+        self.raise_()
+        self.show()
+        self._spin.start()
+
+    def _advance(self) -> None:
+        self._angle = (self._angle + 30) % 360
+        self.update()
+
+    def paintEvent(self, _event) -> None:
+        from PySide6.QtCore import QRectF
+        from PySide6.QtGui import QColor, QPainter, QPen
+
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        background = self.palette().window().color()
+        veil = QColor(background)
+        veil.setAlpha(150)
+        painter.fillRect(self.rect(), veil)
+        size = 34.0
+        box = QRectF(self.width() / 2 - size / 2, self.height() / 2 - size / 2, size, size)
+        track = QColor(self.palette().text().color())
+        track.setAlpha(40)
+        painter.setPen(QPen(track, 4))
+        painter.drawEllipse(box)
+        painter.setPen(QPen(self.palette().highlight().color(), 4, Qt.SolidLine, Qt.RoundCap))
+        painter.drawArc(box, -self._angle * 16, 100 * 16)
+        painter.setPen(self.palette().text().color())
+        painter.drawText(QRectF(0, box.bottom() + 8, self.width(), 20), Qt.AlignHCenter, "Calculating…")
+
+
+class WheelGuard(QObject):
+    """Keeps the mouse wheel from changing value inputs; the wheel scrolls the surrounding panel.
+
+    Installed on the application, it covers every spin box, drop-down list and slider. Scroll
+    bars and plots keep their wheel behaviour.
+    """
+
+    def eventFilter(self, watched, event) -> bool:
+        if event.type() != _WHEEL or not isinstance(watched, _VALUE_INPUTS) or isinstance(watched, QScrollBar):
+            return False
+        parent = watched.parentWidget()
+        while parent is not None and not isinstance(parent, QAbstractScrollArea):
+            parent = parent.parentWidget()
+        if parent is not None:
+            QCoreApplication.sendEvent(parent.verticalScrollBar(), event)
+        return True
+
+
+_WHEEL = QEvent.Wheel
+_VALUE_INPUTS = (QAbstractSpinBox, QComboBox, QAbstractSlider)

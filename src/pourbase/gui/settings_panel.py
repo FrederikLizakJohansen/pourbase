@@ -118,18 +118,27 @@ class SettingsPanel(QTabWidget):
 
         box = QGroupBox("Evidence policy")
         column = QVBoxLayout(box)
-        self.allow_incomplete = QCheckBox("Allow incomplete systems (omit species without Gibbs data)")
-        self.allow_incomplete.toggled.connect(lambda value: self._set("allow_incomplete", value))
+        self.require_complete = QCheckBox("Require a Gibbs energy for every species")
+        self.require_complete.setToolTip(
+            "By default, species without a recommended Gibbs energy are left out of the calculation and listed "
+            "in the Species tab. Tick this to stop instead when the system has such species.")
+        self.require_complete.toggled.connect(lambda value: self._set("allow_incomplete", not value))
         self.use_mp_fallbacks = QCheckBox("Fill missing solid Gibbs values with labelled MP 300 K estimates")
         self.use_mp_fallbacks.toggled.connect(lambda value: self._set("use_mp_fallbacks", value))
-        column.addWidget(self.allow_incomplete)
+        column.addWidget(self.require_complete)
         column.addWidget(self.use_mp_fallbacks)
         layout.addWidget(box)
 
         box = QGroupBox("Ligands")
+        column = QVBoxLayout(box)
+        self.use_ligands = QCheckBox("Use ligand reservoirs")
+        self.use_ligands.setToolTip("Switch every buffered ligand reservoir on or off at once; the individual "
+                                    "settings are kept. The same switch is on the periodic table.")
+        self.use_ligands.toggled.connect(self._use_ligands_toggled)
         self.ligands = LigandPanel(self.database.available_ligands())
         self.ligands.changed.connect(self._ligands_changed)
-        QVBoxLayout(box).addWidget(self.ligands)
+        column.addWidget(self.use_ligands)
+        column.addWidget(self.ligands)
         layout.addWidget(box)
         layout.addStretch(1)
         return page
@@ -267,7 +276,9 @@ class SettingsPanel(QTabWidget):
         self.davies.setChecked(settings.davies)
         self.ionic_strength.setValue(settings.ionic_strength_mol_L)
         self.gas.setValue(settings.log10_gas_fugacity)
-        self.allow_incomplete.setChecked(settings.allow_incomplete)
+        self.require_complete.setChecked(not settings.allow_incomplete)
+        self.use_ligands.setChecked(settings.use_ligands)
+        self.ligands.setEnabled(settings.use_ligands)
         self.use_mp_fallbacks.setChecked(settings.use_mp_fallbacks)
         for name, spin in {**self.axes, **self.points}.items():
             spin.setValue(getattr(settings, name))
@@ -338,6 +349,10 @@ class SettingsPanel(QTabWidget):
             self.ligands.set_system(value, self.database.ligand_species.get(value, {}))
         self._update_enabled()
         self.changed.emit(reset_range)
+
+    def _use_ligands_toggled(self, value: bool) -> None:
+        self.ligands.setEnabled(value)
+        self._set("use_ligands", value)
 
     def _ligands_changed(self) -> None:
         if not self._updating:
