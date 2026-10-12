@@ -4,6 +4,12 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Species without a recommended Gibbs energy are left out and reported by default;
+  `allow_incomplete=False` and `--require-complete` stop instead.
+- Ligand reservoirs are global, with a master switch and per-ligand toggles on the periodic table.
+- Application: policy comparison dialog, copied code that reproduces the shown diagram
+  (`pb.plot_uncertainty`), flagged source disagreements, grouped ligand complexes, background
+  calculations behind a loading overlay, faster tables and tabs, no wheel changes on inputs.
 - Schema 8: the database file stores evidence only. The recommended values are derived from the
   reported values by the active selection policy when the database is opened and appear to every
   connection as the temporary table `selected_thermochemistry`. Reported values gain `source_locator`; six
