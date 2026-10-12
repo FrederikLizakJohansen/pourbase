@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 794), ("reported_thermochemistry", 2625),
-                                 ("sources", 1664), ("warnings", 1148),
+            for table, count in (("species", 798), ("reported_thermochemistry", 2642),
+                                 ("sources", 1681), ("warnings", 1157),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -959,6 +959,78 @@ class DatasetSnapshotTests(unittest.TestCase):
                 self.assertAlmostEqual(fraction, 0.5, places=10)
                 self.assertAlmostEqual((dissolved + 2e-5 * fraction) / 2e-5, 1, places=12)
 
+    def test_magnesium_carbonate_formula_units_and_hydrated_boundaries(self) -> None:
+        from dataclasses import replace
+
+        import numpy as np
+
+        system = self.database.load_system("Mg", ligand_ids=("carbonate-co3",))
+        ion = next(s for s in system.species if s.formula_ascii == "Mg" and s.charge == 2)
+        factor = 8.31446261815324 * 298.15 * math.log(10)
+        water = self.database.reference_state.water_gibbs_energy_J_mol
+        for phase, metal, carbonate, oxygen, hydrogen, gibbs in (
+            ("magnesite", 1, 1, 0, 0, -1029500),
+            ("nesquehonite", 1, 1, 3, 6, -1723800),
+            ("hydromagnesite", 5, 4, 6, 10, -5864200),
+            ("artinite", 2, 1, 5, 8, -2568400),
+        ):
+            solid = next(s for s in system.species if s.record_id == f"r07-mg-{phase}")
+            self.assertEqual((solid.metal_count, solid.ligand_count,
+                              solid.core_oxygen_count, solid.core_hydrogen_count),
+                             (metal, carbonate, oxygen, hydrogen))
+            self.assertEqual(solid.gibbs_energy_J_mol, gibbs)
+            self.assertEqual(solid.electrons_per_metal, 2)
+            protons = 2 * oxygen - hydrogen
+            self.assertEqual(protons, 2 * metal - 2 * carbonate)
+            self.assertEqual(solid.protons_per_metal, protons / metal)
+            # Independently balance the full mineral dissolution at pH 8.
+            reaction_g = (metal * ion.gibbs_energy_J_mol
+                          + carbonate * solid.ligand_gibbs_energy_J_mol
+                          + oxygen * water - gibbs)
+            log_k = -reaction_g / factor
+            log_carbonate = (log_k + 5 * metal - 8 * protons) / carbonate
+            conditions = pb.PourbaixConditions(
+                pH_min=8, pH_max=8.01, pH_points=2, eh_points=2,
+                ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
+                    "carbonate-co3", log10_free_activity=log_carbonate,
+                ),)),
+            )
+            result = pb.MassBalanceEngine(self.database).calculate_system(
+                replace(system, species=(ion, solid), excluded=()),
+                conditions, pb.TotalMetalConcentration(2e-5),
+            )
+            np.testing.assert_allclose(result.dissolved_metal_mol_L[:, 0], 1e-5, rtol=2e-12)
+            np.testing.assert_allclose(result.precipitated_metal_fraction[:, 0], .5, rtol=2e-12)
+
+    def test_magnesium_original_entropies_and_open_nbs_evaluations(self) -> None:
+        for phase, value, interval, status in (
+            ("magnesite", 65.09, .13, pb.EvidenceStatus.VERIFIED),
+            ("nesquehonite", 46.76 * 4.184, .14 * 4.184, pb.EvidenceStatus.VERIFIED),
+            ("hydromagnesite", 120.38 * 4.184, .37 * 4.184,
+             pb.EvidenceStatus.SOURCE_VERIFIED_ESTIMATE),
+        ):
+            record = self.database.species_records((f"r07-mg-{phase}",))[0]
+            original = next(r for r in record.reported
+                            if r.value_id.endswith(":usgs-original-calorimetry"))
+            self.assertEqual((original.value, original.uncertainty, original.status),
+                             (value, interval, status))
+            self.assertFalse(original.selected_as_recommended)
+            self.assertIn("correlated", original.source.locator)
+            with closing(sqlite3.connect(self.database.path)) as c:
+                self.assertIsNone(c.execute(
+                    "SELECT pressure_bar FROM reported_thermochemistry WHERE value_id=?",
+                    (original.value_id,),
+                ).fetchone()[0])
+            if phase == "hydromagnesite":
+                self.assertIn("zero residual entropy", original.source.locator)
+        ion = self.database.species_records(("gfe-mg-mg-q+2-aqueous-aq",))[0]
+        self.assertEqual(ion.thermochemistry.formation_enthalpy_J_mol.value, -466850)
+        complex_record = self.database.species_records(("gfe-mg-mghco3-q+1-aqueous-aq",))[0]
+        self.assertEqual(complex_record.thermochemistry.gibbs_energy_J_mol.value, -1047200)
+        self.assertIn("10.18434/M32124", complex_record.thermochemistry.gibbs_energy_J_mol.source.url)
+        self.assertTrue(any(r.value == -1048857 and not r.selected_as_recommended
+                            for r in complex_record.reported))
+
     def test_calcium_original_association_fit_and_missing_ion_enthalpy(self) -> None:
         ion = self.database.species_records(("gfe-ca-ca-q+2-aqueous-aq",))[0]
         h = ion.thermochemistry.formation_enthalpy_J_mol
@@ -1745,9 +1817,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 702, "absolute_entropy": 673, "enthalpy_of_formation": 528})
+                         {"gibbs_energy_of_formation": 706, "absolute_entropy": 677, "enthalpy_of_formation": 533})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "62814a5d0ef6071d",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "d400f122880f358a",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

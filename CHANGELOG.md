@@ -35,8 +35,13 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
   fractions of dissolved species where no solid precipitates; `thermal_scale` and
   `--boltzmann-scale` remain as deprecated aliases.
 
-- 794 species and 2625 retained observations across 74 supported elemental systems, with
-  recommended Gibbs energies for 702.
+- 798 species and 2642 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 706.
+- Four magnesium carbonate minerals and 17 observations: 12 USGS mineral properties,
+  three original entropy alternatives, Mg²⁺ enthalpy and MgHCO3+ Gibbs energy.
+  Complete hydrated/basic-carbonate formula units fill 13 missing properties. The default
+  policy selects the open NBS MgHCO3+ Gibbs evaluation; all earlier evidence remains stored.
+  Original hydromagnesite entropy retains its zero-residual-entropy assumption as an estimate.
 - Seven open calcium observations: the missing Ca²⁺ formation enthalpy and six
   original-fit CaCO3(aq)/CaHCO3+ formation alternatives. Earlier recommendations
   and calculations are preserved. Original fit derivatives and inconsistent

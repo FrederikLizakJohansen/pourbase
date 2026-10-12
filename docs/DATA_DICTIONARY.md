@@ -790,3 +790,38 @@ remain separate from the admitted NBS-anchored formation estimates.
 All prior observations and recommendations are preserved. Ca²⁺ H fills one
 missing field; all default and checked carbonate diagrams remain unchanged.
 Current totals: 794 species, 2,625 observations and 702/673/528 selected G/S/H.
+
+The magnesium carbonate checkpoint adds four pure mineral records with all
+12 G/H/S properties from USGS Bulletin 2131, p. 25, at 298.15 K/1 bar:
+magnesite MgCO3, nesquehonite MgCO3(H2O)3, hydromagnesite
+Mg5(CO3)4(OH)2(H2O)4 and artinite Mg2(CO3)(OH)2(H2O)3. Properties are
+per complete formula unit. Their metal/carbonate counts are 1/1, 1/1, 5/4
+and 2/1; core oxygen/hydrogen counts are 0/0, 3/6, 6/10 and 5/8.
+These produce two electrons per metal and proton coefficients 0, 0, 0.4
+and 1 per metal. Hydration water therefore cancels against the water reference
+in the transformed potential. Formula units and water terms are checked using
+independently balanced dissolution boundaries and closed-metal concentrations.
+
+Three original entropy alternatives retain the published precision, experimental
+lineage and unspecified source pressure (NULL): magnesite 65.09 ±0.13 J/(mol K),
+nesquehonite (46.76 ±0.14) ×4.184 J/(mol K), and hydromagnesite
+(120.38 ±0.37) ×4.184 J/(mol K). The original hydromagnesite authors assumed
+zero residual entropy for an ordered compound; this absolute-entropy interpretation
+has `source_verified_estimate` status. The later USGS critical entropies remain
+preferred. Original and later representations share calorimetric lineage;
+their covariance is unavailable.
+
+Open NBS Mg²⁺ H of −466,850 J/mol fills a missing field. Open NBS MgHCO3+ G
+of −1,047,200 J/mol becomes preferred under the unchanged policy's class B
+family ordering; the earlier Miron G of −1,048,857 J/mol remains stored.
+The selected complex G/H/S combine distinct evaluations and carry a source-basis
+warning. No policy override or exclusion is introduced.
+
+This checkpoint adds 17 observations and 13 missing selected properties while
+preserving every earlier row. The 74 ligand-free diagrams are unchanged.
+Carbonate-enabled magnesium mass balances include the four new solids and can
+change precipitation substantially; the independently checked formula-unit,
+hydration and proton balances remain conserved. Native four-Mg hydromagnesite,
+mixed Ca/Mg phases, isotope models, association originals and exact native
+pressure/reference transfers remain separate source/model follow-ups.
+Current totals: 798 species, 2,642 observations and 706/677/533 selected G/S/H.

@@ -11,16 +11,16 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 794,
+    "species": 798,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2625,
-    "recommended_values": 1903,
-    "source_records": 1664,
-    "distinct_citations": 154,
-    "warnings": 1148,
-    "phase_records": 460,
-    "resolved_phase_records": 242,
+    "reported_thermochemistry": 2642,
+    "recommended_values": 1916,
+    "source_records": 1681,
+    "distinct_citations": 156,
+    "warnings": 1157,
+    "phase_records": 464,
+    "resolved_phase_records": 246,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
@@ -32,14 +32,14 @@
       "species": 466,
       "gibbs": 397,
       "entropy": 397,
-      "enthalpy": 269
+      "enthalpy": 270
     },
     {
       "phase": "solid",
-      "species": 317,
-      "gibbs": 294,
-      "entropy": 265,
-      "enthalpy": 248
+      "species": 321,
+      "gibbs": 298,
+      "entropy": 269,
+      "enthalpy": 252
     },
     {
       "phase": "gas",
@@ -59,20 +59,20 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 702
+      "available": 706
     },
     {
       "property": "Entropy",
-      "available": 673
+      "available": 677
     },
     {
       "property": "Formation enthalpy",
-      "available": 528
+      "available": 533
     }
   ],
   "gibbs_status": {
-    "verified": 394,
-    "source_verified_estimate": 234,
+    "verified": 399,
+    "source_verified_estimate": 233,
     "not_available": 86,
     "defined_reference_state": 74,
     "terminal_evidence_gap": 6
@@ -160,7 +160,7 @@
       "symbol": "Mg",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 16
+      "species": 20
     },
     {
       "atomic_number": 13,
@@ -1377,15 +1377,15 @@
     {
       "symbol": "Mg",
       "system": "Magnesium (Mg)",
-      "species": 16,
+      "species": 20,
       "aqueous": 8,
-      "solid": 8,
+      "solid": 12,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 14,
-      "entropy": 14,
-      "enthalpy": 13,
-      "warnings": 32
+      "gibbs": 18,
+      "entropy": 18,
+      "enthalpy": 18,
+      "warnings": 41
     },
     {
       "symbol": "Mn",
@@ -2063,11 +2063,19 @@
       "count": 4
     },
     {
+      "warning_type": "r07_mg_carbonate_formula_and_buffer",
+      "count": 4
+    },
+    {
       "warning_type": "miron_published_dataset_discrepancy",
       "count": 4
     },
     {
       "warning_type": "shock_r06_two_iron_fits",
+      "count": 3
+    },
+    {
+      "warning_type": "r07_original_entropy_lineage_and_pressure",
       "count": 3
     },
     {
@@ -2108,6 +2116,10 @@
     },
     {
       "warning_type": "r07_original_calorimetry_lineage_and_pressure",
+      "count": 2
+    },
+    {
+      "warning_type": "r07_nbs_magnesium_evaluation_basis",
       "count": 2
     },
     {
@@ -2398,7 +2410,7 @@
   "phase_identity": [
     {
       "identity_status": "resolved",
-      "count": 232
+      "count": 236
     },
     {
       "identity_status": "aqueous_species_identified",

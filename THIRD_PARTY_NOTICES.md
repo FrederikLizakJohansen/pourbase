@@ -29,6 +29,25 @@ retain the published values, conversion and unavailable uncertainty.
 
 ## USGS mineral evaluations
 
+The magnesium continuation adds 12 Bulletin 2131 properties for magnesite,
+nesquehonite, hydromagnesite and artinite, printed p. 25. The existing federal
+public-domain evaluation review covers these individually cited observations;
+USGS is acknowledged. Formula units, hydration and published intervals are
+retained. Three original entropy observations use the established individually
+attributed USGS numerical-fact route: Hemingway, Robie, Fisher and Wilson (1977),
+USGS Journal of Research 5, 797–806, and Robie and Hemingway (1972), American
+Mineralogist 57, 1768–1781. Original journal material stays in the external review.
+The original hydromagnesite absolute-entropy interpretation is labelled an
+estimate because the authors explicitly assumed zero residual entropy.
+
+- Original magnesite calorimetry: <https://pubs.usgs.gov/journal/1977/vol5issue6/report.pdf>
+- Original hydrated-carbonate calorimetry: <http://www.minsocam.org/ammin/AM57/AM57_1768.pdf>
+
+Open NBS digitization also supplies Mg²⁺ formation enthalpy and MgHCO3+ formation
+Gibbs energy, logical CSV records 8864 and 9092, zero-based columns 7 and 8.
+The explicit NIST PDR data licence and previous review apply; NIST is acknowledged.
+These source-linked values are retained alongside the earlier aqueous evaluations.
+
 The calcium aqueous-association continuation retains six G/H/S estimates from
 the original Plummer and Busenberg (1982) numerical abstract, equations 4–5,
 at <https://pubs.usgs.gov/publication/70011789>. These individually attributed
