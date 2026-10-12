@@ -4,12 +4,12 @@ Al,Aluminum (Al),15,6,9,0,0,14,13,12,28
 As,Arsenic (As),11,7,4,0,0,11,10,10,4
 Au,Gold (Au),15,13,2,0,0,11,8,3,23
 B,Boron (B),5,3,2,0,0,5,5,5,1
-Ba,Barium (Ba),8,5,3,0,0,8,8,5,16
+Ba,Barium (Ba),10,6,4,0,0,10,10,8,20
 Be,Beryllium (Be),14,11,3,0,0,5,14,3,26
 Bi,Bismuth (Bi),8,5,3,0,0,6,5,2,13
 Br,Bromine (Br),7,6,0,0,1,7,7,7,0
 C,Carbon (C),7,4,1,2,0,7,7,7,9
-Ca,Calcium (Ca),19,9,10,0,0,19,19,16,43
+Ca,Calcium (Ca),22,9,13,0,0,22,22,19,48
 Cd,Cadmium (Cd),15,12,3,0,0,9,11,4,21
 Ce,Cerium (Ce),13,7,6,0,0,12,9,10,14
 Cl,Chlorine (Cl),9,8,0,1,0,9,9,9,1
@@ -21,7 +21,7 @@ Dy,Dysprosium (Dy),8,5,3,0,0,8,6,6,9
 Er,Erbium (Er),8,5,3,0,0,8,6,7,10
 Eu,Europium (Eu),13,6,7,0,0,12,10,11,13
 F,Fluorine (F),4,3,0,1,0,4,4,4,1
-Fe,Iron (Fe),34,17,17,0,0,28,31,18,60
+Fe,Iron (Fe),35,17,18,0,0,29,32,20,63
 Ga,Gallium (Ga),9,6,3,0,0,7,8,2,17
 Gd,Gadolinium (Gd),11,6,5,0,0,10,6,7,12
 Ge,Germanium (Ge),4,1,3,0,0,4,3,3,2
@@ -36,7 +36,7 @@ La,Lanthanum (La),11,5,6,0,0,10,7,8,13
 Li,Lithium (Li),4,3,1,0,0,4,4,2,3
 Lu,Lutetium (Lu),10,6,4,0,0,10,7,7,11
 Mg,Magnesium (Mg),16,8,8,0,0,14,14,13,32
-Mn,Manganese (Mn),20,10,10,0,0,17,19,13,28
+Mn,Manganese (Mn),21,10,11,0,0,18,20,15,31
 Mo,Molybdenum (Mo),5,1,4,0,0,5,5,3,2
 N,Nitrogen (N),8,5,0,3,0,8,8,8,20
 Na,Sodium (Na),17,10,7,0,0,16,15,13,37
@@ -60,7 +60,7 @@ Se,Selenium (Se),7,6,1,0,0,7,7,7,0
 Si,Silicon (Si),5,3,2,0,0,5,4,4,9
 Sm,Samarium (Sm),13,7,6,0,0,12,6,8,16
 Sn,Tin (Sn),10,5,5,0,0,8,9,4,14
-Sr,Strontium (Sr),8,5,3,0,0,8,8,5,15
+Sr,Strontium (Sr),10,6,4,0,0,10,10,8,19
 Ta,Tantalum (Ta),4,2,2,0,0,4,2,1,6
 Tb,Terbium (Tb),11,6,5,0,0,10,7,8,13
 Te,Tellurium (Te),4,2,2,0,0,4,3,3,2

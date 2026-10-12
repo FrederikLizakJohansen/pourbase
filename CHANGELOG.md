@@ -18,7 +18,7 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
   source and locator equals the schema 7 recommendation, and the `species` table is unchanged.
   Schema 7 files remain readable.
 - Seven aqueous species listed in the NBS Tables under two water-equivalent formulas are single
-  records (785 species), each with a warning naming the second formula.
+  records, each with a warning naming the second formula.
 - `pourbase.crosscheck` and `scripts/pymatgen_crosscheck.py` compare every system with pymatgen;
   with the same water energy and Nernst slope all diagrams agree at every grid point.
 - `with_user_species` adds or substitutes user species from a CSV file, with the evidence status
@@ -35,8 +35,25 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
   fractions of dissolved species where no solid precipitates; `thermal_scale` and
   `--boltzmann-scale` remain as deprecated aliases.
 
-- 792 species and 2583 retained observations across 74 supported elemental systems, with
-  recommended Gibbs energies for 700.
+- 794 species and 2618 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 702.
+- Original Fe/Mn carbonate calorimetry and open NBS ion enthalpies: four observations,
+  two newly available preferred enthalpies, and explicit links between the original
+  entropy measurements and later critical evaluations. Existing recommendations and
+  default/carbonate-enabled Fe/Mn calculations are preserved; original entropy pressure
+  remains unspecified in the evidence record.
+- Original strontium/barium carbonate fits and open NBS aqueous anchors: 20 observations,
+  two bicarbonate complexes and eight newly available preferred fields. Original-fit
+  estimates replace six preferred correlation values for aqueous SrCO3/BaCO3; all earlier
+  evidence remains stored. Locators state the local pressure-flat approximation and
+  unavailable total uncertainty. The 74 default ligand-free diagrams are preserved.
+- Seven pure carbonate minerals from the public-domain USGS Bulletin 2131 evaluation:
+  19 source-linked properties, distinct calcium carbonate polymorphs, published uncertainty
+  intervals and buffered carbonate support. Earlier evidence and recommendations are preserved.
+- Six original solubility-fit G/H/S alternatives for aragonite and vaterite, derived using
+  relative phase differences and documented calcite anchors. Vaterite gains estimated entropy
+  and enthalpy; selected Gibbs energies and existing calculations are preserved. The source
+  locators state pressure assumptions and unavailable total uncertainty.
 - Remaining Shock1997 hydrolysis fits and entropy correlations: 67 observations,
   26 species and eight NBS-reference enthalpy calculations. Original-paper identities
   resolve two native charge errors; unresolved entropy ancestry remains held.

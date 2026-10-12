@@ -644,3 +644,126 @@ one individually cited original research value. Its formation H/G results inheri
 JANAF formation enthalpy and remain outside this import. The NBS TiO G/H/S
 alternatives retain their original-specimen and evaluation-ancestry holds.
 All preferred values, source IDs, species fields and phase records are preserved.
+
+On 12 October 2026, the database gained 19 USGS Bulletin 2131 observations for
+seven pure carbonate minerals: calcite, aragonite, vaterite, siderite,
+rhodochrosite, strontianite and witherite. Printed pp. 25–26 give formation
+Gibbs energies for all seven and entropies and formation enthalpies for six;
+vaterite's missing properties in this table remain explicit. Each observation is at 298.15 K
+and 1 bar, per mole of the full MCO₃ formula unit. Energy values and their
+uncertainty intervals were converted from kJ/mol to J/mol. Entropies retain
+J/(mol K). Source locators preserve the evaluation's numbered numerical parents.
+
+The published uncertainty intervals are stored as reported. The source describes
+calorimetric intervals as typically twice the standard deviation of the mean;
+these intervals should retain their source-specific interpretation in uncertainty
+analyses. Calcite, aragonite and vaterite remain separate phase records.
+
+These minerals use the existing `carbonate-co3` reference and a buffered free
+CO₃²⁻ activity. Enable that ligand to include them in calculations. A total
+dissolved carbonate concentration requires a separate carbonate speciation model.
+The balanced reaction has two electrons, no protons and one carbonate per metal.
+Solubility products calculated with the selected aqueous-ion and ligand references
+combine those evaluations with the USGS solid values. Native PHREEQC reaction
+constants remain subject to their own source and standard-state review.
+
+The default policy selects all 19 new properties. Earlier evidence and selections
+are preserved. The resulting snapshot has 792 species and 2,588 observations,
+with 700 selected Gibbs energies, 670 entropies and 520 formation enthalpies
+before the following derivation batch.
+
+The native carbonate reaction review adds six separately calculated G/H/S
+alternatives for aragonite and vaterite from the original Plummer and Busenberg
+(1982) solubility-fit equations. For dissolution to the same Ca²⁺ and CO₃²⁻
+products, the aqueous reference terms cancel:
+`G_phase − G_calcite = RT ln(K_phase/K_calcite)`.
+Differentiating the original temperature expressions gives
+`S_phase − S_calcite = −d(G_phase − G_calcite)/dT` and
+`H_phase − H_calcite = (G_phase − G_calcite) + T(S_phase − S_calcite)`.
+The reviewed USGS calcite G/H/S provide the separate formation anchors.
+
+These estimates use a stated local constant-volume model for the 1 atm to
+1 bar transfer. Original solid volumes give a relative G/H correction below
+0.004 J/mol; the model assumes temperature-independent volumes and zero entropy
+transfer. Source locators record the complete equations, coefficients, anchors
+and pressure assumption. Fit-coefficient, shared-model and anchor covariance
+are unavailable, so total uncertainty remains NULL. The derived aragonite entropy
+differs from calorimetry and stays an alternative.
+
+All six observations have `source_verified_estimate` status and class E under
+the unchanged default policy. Vaterite gains estimated H and S; its selected
+G remains the USGS point evaluation, 233.2 J/mol below the paired derived G.
+These selected properties represent distinct evaluations, with a warning that
+they do not establish a single fitted thermodynamic triplet. Earlier reported
+values and selections are preserved. The current snapshot has 792 species,
+2,594 observations, 700 selected Gibbs energies, 671 entropies and 521 formation
+enthalpies. Default and carbonate-enabled diagrams and metal balances are
+unchanged because the selected Gibbs energies are preserved.
+
+The subsequent Sr/Ba anchor batch adds two verified NBS ion formation enthalpies
+and 18 original-fit formation estimates for strontianite, witherite and aqueous
+SrCO₃, BaCO₃, SrHCO₃⁺ and BaHCO₃⁺. The two bicarbonate complexes are new species.
+NBS CSV logical records 9635/9932 supply Sr²⁺/Ba²⁺ G/H/S; records 1661/1673
+supply CO₃²⁻/HCO₃⁻ G/H/S. Each source locator records the original rows,
+columns, values, units and reference conventions.
+
+The original 1984/1986 reaction fits use 1 atm. The new estimates explicitly
+assume a locally pressure-flat balanced reaction (`ΔV_r(T) = 0`) over the
+1.01325-to-1 bar interval. Reaction pressure corrections to G/H/S are zero
+in this approximation. The sensitivity of G to an actual constant reaction
+volume is −0.001325 J/mol per cm³/mol; the locator's 100 cm³/mol example
+is illustrative, with no certified bound on the pressure error. Actual
+reaction-volume temperature dependence and total fit/reference covariance
+remain unavailable, so uncertainty is NULL. This assumption covers local
+298.15 K/1 bar estimates. Exact native pressure transfers stay in the external
+review. Original-study metal-ion reevaluations are separate from these NBS anchors.
+
+For each fitted reaction, `ΔG = −RT ln K`, `ΔH = RT² d(ln K)/dT` and
+`ΔS = (ΔH − ΔG)/T`. Association formation properties add the reaction
+properties to the ion/ligand anchors; mineral dissolution subtracts them.
+Balanced charges preserve the conventional aqueous H⁺ reference. Bicarbonate
+complexes use one `carbonate-co3` ligand and one core hydrogen, giving two
+electrons and −1 proton per metal in the transformed formation reaction.
+The original association constants are reproduced with the NBS carbonate
+protonation reference under this local approximation.
+
+All earlier evidence is retained. The unchanged default policy selects the
+original-fit estimates over correlations for aqueous SrCO₃/BaCO₃, changing
+six preferred G/H/S fields. Eight previously absent preferred fields become
+available: Sr²⁺/Ba²⁺ H and both bicarbonate-complex G/H/S triplets. Selected
+solid mineral values stay unchanged. The 74 default ligand-free diagrams
+are unchanged; carbonate-enabled Sr/Ba diagrams incorporate the new complexes
+and selected association fits. Their aqueous ratios and closed-metal balances
+are checked against the original rounded point constants. Current totals:
+794 species, 2,614 observations, and 702/673/525 selected G/S/H fields.
+
+The Fe/Mn original-source checkpoint retains four further observations.
+Open NBS CSV logical records 5804/6291, column 7 (zero-based), supply Fe²⁺
+and Mn²⁺ formation enthalpies of −89.1 and −220.75 kJ/mol, converted to
+−89,100 and −220,750 J/mol. Both apply at 298.15 K/1 bar, with the
+conventional aqueous H⁺ reference and unavailable uncertainty. The Fe²⁺
+preferred G/S remain the later Parker/Khodakovskii values; its new NBS H
+belongs to a separate evaluation. Each property's source stays visible.
+
+Original USGS calorimetry in Robie, Haselton and Hemingway (1984), pp. 353–354,
+Tables 5–6, reports pure-endmember entropies of 98.03 ± 0.10 J/(mol K)
+for rhodochrosite and 95.47 ± 0.15 J/(mol K) for siderite. The authors
+corrected the measured specimens' minor carbonate impurities before integrating
+and smoothing their heat capacities. These source-verified observations retain
+their published precision and intervals. Their pressure is unspecified (NULL);
+the 5 kPa helium calorimeter fill is recorded as apparatus information.
+They share an experimental lineage with the stored later critical evaluations,
+whose explicit-1-bar entropies remain preferred. The source warning records
+that covariance and uncertainty conventions are source-specific.
+
+The accompanying native-source register distinguishes crystalline siderite
+(WATEQ species 94) and rhodochrosite (564) from separate synthetic/disordered
+evaluations (9 and 190). A blank reaction enthalpy retains its missing-evidence
+status. The original Nordstrom1990 abstract specifies 1 bar; its numerical
+chapter tables and per-property upstream ancestry remain held outside the
+release. Reaction H is kept distinct from formation H in this review.
+
+All previously stored rows and preferred values are preserved; two missing
+ion H fields become available. All 74 default diagrams and six carbonate-enabled
+Fe/Mn diagrams and metal balances are unchanged. The current snapshot has
+794 species, 2,618 observations and 702/673/527 selected G/S/H fields.

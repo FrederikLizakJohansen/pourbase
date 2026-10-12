@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 785), ("reported_thermochemistry", 2569),
-                                 ("sources", 1608), ("warnings", 1127),
+            for table, count in (("species", 794), ("reported_thermochemistry", 2618),
+                                 ("sources", 1657), ("warnings", 1146),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -902,6 +902,202 @@ class DatasetSnapshotTests(unittest.TestCase):
             self.assertEqual({diagram.system.species[int(i)].record_id
                               for i in diagram.stable_species_index.flat}, {winner.record_id})
 
+    def test_usgs_carbonate_polymorphs_and_buffered_solubility(self) -> None:
+        from dataclasses import replace
+
+        factor = 8.31446261815324 * 298.15 * math.log(10)
+        for symbol, phase, gibbs in (
+            ("Ca", "calcite", -1128500), ("Ca", "aragonite", -1127400),
+            ("Ca", "vaterite", -1125500), ("Fe", "siderite", -682800),
+            ("Mn", "rhodochrosite", -819100), ("Sr", "strontianite", -1137600),
+            ("Ba", "witherite", -1132200),
+        ):
+            rid = f"r07-{symbol.lower()}-{symbol.lower()}co3-{phase}"
+            record = self.database.species_records((rid,))[0]
+            self.assertEqual(record.phase_identity.identified_phase, phase)
+            self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, gibbs)
+            self.assertIn("10.3133/b2131", record.thermochemistry.gibbs_energy_J_mol.source.url)
+            original = [r for r in record.reported if r.value_id.endswith(":usgs-b2131-1995")]
+            self.assertTrue(all("Numbered numerical parents" in r.source.locator for r in original))
+            if phase == "vaterite":
+                self.assertEqual(len(original), 1)
+                for value in (record.thermochemistry.entropy_J_mol_K,
+                              record.thermochemistry.formation_enthalpy_J_mol):
+                    self.assertEqual(value.status, pb.EvidenceStatus.SOURCE_VERIFIED_ESTIMATE)
+                    self.assertIsNone(value.uncertainty)
+            self.assertFalse(any(s.record_id == rid for s in self.database.load_system(symbol).species))
+            system = self.database.load_system(symbol, ligand_ids=("carbonate-co3",))
+            solid = next(s for s in system.species if s.record_id == rid)
+            ion = next(s for s in system.species if s.formula_ascii == symbol and s.charge == 2)
+            self.assertEqual((solid.electrons_per_metal, solid.protons_per_metal), (2, 0))
+            restricted = replace(system, species=(ion, solid), excluded=())
+            log_ksp = (gibbs - ion.gibbs_energy_J_mol - solid.ligand_gibbs_energy_J_mol) / factor
+            for offset, winner in ((-0.1, ion), (0.1, solid)):
+                conditions = pb.PourbaixConditions(
+                    pH_points=3, eh_points=3,
+                    aqueous_activities=pb.AqueousActivityModel(default_log10_activity=0),
+                    ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
+                        "carbonate-co3", log10_free_activity=log_ksp + offset
+                    ),)),
+                )
+                diagram = pb.PourbaixEngine(self.database).calculate_system(restricted, conditions)
+                self.assertEqual({diagram.system.species[int(i)].record_id
+                                  for i in diagram.stable_species_index.flat}, {winner.record_id})
+            # Ksp / a_CO3 fixes the saturation concentration at 1e-5 M.
+            conditions = pb.PourbaixConditions(
+                pH_points=3, eh_points=3,
+                ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
+                    "carbonate-co3", log10_free_activity=log_ksp + 5
+                ),)),
+            )
+            balanced = pb.MassBalanceEngine(self.database).calculate_system(
+                restricted, conditions, pb.TotalMetalConcentration(2e-5),
+            )
+            for dissolved, fraction in zip(balanced.dissolved_metal_mol_L.flat,
+                                           balanced.precipitated_metal_fraction.flat):
+                self.assertAlmostEqual(dissolved / 1e-5, 1, places=10)
+                self.assertAlmostEqual(fraction, 0.5, places=10)
+                self.assertAlmostEqual((dissolved + 2e-5 * fraction) / 2e-5, 1, places=12)
+
+    def test_fe_mn_original_calorimetry_and_open_ion_enthalpies(self) -> None:
+        for symbol, phase, original_s, interval, evaluated_s, enthalpy in (
+            ("Fe", "siderite", 95.47, .15, 95.5, -89100),
+            ("Mn", "rhodochrosite", 98.03, .10, 98.0, -220750),
+        ):
+            rid = f"r07-{symbol.lower()}-{symbol.lower()}co3-{phase}"
+            record = self.database.species_records((rid,))[0]
+            entropy = next(r for r in record.reported
+                           if r.value_id.endswith(":usgs-1984-original-calorimetry"))
+            self.assertEqual((entropy.value, entropy.uncertainty), (original_s, interval))
+            self.assertEqual(entropy.status, pb.EvidenceStatus.VERIFIED)
+            self.assertFalse(entropy.selected_as_recommended)
+            self.assertIn("corrected pure MCO3 endmember", entropy.source.locator)
+            self.assertIn("correlated representations", entropy.source.locator)
+            self.assertEqual(record.thermochemistry.entropy_J_mol_K.value, evaluated_s)
+            with closing(sqlite3.connect(self.database.path)) as c:
+                temperature, pressure = c.execute(
+                    "SELECT temperature_K,pressure_bar FROM reported_thermochemistry WHERE value_id=?",
+                    (entropy.value_id,),
+                ).fetchone()
+            self.assertEqual(temperature, 298.15)
+            self.assertIsNone(pressure)  # The helium fill pressure belongs to the apparatus.
+            ion = self.database.species_records((
+                f"gfe-{symbol.lower()}-{symbol.lower()}-q+2-aqueous-aq",
+            ))[0]
+            h = ion.thermochemistry.formation_enthalpy_J_mol
+            self.assertEqual(h.value, enthalpy)
+            self.assertEqual(h.status, pb.EvidenceStatus.VERIFIED)
+            self.assertIsNone(h.uncertainty)
+            self.assertIn("10.18434/M32124", h.source.url)
+            self.assertIn("zero-based column 7", h.source.locator)
+            if symbol == "Fe":
+                self.assertEqual(ion.thermochemistry.gibbs_energy_J_mol.value, -90530)
+                self.assertIn("Parker", ion.thermochemistry.gibbs_energy_J_mol.source.citation)
+
+    def test_open_sr_ba_anchors_and_original_fit_alternatives(self) -> None:
+        for symbol, enthalpy, previous_g in (
+            ("Sr", -545800, -1108174.24), ("Ba", -537640, -1103864.72),
+        ):
+            ion = self.database.species_records((
+                f"gfe-{symbol.lower()}-{symbol.lower()}-q+2-aqueous-aq",
+            ))[0]
+            value = ion.thermochemistry.formation_enthalpy_J_mol
+            self.assertEqual(value.value, enthalpy)
+            self.assertEqual(value.status, pb.EvidenceStatus.VERIFIED)
+            self.assertIn("10.18434/M32124", value.source.url)
+            self.assertIn("Column 7 (zero-based)", value.source.locator)
+            neutral = self.database.species_records((
+                f"r06-{symbol.lower()}-{symbol.lower()}co3-q+0-aq",
+            ))[0]
+            self.assertTrue(any(r.value == previous_g and not r.selected_as_recommended
+                                for r in neutral.reported))
+            fitted = [r for r in neutral.reported
+                      if r.value_id.endswith(":original-fit-nbs-pressure-flat")]
+            self.assertEqual(len(fitted), 3)
+            for row in fitted:
+                self.assertTrue(row.selected_as_recommended)
+                self.assertEqual(row.status, pb.EvidenceStatus.SOURCE_VERIFIED_ESTIMATE)
+                self.assertIsNone(row.uncertainty)
+                self.assertIn("pressure-flat reaction approximation", row.source.locator)
+                self.assertIn("not a certified error bound", row.source.locator)
+
+    def test_sr_ba_association_matches_original_points_and_proton_balance(self) -> None:
+        from dataclasses import replace
+
+        import numpy as np
+
+        log_carbonate = -6
+        # Independent rounded point constants from the original USGS author abstracts.
+        for symbol, carbonate_log_k, bicarbonate_log_k in (
+            ("Sr", 2.81, 1.18), ("Ba", 2.71, .982),
+        ):
+            rid = f"r07-{symbol.lower()}-{symbol.lower()}hco3-q+1-aq"
+            self.assertNotIn(rid, {s.record_id for s in self.database.load_system(symbol).species})
+            system = self.database.load_system(symbol, ligand_ids=("carbonate-co3",))
+            ion = next(s for s in system.species if s.formula_ascii == symbol and s.charge == 2)
+            neutral = next(s for s in system.species
+                           if s.formula_ascii == symbol + "CO3" and s.is_aqueous)
+            bicarbonate = next(s for s in system.species if s.record_id == rid)
+            self.assertEqual((bicarbonate.electrons_per_metal, bicarbonate.protons_per_metal), (2, -1))
+            self.assertEqual((bicarbonate.core_oxygen_count, bicarbonate.core_hydrogen_count,
+                              bicarbonate.ligand_count), (0, 1, 1))
+            conditions = pb.PourbaixConditions(
+                pH_points=3, eh_points=3,
+                ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
+                    "carbonate-co3", log10_free_activity=log_carbonate,
+                ),)),
+            )
+            diagram = pb.MassBalanceEngine(self.database).calculate_system(
+                replace(system, species=(ion, neutral, bicarbonate), excluded=()),
+                conditions, pb.TotalMetalConcentration(1e-4),
+            )
+            concentrations = diagram.aqueous_concentration_mol_L
+            np.testing.assert_allclose(concentrations.sum(axis=0), 1e-4, rtol=1e-12)
+            observed = np.log10(concentrations[1] / concentrations[0]) - log_carbonate
+            np.testing.assert_allclose(observed, carbonate_log_k, atol=.005, rtol=0)
+            p_k = (-527810 + 586770) / (8.31446261815324 * 298.15 * math.log(10))
+            observed = (np.log10(concentrations[2] / concentrations[0])
+                        - log_carbonate - p_k + diagram.pH[None, :])
+            np.testing.assert_allclose(observed, bicarbonate_log_k, atol=.005, rtol=0)
+
+    def test_original_carbonate_relative_fit_preserves_phase_thermodynamics(self) -> None:
+        calcite = self.database.species_records(("r07-ca-caco3-calcite",))[0].thermochemistry
+        anchors = {
+            "gibbs_energy_of_formation": calcite.gibbs_energy_J_mol.value,
+            "absolute_entropy": calcite.entropy_J_mol_K.value,
+            "enthalpy_of_formation": calcite.formation_enthalpy_J_mol.value,
+        }
+        temperature, gas_constant = 298.15, 8.31446261815324
+        for phase, coefficients, volume in (
+            ("aragonite", (-171.9773, 2903.293), 34.15),
+            ("vaterite", (-172.1295, 3074.688), 37.63),
+        ):
+            record = self.database.species_records((f"r07-ca-caco3-{phase}",))[0]
+            derived = {r.property: r for r in record.reported
+                       if r.value_id.endswith(":pb1982-relative-calcite-model")}
+            self.assertEqual(set(derived), set(anchors))
+            delta_g = derived["gibbs_energy_of_formation"].value - anchors["gibbs_energy_of_formation"]
+            delta_h = derived["enthalpy_of_formation"].value - anchors["enthalpy_of_formation"]
+            delta_s = derived["absolute_entropy"].value - anchors["absolute_entropy"]
+            self.assertAlmostEqual(delta_g, delta_h - temperature * delta_s, places=8)
+            # Differentiate the full original logK expressions numerically.
+            def relative_g(t):
+                def log_k(a, c):
+                    return a - .077993 * t + c / t + 71.595 * math.log10(t)
+                return gas_constant * t * math.log(10) * (
+                    log_k(*coefficients) - log_k(-171.9065, 2839.319)
+                )
+            finite_difference = -(relative_g(temperature + .01) - relative_g(temperature - .01)) / .02
+            self.assertAlmostEqual(delta_s, finite_difference, places=6)
+            pressure = (volume - 36.93) * 1e-6 * (100000 - 101325)
+            self.assertAlmostEqual(delta_g, relative_g(temperature) + pressure, places=8)
+            for value in derived.values():
+                self.assertEqual(value.status, pb.EvidenceStatus.SOURCE_VERIFIED_ESTIMATE)
+                self.assertIsNone(value.uncertainty)
+                self.assertIn("total uncertainty NULL", value.source.locator)
+                self.assertEqual(value.selected_as_recommended,
+                                 phase == "vaterite" and value.property != "gibbs_energy_of_formation")
+
     def test_yttrium_fluoride_source_units_charge_and_derived_enthalpy(self) -> None:
         for formula, charge, count, g_cal, s_cal in (
             ("YF", 2, 1, -237220.0, -33.37),
@@ -1519,9 +1715,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 693, "absolute_entropy": 664, "enthalpy_of_formation": 514})
+                         {"gibbs_energy_of_formation": 702, "absolute_entropy": 673, "enthalpy_of_formation": 527})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "93ee319b39439831",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "0354263d2b1386ca",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

@@ -16,6 +16,17 @@ alternatives. Values in kJ/mol were converted to J/mol; entropy units were retai
 observation cites its digitized CSV logical record, formula, state and property column.
 The existing preferred properties remain selected for calculations.
 
+On 12 October 2026, the open NBS digitization also supplied the missing Sr²⁺
+and Ba²⁺ formation enthalpies. Their locators identify logical CSV records
+9635 and 9932, the aqueous state, property column and conversion to J/mol.
+Open NBS ion, carbonate and bicarbonate G/H/S anchor the separately calculated
+strontium/barium carbonate-fit estimates described below. NIST is acknowledged.
+
+The Fe/Mn carbonate source review adds the missing Fe²⁺ and Mn²⁺ formation
+enthalpies from the same open NBS digitization, logical records 5804 and 6291,
+zero-based column 7, at 298.15 K/1 bar. NIST is acknowledged. Their locators
+retain the published values, conversion and unavailable uncertainty.
+
 ## USGS mineral evaluations
 
 The database retains the plattnerite PbO2 Gibbs energy, formation enthalpy and absolute entropy
@@ -24,6 +35,62 @@ from Robie and Hemingway (1995), USGS Bulletin 2131, printed pp. 18 and 209, at 
 documented in each source locator and the species warning. The values are retained as
 alternatives alongside the existing preferred evaluation. USGS-authored data are public domain;
 USGS is acknowledged as the source.
+
+On 12 October 2026, 19 properties for calcite, aragonite, vaterite, siderite,
+rhodochrosite, strontianite and witherite were added from the same USGS evaluation,
+printed pp. 25–26. These are seven distinct pure mineral phases at 298.15 K and
+1 bar. Each property records the original table location, unit conversion,
+published uncertainty interval and numbered references used by the USGS evaluation.
+The existing public-domain source review covers this addition; USGS is acknowledged.
+This table supplies vaterite's Gibbs energy; its entropy and enthalpy are absent.
+
+Two original entropy observations from Robie, Haselton and Hemingway (1984)
+retain their exact published precision and intervals after the authors corrected
+the specimens to pure FeCO₃/MnCO₃ endmembers. These original USGS-authored
+calorimetry facts use the established federal public-domain source route, with
+USGS attribution. They share an experimental lineage with the later critical
+evaluations already stored. The original entropy pressure is unspecified and
+remains NULL; the source's helium-fill pressure is apparatus information.
+Journal text, figures and complete tables remain in the external review.
+
+- Robie, R. A., Haselton, H. T., Jr. and Hemingway, B. S. (1984),
+  *American Mineralogist* 69, 349–357, pp. 353–354, Tables 5–6.
+  Original journal archive: <http://www.minsocam.org/ammin/AM69/AM69_349.pdf>
+
+Six additional calculated G/H/S alternatives for aragonite and vaterite use
+the original USGS-authored calcium carbonate solubility fits of Plummer and
+Busenberg (1982), DOI 10.1016/0016-7037(82)90056-4. The equations and point
+constants were checked against the author abstract in the USGS Publications
+Warehouse and its original equation images. Relative polymorph differences
+cancel the aqueous reference terms and use the reviewed Bulletin 2131 calcite
+G/H/S as anchors. A stated constant-solid-volume model transfers the differences
+from 1 atm to 1 bar. These are separately labelled estimates with unavailable
+total uncertainty; vaterite's H/S estimates fill two property gaps. The reuse
+basis is individually attributed USGS-authored numerical facts and the reviewed
+federal evaluation. USGS is acknowledged. Original article images remain in
+the external source review.
+
+- Plummer and Busenberg (1982), original study and numerical abstract:
+  <https://pubs.usgs.gov/publication/70011789>
+- Ball and Nordstrom (1991), WATEQ4F manual, Table 2, printed pp. 23–24,
+  independently corroborates the calcite and aragonite constants and source:
+  <https://doi.org/10.3133/ofr91183>
+
+Eighteen additional G/H/S estimates use the original USGS-authored dissolution
+and association fits of Busenberg, Plummer and Parker (1984) and Busenberg and
+Plummer (1986). They cover strontianite/witherite and aqueous SrCO₃, BaCO₃,
+SrHCO₃⁺ and BaHCO₃⁺. Each locator states the original 1 atm convention,
+open NBS formation anchors and a local pressure-flat reaction approximation
+at 298.15 K/1 bar. Actual reaction volumes and total covariance are unavailable;
+these entries are labelled estimates with NULL uncertainty. The source-specific
+reuse route covers individually attributed original federal numerical facts
+and licensed NBS inputs. USGS and NIST are acknowledged. Original-study ion
+reevaluations and native database evaluations retain separate ancestry reviews.
+
+- Busenberg, Plummer and Parker (1984), original strontium study and numerical abstract:
+  <https://pubs.usgs.gov/publication/70014019>
+- Busenberg and Plummer (1986), original barium study and numerical abstract:
+  <https://pubs.usgs.gov/publication/70015035>
 
 - Robie, R. A. and Hemingway, B. S. (1995), *Thermodynamic Properties of Minerals and Related
   Substances at 298.15 K and 1 Bar (10^5 Pascals) Pressure and at Higher Temperatures*.
