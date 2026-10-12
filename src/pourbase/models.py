@@ -30,6 +30,7 @@ class EvidenceStatus(str, Enum):
     NOT_AVAILABLE = "not_available"
     TERMINAL_EVIDENCE_GAP = "terminal_evidence_gap"
     MATERIALS_PROJECT_FALLBACK = "materials_project_sisso_300K_fallback"
+    USER_SUPPLIED = "user_supplied"
 
 
 class ExclusionReason(str, Enum):
@@ -140,7 +141,13 @@ class LigandActivity:
             raise ValueError("standard_concentration_mol_L must be positive and finite")
 
     def log10_activity(self, pH: npt.ArrayLike) -> np.ndarray:
-        """Buffered activity of the deprotonated ligand at each pH."""
+        """Buffered activity of the deprotonated ligand at each pH.
+
+        A fixed free activity is returned as given. A total unbound pool c_L with an acid pKa
+        gives the free (deprotonated) ligand activity
+
+            log10 a_L = log10(c_L / c0) - log10(1 + 10^(pKa - pH)) .                    (11)
+        """
         pH_array = np.asarray(pH, dtype=np.float64)
         if self.log10_free_activity is not None:
             return np.full_like(pH_array, self.log10_free_activity)

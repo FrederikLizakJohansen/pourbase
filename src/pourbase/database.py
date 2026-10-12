@@ -34,18 +34,41 @@ from .records import (
 
 REQUIRED_SCHEMA_VERSION = 7
 
+PROPERTY_COLUMNS = (
+    # property, value column, column prefix, uncertainty column
+    ("gibbs_energy_of_formation", "gibbs_energy_J_mol", "gibbs", "gibbs_uncertainty_J_mol"),
+    ("absolute_entropy", "entropy_J_mol_K", "entropy", "entropy_uncertainty_J_mol_K"),
+    ("enthalpy_of_formation", "formation_enthalpy_J_mol", "formation_enthalpy", "formation_enthalpy_uncertainty_J_mol"),
+)
+
+RECOMMENDED_TABLE = """CREATE TEMP TABLE selected_thermochemistry (
+    record_id TEXT PRIMARY KEY, temperature_K REAL NOT NULL, pressure_bar REAL NOT NULL,
+    gibbs_energy_J_mol REAL, gibbs_status TEXT NOT NULL, gibbs_uncertainty_J_mol REAL,
+    gibbs_source_id TEXT, gibbs_source_locator TEXT, gibbs_value_id TEXT,
+    entropy_J_mol_K REAL, entropy_status TEXT NOT NULL, entropy_uncertainty_J_mol_K REAL,
+    entropy_source_id TEXT, entropy_source_locator TEXT, entropy_value_id TEXT,
+    formation_enthalpy_J_mol REAL, formation_enthalpy_status TEXT NOT NULL,
+    formation_enthalpy_uncertainty_J_mol REAL, formation_enthalpy_source_id TEXT,
+    formation_enthalpy_source_locator TEXT, formation_enthalpy_value_id TEXT
+)"""
+
 
 class ThermodynamicDatabase:
     """Validated, read-only access to one pourbase SQLite file.
 
-    The file is opened read-only, so metadata, systems and loaded species are cached.
+    The file holds the evidence: every reported value with its source. The recommended value of
+    each species and property is derived from that evidence by a selection policy, the bundled
+    default unless ``policy`` names another, and every connection sees it as the temporary table
+    ``selected_thermochemistry``. The file is opened read-only, so metadata, systems and loaded species are
+    cached.
     """
 
-    def __init__(self, path: str | Path) -> None:
+    def __init__(self, path: str | Path, policy: object | None = None) -> None:
         self.path = Path(path).expanduser().resolve()
         if not self.path.is_file():
             raise FileNotFoundError(self.path)
         self._uri = f"file:{self.path}?mode=ro"
+        self._policy = policy
         self._validate_schema()
         self._load_system = lru_cache(maxsize=512)(self._load_system_uncached)
 
@@ -54,19 +77,85 @@ class ThermodynamicDatabase:
     def bundled(cls) -> ThermodynamicDatabase:
         return cls(Path(str(files("pourbase").joinpath("data", "pourbase.sqlite"))))
 
-    def connect(self) -> sqlite3.Connection:
-        """A new read-only connection with named-column rows."""
+    def _connect_evidence(self) -> sqlite3.Connection:
         connection = sqlite3.connect(self._uri, uri=True)
         connection.row_factory = sqlite3.Row
+        return connection
+
+    def connect(self) -> sqlite3.Connection:
+        """A new read-only connection with named-column rows and the recommended values."""
+        connection = self._connect_evidence()
+        if self._stores_recommendations:
+            connection.execute("CREATE TEMP VIEW selected_thermochemistry AS SELECT * FROM main.thermochemistry")
+        else:
+            connection.execute(RECOMMENDED_TABLE)
+            connection.executemany(
+                f"INSERT INTO temp.selected_thermochemistry VALUES ({','.join('?' * 21)})", self._recommended_rows)
         return connection
 
     def _rows(self, query: str, parameters: Iterable[object] = ()) -> list[sqlite3.Row]:
         with closing(self.connect()) as connection:
             return connection.execute(query, tuple(parameters)).fetchall()
 
+    def _evidence_rows(self, query: str, parameters: Iterable[object] = ()) -> list[sqlite3.Row]:
+        with closing(self._connect_evidence()) as connection:
+            return connection.execute(query, tuple(parameters)).fetchall()
+
+    @property
+    def policy(self):
+        """The selection policy that derives the recommended values."""
+        if self._policy is None:
+            from .selection import SelectionPolicy
+
+            self._policy = SelectionPolicy.default()
+        return self._policy
+
+    @cached_property
+    def _stores_recommendations(self) -> bool:
+        """Files of schema 7 store their recommended values; later files hold only evidence."""
+        return bool(self._evidence_rows(
+            "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'thermochemistry'"))
+
+    @cached_property
+    def selections(self) -> dict:
+        """``{(record_id, property): Selection}`` of the active policy."""
+        from .selection import select
+
+        return select(_Evidence(self), self.policy)
+
+    @cached_property
+    def _recommended_rows(self) -> list[tuple]:
+        reference = self.reference_state
+        locators = {row["value_id"]: row["source_locator"] for row in self._evidence_rows(
+            "SELECT value_id, source_locator FROM reported_thermochemistry")}
+        gaps = {(row["record_id"], row["property"]) for row in self._evidence_rows(
+            "SELECT DISTINCT record_id, property FROM reported_thermochemistry WHERE status = ?",
+            (EvidenceStatus.TERMINAL_EVIDENCE_GAP.value,))}
+        rows = []
+        for (record_id,) in self._evidence_rows("SELECT record_id FROM species ORDER BY record_id"):
+            row: list = [record_id, reference.temperature_K, reference.pressure_bar]
+            for property_name, *_columns in PROPERTY_COLUMNS:
+                selection = self.selections.get((record_id, property_name))
+                if selection is None:
+                    status = ("terminal_evidence_gap" if (record_id, property_name) in gaps else "not_available")
+                    row += [None, status, None, None, None, None]
+                else:
+                    chosen = selection.chosen
+                    row += [chosen.value, chosen.status, chosen.uncertainty, chosen.source_id,
+                            locators.get(chosen.value_id), chosen.value_id]
+            rows.append(tuple(row))
+        return rows
+
+    def recommended_value_ids(self) -> frozenset[str]:
+        """The value IDs the active policy recommends."""
+        if self._stores_recommendations:
+            return frozenset(row["value_id"] for row in self._evidence_rows(
+                "SELECT value_id FROM reported_thermochemistry WHERE selected_as_recommended = 1"))
+        return frozenset(item.chosen.value_id for item in self.selections.values())
+
     @cached_property
     def metadata(self) -> dict[str, str]:
-        return {row["key"]: row["value"] for row in self._rows("SELECT key, value FROM metadata")}
+        return {row["key"]: row["value"] for row in self._evidence_rows("SELECT key, value FROM metadata")}
 
     def _validate_schema(self) -> None:
         try:
@@ -162,6 +251,7 @@ class ThermodynamicDatabase:
         if not identifiers:
             return ()
         placeholders = ",".join("?" * len(identifiers))
+        recommended = self.recommended_value_ids()
         with closing(self.connect()) as connection:
             rows = {
                 row["record_id"]: row
@@ -182,7 +272,7 @@ class ThermodynamicDatabase:
                            f.mp_database_version, f.source_url AS fallback_source_url,
                            f.notes AS fallback_notes
                        FROM species AS s
-                       JOIN thermochemistry AS t USING(record_id)
+                       JOIN selected_thermochemistry AS t USING(record_id)
                        LEFT JOIN phases AS p USING(record_id)
                        LEFT JOIN computational_fallbacks AS f USING(record_id)
                        WHERE s.record_id IN ({placeholders})""",
@@ -203,16 +293,19 @@ class ThermodynamicDatabase:
             reported: dict[str, list[ReportedValue]] = {}
             for row in connection.execute(
                 f"""SELECT * FROM reported_thermochemistry WHERE record_id IN ({placeholders})
-                    ORDER BY record_id, property, selected_as_recommended DESC, value_id""",
+                    ORDER BY record_id, property, value_id""",
                 identifiers,
             ):
                 reported.setdefault(row["record_id"], []).append(ReportedValue(
                     value_id=row["value_id"], property=row["property"], value=row["value"],
                     unit=row["unit"], status=row["status"],
-                    selected_as_recommended=bool(row["selected_as_recommended"]),
-                    uncertainty=row["uncertainty"], source=self.source(row["source_id"]),
+                    selected_as_recommended=row["value_id"] in recommended,
+                    uncertainty=row["uncertainty"],
+                    source=self.source(row["source_id"]),
                     supersedes_value_id=row["supersedes_value_id"],
                 ))
+            for values in reported.values():
+                values.sort(key=lambda item: (item.property, not item.selected_as_recommended, item.value_id))
 
         def value(row: sqlite3.Row, prefix: str, field: str, uncertainty: str) -> PropertyValue:
             return PropertyValue(
@@ -275,7 +368,7 @@ class ThermodynamicDatabase:
                    e.database_version AS energy_database_version,
                    e.source_url AS energy_source_url, e.retrieved_on
                FROM species AS s
-               JOIN thermochemistry AS t USING(record_id)
+               JOIN selected_thermochemistry AS t USING(record_id)
                JOIN materials_project_matches AS m USING(record_id)
                LEFT JOIN materials_project_energies AS e
                  ON e.record_id = s.record_id AND e.selected_for_comparison = 1
@@ -315,7 +408,7 @@ class ThermodynamicDatabase:
                    e.formation_energy_eV_atom, e.energy_above_hull_eV_atom,
                    e.energy_uncertainty_eV_atom, e.database_version, e.source_url, e.retrieved_on
                FROM species AS s
-               JOIN thermochemistry AS t USING(record_id)
+               JOIN selected_thermochemistry AS t USING(record_id)
                JOIN materials_project_matches AS m USING(record_id)
                JOIN materials_project_energies AS e USING(record_id, mp_id)
                {where}
@@ -359,7 +452,7 @@ class ThermodynamicDatabase:
                    f.canonical_mp_id AS fallback_mp_id,
                    l.gibbs_energy_J_mol AS ligand_gibbs_energy_J_mol
                FROM species AS s
-               JOIN thermochemistry AS t USING(record_id)
+               JOIN selected_thermochemistry AS t USING(record_id)
                LEFT JOIN computational_fallbacks AS f USING(record_id)
                LEFT JOIN ligands AS l ON l.ligand_id = s.ligand_id
                WHERE s.symbol = ? ORDER BY s.record_id""",
@@ -411,6 +504,13 @@ class ThermodynamicDatabase:
                 ),
             ))
         return MetalSystem(system=rows[0]["system"], symbol=symbol, species=tuple(included), excluded=tuple(excluded))
+
+
+class _Evidence:
+    """The evidence of a database without the derived recommendations, for the selection itself."""
+
+    def __init__(self, database: ThermodynamicDatabase) -> None:
+        self._rows = database._evidence_rows
 
 
 def _eV_per_atom(value: float | None, atoms: float) -> float | None:

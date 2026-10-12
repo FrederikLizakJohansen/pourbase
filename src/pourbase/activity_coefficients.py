@@ -1,4 +1,9 @@
-"""Activity-coefficient models for aqueous mass-balance calculations."""
+"""Activity-coefficient models for aqueous mass-balance calculations.
+
+The Davies model gives, at a fixed background ionic strength I (mol/L, at most 0.1 mol/L),
+
+    log10 gamma_i = -A z_i^2 [ sqrt(I) / (1 + sqrt(I)) - 0.3 I ],   A = 0.509 at 25 °C.   (9)
+"""
 
 from __future__ import annotations
 

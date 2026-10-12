@@ -10,6 +10,7 @@ from typing import Any
 import numpy as np
 
 from .boltzmann import boltzmann_smooth
+from .constants import GAS_CONSTANT_J_MOL_K
 from .mass_balance import MassBalancedPourbaixDiagram
 from .plotting import plot_boltzmann_diagram, plot_diagram, plot_mass_balance_summary
 
@@ -44,18 +45,25 @@ def diagram_figure(
     boundaries: bool = True,
     water: bool = True,
     plating_potential_V: float | None = None,
+    blend_width_kJ_mol: float | None = None,
     boltzmann_scale: float | None = None,
 ) -> Any:
-    """A Matplotlib figure of a fixed-activity or mass-balance diagram."""
+    """A Matplotlib figure of a fixed-activity or mass-balance diagram.
+
+    ``blend_width_kJ_mol`` draws soft-minimum weights (Eq. 8) of that width; ``boltzmann_scale``
+    gives the width in units of RT and is kept for compatibility.
+    """
     options = dict(label_domains=labels, show_legend=legend, show_boundaries=boundaries, show_water=water)
     title = f"{diagram.system.system}, experimental data"
     if isinstance(diagram, MassBalancedPourbaixDiagram):
         figure, _ = plot_mass_balance_summary(diagram, title=title, **options)
         return figure
-    if boltzmann_scale is not None:
+    if boltzmann_scale is not None and blend_width_kJ_mol is None:
+        blend_width_kJ_mol = boltzmann_scale * GAS_CONSTANT_J_MOL_K * diagram.conditions.temperature_K / 1000
+    if blend_width_kJ_mol is not None:
         axis = plot_boltzmann_diagram(
-            boltzmann_smooth(diagram, boltzmann_scale),
-            title=f"{title}; Boltzmann-like soft minimum, scale {boltzmann_scale:g}", **options,
+            boltzmann_smooth(diagram, blend_width_kJ_mol * 1000),
+            title=f"{title}; soft minimum, width {blend_width_kJ_mol:g} kJ/mol", **options,
         )
     else:
         axis = plot_diagram(diagram, title=title, **options)

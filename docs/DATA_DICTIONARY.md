@@ -7,7 +7,7 @@ thermochemical quantities use one formula unit as the molar basis.
 |---|---|
 | `metadata` | Dataset version, database role, reference temperature, pressure, and water Gibbs energy |
 | `species` | Stable record ID, displayed species, ASCII formula, phase, charge, atom counts, ligand encoding, formal metal oxidation state, and signed electron coefficient for the metal/water reaction |
-| `thermochemistry` | Recommended Gibbs energy, entropy, formation enthalpy, scientific status, uncertainty, source ID, and exact source locator |
+| `selected_thermochemistry` | Derived when the database is opened: recommended Gibbs energy, entropy, formation enthalpy, scientific status, uncertainty, source ID, and exact source locator |
 | `reported_thermochemistry` | Every retained original and selected thermochemical value, including its recommendation flag, status, source, uncertainty, and supersession link |
 | `computational_fallbacks` | Opt-in 300 K Materials Project SISSO Gibbs estimates for experimental gaps, with phase mapping, confidence, identifiers, versions, and warnings |
 | `element_coverage` | One row for every element, recording whether it is supported, a reference component, deferred, or outside the current curated scope |
@@ -39,13 +39,18 @@ thermochemical quantities use one formula unit as the molar basis.
 - `accepted`: an admitted formation enthalpy.
 - `not_available`: no admitted value is present for the property.
 
-Join `thermochemistry` to `species` with `record_id` and join its source fields to `sources` with the
-corresponding `source_id`. Property-specific source locators in `thermochemistry` take precedence
-over the general locator in `sources`.
+The file stores evidence only. `reported_thermochemistry` holds every reported value with its
+source, status and, where it differs from the general locator in `sources`, a value-specific
+`source_locator`. The recommended value of each species and property is derived when the
+database is opened: the selection policy `src/pourbase/data/selection-policy.toml`, or another
+policy the user loads, chooses one eligible reported value. The package presents the result to
+every connection as the temporary table `selected_thermochemistry`, with one row per species and, for each
+property, the value, status, uncertainty, source, locator and `value_id` of the chosen reported
+value. A property without an eligible value has status `terminal_evidence_gap` when a reported row
+records the gap and `not_available` otherwise. Schema 7 files, which store a `thermochemistry` table and the
+flag `selected_as_recommended`, remain readable.
 
-`selected_as_recommended=1` in `reported_thermochemistry` identifies the value copied into the
-calculation-facing `thermochemistry` table. Other rows preserve earlier reported values. These rows
-are observations and source records, not an automatically averaged population.
+Reported rows are observations and source records, not an automatically averaged population.
 
 The final MINES R05 import adds 92 observations and 35 species. These include
 individual USGS mineral evaluations and original fitted outputs from Gysi et al.
@@ -74,7 +79,7 @@ not establish a thermodynamically consistent joint model. Warnings describe
 these dependencies, and existing aqueous-ion preferences remain in place.
 
 Verified NBS fallback observations and the USGS plattnerite evaluation are retained as
-alternatives with `selected_as_recommended=0`. Each has a property-specific source record
+alternatives that the default policy does not recommend. Each has a property-specific source record
 containing the exact table or CSV locator, standard state and reuse attribution. The existing
 preferred fields supply calculations. Reported USGS uncertainty intervals retain their source
 interpretation; they are not assigned an independent one-sigma convention or covariance.
@@ -96,7 +101,7 @@ phase row are preserved. The Bureau of Mines formation G retains a JANAF
 elemental-reference hold in the external review. These additions cover the
 three previously unresolved VO₂ permission requests as retained alternatives.
 
-`computational_fallbacks` never overwrites `thermochemistry`. The package reads it only under the
+`computational_fallbacks` never overwrites `selected_thermochemistry`. The package reads it only under the
 explicit `experimental_then_mp` energy policy, and only when the recommended experimental Gibbs
 field is empty.
 

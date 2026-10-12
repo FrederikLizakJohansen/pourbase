@@ -114,7 +114,7 @@ def plot_boltzmann_diagram(
     show_water: bool = True,
     minimum_peak_weight: float = 0.01,
 ) -> Any:
-    """Plot a soft-min blend of every species' Boltzmann-like weight.
+    """Plot a blend of every species' soft-minimum weight (Eq. 8).
 
     The colors show energetic competition. They are not equilibrium phase
     fractions; use the mass-balance engine when conserved amounts are needed.
@@ -182,7 +182,7 @@ def plot_boltzmann_diagram(
                       "edgecolor": "none", "pad": 1.5},
             )
     if title is None:
-        title = f"{diagram.system.system} - Boltzmann-like soft-min (scale {smoothed.thermal_scale:g})"
+        title = f"{diagram.system.system} - soft minimum (width {smoothed.width_J_mol / 1000:.3g} kJ/mol)"
     ax.set(xlabel="pH", ylabel="Eh (V vs SHE)", title=title)
     ax.set_xlim(float(diagram.pH[0]), float(diagram.pH[-1]))
     ax.set_ylim(float(diagram.eh_V[0]), float(diagram.eh_V[-1]))

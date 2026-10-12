@@ -36,6 +36,7 @@ From PyPI:
 pip install pourbase                           # database, calculations and command line
 pip install "pourbase[gui]"                    # plus the desktop application
 pip install "pourbase[gui,materials-project]"  # plus live Materials Project comparisons
+pip install "pourbase[mcp]"                    # plus the MCP server for language-model agents
 pourbase-gui
 ```
 
@@ -180,6 +181,27 @@ pb.plot_official_materials_project_comparison(comparison)
 print(comparison.equivalent_domain_fraction, comparison.materials_project.database_version)
 ```
 
+Calculate with your own species, or replace a bundled value, from a CSV file (format in
+`pourbase.user_data`); user values carry the status `user_supplied` in every result:
+
+```python
+database = pb.with_user_species(pb.open_database(), "own-species.csv")
+calculation = pb.calculate(pb.Scenario("Cu"), database)
+```
+
+Or use your data on its own: `pb.open_dataset("own-species.csv")` builds a database that holds only
+those species (a pourbase SQLite file opens the same way), and `pourbase-gui own-species.csv` or File
+→ Open dataset shows it in the application.
+
+```python
+dataset = pb.open_dataset("own-species.csv")
+calculation = pb.calculate(pb.Scenario("Cu"), dataset)
+```
+
+With pymatgen set to the same water energy and Nernst slope, every bundled system gives the same
+diagram as pymatgen's `PourbaixEntry` evaluation; `scripts/pymatgen_crosscheck.py` writes the
+comparison to `docs/validation/`, and the test suite repeats it.
+
 The lower-level `PourbaixEngine`, `MassBalanceEngine` and `PourbaixConditions` take the same
 settings as explicit models, for custom calculations.
 
@@ -195,14 +217,64 @@ pourbase sweep Fe --allow-incomplete --minimum -10 --maximum 0 --points 7 --outp
 pourbase mp-thermo-figures --output-dir mp-thermochemistry
 ```
 
+## Agents (MCP)
+
+`pourbase-mcp` is a [Model Context Protocol](https://modelcontextprotocol.io) server that gives
+language-model agents the database and the engine over standard input and output. Register it with
+an MCP client, for example Claude Code:
+
+```bash
+claude mcp add pourbase -- pourbase-mcp
+```
+
+or in a client's JSON configuration:
+
+```json
+{"mcpServers": {"pourbase": {"command": "pourbase-mcp", "args": []}}}
+```
+
+| Tool | Returns |
+|---|---|
+| `list_systems` | elemental systems, dataset version, reference state |
+| `list_ligands` | ligands that can be buffered and the complexes they form |
+| `get_species` | species of one element with recommended Gibbs energy, uncertainty, status and source |
+| `get_record` | the full evidence record of one species: every reported value, locators, warnings |
+| `search_species` | species matching a name, formula or record ID |
+| `calculate_diagram` | stable species with their share of the diagram, boundary equations, excluded species |
+| `probe_point` | the stable species at one pH and potential, its margin and the nearest boundaries |
+| `render_diagram` | the diagram as a PNG image |
+| `compare_policy` | every Gibbs energy a selection policy (TOML text) chooses differently from the default |
+
+Calculations take the mode, concentration and unit, buffered ligands, ionic strength and axis
+ranges of the Python API. `--dataset`, `--species` and `--policy` start the server on a user
+dataset, with user species, or with another selection policy.
+
 ## How values are selected
 
-`reported_thermochemistry` holds every retained value from every source. `thermochemistry` holds
-one recommended value per property, which the calculations use. The recommendation is chosen for
-the exact species, phase, polymorph, temperature, pressure and standard state, and for the
-traceability and quality of the evaluation. Values are not averaged: many apparent alternatives are
-copies of the same measurement or use different conventions. Missing values stay visible as
-explicit evidence gaps.
+`reported_thermochemistry` holds every reported value from every source; the database file stores
+no recommendations. When the package opens the database, the selection policy chooses one value
+per species and property, which the calculations use and which every connection sees as the
+temporary table `selected_thermochemistry`. Loading another policy changes the recommendations without
+changing the file. Values are not averaged: many
+apparent alternatives are copies of the same measurement or use different conventions. Missing
+values stay visible as explicit evidence gaps.
+
+The recommendation follows a selection policy, the file `src/pourbase/data/selection-policy.toml`.
+It ranks sources by evidence class (A international critical reviews; B critical compilations, NBS
+Tables first; C single-system evaluations; D single experimental papers; E estimates, fitted models
+before correlations; F computed values), breaks ties within a class, and lists every exception
+with its reason. The bundled recommendations are the output of this file, and a test keeps them so.
+Copy and edit the file to calculate with your own rule, without changing the database:
+
+```python
+policy = pb.SelectionPolicy.load("my-policy.toml")
+calculation = pb.calculate(pb.Scenario("Fe"), pb.with_policy(pb.open_database(), policy))
+changes = pb.compare_policies(pb.open_database(), pb.SelectionPolicy.default(), policy)
+```
+
+`python scripts/selection_report.py my-policy.toml` lists every value your policy changes and the
+effect on each element's diagram. In the desktop application, load a policy from the File menu; the
+Species tab shows the class of every value and why it was chosen.
 
 Solids are compared with Materials Project on their O and H content per metal, and aqueous species
 on their proton and electron coefficients and metal count. Differences between experimental Gibbs

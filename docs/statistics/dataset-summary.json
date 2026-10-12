@@ -6,19 +6,19 @@
     "publication_status": "release_candidate_pending_collaborator_review",
     "reference_pressure_bar": "1.0",
     "reference_temperature_K": "298.15",
-    "schema_version": "7",
+    "schema_version": "8",
     "value_policy": "Calculations use one documented recommended value per property. All retained reported values remain available in reported_thermochemistry. Optional MP 300 K SISSO fallbacks are stored separately and never replace experimental values.",
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 792,
+    "species": 785,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2583,
-    "recommended_values": 1889,
+    "reported_thermochemistry": 2569,
+    "recommended_values": 1871,
     "source_records": 1608,
-    "distinct_citations": 197,
-    "warnings": 1124,
+    "distinct_citations": 147,
+    "warnings": 1127,
     "phase_records": 451,
     "resolved_phase_records": 235,
     "mp_matches": 105,
@@ -29,10 +29,10 @@
   "phases": [
     {
       "phase": "aqueous",
-      "species": 471,
-      "gibbs": 402,
-      "entropy": 401,
-      "enthalpy": 267
+      "species": 464,
+      "gibbs": 395,
+      "entropy": 395,
+      "enthalpy": 262
     },
     {
       "phase": "solid",
@@ -59,19 +59,19 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 700
+      "available": 693
     },
     {
       "property": "Entropy",
-      "available": 670
+      "available": 664
     },
     {
       "property": "Formation enthalpy",
-      "available": 519
+      "available": 514
     }
   ],
   "gibbs_status": {
-    "verified": 394,
+    "verified": 387,
     "source_verified_estimate": 232,
     "not_available": 86,
     "defined_reference_state": 74,
@@ -111,7 +111,7 @@
       "symbol": "B",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 6
+      "species": 5
     },
     {
       "atomic_number": 6,
@@ -174,7 +174,7 @@
       "symbol": "Si",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 6
+      "species": 5
     },
     {
       "atomic_number": 15,
@@ -307,7 +307,7 @@
       "symbol": "As",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 13
+      "species": 11
     },
     {
       "atomic_number": 34,
@@ -412,7 +412,7 @@
       "symbol": "Cd",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 16
+      "species": 15
     },
     {
       "atomic_number": 49,
@@ -433,7 +433,7 @@
       "symbol": "Sb",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 8
+      "species": 7
     },
     {
       "atomic_number": 52,
@@ -608,7 +608,7 @@
       "symbol": "Os",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 8
+      "species": 7
     },
     {
       "atomic_number": 77,
@@ -935,15 +935,15 @@
     {
       "symbol": "As",
       "system": "Arsenic (As)",
-      "species": 13,
-      "aqueous": 9,
+      "species": 11,
+      "aqueous": 7,
       "solid": 4,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 13,
-      "entropy": 12,
-      "enthalpy": 12,
-      "warnings": 2
+      "gibbs": 11,
+      "entropy": 10,
+      "enthalpy": 10,
+      "warnings": 4
     },
     {
       "symbol": "Au",
@@ -961,15 +961,15 @@
     {
       "symbol": "B",
       "system": "Boron (B)",
-      "species": 6,
-      "aqueous": 4,
+      "species": 5,
+      "aqueous": 3,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 6,
-      "entropy": 6,
-      "enthalpy": 6,
-      "warnings": 0
+      "gibbs": 5,
+      "entropy": 5,
+      "enthalpy": 5,
+      "warnings": 1
     },
     {
       "symbol": "Ba",
@@ -1052,15 +1052,15 @@
     {
       "symbol": "Cd",
       "system": "Cadmium (Cd)",
-      "species": 16,
-      "aqueous": 13,
+      "species": 15,
+      "aqueous": 12,
       "solid": 3,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 10,
-      "entropy": 12,
+      "gibbs": 9,
+      "entropy": 11,
       "enthalpy": 4,
-      "warnings": 23
+      "warnings": 21
     },
     {
       "symbol": "Ce",
@@ -1481,12 +1481,12 @@
     {
       "symbol": "Os",
       "system": "Osmium (Os)",
-      "species": 8,
-      "aqueous": 3,
+      "species": 7,
+      "aqueous": 2,
       "solid": 4,
       "gas": 1,
       "liquid": 0,
-      "gibbs": 8,
+      "gibbs": 7,
       "entropy": 5,
       "enthalpy": 5,
       "warnings": 8
@@ -1624,15 +1624,15 @@
     {
       "symbol": "Sb",
       "system": "Antimony (Sb)",
-      "species": 8,
-      "aqueous": 4,
+      "species": 7,
+      "aqueous": 3,
       "solid": 4,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 8,
-      "entropy": 6,
-      "enthalpy": 6,
-      "warnings": 2
+      "gibbs": 7,
+      "entropy": 5,
+      "enthalpy": 5,
+      "warnings": 3
     },
     {
       "symbol": "Sc",
@@ -1663,15 +1663,15 @@
     {
       "symbol": "Si",
       "system": "Silicon (Si)",
-      "species": 6,
-      "aqueous": 4,
+      "species": 5,
+      "aqueous": 3,
       "solid": 2,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 6,
-      "entropy": 5,
-      "enthalpy": 5,
-      "warnings": 8
+      "gibbs": 5,
+      "entropy": 4,
+      "enthalpy": 4,
+      "warnings": 9
     },
     {
       "symbol": "Sm",
@@ -1876,11 +1876,11 @@
     },
     {
       "warning_type": "entropy_terminal_evidence_gap",
-      "count": 72
+      "count": 70
     },
     {
       "warning_type": "shock_remaining_r06_inherited_formation_hold",
-      "count": 60
+      "count": 59
     },
     {
       "warning_type": "sverjensky_r06_nbs_derived_enthalpy",
@@ -1896,7 +1896,7 @@
     },
     {
       "warning_type": "shock_remaining_r06_original_model",
-      "count": 51
+      "count": 50
     },
     {
       "warning_type": "retained_nbs_evaluation",
@@ -1985,6 +1985,10 @@
     {
       "warning_type": "miron_r04_model_and_hydration",
       "count": 8
+    },
+    {
+      "warning_type": "water_equivalent_formula",
+      "count": 7
     },
     {
       "warning_type": "sulfate_hydrate_missing_properties_resolved",

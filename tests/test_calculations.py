@@ -143,9 +143,15 @@ class CalculationTests(unittest.TestCase):
 
     def test_boltzmann_weights_follow_the_energies(self) -> None:
         diagram = pb.PourbaixEngine(self.database).calculate("Fe", pb.PourbaixConditions(pH_points=19, eh_points=21), allow_incomplete=True)
-        smoothed = pb.boltzmann_smooth(diagram)
+        smoothed = pb.boltzmann_smooth(diagram, blend_all_phases=True)
         np.testing.assert_allclose(smoothed.weights.sum(axis=0), 1.0, atol=1e-14)
         np.testing.assert_array_equal(np.argmax(smoothed.weights, axis=0), diagram.stable_species_index)
+        # by default a stable solid keeps the whole weight: edges with solids stay sharp
+        sharp = pb.boltzmann_smooth(diagram)
+        solid = np.array([not item.is_aqueous for item in diagram.system.species])[diagram.stable_species_index]
+        self.assertTrue(solid.any())
+        np.testing.assert_array_equal(sharp.dominant_weight[solid], 1.0)
+        np.testing.assert_array_equal(np.argmax(sharp.weights, axis=0), diagram.stable_species_index)
         first, second = np.argsort(smoothed.weights[:, 10, 9])[-2:]
         energies = diagram.transformed_gibbs_J_mol_metal
         self.assertAlmostEqual(
@@ -159,6 +165,26 @@ class CalculationTests(unittest.TestCase):
         np.testing.assert_array_equal(compact.stable_species_index, diagram.stable_species_index)
         with self.assertRaises(ValueError):
             pb.boltzmann_smooth(compact)
+
+    def test_blend_at_rt_equals_aqueous_fractions_without_a_solid(self) -> None:
+        conditions = pb.PourbaixConditions(pH_points=29, eh_points=31)
+        fixed = pb.PourbaixEngine(self.database).calculate("Fe", conditions, allow_incomplete=True)
+        balance = pb.MassBalanceEngine(self.database).calculate(
+            "Fe", conditions, pb.TotalMetalConcentration(1e-6), allow_incomplete=True)
+        smoothed = pb.boltzmann_smooth(fixed)
+        self.assertAlmostEqual(smoothed.width_J_mol, 8.314462618 * 298.15, places=3)
+        ids = [item.record_id for item in fixed.system.species]
+        common = [item.record_id for item in balance.aqueous_species]
+        dissolved_stable = np.array([item.is_aqueous for item in fixed.system.species])[fixed.stable_species_index]
+        rows, columns = np.nonzero((balance.precipitated_metal_fraction == 0) & dissolved_stable)
+        self.assertTrue(rows.size)
+        for row, column in zip(rows[::25], columns[::25], strict=True):
+            weights = np.array([smoothed.weights[ids.index(item), row, column] for item in common])
+            dissolved = balance.aqueous_concentration_mol_L[:, row, column]
+            np.testing.assert_allclose(weights / weights.sum(), dissolved / dissolved.sum(), rtol=1e-9, atol=1e-12)
+        with self.assertWarns(DeprecationWarning):
+            legacy = pb.boltzmann_smooth(fixed, thermal_scale=2.0)
+        self.assertAlmostEqual(legacy.width_J_mol, 2 * smoothed.width_J_mol)
 
     def test_sweeps_are_compact_and_cancellable(self) -> None:
         engine = pb.ConcentrationSweepEngine(self.database)
@@ -274,3 +300,127 @@ class UncertaintyTests(unittest.TestCase):
         calculation = pb.calculate(pb.Scenario("Fe", mode="mass_balance", allow_incomplete=True, **SMALL))
         with self.assertRaises(ValueError):
             pb.stability_uncertainty(calculation.diagram)
+
+
+try:
+    import pymatgen.analysis.pourbaix_diagram  # noqa: F401
+    HAS_PYMATGEN = True
+except ImportError:
+    HAS_PYMATGEN = False
+
+
+@unittest.skipUnless(HAS_PYMATGEN, "pymatgen is not installed")
+class PymatgenCrossCheckTests(unittest.TestCase):
+    def test_every_system_matches_pymatgen_with_aligned_constants(self) -> None:
+        from pourbase.crosscheck import crosscheck
+
+        database = pb.open_database()
+        water = database.reference_state.water_gibbs_energy_J_mol
+        for symbol, _name in database.available_systems():
+            with self.subTest(symbol=symbol):
+                diagram = pb.calculate(pb.Scenario(symbol, allow_incomplete=True, **SMALL), database).diagram
+                result = crosscheck(diagram, water, aligned=True)
+                self.assertEqual(result.agreement, 1.0)
+                self.assertLess(result.max_energy_difference_eV, 1e-9)
+
+
+class UserSpeciesTests(unittest.TestCase):
+    def test_csv_species_are_added_or_replace_bundled_records(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "own.csv"
+            path.write_text(
+                "symbol,species,formula,charge,phase,gibbs_energy_kJ_mol,uncertainty_kJ_mol,citation,replaces\n"
+                "Cu,CuO (own),CuO,0,solid,-140.0,1.5,Lab notebook,\n"
+                "Cu,Cu⁺ (own),Cu,1,aqueous,40.0,,Example 2024,gfe-cu-cu-q+1-aqueous-aq\n",
+                encoding="utf-8",
+            )
+            database = pb.with_user_species(pb.open_database(), path)
+            species = pb.calculate(pb.Scenario("Cu", allow_incomplete=True, **SMALL), database).diagram.system.species
+        own = {item.species: item for item in species if item.gibbs_status is pb.EvidenceStatus.USER_SUPPLIED}
+        self.assertEqual(set(own), {"CuO (own)", "Cu⁺ (own)"})
+        self.assertEqual(own["CuO (own)"].electrons_per_metal, 2)
+        self.assertEqual(own["CuO (own)"].gibbs_uncertainty_J_mol, 1500.0)
+        self.assertNotIn("gfe-cu-cu-q+1-aqueous-aq", {item.record_id for item in species})
+
+    def test_formulas_with_other_elements_are_rejected(self) -> None:
+        species = pb.UserSpecies("Cu", "CuCl", "CuCl", 0, "solid", -120_000.0, "test")
+        with self.assertRaises(ValueError):
+            pb.with_user_species(pb.open_database(), [species])
+
+
+class SelectionPolicyTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.database = pb.open_database()
+        cls.policy = pb.SelectionPolicy.default()
+        cls.selection = pb.select(cls.database, cls.policy)
+
+    def test_ineligible_values_are_never_chosen(self) -> None:
+        for item in self.selection.values():
+            self.assertNotIn(item.chosen.status, self.policy.ineligible_statuses)
+
+    def test_classes_and_families_follow_the_policy_order(self) -> None:
+        for item in self.selection.values():
+            best = min(self.policy.rank_of(candidate.family) for candidate in item.candidates)
+            if not item.basis.startswith("override"):
+                self.assertEqual(self.policy.rank_of(item.chosen.family), best, item.record_id)
+        contested = [item for item in self.selection.values()
+                     if {"NBS Tables", "NIST-JANAF"} <= {candidate.family for candidate in item.candidates}]
+        self.assertTrue(contested)
+        self.assertTrue(all(item.chosen.family == "NBS Tables" for item in contested))
+
+    def test_reordering_families_changes_the_selection_and_the_energies(self) -> None:
+        janaf_first = self.policy.with_family_order(
+            "B", ["NIST-JANAF", "NBS Tables", "NBS Technical Notes", "Robie & Hemingway", "Miron", "NIST WebBook"])
+        changes = pb.compare_policies(self.database, self.policy, janaf_first, ("gibbs_energy_of_formation",))
+        self.assertTrue(changes)
+        self.assertTrue(all(change.second.family == "NIST-JANAF" for change in changes))
+        change = changes[0]
+        symbol = self.database._rows("SELECT symbol FROM species WHERE record_id = ?", (change.record_id,))[0][0]
+        species = {item.record_id: item for item in pb.with_policy(self.database, janaf_first)
+                   .load_system(symbol).species}
+        self.assertEqual(species[change.record_id].gibbs_energy_J_mol, change.second.value)
+
+    def test_overrides_win_and_keep_their_reason(self) -> None:
+        item = next(selection for selection in self.selection.values() if len(selection.candidates) > 1
+                    and selection.property_name == "gibbs_energy_of_formation")
+        other = next(candidate for candidate in item.candidates if candidate.value_id != item.chosen.value_id)
+        policy = self.policy.with_override(item.record_id, item.property_name, other.source_id, "test reason")
+        chosen = pb.select(self.database, policy)[(item.record_id, item.property_name)]
+        self.assertEqual(chosen.chosen.source_id, other.source_id)
+        self.assertEqual(chosen.basis, "override: test reason")
+
+    def test_a_policy_file_round_trips_and_combines_with_user_species(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "policy.toml"
+            text = self.policy.source_text.replace('name = "pourbase default"', 'name = "mine"')
+            path.write_text(text, encoding="utf-8")
+            loaded = pb.SelectionPolicy.load(path)
+            own = Path(directory) / "own.csv"
+            own.write_text("symbol,species,formula,charge,phase,gibbs_energy_kJ_mol,uncertainty_kJ_mol,citation,replaces\n"
+                           "Cu,CuO (own),CuO,0,solid,-140.0,,test,\n", encoding="utf-8")
+            both = pb.with_user_species(pb.with_policy(self.database, loaded), own)
+            other_way = pb.with_policy(pb.with_user_species(self.database, own), loaded)
+            for database in (both, other_way):
+                self.assertIn("CuO (own)", {item.species for item in database.load_system("Cu").species})
+        self.assertEqual(loaded.name, "mine")
+        self.assertNotEqual(loaded.fingerprint, self.policy.fingerprint)
+        self.assertEqual(pb.select(self.database, loaded).keys(), self.selection.keys())
+
+
+class DatasetTests(unittest.TestCase):
+    def test_a_csv_becomes_a_database_of_only_its_species(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "zinc.csv"
+            path.write_text("symbol,species,formula,charge,phase,gibbs_energy_kJ_mol,uncertainty_kJ_mol,citation,replaces\n"
+                            "Zn,Zn,Zn,0,solid,0,,reference,\nZn,Zn²⁺,Zn,2,aqueous,-147.1,0.2,notes,\n"
+                            "Zn,ZnO,ZnO,0,solid,-320.5,,notes,\n", encoding="utf-8")
+            database = pb.open_dataset(path)
+            self.assertEqual(database.available_systems(), (("Zn", "Zinc (Zn)"),))
+            self.assertEqual(len(database.load_system("Zn").species), 3)
+            calculation = pb.calculate(pb.Scenario("Zn", **SMALL), database)
+            self.assertEqual({item.species for item in calculation.stable_species}, {"Zn", "Zn²⁺", "ZnO"})
+            self.assertEqual(database.reference_state, pb.open_database().reference_state)
+            record = database.species_records((calculation.stable_species[0].record_id,))[0]
+            self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.source.citation in {"reference", "notes"}, True)
+            self.assertEqual(pb.open_dataset(database.path).available_systems(), database.available_systems())

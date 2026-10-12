@@ -1,4 +1,30 @@
-"""Fixed-activity single-metal Pourbaix calculations."""
+"""Fixed-activity single-metal Pourbaix calculations.
+
+Every species i of an element M is written per mole of M (m_i metal atoms per formula unit) as
+the product of a formation reaction from the metal, water, protons, electrons and, for complexes,
+a buffered free ligand L:
+
+    m_i M + n_O,i H2O + nu_L,i L  ->  species i + h_i m_i H+ + e_i m_i e-
+
+with the proton and electron coefficients per metal
+
+    h_i = (2 n_O,i - n_H,i) / m_i
+    e_i = (z_i - nu_L,i z_L + 2 n_O,i - n_H,i) / m_i
+
+where n_O and n_H count the oxygen and hydrogen of the metal-oxygen core, z_i is the charge of
+the species and z_L that of the ligand. At pH and potential E (vs SHE) its transformed Gibbs
+energy per mole of metal is
+
+    G~_i(pH, E) = [Delta_f G_i - n_O,i G_H2O - nu_L,i mu_L] / m_i
+                  - h_i RT ln(10) pH - e_i F E + RT ln(a_i) / m_i                     (1)
+
+with G_H2O the Gibbs energy of formation of liquid water, mu_L = Delta_f G_L + RT ln a_L the
+chemical potential of the buffered ligand, and a_i the activity of an aqueous species (or the
+fugacity of a gas in bar); solids and liquids have a_i = 1. The stable species at a grid point is
+the one with the lowest G~_i (Eq. 2). :func:`standard_transformed_gibbs_J_mol_metal` evaluates
+Eq. 1 at a_i = 1 and :func:`transformed_gibbs_J_mol_metal` adds the activity term.
+"""
+
 
 from __future__ import annotations
 

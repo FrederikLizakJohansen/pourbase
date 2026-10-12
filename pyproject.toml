@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pourbase"
-version = "1.0.0rc2"
+dynamic = ["version"]
 description = "Source-linked experimental thermochemistry database and Pourbaix diagram calculator"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -15,20 +15,29 @@ dependencies = [
   "numpy>=2.0",
   "matplotlib>=3.8",
 ]
-keywords = ["Pourbaix diagram", "Gibbs energy", "thermochemistry", "electrochemistry", "corrosion"]
+keywords = ["Pourbaix diagram", "Gibbs energy", "thermochemistry", "electrochemistry", "corrosion", "database", "MCP"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
+  "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Chemistry",
+  "Topic :: Scientific/Engineering :: Physics",
+  "Typing :: Typed",
 ]
 
 [project.optional-dependencies]
 materials-project = ["mp-api[contribs]>=0.46"]
 gui = ["pyside6>=6.5", "pyqtgraph>=0.13", "keyring>=24"]
+mcp = ["mcp>=1.10"]
 
 [project.scripts]
 pourbase = "pourbase.cli:main"
+pourbase-mcp = "pourbase.mcp_server:main"
 
 [project.gui-scripts]
 pourbase-gui = "pourbase.gui:main"
@@ -36,9 +45,13 @@ pourbase-gui = "pourbase.gui:main"
 [project.urls]
 Repository = "https://github.com/FrederikLizakJohansen/pourbase"
 Issues = "https://github.com/FrederikLizakJohansen/pourbase/issues"
+Changelog = "https://github.com/FrederikLizakJohansen/pourbase/blob/main/CHANGELOG.md"
+
+[tool.setuptools.dynamic]
+version = {attr = "pourbase.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-pourbase = ["py.typed", "data/pourbase.sqlite", "gui/assets/*"]
+pourbase = ["py.typed", "data/pourbase.sqlite", "data/selection-policy.toml", "gui/assets/*"]

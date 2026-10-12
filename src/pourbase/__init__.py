@@ -59,8 +59,12 @@ from .plotting import (
 )
 from .records import SourceReference, SpeciesRecord
 from .scenario import Calculation, Mode, Probe, Scenario, calculate
-from .speciation import SpeciationProfile, metal_fraction_grid, plot_speciation_profile, speciation_at, speciation_profile
+from .speciation import SpeciationProfile, dissolved_blend_weights, metal_fraction_grid, plot_speciation_profile, speciation_at, speciation_profile
 from .sweeps import ConcentrationSweep, ConcentrationSweepEngine, plot_concentration_sweep
+from .user_data import (
+    UserSpecies, UserSpeciesDatabase, dataset_from_csv, open_dataset, read_user_species, with_user_species,
+)
+from .selection import PolicyDatabase, SelectionPolicy, compare_policies, select, with_policy
 from .uncertainty import StabilityMargin, StabilityUncertainty, stability_margin, stability_uncertainty
 
 __version__ = "1.0.0rc2"
@@ -109,12 +113,14 @@ __all__ = [
     "OfficialMaterialsProjectPhase",
     "PeriodicScreen",
     "PlatingPotential",
+    "PolicyDatabase",
     "PourbaixConditions",
     "PourbaixDiagram",
     "PourbaixEngine",
     "PourbaseError",
     "Probe",
     "Scenario",
+    "SelectionPolicy",
     "SourceReference",
     "SpeciationProfile",
     "SpeciesRecord",
@@ -124,19 +130,25 @@ __all__ = [
     "ThermodynamicSpecies",
     "TotalMetalConcentration",
     "UnsupportedConditionError",
+    "UserSpecies",
+    "UserSpeciesDatabase",
     "boltzmann_smooth",
     "boundary_equations",
     "calculate",
     "calculate_pourbaix",
+    "compare_policies",
     "comparison_metrics",
     "convert_concentration",
+    "dataset_from_csv",
     "diagram_figure",
+    "dissolved_blend_weights",
     "evaluate_official_materials_project_entries",
     "express_concentration",
     "grid_csv",
     "metal_fraction_grid",
     "metal_molarity_from_mass",
     "open_database",
+    "open_dataset",
     "phase_boundary_segments",
     "plating_potentials",
     "plot_boltzmann_diagram",
@@ -147,13 +159,17 @@ __all__ = [
     "plot_official_materials_project_comparison",
     "plot_official_materials_project_diagram",
     "plot_speciation_profile",
+    "read_user_species",
     "save_figure",
     "screen_periodic_table",
+    "select",
     "speciation_at",
     "speciation_profile",
     "stability_margin",
     "stability_uncertainty",
     "species_colors",
     "thermodynamic_species_equivalence_key",
+    "with_policy",
+    "with_user_species",
     "write_mp_thermochemistry_bundle",
 ]

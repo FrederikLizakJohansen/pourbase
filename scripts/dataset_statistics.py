@@ -27,6 +27,8 @@ from matplotlib.patches import Patch, Rectangle
 
 
 REPOSITORY = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPOSITORY / "src"))
+import pourbase as pb  # noqa: E402
 DATABASE = REPOSITORY / "src" / "pourbase" / "data" / "pourbase.sqlite"
 INPUTS = REPOSITORY / "data" / "statistics"
 MP_THERMOCHEMISTRY = PAPER_DATA = INPUTS
@@ -71,7 +73,7 @@ def rows(connection: sqlite3.Connection, query: str) -> list[dict[str, Any]]:
 
 
 def collect_statistics() -> dict[str, Any]:
-    with closing(sqlite3.connect(DATABASE)) as connection:
+    with closing(pb.ThermodynamicDatabase(DATABASE).connect()) as connection:
         connection.row_factory = sqlite3.Row
         metadata = dict(connection.execute("SELECT key,value FROM metadata"))
         phases = rows(
@@ -80,7 +82,7 @@ def collect_statistics() -> dict[str, Any]:
                       SUM(t.gibbs_energy_J_mol IS NOT NULL) AS gibbs,
                       SUM(t.entropy_J_mol_K IS NOT NULL) AS entropy,
                       SUM(t.formation_enthalpy_J_mol IS NOT NULL) AS enthalpy
-               FROM species AS s JOIN thermochemistry AS t USING(record_id)
+               FROM species AS s JOIN selected_thermochemistry AS t USING(record_id)
                GROUP BY s.phase ORDER BY species DESC""",
         )
         properties = [
@@ -88,21 +90,21 @@ def collect_statistics() -> dict[str, Any]:
                 "property": "Gibbs energy",
                 "available": scalar(
                     connection,
-                    "SELECT COUNT(*) FROM thermochemistry WHERE gibbs_energy_J_mol IS NOT NULL",
+                    "SELECT COUNT(*) FROM selected_thermochemistry WHERE gibbs_energy_J_mol IS NOT NULL",
                 ),
             },
             {
                 "property": "Entropy",
                 "available": scalar(
                     connection,
-                    "SELECT COUNT(*) FROM thermochemistry WHERE entropy_J_mol_K IS NOT NULL",
+                    "SELECT COUNT(*) FROM selected_thermochemistry WHERE entropy_J_mol_K IS NOT NULL",
                 ),
             },
             {
                 "property": "Formation enthalpy",
                 "available": scalar(
                     connection,
-                    "SELECT COUNT(*) FROM thermochemistry WHERE formation_enthalpy_J_mol IS NOT NULL",
+                    "SELECT COUNT(*) FROM selected_thermochemistry WHERE formation_enthalpy_J_mol IS NOT NULL",
                 ),
             },
         ]
@@ -110,7 +112,7 @@ def collect_statistics() -> dict[str, Any]:
             row["gibbs_status"]: row["count"]
             for row in rows(
                 connection,
-                """SELECT gibbs_status,COUNT(*) AS count FROM thermochemistry
+                """SELECT gibbs_status,COUNT(*) AS count FROM selected_thermochemistry
                    GROUP BY gibbs_status ORDER BY count DESC""",
             )
         }
@@ -138,7 +140,7 @@ def collect_statistics() -> dict[str, Any]:
                       SUM(t.formation_enthalpy_J_mol IS NOT NULL) AS enthalpy,
                       COALESCE(SUM(w.warning_count),0) AS warnings
                FROM species AS s
-               JOIN thermochemistry AS t USING(record_id)
+               JOIN selected_thermochemistry AS t USING(record_id)
                LEFT JOIN (
                    SELECT record_id,COUNT(*) AS warning_count
                    FROM warnings GROUP BY record_id
@@ -159,7 +161,7 @@ def collect_statistics() -> dict[str, Any]:
             ),
             "recommended_values": scalar(
                 connection,
-                "SELECT COUNT(*) FROM reported_thermochemistry WHERE selected_as_recommended=1",
+                "SELECT COUNT(gibbs_value_id) + COUNT(entropy_value_id) + COUNT(formation_enthalpy_value_id) FROM selected_thermochemistry",
             ),
             "source_records": scalar(connection, "SELECT COUNT(*) FROM sources"),
             "distinct_citations": scalar(
@@ -721,7 +723,7 @@ def plot_calculation_showcase() -> None:
         figure.savefig(FIGURES / f"calculation-showcase.{suffix}", bbox_inches="tight")
     plt.close(figure)
 
-    with closing(sqlite3.connect(DATABASE)) as connection:
+    with closing(pb.ThermodynamicDatabase(DATABASE).connect()) as connection:
         experimental_dataset_version = scalar(
             connection, "SELECT value FROM metadata WHERE key='dataset_version'"
         )
@@ -905,7 +907,7 @@ def plot_mp_thermochemistry() -> None:
 
 TABLES = (
     ("species", "Formula, charge, phase, composition, oxidation state and reaction coefficients"),
-    ("thermochemistry", "One recommended Gibbs energy, entropy and enthalpy per species"),
+    ("selected_thermochemistry", "Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species"),
     ("reported_thermochemistry", "Every retained reported value, recommended or not, with supersession links"),
     ("sources", "Full citations, links, locators and access dates"),
     ("phases", "Phase identity, candidate polymorphs, space group and evidence"),
@@ -925,7 +927,7 @@ def write_markdown(stats: dict[str, Any]) -> None:
     properties = {item["property"]: item["available"] for item in stats["properties"]}
     methods = stats["materials_project_comparison"]["methods"]
     comparison = json.loads((GENERATED / "fe-pourbaix-comparison.json").read_text())
-    with closing(sqlite3.connect(DATABASE)) as connection:
+    with closing(pb.ThermodynamicDatabase(DATABASE).connect()) as connection:
         table_rows = {name: scalar(connection, f'SELECT COUNT(*) FROM "{name}"') for name, _ in TABLES}
 
     def percent(count: int) -> str:

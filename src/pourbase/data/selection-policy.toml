@@ -1,0 +1,342 @@
+# The rule that picks one recommended value per species and property from the values in
+# reported_thermochemistry. Copy this file, edit it and load it with
+# pourbase.SelectionPolicy.load(path) to calculate with your own rule.
+
+name = "pourbase default"
+version = "1"
+
+# Species whose eligible values differ by more than this are listed for review.
+review_threshold_kJ_mol = 5.0
+
+# Reported values with these statuses are never selected.
+ineligible_statuses = ["superseded_source_value", "terminal_evidence_gap"]
+
+# Ties within one class are broken in this order:
+#   element_consistency  the family that supplies most species of the same element
+#   original_publication of two publications by the same first author in one family, the earlier;
+#                        a later one repeats the evaluation
+#   stated_uncertainty   a value with a reported uncertainty
+#   recency              the more recent publication year
+tie_breaks = ["element_consistency", "original_publication", "stated_uncertainty", "recency"]
+
+# Evidence classes, best first. Families inside a class are ranked in the order listed.
+[[classes]]
+name = "A"
+description = "International critical reviews"
+families = ["CODATA", "NEA-TDB"]
+
+[[classes]]
+name = "B"
+description = "Critical compilations and internally consistent datasets"
+families = ["NBS Tables", "NBS Technical Notes", "NIST-JANAF", "Robie & Hemingway", "Miron", "NIST WebBook"]
+
+[[classes]]
+name = "C"
+description = "Peer-reviewed critical evaluations of one system or element"
+families = ["IUPAC standard potentials", "US Bureau of Mines"]
+
+[[classes]]
+name = "D"
+description = "Single peer-reviewed experimental determinations"
+families = ["experimental papers"]
+
+[[classes]]
+name = "E"
+description = "Estimates: models fitted to measured data first, then predictive correlations"
+families = ["estimates", "Shock and Sverjensky correlations"]
+
+[[classes]]
+name = "F"
+description = "Computed values"
+families = ["Materials Project"]
+
+# How a source is assigned to a family: the first family whose pattern occurs in the citation.
+# A source matching no pattern belongs to "estimates" if its value is an estimate (typically a model
+# fitted to measured data), otherwise to "experimental papers".
+[families]
+"CODATA" = ["CODATA"]
+"NEA-TDB" = ["Nuclear Energy Agency"]
+"NBS Tables" = ["NBS Tables of Chemical Thermodynamic Properties"]
+"NBS Technical Notes" = ["NBS Technical Note", "Selected Values of Chemical Thermodynamic Properties"]
+"NIST-JANAF" = ["JANAF"]
+"NIST WebBook" = ["WebBook"]
+"Robie & Hemingway" = ["Robie, R. A. and Hemingway"]
+"Miron" = ["Miron, G. D."]
+"IUPAC standard potentials" = ["Standard Potentials in Aqueous Solution"]
+"US Bureau of Mines" = ["Bureau of Mines"]
+"Shock and Sverjensky correlations" = ["Shock, E. L.", "Sverjensky, D. A.", "Sassani, D. C."]
+"Materials Project" = ["Materials Project"]
+
+# Values that are ineligible although their status allows them, each with its reason.
+
+[[exclusions]]
+record_id = "gfe-eu-euf3-q+0-solid-crystalline-trifluoride"
+property = "enthalpy_of_formation"
+source_id = "EuF3_R05_USBM1984_hf"
+reason = "1 atm standard state of the 1984 evaluation; held until reconciled with the 1 bar record"
+
+[[exclusions]]
+record_id = "gfe-eu-euf3-q+0-solid-crystalline-trifluoride"
+property = "absolute_entropy"
+source_id = "EuF3_R05_USBM1984_entropy"
+reason = "1 atm standard state of the 1984 evaluation; held until reconciled with the 1 bar record"
+
+# Exceptions to the rule, each with its reason.
+
+[[overrides]]
+record_id = "gfe-al-alh3sio4-q+2-aqueous-aq"
+property = "gibbs_energy_of_formation"
+source_id = "Miron_R04_2017_gfe-al-alh3sio4-q+2-aqueous-aq_gf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-ca-cacl-q+1-aqueous-aq"
+property = "gibbs_energy_of_formation"
+source_id = "Miron_2017_gfe-ca-cacl-q+1-aqueous-aq_gf"
+reason = "published table value over the database-file representation of the same model"
+
+[[overrides]]
+record_id = "gfe-ce-cecl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-ce-cecl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-ce-cecl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-ce-cecl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-cu-cu-oh-2-q-1-aqueous-aq"
+property = "absolute_entropy"
+source_id = "SKB_TR_00_13_Table_2"
+reason = "consistent with the Puigdomenech and Taxen copper set; the alternative differs by 174 in the same units (flagged for review)"
+
+[[overrides]]
+record_id = "gfe-dy-dycl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-dy-dycl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-dy-dycl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-dy-dycl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-er-ercl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-er-ercl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-er-ercl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-er-ercl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-eu-eucl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-eu-eucl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-eu-eucl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-eu-eucl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-fe-fe-oh-3-q+0-solid-ferrihydrite-2-line"
+property = "gibbs_energy_of_formation"
+source_id = "Ferrihydrite_R05_2-line_gf_NBS-derived-upper-G"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-fe-fe-oh-3-q+0-solid-ferrihydrite-6-line"
+property = "gibbs_energy_of_formation"
+source_id = "Ferrihydrite_R05_6-line_gf_NBS-derived-upper-G"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-gd-gdcl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-gd-gdcl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-gd-gdcl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-gd-gdcl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-ho-hocl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-ho-hocl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-ho-hocl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-ho-hocl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-k-kcl-q+0-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "Miron_R04_2017-NBS-derived_gfe-k-kcl-q+0-aqueous-aq_hf"
+reason = "published table value over the database-file representation of the same model"
+
+[[overrides]]
+record_id = "gfe-k-kcl-q+0-aqueous-aq"
+property = "gibbs_energy_of_formation"
+source_id = "Miron_2017_gfe-k-kcl-q+0-aqueous-aq_gf"
+reason = "published table value over the database-file representation of the same model"
+
+[[overrides]]
+record_id = "gfe-k-khco3-q+0-aqueous-aq"
+property = "absolute_entropy"
+source_id = "Miron_2017_gfe-k-khco3-q+0-aqueous-aq_entropy"
+reason = "published table value over the database-file representation of the same model"
+
+[[overrides]]
+record_id = "gfe-k-koh-q+0-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "Miron_R04_2017-NBS-derived_gfe-k-koh-q+0-aqueous-aq_hf"
+reason = "published table value over the database-file representation of the same model"
+
+[[overrides]]
+record_id = "gfe-k-koh-q+0-aqueous-aq"
+property = "gibbs_energy_of_formation"
+source_id = "Miron_2017_gfe-k-koh-q+0-aqueous-aq_gf"
+reason = "published table value over the database-file representation of the same model"
+
+[[overrides]]
+record_id = "gfe-la-lacl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-la-lacl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-la-lacl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-la-lacl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-lu-lucl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-lu-lucl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-lu-lucl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-lu-lucl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-na-nacl-q+0-aqueous-aq"
+property = "gibbs_energy_of_formation"
+source_id = "Miron_2017_gfe-na-nacl-q+0-aqueous-aq_gf"
+reason = "published table value over the database-file representation of the same model"
+
+[[overrides]]
+record_id = "gfe-na-nah3sio4-q+0-aqueous-aq"
+property = "gibbs_energy_of_formation"
+source_id = "Miron_R04_2017_gfe-na-nah3sio4-q+0-aqueous-aq_gf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-na-naoh-q+0-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "Miron_R04_2017-NBS-derived_gfe-na-naoh-q+0-aqueous-aq_hf"
+reason = "published table value over the database-file representation of the same model"
+
+[[overrides]]
+record_id = "gfe-na-naoh-q+0-aqueous-aq"
+property = "gibbs_energy_of_formation"
+source_id = "Miron_2017_gfe-na-naoh-q+0-aqueous-aq_gf"
+reason = "published table value over the database-file representation of the same model"
+
+[[overrides]]
+record_id = "gfe-nd-ndcl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-nd-ndcl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-nd-ndcl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-nd-ndcl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-pr-prcl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-pr-prcl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-pr-prcl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-pr-prcl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-si-h3sio4-q-1-aqueous-aq"
+property = "gibbs_energy_of_formation"
+source_id = "Miron_R04_2017_gfe-si-h3sio4-q-1-aqueous-aq_gf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-sm-smcl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-sm-smcl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-sm-smcl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-sm-smcl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-tb-tbcl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-tb-tbcl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-tb-tbcl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-tb-tbcl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-tm-tmcl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-tm-tmcl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-tm-tmcl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-tm-tmcl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-yb-ybcl-q+2-aqueous-aq"
+property = "absolute_entropy"
+source_id = "MINES_R05_Migdisov2009Table7_gfe-yb-ybcl-q+2-aqueous-aq_entropy"
+reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "gfe-yb-ybcl-q+2-aqueous-aq"
+property = "enthalpy_of_formation"
+source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-yb-ybcl-q+2-aqueous-aq_hf"
+reason = "variants of one evaluation in the same source; the curated variant is kept"

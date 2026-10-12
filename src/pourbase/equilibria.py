@@ -1,4 +1,18 @@
-"""Adjacent phase reactions and activity-conditioned boundary equations."""
+"""Adjacent phase reactions and activity-conditioned boundary equations.
+
+Two species i and j are in equilibrium where G~_i = G~_j (Eq. 1). Writing
+b_i = G~_i(pH = 0, E = 0) for the pH- and potential-independent part, the boundary is
+
+    E = (b_j - b_i) / ((e_j - e_i) F) - (h_j - h_i) / (e_j - e_i) * (RT ln 10 / F) pH   (3)
+
+when the electron coefficients differ, and the vertical line
+
+    pH = (b_j - b_i) / ((h_j - h_i) RT ln 10)                                           (4)
+
+when only the proton coefficients differ. Pairs are taken from neighbouring cells of the
+calculated grid, so every reported equation belongs to a boundary that appears in the diagram.
+"""
+
 
 from __future__ import annotations
 

@@ -20,7 +20,8 @@ class SessionError(ValueError):
     """The file is not a readable pourbase session."""
 
 
-def session_dict(settings: Settings, display: DisplayOptions, sweep: SweepSettings) -> dict[str, Any]:
+def session_dict(settings: Settings, display: DisplayOptions, sweep: SweepSettings,
+                 user_species: str | None = None, selection_policy: str | None = None) -> dict[str, Any]:
     return {
         "format": FORMAT,
         "format_version": FORMAT_VERSION,
@@ -28,12 +29,17 @@ def session_dict(settings: Settings, display: DisplayOptions, sweep: SweepSettin
         "settings": settings.to_dict(),
         "display": asdict(display),
         "sweep": asdict(sweep),
+        "user_species": user_species,
+        "selection_policy": selection_policy,
     }
 
 
-def write_session(path: str | Path, settings: Settings, display: DisplayOptions, sweep: SweepSettings) -> Path:
+def write_session(path: str | Path, settings: Settings, display: DisplayOptions, sweep: SweepSettings,
+                  user_species: str | None = None, selection_policy: str | None = None) -> Path:
+    """Write a session with the paths of a user-species CSV file and a selection-policy file, if any."""
     path = Path(path)
-    path.write_text(json.dumps(session_dict(settings, display, sweep), indent=2) + "\n", encoding="utf-8")
+    data = session_dict(settings, display, sweep, user_species, selection_policy)
+    path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     return path
 
 
@@ -77,3 +83,21 @@ def sidecar_path(figure_path: str | Path) -> Path:
     """The session file written next to an exported figure."""
     path = Path(figure_path)
     return path.with_name(path.stem + SUFFIX)
+
+
+def _session_value(path: str | Path, key: str) -> str | None:
+    try:
+        value = json.loads(Path(path).read_text(encoding="utf-8")).get(key)
+    except (OSError, ValueError, AttributeError):
+        return None
+    return str(value) if value else None
+
+
+def session_user_species(path: str | Path) -> str | None:
+    """The user-species CSV recorded in a session, if any."""
+    return _session_value(path, "user_species")
+
+
+def session_selection_policy(path: str | Path) -> str | None:
+    """The selection-policy file recorded in a session, if any."""
+    return _session_value(path, "selection_policy")

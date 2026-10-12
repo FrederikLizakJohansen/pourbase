@@ -16,7 +16,7 @@ Every value is therefore stored with what you need to check it:
 - an evidence status: `verified`, `source_verified_estimate`, `defined_reference_state` or
   `terminal_evidence_gap`;
 - every retained alternative and superseded value in `reported_thermochemistry`, next to the
-  recommended value in `thermochemistry`;
+  recommended value in `selected_thermochemistry`;
 - scientific cautions in `warnings` and the phase and polymorph assignment in `phases`;
 - explicit gaps where no defensible value was found, and six Materials Project estimates kept
   separately in `computational_fallbacks` and used only on request.
@@ -40,6 +40,13 @@ form and give:
 
 Each accepted change is recorded with its source and a plain-language reason. Earlier values stay
 in `reported_thermochemistry`, and the change appears in the next dataset release.
+
+Which value is recommended follows the selection policy in `src/pourbase/data/selection-policy.toml`.
+A new value enters as a candidate; the policy decides whether it becomes the recommendation. To
+propose a change to the rule itself, such as the order of two source families or an exception with
+its reason, edit the policy file, run `python scripts/selection_report.py` on it and include the
+report with your pull request. The package derives the recommended values from the policy when it
+opens the database, so no other file changes.
 
 ## Contributing code
 

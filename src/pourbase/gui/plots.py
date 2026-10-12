@@ -13,6 +13,7 @@ from PySide6.QtCore import QPointF, QRectF, Qt, Signal
 from PySide6.QtGui import QColor
 
 from ..boltzmann import boltzmann_smooth
+from ..speciation import dissolved_blend_weights
 from ..grid import phase_boundary_segments
 from ..uncertainty import stability_uncertainty
 from .formula import phase_label, to_html
@@ -29,6 +30,39 @@ def record_colors(record_ids: list[str]) -> dict[str, QColor]:
         record_id: QColor.fromRgbF(*palette(index % palette.N))
         for index, record_id in enumerate(sorted(set(record_ids)))
     }
+
+
+def blend_colors(species: tuple, weights: np.ndarray, colors: dict[str, QColor],
+                 threshold: float = 0.02) -> tuple[dict[str, QColor], list]:
+    """Colors for the species a blend shows, and the blended-in species to add to the legend.
+
+    Species that reach ``threshold`` somewhere without a color of their own get the unused palette
+    color whose hue is farthest from every color already shown, so a blend toward a dissolved
+    species does not look like a blend toward a solid.
+    """
+    colors = dict(colors)
+    visible = [item for index, item in enumerate(species)
+               if item.record_id not in colors and float(weights[index].max()) >= threshold]
+    palette = colormaps["tab20"]
+
+    def hue(color: QColor) -> float:
+        return color.hsvHueF() if color.hsvSaturationF() > 0.15 else -1.0
+
+    candidates = [QColor.fromRgbF(*palette(index)) for index in range(palette.N)]
+    for item in visible:
+        used = [hue(color) for color in colors.values() if hue(color) >= 0]
+        taken = {color.name() for color in colors.values()}
+
+        def distance(color: QColor) -> float:
+            h = hue(color)
+            if h < 0:
+                return -1.0
+            return min((min(abs(h - u), 1 - abs(h - u)) for u in used), default=1.0)
+
+        # the unused palette color whose hue is farthest from every color already shown
+        free = [color for color in candidates if color.name() not in taken]
+        colors[item.record_id] = max(free, key=distance) if free else QColor("#8c8c8c")
+    return colors, visible
 
 
 def _edges(values: np.ndarray) -> tuple[float, float]:
@@ -62,7 +96,7 @@ class DisplayOptions:
     water: bool = True
     plating: bool = False
     boltzmann: bool = False
-    boltzmann_scale: float = 1.0
+    blend_width_kJ_mol: float = 2.5
     potential_scale: str = "SHE"
     uncertainty: bool = False
     uncertainty_sigma: float = 1.0
@@ -137,8 +171,15 @@ class DiagramView(pg.PlotWidget):
         columns = np.arange(diagram.pH.size)[np.newaxis, :]
         fixed_activity = getattr(diagram, "transformed_gibbs_J_mol_metal", None) is not None
         rgb = None
-        if options.boltzmann and fixed_activity:
-            rgb = self._boltzmann_rgb(diagram, options.boltzmann_scale, colors)[rows, columns]
+        blended_in: list = []
+        if options.boltzmann:
+            weights = (boltzmann_smooth(diagram, options.blend_width_kJ_mol * 1000).weights if fixed_activity
+                       else dissolved_blend_weights(diagram))
+            stable_colors = colors or record_colors([item.record_id for item in diagram.stable_species])
+            colors, blended_in = blend_colors(diagram.system.species, weights, stable_colors)
+            table = np.array([colors[item.record_id].getRgbF()[:3] if item.record_id in colors else (0.8, 0.8, 0.8)
+                              for item in diagram.system.species])
+            rgb = np.tensordot(weights, table, axes=(0, 0))[rows, columns]
         hatch = None
         self.uncertainty = None
         if options.uncertainty and fixed_activity:
@@ -149,7 +190,7 @@ class DiagramView(pg.PlotWidget):
             diagram.stable_species_index[rows, columns], diagram.pH, axis, diagram.system.species,
             options, colors=colors, reset_range=reset_range, rgb=rgb,
             axes=("pH", axis_label(scale) if scale != "SHE" else "Eh (V vs SHE)"),
-            valid=valid, hatch=hatch, scale=scale,
+            valid=valid, hatch=hatch, scale=scale, blended_in=blended_in,
         )
         line = "#dfe1e5" if self.dark else "#000000"
         water_pen = pg.mkPen(line, width=1.2, style=Qt.DashLine)
@@ -179,6 +220,7 @@ class DiagramView(pg.PlotWidget):
         valid: np.ndarray | None = None,
         hatch: np.ndarray | None = None,
         scale: str = "SHE",
+        blended_in: list | None = None,
     ) -> None:
         """Draw any 2D grid of species indices (rows follow ``y``, columns follow ``x``).
 
@@ -261,6 +303,10 @@ class DiagramView(pg.PlotWidget):
                     pen=pg.mkPen("#000000"),
                 )
                 self.legend.addItem(swatch, to_html(item.species, LEGEND_PT))
+            for item in blended_in or ():
+                swatch = pg.ScatterPlotItem(symbol="s", size=11, brush=pg.mkBrush(colors[item.record_id]),
+                                            pen=pg.mkPen("#000000", style=Qt.DotLine))
+                self.legend.addItem(swatch, to_html(item.species, LEGEND_PT) + " (blended)")
             if hatch is not None and self.uncertainty is not None:
                 swatch = pg.ScatterPlotItem(symbol="s", size=11, brush=pg.mkBrush(255, 255, 255, 150),
                                             pen=pg.mkPen("#000000", style=Qt.DotLine))
@@ -272,21 +318,6 @@ class DiagramView(pg.PlotWidget):
             self.setXRange(x0, x1, padding=0)
             self.setYRange(y0, y1, padding=0)
         view.setLimits(xMin=x0, xMax=x1, yMin=y0, yMax=y1)
-
-    @staticmethod
-    def _boltzmann_rgb(diagram: Any, scale: float, colors: dict[str, QColor] | None) -> np.ndarray:
-        smoothed = boltzmann_smooth(diagram, scale)
-        stable = diagram.stable_species
-        colors = dict(colors or record_colors([item.record_id for item in stable]))
-        # Stable species keep their hard-minimum colors; the others take the next palette entries
-        palette = colormaps["tab20"]
-        others = sorted(
-            item.record_id for item in diagram.system.species if item.record_id not in colors
-        )
-        for offset, record_id in enumerate(others, start=len(colors)):
-            colors[record_id] = QColor.fromRgbF(*palette(offset % palette.N))
-        table = np.array([colors[item.record_id].getRgbF()[:3] for item in diagram.system.species])
-        return np.tensordot(smoothed.weights, table, axes=(0, 0))
 
     def set_water(self, pH: np.ndarray, her_V: np.ndarray, oer_V: np.ndarray, visible: bool) -> None:
         """Water-stability lines for a grid drawn with pH on the x axis and Eh on the y axis."""

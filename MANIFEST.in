@@ -4,3 +4,9 @@ include CITATION.cff
 include THIRD_PARTY_NOTICES.md
 recursive-include docs *.md
 recursive-include tests *.py
+prune paper
+prune data
+prune scripts
+exclude *.csv
+exclude collaborator-*.md permission-emails.md agent-prompt-*.md
+global-exclude __pycache__ *.py[cod]

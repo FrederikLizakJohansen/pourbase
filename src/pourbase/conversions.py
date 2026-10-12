@@ -1,4 +1,14 @@
-"""Concentration-unit helpers for the public API and desktop application."""
+"""Concentration-unit helpers for the public API and desktop application.
+
+A metal concentration entered as log10(c / mol L^-1), mol/L, ppm (mg of metal per litre) or
+weight percent of metal is converted to molarity with the atomic weight M_M (g/mol) and the
+solution density rho (kg/L):
+
+    c = 10^x,   c = ppm / (1000 M_M),   c = 10 rho wt% / M_M                             (10)
+
+In fixed-activity mode a = c / (1 mol/L) is assigned to every aqueous species of the element; in
+mass-balance mode c is the conserved total c_T.
+"""
 
 from __future__ import annotations
 

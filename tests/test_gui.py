@@ -181,6 +181,52 @@ class WindowTests(WindowTestCase):
         self.assertEqual(window.sweep_page.settings().levels, 9)
         window.panel.set_display(DisplayOptions())
 
+    def test_a_custom_selection_policy_changes_the_calculation_and_the_species_tab(self) -> None:
+        import pourbase as pb
+
+        window = self.window
+        text = pb.SelectionPolicy.default().source_text.replace(
+            'families = ["NBS Tables", "NBS Technical Notes", "NIST-JANAF"',
+            'families = ["NIST-JANAF", "NBS Tables", "NBS Technical Notes"').replace(
+            'name = "pourbase default"', 'name = "JANAF first"')
+        path = os.path.join(self.directory.name, "janaf-first.toml")
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(text)
+        self.open("Fe")
+        hematite = "gfe-fe-fe2o3-q+0-solid-hematite"
+        default_value = next(item for item in window.calculation.diagram.system.species
+                             if item.record_id == hematite).gibbs_energy_J_mol
+        self.assertTrue(window.load_policy(path))
+        species = {item.record_id: item for item in window.calculation.diagram.system.species}
+        self.assertEqual(species[hematite].gibbs_energy_J_mol, -743523.0)
+        self.assertNotEqual(default_value, -743523.0)
+        window.views.setCurrentWidget(window.species_page)
+        self.app.processEvents()
+        row = next(index for index in range(window.species_page.table.rowCount())
+                   if window.species_page.table.item(index, 8).text() == hematite)
+        window.species_page.table.selectRow(row)
+        self.assertIn("JANAF first", window.species_page.details.toPlainText())
+        self.assertIn("NIST-JANAF before NBS Tables", window.species_page.details.toPlainText())
+        self.assertTrue(window.load_policy(None))
+        species = {item.record_id: item for item in window.calculation.diagram.system.species}
+        self.assertEqual(species[hematite].gibbs_energy_J_mol, default_value)
+
+    def test_a_dataset_opens_on_its_own_in_a_new_window(self) -> None:
+        path = os.path.join(self.directory.name, "copper.csv")
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write("symbol,species,formula,charge,phase,gibbs_energy_kJ_mol,uncertainty_kJ_mol,citation,replaces\n"
+                         "Cu,Cu,Cu,0,solid,0,,reference,\nCu,Cu²⁺,Cu,2,aqueous,65.49,,notes,\n"
+                         "Cu,CuO,CuO,0,solid,-129.7,,notes,\n")
+        window = self.window.open_dataset(path)
+        try:
+            self.app.processEvents()
+            self.assertEqual(list(window.systems), ["Cu"])
+            self.assertEqual(window.settings.symbol, "Cu")
+            self.assertEqual({item.species for item in window.calculation.diagram.system.species}, {"Cu", "Cu²⁺", "CuO"})
+            self.assertIn("copper.csv", window.windowTitle())
+        finally:
+            window.close()
+
     def test_unavailable_views_explain_and_offer_the_change(self) -> None:
         window = self.window
         self.open("Fe")

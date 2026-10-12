@@ -1,8 +1,26 @@
-"""Transparent Boltzmann-like smoothing of fixed-activity Pourbaix grids."""
+"""Soft-minimum view of fixed-activity Pourbaix grids.
+
+At each grid point every species receives the weight
+
+    w_i = exp[-(G~_i - G~_min) / epsilon] / sum_j exp[-(G~_j - G~_min) / epsilon]          (8)
+
+with G~ from Eq. 1 and a blend width epsilon in J/mol per mole of metal. By default the sums run
+over the dissolved species only, and only where a dissolved species is stable: a solid, liquid or
+gas is a separate phase that forms when the solution saturates, so wherever one is stable it keeps
+the whole weight and every edge involving it stays sharp. As epsilon -> 0 the sharp diagram is
+recovered; a larger width blends in the dissolved species within a few epsilon of the minimum.
+
+With epsilon = RT the weights of mononuclear dissolved species are their equilibrium fractions,
+since the ratio of two aqueous activities is exp[-(G~_j - G~_i)/RT]; they then reproduce the
+fractions of the closed mass balance (:func:`pourbase.speciation.metal_fraction_grid`) wherever no
+solid precipitates. Other widths display energy differences.
+"""
+
 
 from __future__ import annotations
 
 import math
+import warnings
 from dataclasses import dataclass
 
 import numpy as np
@@ -17,25 +35,30 @@ from .models import ThermodynamicSpecies
 FloatArray = npt.NDArray[np.float64]
 
 
+def thermal_energy_J_mol(diagram: PourbaixDiagram) -> float:
+    """RT at the temperature of ``diagram``, the default blend width."""
+    return GAS_CONSTANT_J_MOL_K * diagram.conditions.temperature_K
+
+
 @dataclass(frozen=True, slots=True)
 class BoltzmannSmoothedDiagram:
-    """Soft-min view of one fixed-activity diagram.
+    """Soft-minimum weights of one fixed-activity diagram for a blend width in J/mol.
 
-    The weights compare transformed Gibbs energies normalized per mole of metal.
-    They visualize energetic competition between entries. They do not represent
-    conserved phase amounts or equilibrium mole fractions.
+    ``mixing_entropy_J_mol_K`` is R times the Shannon entropy of the weights, a measure of how
+    many species share a point; it is a thermodynamic mixing entropy only where the weights are
+    physical fractions (see the module documentation).
     """
 
     diagram: PourbaixDiagram
-    thermal_scale: float
+    width_J_mol: float
     weights: FloatArray
     soft_minimum_gibbs_J_mol_metal: FloatArray
     dominant_weight: FloatArray
     mixing_entropy_J_mol_K: FloatArray
 
     def __post_init__(self) -> None:
-        if not math.isfinite(self.thermal_scale) or self.thermal_scale <= 0:
-            raise ValueError("thermal_scale must be positive and finite")
+        if not math.isfinite(self.width_J_mol) or self.width_J_mol <= 0:
+            raise ValueError("width_J_mol must be positive and finite")
         grid_shape = (self.diagram.eh_V.size, self.diagram.pH.size)
         if self.weights.shape != (len(self.diagram.system.species), *grid_shape):
             raise ValueError("weights shape does not match the source diagram")
@@ -48,26 +71,28 @@ class BoltzmannSmoothedDiagram:
                 raise ValueError(f"{name} shape does not match the source diagram")
 
     @property
+    def thermal_scale(self) -> float:
+        """The width in units of RT (deprecated; use ``width_J_mol``)."""
+        return self.width_J_mol / thermal_energy_J_mol(self.diagram)
+
+    @property
     def effective_thermal_energy_J_mol(self) -> float:
-        return (
-            self.thermal_scale
-            * GAS_CONSTANT_J_MOL_K
-            * self.diagram.conditions.temperature_K
-        )
+        """The blend width (deprecated name; use ``width_J_mol``)."""
+        return self.width_J_mol
 
     @property
     def interpretation(self) -> str:
         return (
-            "Boltzmann-like soft-min weights over transformed Gibbs energies per "
-            "mole of metal; these are energetic-competition weights, not phase "
-            "fractions or a closed mass-balance result. The blend depends on the "
-            "set of species supplied to the calculation."
+            "Soft-minimum weights over transformed Gibbs energies per mole of metal with a blend "
+            f"width of {self.width_J_mol / 1000:.3g} kJ/mol. They display energy differences; "
+            "they equal phase fractions only for mononuclear aqueous species at a width of RT "
+            "where no solid precipitates."
         )
 
     def weights_at(
         self, pH: float, eh_V: float
     ) -> tuple[tuple[ThermodynamicSpecies, float], ...]:
-        """Return species and descending soft-min weight at one grid point."""
+        """Return species and descending weight at one grid point."""
         row = nearest_index(self.diagram.eh_V, eh_V, "eh_V")
         column = nearest_index(self.diagram.pH, pH, "pH")
         pairs = tuple(
@@ -78,29 +103,49 @@ class BoltzmannSmoothedDiagram:
 
 
 def boltzmann_smooth(
-    diagram: PourbaixDiagram, thermal_scale: float = 1.0
+    diagram: PourbaixDiagram,
+    width_J_mol: float | None = None,
+    *,
+    blend_all_phases: bool = False,
+    thermal_scale: float | None = None,
 ) -> BoltzmannSmoothedDiagram:
-    """Return stable softmax weights ``exp(-(G-Gmin)/(scale*R*T))``.
+    """Soft-minimum weights ``exp(-(G - Gmin) / width)`` of a fixed-activity diagram.
 
-    Subtracting the grid minimum gives the same normalized weights as the direct
-    Boltzmann expression and prevents numerical overflow.
+    ``width_J_mol`` defaults to RT. With ``blend_all_phases`` the sums run over every species, so
+    solids blend with the solution as well. ``thermal_scale`` gives the width in units of RT and is
+    kept for compatibility. Subtracting the grid minimum gives the same normalized weights as the
+    direct expression and prevents numerical overflow.
     """
-    if not math.isfinite(thermal_scale) or thermal_scale <= 0:
-        raise ValueError("thermal_scale must be positive and finite")
+    if thermal_scale is not None:
+        warnings.warn("thermal_scale is deprecated; pass width_J_mol (thermal_scale * R * T)",
+                      DeprecationWarning, stacklevel=2)
+        if width_J_mol is not None:
+            raise ValueError("give either width_J_mol or thermal_scale")
+        width_J_mol = thermal_scale * thermal_energy_J_mol(diagram)
+    if width_J_mol is None:
+        width_J_mol = thermal_energy_J_mol(diagram)
+    if not math.isfinite(width_J_mol) or width_J_mol <= 0:
+        raise ValueError("width_J_mol must be positive and finite")
     energy_stack = diagram.transformed_gibbs_J_mol_metal
     if energy_stack is None:
         raise ValueError("the diagram was calculated without store_energies")
-    effective_rt = (
-        thermal_scale * GAS_CONSTANT_J_MOL_K * diagram.conditions.temperature_K
-    )
-    delta = energy_stack - diagram.minimum_transformed_gibbs_J_mol_metal[None, :, :]
-    unnormalized = np.exp(-delta / effective_rt)
+    minimum = diagram.minimum_transformed_gibbs_J_mol_metal
+    stable = diagram.stable_species_index
+    if blend_all_phases:
+        blended = np.ones(len(diagram.system.species), dtype=bool)
+        blend_here = np.ones(stable.shape, dtype=bool)
+    else:
+        blended = np.array([item.is_aqueous for item in diagram.system.species])
+        blend_here = blended[stable]
+    delta = np.where(blended[:, None, None], energy_stack - minimum[None, :, :], np.inf)
+    unnormalized = np.exp(-delta / width_J_mol)
     partition = np.sum(unnormalized, axis=0, keepdims=True)
-    weights = np.asarray(unnormalized / partition, dtype=np.float64)
+    weights = unnormalized / partition
+    sharp = np.zeros_like(weights)
+    np.put_along_axis(sharp, stable[None, :, :], 1.0, axis=0)
+    weights = np.asarray(np.where(blend_here[None, :, :], weights, sharp), dtype=np.float64)
     soft_minimum = np.asarray(
-        diagram.minimum_transformed_gibbs_J_mol_metal
-        - effective_rt * np.log(partition[0]),
-        dtype=np.float64,
+        np.where(blend_here, minimum - width_J_mol * np.log(partition[0]), minimum), dtype=np.float64,
     )
     dominant_weight = np.asarray(np.max(weights, axis=0), dtype=np.float64)
     log_weights = np.zeros_like(weights)
@@ -113,7 +158,7 @@ def boltzmann_smooth(
         array.setflags(write=False)
     return BoltzmannSmoothedDiagram(
         diagram=diagram,
-        thermal_scale=thermal_scale,
+        width_J_mol=float(width_J_mol),
         weights=weights,
         soft_minimum_gibbs_J_mol_metal=soft_minimum,
         dominant_weight=dominant_weight,

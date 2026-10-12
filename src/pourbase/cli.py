@@ -41,7 +41,9 @@ def parser() -> argparse.ArgumentParser:
     plot.add_argument("--solution-density", type=float, default=1.0)
     plot.add_argument("--davies-ionic-strength", type=float,
                       help="Davies activity coefficients at this ionic strength (mass balance)")
-    plot.add_argument("--boltzmann-scale", type=float, help="plot Boltzmann-like soft-minimum weights")
+    plot.add_argument("--blend-width", type=float, metavar="KJ_MOL",
+                      help="draw soft-minimum weights of this width in kJ/mol (fixed activity)")
+    plot.add_argument("--boltzmann-scale", type=float, help=argparse.SUPPRESS)
     plot.add_argument("--output", type=Path, default=Path("pourbaix.png"))
     plot.add_argument("--grid-csv", type=Path)
     evidence(plot)
@@ -89,15 +91,16 @@ def run(args: argparse.Namespace) -> None:
         figure, _ = plot_concentration_sweep(result, probe_pH=args.probe_pH, probe_eh_V=args.probe_eh)
         print(f"Wrote {save_figure(figure, args.output, dpi=150).resolve()}")
     else:
-        if args.mode == Mode.MASS_BALANCE.value and args.boltzmann_scale is not None:
-            raise SystemExit("--boltzmann-scale applies to fixed_activity mode")
+        if args.mode == Mode.MASS_BALANCE.value and (args.blend_width or args.boltzmann_scale) is not None:
+            raise SystemExit("--blend-width applies to fixed_activity mode")
         calculation = calculate(Scenario(
             args.symbol, mode=args.mode, concentration=args.concentration, concentration_unit=args.unit,
             solution_density_kg_L=args.solution_density,
             davies_ionic_strength_mol_L=args.davies_ionic_strength,
             allow_incomplete=args.allow_incomplete, energy_policy=_policy(args),
         ), database)
-        figure = diagram_figure(calculation.diagram, boltzmann_scale=args.boltzmann_scale)
+        figure = diagram_figure(calculation.diagram, blend_width_kJ_mol=args.blend_width,
+                                boltzmann_scale=args.boltzmann_scale)
         save_figure(figure, args.output, dpi=150)
         if args.grid_csv is not None:
             args.grid_csv.write_text(grid_csv(calculation.diagram))

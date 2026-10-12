@@ -1,4 +1,29 @@
-"""Closed-system metal balance for single-metal Pourbaix calculations."""
+"""Closed-system metal balance for single-metal Pourbaix calculations.
+
+The total metal concentration c_T is conserved between the dissolved species and at most one
+precipitating solid. All aqueous species share one metal chemical potential mu at equilibrium,
+mu = G~_i(a_i = 1) + RT ln(gamma_i c_i / c0), so the concentration of each mononuclear aqueous
+species is
+
+    c_i = c0 exp[(mu - G~_i) / RT] / gamma_i
+
+and the dissolved metal is c_d = c0 exp(mu / RT) Z with the partition sum
+
+    Z = sum_i exp(-G~_i / RT) / gamma_i .                                              (6)
+
+Without a solid, mu follows from c_d = c_T. The solid s with the lowest G~_s saturates the
+solution when mu reaches G~_s, at the dissolved concentration
+
+    c_sat = c0 exp(G~_s / RT) Z .                                                       (7)
+
+If c_T > c_sat the solid precipitates, c_d = c_sat and the precipitated fraction is
+1 - c_sat / c_T; otherwise everything is dissolved. The species fractions c_i / c_d are
+exp(-G~_i / RT) / (gamma_i Z) in both cases. The dominant species is the solid where it
+precipitates and the most concentrated aqueous species elsewhere. Activity coefficients gamma_i
+come from :mod:`pourbase.activity_coefficients`. Polynuclear aqueous species and gases are left
+out of the balance.
+"""
+
 
 from __future__ import annotations
 
@@ -212,7 +237,7 @@ class MassBalanceEngine:
         *,
         allow_incomplete: bool = False,
     ) -> MassBalancedPourbaixDiagram:
-        """Calculate an already loaded or deliberately transformed metal system."""
+        """Calculate an already loaded or transformed metal system."""
         if not isinstance(total_metal, TotalMetalConcentration):
             raise TypeError("total_metal must be a TotalMetalConcentration")
         gas_species = tuple(item for item in system.species if item.is_gas)

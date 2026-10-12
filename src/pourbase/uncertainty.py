@@ -3,6 +3,18 @@
 Both functions work on fixed-activity diagrams calculated with stored energies. A species
 without a reported uncertainty takes an assumed one, defined reference states are exact, and
 the uncertainty of ligand reference energies is not included.
+
+With sigma_i the uncertainty of Delta_f G_i, a grid point is uncertain when some other species j
+satisfies
+
+    G~_j - G~_s < k sqrt( (sigma_s / m_s)^2 + (sigma_j / m_j)^2 )                        (12)
+
+for the stable species s and a chosen confidence k. At fixed pH every G~ is linear in E with
+slope -e_i F (Eq. 1), so the stable species changes at the potential shift
+
+    Delta E_j = (G~_j - G~_s) / ((e_j - e_s) F)                                           (13)
+
+and the nearest boundary above (below) is the smallest positive (largest negative) Delta E_j.
 """
 
 from __future__ import annotations

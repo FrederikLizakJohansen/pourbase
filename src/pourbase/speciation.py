@@ -55,6 +55,23 @@ def metal_fraction_grid(diagram: MassBalancedPourbaixDiagram) -> FloatArray:
     return fractions
 
 
+def dissolved_blend_weights(diagram: MassBalancedPourbaixDiagram) -> FloatArray:
+    """Weights for coloring a closed-balance diagram by its dissolved fractions.
+
+    Where no solid precipitates, the weights are the fractions of the dissolved species (they sum
+    to one). Where a solid precipitates, it is a separate phase and takes the whole weight, so
+    every edge between solid and solution stays sharp.
+    """
+    fractions = np.array(_metal_fractions(diagram, slice(None), slice(None)))
+    solid = diagram.precipitating_solid_index
+    precipitating = solid >= 0
+    one_hot = np.zeros_like(fractions)
+    np.put_along_axis(one_hot, np.where(precipitating, solid, 0)[None, :, :], 1.0, axis=0)
+    weights = np.where(precipitating[None, :, :], one_hot, fractions)
+    weights.setflags(write=False)
+    return weights
+
+
 def speciation_profile(diagram: MassBalancedPourbaixDiagram, eh_V: float) -> SpeciationProfile:
     """Metal fractions along pH at the grid Eh nearest to ``eh_V``."""
     row = nearest_index(diagram.eh_V, eh_V, "eh_V")

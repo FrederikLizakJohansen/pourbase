@@ -1,6 +1,6 @@
 """Desktop GUI for pourbase (Qt, via PySide6 and pyqtgraph).
 
-Start it with ``pourbase-gui [element | session.pourbase.json]``, ``pourbase gui`` or
+Start it with ``pourbase-gui [element | session.pourbase.json | dataset.csv | dataset.sqlite]``, ``pourbase gui`` or
 ``python -m pourbase.gui``.
 """
 
@@ -34,8 +34,15 @@ def main(argv: list[str] | None = None) -> int:
     QApplication.setDesktopFileName(APP_ID)
     app.setWindowIcon(application_icon())
     argument = argv[0] if argv else None
-    session = argument if argument and argument.lower().endswith(".json") else None
-    window = MainWindow(symbol=None if session else argument)
+    lowered = (argument or "").lower()
+    session = argument if lowered.endswith(".json") else None
+    dataset = argument if lowered.endswith((".csv", ".sqlite", ".db")) else None
+    if dataset:
+        from ..user_data import open_dataset
+
+        window = MainWindow(database=open_dataset(dataset), dataset_name=Path(dataset).name)
+    else:
+        window = MainWindow(symbol=None if session else argument)
     window.show()
     if session:
         window.load_session(session)

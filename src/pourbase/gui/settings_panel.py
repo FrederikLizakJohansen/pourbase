@@ -237,16 +237,18 @@ class SettingsPanel(QTabWidget):
         note.setWordWrap(True)
         form.addRow(note)
         layout.addWidget(box)
-        box = QGroupBox("Boltzmann-like soft minimum (fixed activity)")
+        box = QGroupBox("Blend dissolved species")
         form = QFormLayout(box)
-        self.boltzmann = QCheckBox("Blend species colors by their weights")
+        self.boltzmann = QCheckBox("Blend the colors of dissolved species")
         self.boltzmann.toggled.connect(lambda value: self._set_display("boltzmann", value))
         form.addRow(self.boltzmann)
-        self.boltzmann_scale = FloatSlider("Scale", 0.05, 20.0, 1.0, decimals=2, log=True, label_width=40)
-        self.boltzmann_scale.valueChanged.connect(lambda value: self._set_display("boltzmann_scale", value))
-        form.addRow(self.boltzmann_scale)
-        note = QLabel("Weights are proportional to exp(−(G − Gmin) / (scale·R·T)). They show energetic "
-                      "competition and are not conserved phase fractions.")
+        self.blend_width = FloatSlider("Width", 0.1, 50.0, self.display.blend_width_kJ_mol, decimals=2,
+                                           log=True, unit="kJ/mol", label_width=40)
+        self.blend_width.valueChanged.connect(lambda value: self._set_display("blend_width_kJ_mol", value))
+        form.addRow(self.blend_width)
+        note = QLabel("Mass balance: colors mix by the fractions of the dissolved species. Fixed activity: "
+                      "weights ∝ exp(−(G − Gmin) / width) among dissolved species; at a width of RT "
+                      "(2.48 kJ/mol) these are their fractions. Solids keep sharp edges in both.")
         note.setWordWrap(True)
         form.addRow(note)
         layout.addWidget(box)
@@ -323,8 +325,7 @@ class SettingsPanel(QTabWidget):
         self.davies.setEnabled(mass_balance)
         self.ionic_strength.setEnabled(mass_balance and self.settings.davies)
         self.density.setEnabled(self.settings.concentration_unit == "wt_percent")
-        self.boltzmann.setEnabled(not mass_balance)
-        self.boltzmann_scale.setEnabled(not mass_balance)
+        self.blend_width.setEnabled(not mass_balance)
         for widget in (self.uncertainty, self.uncertainty_sigma, self.assumed_uncertainty):
             widget.setEnabled(not mass_balance)
         self.display_checks["plating"].setEnabled(not mass_balance)
@@ -358,7 +359,7 @@ class SettingsPanel(QTabWidget):
         self.uncertainty_sigma.setCurrentIndex(max(self.uncertainty_sigma.findData(display.uncertainty_sigma), 0))
         self.assumed_uncertainty.setValue(display.assumed_uncertainty_kJ_mol)
         self.boltzmann.setChecked(display.boltzmann)
-        self.boltzmann_scale.setValue(display.boltzmann_scale)
+        self.blend_width.setValue(display.blend_width_kJ_mol)
         for name, value in vars(display).items():
             setattr(self.display, name, value)
         self._updating = False

@@ -18,7 +18,7 @@ from support import ROOT
 import pourbase as pb
 
 TABLES = {
-    "metadata", "species", "thermochemistry", "sources", "phases", "warnings",
+    "metadata", "species", "sources", "phases", "warnings",
     "materials_project_matches", "materials_project_energies", "ligands",
     "reported_thermochemistry", "computational_fallbacks", "element_coverage",
 }
@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 792), ("reported_thermochemistry", 2583),
-                                 ("sources", 1608), ("warnings", 1124),
+            for table, count in (("species", 785), ("reported_thermochemistry", 2569),
+                                 ("sources", 1608), ("warnings", 1127),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -45,23 +45,23 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual(self.database.metadata["publication_status"], "release_candidate_pending_collaborator_review")
         self.assertEqual(len(self.database.available_systems()), 74)
 
-    def test_retained_values_have_one_preferred_per_available_property(self) -> None:
-        with closing(sqlite3.connect(self.database.path)) as connection:
-            duplicates = connection.execute(
-                "SELECT record_id,property FROM reported_thermochemistry "
-                "WHERE selected_as_recommended=1 GROUP BY record_id,property HAVING count(*)>1"
-            ).fetchall()
-            self.assertEqual(duplicates, [])
-            for prop, field in (("gibbs_energy_of_formation", "gibbs_energy_J_mol"),
-                                ("absolute_entropy", "entropy_J_mol_K"),
-                                ("enthalpy_of_formation", "formation_enthalpy_J_mol")):
+    def test_every_recommended_value_is_a_reported_value(self) -> None:
+        recommended = self.database.recommended_value_ids()
+        with closing(self.database.connect()) as connection:
+            for prop, field, prefix in (("gibbs_energy_of_formation", "gibbs_energy_J_mol", "gibbs"),
+                                        ("absolute_entropy", "entropy_J_mol_K", "entropy"),
+                                        ("enthalpy_of_formation", "formation_enthalpy_J_mol", "formation_enthalpy")):
+                rows = connection.execute(
+                    f"SELECT t.{prefix}_value_id, r.value, t.{field} FROM selected_thermochemistry t "
+                    f"JOIN reported_thermochemistry r ON r.value_id = t.{prefix}_value_id "
+                    f"WHERE t.{field} IS NOT NULL").fetchall()
+                self.assertTrue(rows, prop)
+                self.assertTrue(all(value_id in recommended and value == stored for value_id, value, stored in rows),
+                                prop)
                 missing = connection.execute(
-                    f"SELECT t.record_id FROM thermochemistry t WHERE t.{field} IS NOT NULL "
-                    "AND NOT EXISTS (SELECT 1 FROM reported_thermochemistry r "
-                    f"WHERE r.record_id=t.record_id AND r.property=? "
-                    f"AND r.selected_as_recommended=1 AND r.value=t.{field})", (prop,)
-                ).fetchall()
-                self.assertEqual(missing, [], prop)
+                    f"SELECT count(*) FROM selected_thermochemistry WHERE {field} IS NOT NULL AND {prefix}_value_id IS NULL"
+                ).fetchone()[0]
+                self.assertEqual(missing, 0, prop)
 
     def test_slop_bromide_complex_uses_explicit_free_ligand(self) -> None:
         rid = "r06-na-nabr-q+0-aq"
@@ -191,7 +191,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual(rows["absolute_entropy"].value, 90.83)
         self.assertEqual(rows["enthalpy_of_formation"].value, -1431792.2426)
         self.assertIn("Hydration", rows["absolute_entropy"].source.locator)
-        self.assertIn("NBS-reference", rows["enthalpy_of_formation"].source.citation)
+        self.assertIn("NBS-reference", rows["enthalpy_of_formation"].source.locator)
 
     def test_slop_entropy_only_records_keep_original_charge_and_missing_gibbs(self) -> None:
         beryllium, thallium = self.database.species_records((
@@ -305,18 +305,18 @@ class DatasetSnapshotTests(unittest.TestCase):
         thermo = record.thermochemistry
         self.assertEqual((thermo.gibbs_energy_J_mol.value,
                           thermo.formation_enthalpy_J_mol.value,
-                          thermo.entropy_J_mol_K.value), (-240589, -284512, 122.499))
-        alternatives = {row.source.source_id: row for row in record.reported
+                          thermo.entropy_J_mol_K.value), (-239400.0, -284930.0, 116.7))
+        alternatives = {(row.source.source_id, row.property): row.value for row in record.reported
                         if row.source and not row.selected_as_recommended}
-        self.assertEqual({key: row.value for key, row in alternatives.items()}, {
-            "NBS_PDR_M32124_retained_nist-047-nbs-12098": -239400,
-            "NBS_PDR_M32124_retained_nist-048-nbs-12098": -284930,
-            "NBS_PDR_M32124_retained_nist-049-nbs-12098": 116.7,
-            "KO2_fallback_USBM1982_hf": -284512,
+        self.assertEqual(alternatives, {
+            ("NIST_JANAF_K-010", "gibbs_energy_of_formation"): -240589,
+            ("NIST_JANAF_K-010", "enthalpy_of_formation"): -284512,
+            ("NIST_JANAF_K-010", "absolute_entropy"): 122.499,
+            ("KO2_fallback_USBM1982_hf", "enthalpy_of_formation"): -284512,
         })
         self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
         for key in ("nist-047", "nist-049"):
-            row = next(value for source, value in alternatives.items() if key in source)
+            row = next(row for row in record.reported if row.source and key in row.source.source_id)
             self.assertIn("convention limitations", row.source.locator)
             self.assertIn("hypothesis", row.source.locator)
         self.assertEqual(record.phase_identity.spacegroup_symbol, "I4/mmm")
@@ -324,15 +324,15 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual((solid.metal_count, solid.core_oxygen_count,
                           solid.electrons_per_metal, solid.protons_per_metal), (1, 2, 4, 4))
         with closing(sqlite3.connect(self.database.path)) as connection:
-            pressures = dict(connection.execute(
-                "SELECT source_id,pressure_bar FROM reported_thermochemistry "
-                "WHERE record_id=? AND selected_as_recommended=0", (rid,),
-            ))
+            recommended = self.database.recommended_value_ids()
+            pressures = {source: pressure for value_id, source, pressure in connection.execute(
+                "SELECT value_id,source_id,pressure_bar FROM reported_thermochemistry WHERE record_id=?", (rid,),
+            ) if value_id not in recommended}
             warnings = {row[0] for row in connection.execute(
                 "SELECT warning_type FROM warnings WHERE record_id=?", (rid,),
             )}
-        self.assertEqual(pressures, {key: 1.01325 if key == "KO2_fallback_USBM1982_hf"
-                                    else 1.0 for key in alternatives})
+        self.assertEqual(pressures, {source: 1.01325 if source == "KO2_fallback_USBM1982_hf" else 1.0
+                                    for source, _property in alternatives})
         self.assertIn("ko2_historical_entropy_convention_unresolved", warnings)
         self.assertIn("ko2_formal_oxidation_state_metadata_followup", warnings)
 
@@ -342,21 +342,23 @@ class DatasetSnapshotTests(unittest.TestCase):
         thermo = record.thermochemistry
         self.assertEqual((thermo.gibbs_energy_J_mol.value,
                           thermo.formation_enthalpy_J_mol.value,
-                          thermo.entropy_J_mol_K.value), (-659222.5, -713581, 51.7625))
+                          thermo.entropy_J_mol_K.value), (-659150.0, -713600.0, 51.25))
         self.assertEqual(len(record.reported), 10)
         self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
-        alternatives = {row.source.source_id: row for row in record.reported
+        alternatives = {(row.source.source_id, row.property): row.value for row in record.reported
                         if row.source and not row.selected_as_recommended}
-        self.assertEqual({key: row.value for key, row in alternatives.items()}, {
-            "NBS_PDR_M32124_retained_nist-093-nbs-6798": -659150,
-            "NBS_PDR_M32124_retained_nist-094-nbs-6798": -713600,
-            "NBS_PDR_M32124_retained_nist-095-nbs-6798": 51.25,
-            "VO2_fallback_NBS1971_gf": -659189.2,
-            "VO2_fallback_NBS1971_hf": -713581.2,
-            "VO2_fallback_NBS1971_entropy": 51.254,
-            "VO2_fallback_USBM1982_entropy": 51.4632,
+        self.assertEqual(alternatives, {
+            ("NIST_JANAF_O-073", "gibbs_energy_of_formation"): -659222.5,
+            ("NIST_JANAF_O-073", "enthalpy_of_formation"): -713581,
+            ("NIST_JANAF_O-073", "absolute_entropy"): 51.7625,
+            ("VO2_fallback_NBS1971_gf", "gibbs_energy_of_formation"): -659189.2,
+            ("VO2_fallback_NBS1971_hf", "enthalpy_of_formation"): -713581.2,
+            ("VO2_fallback_NBS1971_entropy", "absolute_entropy"): 51.254,
+            ("VO2_fallback_USBM1982_entropy", "absolute_entropy"): 51.4632,
         })
-        for row in alternatives.values():
+        for row in record.reported:
+            if not row.source or not ("fallback" in row.source.source_id or "NBS_PDR" in row.source.source_id):
+                continue
             self.assertIsNone(row.uncertainty)
             self.assertIn("multiplied by0.5", row.source.locator)
             self.assertIn("explicit cross-source inference", row.source.locator)
@@ -365,13 +367,13 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual((solid.metal_count, solid.core_oxygen_count,
                           solid.electrons_per_metal, solid.protons_per_metal), (1, 2, 4, 4))
         with closing(sqlite3.connect(self.database.path)) as connection:
-            pressures = dict(connection.execute(
-                "SELECT source_id,pressure_bar FROM reported_thermochemistry "
-                "WHERE record_id=? AND selected_as_recommended=0", (rid,),
-            ))
-        self.assertEqual({key: pressures[key] for key in alternatives},
-                         {key: 1.0 if key.startswith("NBS_PDR_") else 1.01325
-                          for key in alternatives})
+            recommended = self.database.recommended_value_ids()
+            pressures = {source: pressure for value_id, source, pressure in connection.execute(
+                "SELECT value_id,source_id,pressure_bar FROM reported_thermochemistry WHERE record_id=?", (rid,),
+            ) if value_id not in recommended}
+        self.assertEqual({source: pressures[source] for source, _property in alternatives},
+                         {source: 1.0 if source.startswith(("NBS_PDR_", "NIST_JANAF")) else 1.01325
+                          for source, _property in alternatives})
 
     def test_minium_retains_distinct_entropy_intervals_and_formula_unit(self) -> None:
         rid = "gfe-pb-pb3o4-q+0-solid-minium"
@@ -379,7 +381,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         thermo = record.thermochemistry
         self.assertEqual((thermo.gibbs_energy_J_mol.value,
                           thermo.formation_enthalpy_J_mol.value,
-                          thermo.entropy_J_mol_K.value), (-601606, -718686, 211.961))
+                          thermo.entropy_J_mol_K.value), (-601200.0, -718400.0, 211.3))
         self.assertEqual(len(record.reported), 15)
         self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
         retained = {row.source.source_id: row for row in record.reported
@@ -456,7 +458,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         thermo = record.thermochemistry
         self.assertEqual((thermo.gibbs_energy_J_mol.value,
                           thermo.formation_enthalpy_J_mol.value,
-                          thermo.entropy_J_mol_K.value), (-189283, -219409, 66.316))
+                          thermo.entropy_J_mol_K.value), (-188930.0, -218990.0, 66.5))
         self.assertEqual(len(record.reported), 14)
         self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
         usgs = {row.property: row for row in record.reported
@@ -565,14 +567,18 @@ class DatasetSnapshotTests(unittest.TestCase):
         thermo = record.thermochemistry
         self.assertEqual((thermo.gibbs_energy_J_mol.value,
                           thermo.formation_enthalpy_J_mol.value,
-                          thermo.entropy_J_mol_K.value), (-96800, -98300, 91.2))
-        self.assertEqual(thermo.gibbs_energy_J_mol.uncertainty, 2000)
-        self.assertEqual(thermo.formation_enthalpy_J_mol.uncertainty, 2000)
+                          thermo.entropy_J_mol_K.value), (-98700.0, -100400.0, 91.2))
+        self.assertIsNone(thermo.gibbs_energy_J_mol.uncertainty)
+        self.assertIsNone(thermo.formation_enthalpy_J_mol.uncertainty)
         self.assertIsNone(thermo.entropy_J_mol_K.uncertainty)
+        usgs = {row.property: row for row in record.reported if row.source and "USGS1995" in row.source.source_id}
+        self.assertEqual({prop: (row.value, row.uncertainty, row.selected_as_recommended) for prop, row in usgs.items()},
+                         {"gibbs_energy_of_formation": (-96800.0, 2000.0, False),
+                          "enthalpy_of_formation": (-98300.0, 2000.0, False)})
         self.assertEqual(len(record.reported), 8)
         self.assertEqual(sum(row.selected_as_recommended for row in record.reported), 3)
         self.assertIn("logical record3275", thermo.entropy_J_mol_K.source.locator)
-        self.assertIn("397", thermo.gibbs_energy_J_mol.source.locator)
+        self.assertIn("M32124", thermo.gibbs_energy_J_mol.source.locator)
         self.assertIn("cubic", record.phase_identity.identified_phase)
         self.assertEqual(record.phase_identity.status, "resolved")
         self.assertIsNone(record.phase_identity.spacegroup_number)
@@ -1095,8 +1101,8 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertTrue(any(row.type == "mines_native_enthalpy_discrepancy" for row in gold.warnings))
 
     def test_every_gibbs_status_is_known(self) -> None:
-        with closing(sqlite3.connect(self.database.path)) as connection:
-            statuses = {row[0] for row in connection.execute("SELECT DISTINCT gibbs_status FROM thermochemistry")}
+        with closing(self.database.connect()) as connection:
+            statuses = {row[0] for row in connection.execute("SELECT DISTINCT gibbs_status FROM selected_thermochemistry")}
         self.assertLessEqual(statuses, {item.value for item in pb.EvidenceStatus})
 
     def test_sulfate_gibbs_uses_original_zero_ionic_strength_constant(self) -> None:
@@ -1370,11 +1376,11 @@ class DatasetSnapshotTests(unittest.TestCase):
             self.assertFalse(row.selected_as_recommended)
             self.assertIn("plattnerite", row.source.locator)
             self.assertIn("p. 209", row.source.locator)
-        self.assertEqual(aluminum.thermochemistry.entropy_J_mol_K.value, 28.275)
+        self.assertEqual(aluminum.thermochemistry.entropy_J_mol_K.value, 28.33)
         entropy = next(row for row in aluminum.reported if row.property == "absolute_entropy"
                        and row.source and row.source.source_id.startswith("NBS_PDR_M32124_retained_"))
         self.assertEqual(entropy.value, 28.33)
-        self.assertFalse(entropy.selected_as_recommended)
+        self.assertTrue(entropy.selected_as_recommended)
         self.assertIn("CSV logical record 3558", entropy.source.locator)
 
     def test_aluminum_reference_corrections_retain_distinct_evaluations(self) -> None:
@@ -1498,3 +1504,24 @@ class DatasetSnapshotTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SelectionPolicyGuardTests(unittest.TestCase):
+    """The recommended values follow from the evidence and the default policy."""
+
+    def test_recommendations_are_pinned(self) -> None:
+        import hashlib
+        from collections import Counter
+
+        database = pb.ThermodynamicDatabase.bundled()
+        selections = database.selections
+        self.assertEqual(Counter(key[1] for key in selections),
+                         {"gibbs_energy_of_formation": 693, "absolute_entropy": 664, "enthalpy_of_formation": 514})
+        chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "93ee319b39439831",
+                         "the evidence or the default policy changed the recommended values")
+
+    def test_the_file_holds_no_recommendations(self) -> None:
+        database = pb.ThermodynamicDatabase.bundled()
+        self.assertFalse(database._stores_recommendations)
+        self.assertEqual(database.metadata["schema_version"], "8")

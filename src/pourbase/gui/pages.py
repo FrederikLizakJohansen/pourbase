@@ -165,7 +165,10 @@ class DiagramPage(StackedView):
 class SpeciesPage(QSplitter):
     """Every species of the system with its full evidence record."""
 
-    COLUMNS = ["Species", "Phase", "ΔfG° (kJ/mol)", "±", "Status", "Stable", "Warnings", "Record ID"]
+    COLUMNS = ["Species", "Phase", "ΔfG° (kJ/mol)", "±", "Status", "Class", "Stable", "Warnings", "Record ID"]
+    PROPERTIES = (("Gibbs energy of formation", "gibbs_energy_of_formation", "gibbs_energy_J_mol", "kJ/mol", 1000),
+                  ("Formation enthalpy", "enthalpy_of_formation", "formation_enthalpy_J_mol", "kJ/mol", 1000),
+                  ("Absolute entropy", "absolute_entropy", "entropy_J_mol_K", "J/(mol K)", 1))
 
     def __init__(self, parent=None) -> None:
         super().__init__(Qt.Vertical, parent)
@@ -180,14 +183,19 @@ class SpeciesPage(QSplitter):
         self.addWidget(self.details)
         self.setSizes([450, 350])
         self.records: dict[str, SpeciesRecord] = {}
+        self.selections: dict = {}
+        self.policy_name = ""
 
     def clear(self) -> None:
         self.table.setRowCount(0)
         self.details.clear()
         self.records = {}
 
-    def show_calculation(self, calculation: Calculation, records: dict[str, SpeciesRecord]) -> None:
+    def show_calculation(self, calculation: Calculation, records: dict[str, SpeciesRecord],
+                         selections: dict | None = None, policy_name: str = "") -> None:
+        """``selections`` maps ``(record_id, property)`` to the active policy's :class:`Selection`."""
         self.records = records
+        self.selections, self.policy_name = selections or {}, policy_name
         system = calculation.diagram.system
         stable = {item.record_id for item in calculation.stable_species}
         rows = [(item.record_id, item.gibbs_energy_J_mol, item.gibbs_status.value, False) for item in system.species]
@@ -200,10 +208,12 @@ class SpeciesPage(QSplitter):
         for index, (record_id, energy, status, excluded) in enumerate(rows):
             record = records[record_id]
             gibbs = record.thermochemistry.gibbs_energy_J_mol
+            selection = self.selections.get((record_id, "gibbs_energy_of_formation"))
             values = [
                 record.species, record.phase_detail or record.phase,
                 kilojoules(energy if energy is not None else gibbs.value), kilojoules(gibbs.uncertainty),
-                status, "yes" if record_id in stable else "", str(len(record.warnings)), record_id,
+                status, selection.chosen.evidence_class if selection else "",
+                "yes" if record_id in stable else "", str(len(record.warnings)), record_id,
             ]
             for column, value in enumerate(values):
                 cell = QTableWidgetItem(value)
@@ -218,17 +228,29 @@ class SpeciesPage(QSplitter):
 
     def _show_details(self) -> None:
         selected = self.table.selectedItems()
-        record = self.records.get(self.table.item(selected[0].row(), 7).text()) if selected else None
+        record = self.records.get(self.table.item(selected[0].row(), 8).text()) if selected else None
         if record is None:
             return
         parts = [f"<h3>{to_html(record.species, 13)} <small>({html.escape((record.phase_detail or record.phase).strip('()'))})"
                  f"</small></h3><code>{record.record_id}</code>"]
         thermo = record.thermochemistry
-        for label, value, unit, divisor in (
-            ("Gibbs energy of formation", thermo.gibbs_energy_J_mol, "kJ/mol", 1000),
-            ("Formation enthalpy", thermo.formation_enthalpy_J_mol, "kJ/mol", 1000),
-            ("Absolute entropy", thermo.entropy_J_mol_K, "J/(mol K)", 1),
-        ):
+        for label, property_name, attribute, unit, divisor in self.PROPERTIES:
+            value = getattr(thermo, attribute)
+            selection = self.selections.get((record.record_id, property_name))
+            if selection is not None:
+                chosen = selection.chosen
+                text = f"{chosen.value / divisor:.3f} {unit}"
+                origin = ("" if chosen.family in selection.basis
+                          else f" (class {html.escape(chosen.evidence_class)}, {html.escape(chosen.family)})")
+                basis = (f"<br><small>Selected by {html.escape(self.policy_name)}: {html.escape(selection.basis)}"
+                         f"{origin}"
+                         + (", <b>sources disagree by more than the review threshold</b>" if selection.needs_review
+                            else "") + "</small>")
+                source = next((item.source for item in record.reported if item.source
+                               and item.source.source_id == chosen.source_id), value.source)
+                parts.append(f"<p><b>{label}:</b> {text} <i>({html.escape(chosen.status)})</i>"
+                             f"<br>{source_html(source)}{basis}</p>")
+                continue
             text = "—" if value.value is None else f"{value.value / divisor:.3f} {unit}"
             parts.append(f"<p><b>{label}:</b> {text} <i>({value.status or 'not available'})</i>"
                          f"<br>{source_html(value.source)}</p>")
@@ -251,15 +273,23 @@ class SpeciesPage(QSplitter):
             parts.append("<p><b>Warnings</b><ul>"
                          + "".join(f"<li>{html.escape(item.message)}</li>" for item in record.warnings) + "</ul></p>")
         if record.reported:
-            rows = "".join(
-                f"<tr><td>{html.escape(item.property)}</td><td>{item.value}</td><td>{html.escape(item.unit)}</td>"
-                f"<td>{html.escape(item.status)}</td><td>{'✓' if item.selected_as_recommended else ''}</td>"
-                f"<td>{html.escape(item.source.citation or '') if item.source else ''}</td></tr>"
-                for item in record.reported
-            )
+            candidates = {candidate.value_id: candidate for (record_id, _property), selection in self.selections.items()
+                          if record_id == record.record_id for candidate in selection.candidates}
+            chosen = {selection.chosen.value_id for (record_id, _property), selection in self.selections.items()
+                      if record_id == record.record_id}
+
+            def row(item) -> str:
+                candidate = candidates.get(item.value_id)
+                recommended = item.value_id in chosen if self.selections else item.selected_as_recommended
+                origin = (f"{candidate.evidence_class}, {html.escape(candidate.family)}" if candidate
+                          else "<i>not eligible</i>")
+                return (f"<tr><td>{html.escape(item.property)}</td><td>{item.value}</td><td>{html.escape(item.unit)}</td>"
+                        f"<td>{html.escape(item.status)}</td><td>{origin}</td><td>{'✓' if recommended else ''}</td>"
+                        f"<td>{html.escape(item.source.citation or '') if item.source else ''}</td></tr>")
+
             parts.append("<p><b>Reported values</b></p><table border='1' cellspacing='0' cellpadding='3'>"
-                         "<tr><th>Property</th><th>Value</th><th>Unit</th><th>Status</th><th>Recommended</th>"
-                         f"<th>Source</th></tr>{rows}</table>")
+                         "<tr><th>Property</th><th>Value</th><th>Unit</th><th>Status</th><th>Class</th>"
+                         f"<th>Recommended</th><th>Source</th></tr>{''.join(row(item) for item in record.reported)}</table>")
         self.details.setHtml("".join(parts))
 
 

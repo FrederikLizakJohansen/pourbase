@@ -4,6 +4,31 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Schema 8: the database file stores evidence only. The recommended values are derived from the
+  reported values by the active selection policy when the database is opened and appear to every
+  connection as the temporary table `selected_thermochemistry`. Reported values gain `source_locator`; six
+  entropy evidence gaps move from the stored `thermochemistry` table to reported rows; `selected_as_recommended`
+  and the stored `thermochemistry` table are removed. Every derived value, status, uncertainty,
+  source and locator equals the schema 7 recommendation, and the `species` table is unchanged.
+  Schema 7 files remain readable.
+- Seven aqueous species listed in the NBS Tables under two water-equivalent formulas are single
+  records (785 species), each with a warning naming the second formula.
+- `pourbase.crosscheck` and `scripts/pymatgen_crosscheck.py` compare every system with pymatgen;
+  with the same water energy and Nernst slope all diagrams agree at every grid point.
+- `with_user_species` adds or substitutes user species from a CSV file, with the evidence status
+  `user_supplied`; the desktop application loads them from the File menu and stores them in sessions.
+- The calculation modules state the equations they implement, numbered as in the paper.
+- Recommended values follow a selection policy, `data/selection-policy.toml`: evidence classes A–F
+  (NBS Tables first in class B; fitted estimates before correlations in class E), tie-breaks and
+  43 overrides and 2 exclusions with reasons. Applying it changed 94 recommendations (23 Gibbs
+  energies, mostly NIST-JANAF to NBS). `SelectionPolicy`, `select`, `with_policy` and
+  `compare_policies` calculate with any policy, and `scripts/selection_report.py` reports one. The application loads policies from the File
+  menu and shows each value's class and selection basis in the Species tab.
+- The soft-minimum view takes a blend width in kJ/mol (`boltzmann_smooth(diagram, width_J_mol)`,
+  `--blend-width`, a width slider in the application). At a width of RT the weights equal the
+  fractions of dissolved species where no solid precipitates; `thermal_scale` and
+  `--boltzmann-scale` remain as deprecated aliases.
+
 - 792 species and 2583 retained observations across 74 supported elemental systems, with
   recommended Gibbs energies for 700.
 - Remaining Shock1997 hydrolysis fits and entropy correlations: 67 observations,

@@ -25,6 +25,9 @@ from ..models import ExclusionReason
 from ..records import SpeciesRecord
 from ..scenario import Calculation, Mode
 from ..uncertainty import stability_margin
+from ..selection import SelectionPolicy, select, with_policy
+from ..exceptions import DatabaseSchemaError
+from ..user_data import open_dataset, with_user_species
 from . import logo_pixmap
 from .compare import ComparePage
 from .credentials import storage_description
@@ -36,7 +39,9 @@ from .periodic import OverviewPage
 from .placeholder import StackedView
 from .plots import record_colors
 from .session import SUFFIX as SESSION_SUFFIX
-from .session import SessionError, read_session, sidecar_path, write_session
+from .session import (
+    SessionError, read_session, session_selection_policy, session_user_species, sidecar_path, write_session,
+)
 from .settings_panel import SettingsPanel
 from .state import CONCENTRATION_UNITS, Session, Settings
 from .sweep import SweepPage
@@ -47,12 +52,19 @@ DEBOUNCE_MS = 30
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, symbol: str | None = None, settings: QSettings | None = None) -> None:
+    def __init__(self, symbol: str | None = None, settings: QSettings | None = None,
+                 database: Any = None, dataset_name: str | None = None) -> None:
+        """``database`` replaces the bundled data, for example a user dataset from :func:`open_dataset`."""
         super().__init__()
-        self.setWindowTitle(f"pourbase {__version__}")
+        self.dataset_name = dataset_name
+        self.setWindowTitle(f"pourbase {__version__}" + (f" — {dataset_name}" if dataset_name else ""))
         self.stored = settings if settings is not None else QSettings("pourbase", "pourbase")
-        self.session = Session()
+        self.session = Session(database)
         self.database = self.session.database
+        self.user_species_path: str | None = None
+        self.policy_path: str | None = None
+        self.policy = SelectionPolicy.default()
+        self._selections: dict | None = None
         self.systems = dict(self.database.available_systems())
         self.tasks = TaskRunner(self)
         cache_root = (Path(QStandardPaths.writableLocation(QStandardPaths.CacheLocation)) if settings is None
@@ -183,6 +195,12 @@ class MainWindow(QMainWindow):
             ("Export grid as CSV…", self.export_grid, None),
             ("Copy Python code", self.copy_python, None),
             (None, None, None),
+            ("Open dataset (CSV or SQLite)…", self.open_dataset, None),
+            ("Load own species (CSV)…", self.open_user_species, None),
+            ("Remove own species", lambda: self.load_user_species(None), None),
+            ("Load selection policy (TOML)…", self.open_policy, None),
+            ("Use the default selection policy", lambda: self.load_policy(None), None),
+            (None, None, None),
             ("Quit", self.close, QKeySequence.Quit),
         ):
             if text is None:
@@ -223,7 +241,11 @@ class MainWindow(QMainWindow):
             settings = Settings.from_dict(json.loads(str(self.stored.value("settings", "{}"))))
         except (TypeError, ValueError):
             settings = Settings()
-        return settings if settings.symbol in self.systems else Settings()
+        if settings.symbol not in self.systems:
+            settings = Settings()
+            if settings.symbol not in self.systems:
+                settings.symbol = next(iter(self.systems))
+        return settings
 
     def closeEvent(self, event) -> None:
         self.stored.setValue("settings", json.dumps(self.settings.to_dict()))
@@ -275,6 +297,11 @@ class MainWindow(QMainWindow):
             parts.append(f"{other} species outside this model (see Species)")
         if calculation.fallback_species:
             parts.append(f"{len(calculation.fallback_species)} MP 300 K estimate(s) in use")
+        own = sum(item.gibbs_status.value == "user_supplied" for item in system.species)
+        if own:
+            parts.append(f"{own} own species in use")
+        if self.policy_path:
+            parts.append(f"selection policy: {self.policy.name}")
         text = "; ".join(parts)
         return text if not (missing or calculation.fallback_species) else f"!{text}"
 
@@ -397,7 +424,8 @@ class MainWindow(QMainWindow):
             else:
                 system = calculation.diagram.system
                 ids = [item.record_id for item in system.species] + [item.record_id for item in system.excluded]
-                self.species_page.show_calculation(calculation, self._records_for(ids))
+                self.species_page.show_calculation(calculation, self._records_for(ids), self._policy_selections(),
+                                                   self.policy.name)
         elif current is self.boundaries_page:
             self._show_boundaries()
         elif current is self.speciation_page:
@@ -618,8 +646,75 @@ class MainWindow(QMainWindow):
         path = self._save_path("Save session", f"pourbase-{self.settings.symbol.lower()}{SESSION_SUFFIX}",
                                f"pourbase session (*{SESSION_SUFFIX} *.json)")
         if path:
-            write_session(path, self.settings, self.display, self.sweep_page.settings())
+            write_session(path, self.settings, self.display, self.sweep_page.settings(), self.user_species_path,
+                          self.policy_path)
             self._set_status(f"Saved the session to {path}")
+
+    def open_user_species(self) -> None:
+        path, _ = QFileDialog.getOpenFileName(self, "Load own species", "", "CSV (*.csv);;All files (*)")
+        if path:
+            self.load_user_species(path)
+
+    def _rebuild_database(self, policy_path: str | None, user_species_path: str | None, title: str) -> bool:
+        """Calculate with a selection policy file and a user-species file over the bundled data."""
+        try:
+            policy = SelectionPolicy.load(policy_path) if policy_path else SelectionPolicy.default()
+            database = with_policy(self.database, policy) if policy_path else self.database
+            if user_species_path:
+                database = with_user_species(database, user_species_path)
+        except (OSError, ValueError, KeyError) as error:
+            QMessageBox.warning(self, title, str(error))
+            return False
+        self.session = Session(database)
+        self.policy, self.policy_path, self.user_species_path = policy, policy_path, user_species_path
+        self._selections = None
+        self.recalculate()
+        self.update_overview()
+        return True
+
+    def load_user_species(self, path: str | None) -> bool:
+        """Calculate with the species of a user CSV file, or with the bundled data alone for None."""
+        if not self._rebuild_database(self.policy_path, path, "Load own species"):
+            return False
+        count = len(self.session.database.user_species) if path else 0
+        self._set_status(f"Calculating with {count} own species from {Path(path).name}" if path
+                         else "Calculating without own species")
+        return True
+
+    def open_dataset(self, path: str | None = None) -> Any:
+        """Open a dataset on its own in a new window; returns the window, or None."""
+        if path is None:
+            path, _ = QFileDialog.getOpenFileName(self, "Open dataset", "",
+                                                  "Datasets (*.csv *.sqlite *.db);;All files (*)")
+        if not path:
+            return None
+        try:
+            database = open_dataset(path)
+        except (OSError, ValueError, DatabaseSchemaError) as error:
+            QMessageBox.warning(self, "Open dataset", str(error))
+            return None
+        window = MainWindow(settings=self.stored, database=database, dataset_name=Path(path).name)
+        window.show()
+        self._dataset_windows = [*getattr(self, "_dataset_windows", []), window]
+        return window
+
+    def open_policy(self) -> None:
+        path, _ = QFileDialog.getOpenFileName(self, "Load selection policy", "", "TOML (*.toml);;All files (*)")
+        if path:
+            self.load_policy(path)
+
+    def load_policy(self, path: str | None) -> bool:
+        """Calculate with the recommendations of a selection-policy file, or the default for None."""
+        if not self._rebuild_database(path, self.user_species_path, "Load selection policy"):
+            return False
+        self._set_status(f"Calculating with the selection policy {self.policy.name} ({self.policy.fingerprint})"
+                         if path else "Calculating with the default selection policy")
+        return True
+
+    def _policy_selections(self) -> dict:
+        if self._selections is None:
+            self._selections = select(self.database, self.policy)
+        return self._selections
 
     def open_session(self) -> None:
         path, _ = QFileDialog.getOpenFileName(self, "Open session", "",
@@ -636,6 +731,12 @@ class MainWindow(QMainWindow):
             return False
         if settings.symbol not in self.systems:
             settings.symbol = self.settings.symbol
+        user_species = session_user_species(path)
+        user_species = user_species if user_species and Path(user_species).is_file() else None
+        policy_path = session_selection_policy(path)
+        policy_path = policy_path if policy_path and Path(policy_path).is_file() else None
+        if (user_species, policy_path) != (self.user_species_path, self.policy_path):
+            self._rebuild_database(policy_path, user_species, "Open session")
         self.panel.set_settings(settings)
         self.panel.set_display(display)
         self.sweep_page.set_settings(sweep)
@@ -720,10 +821,11 @@ class MainWindow(QMainWindow):
             boundaries=display.boundaries, water=display.water,
             plating_potential_V=(calculation.plating[0].potential_V_vs_SHE
                                  if fixed and display.plating and calculation.plating else None),
-            boltzmann_scale=display.boltzmann_scale if fixed and display.boltzmann else None,
+            blend_width_kJ_mol=display.blend_width_kJ_mol if fixed and display.boltzmann else None,
         )
         written = save_figure(figure, path)
-        session = write_session(sidecar_path(written), self.settings, self.display, self.sweep_page.settings())
+        session = write_session(sidecar_path(written), self.settings, self.display, self.sweep_page.settings(),
+                                self.user_species_path, self.policy_path)
         self._set_status(f"Wrote {written} and its settings to {session.name}")
 
     def export_grid(self) -> None:
