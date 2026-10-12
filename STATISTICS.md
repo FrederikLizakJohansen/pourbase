@@ -10,11 +10,11 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Supported elemental systems | 74 of 118 elements |
 | Recommended Gibbs energies | 702 (88 %) |
 | Recommended entropies | 673 (85 %) |
-| Recommended formation enthalpies | 527 (66 %) |
-| Reported values retained | 2618 |
-| Source records | 1657 (153 distinct citations) |
+| Recommended formation enthalpies | 528 (66 %) |
+| Reported values retained | 2625 |
+| Source records | 1664 (154 distinct citations) |
 | Phase records | 460 (242 resolved) |
-| Warnings | 1146 |
+| Warnings | 1148 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 12 |
@@ -33,7 +33,7 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| aqueous | 466 | 397 | 397 | 268 |
+| aqueous | 466 | 397 | 397 | 269 |
 | solid | 317 | 294 | 265 | 248 |
 | gas | 9 | 9 | 9 | 9 |
 | liquid | 2 | 2 | 2 | 2 |
@@ -44,10 +44,10 @@ Species by phase:
 |---|---|---|
 | `species` | 794 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `selected_thermochemistry` | 794 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 2618 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1657 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 2625 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1664 | Full citations, links, locators and access dates |
 | `phases` | 460 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 1146 | Scientific cautions attached to records |
+| `warnings` | 1148 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -97,7 +97,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Bi | Bismuth (Bi) | 8 | 5 | 3 | 0 | 0 | 6 | 5 | 2 | 13 |
 | Br | Bromine (Br) | 7 | 6 | 0 | 0 | 1 | 7 | 7 | 7 | 0 |
 | C | Carbon (C) | 7 | 4 | 1 | 2 | 0 | 7 | 7 | 7 | 9 |
-| Ca | Calcium (Ca) | 22 | 9 | 13 | 0 | 0 | 22 | 22 | 19 | 48 |
+| Ca | Calcium (Ca) | 22 | 9 | 13 | 0 | 0 | 22 | 22 | 20 | 50 |
 | Cd | Cadmium (Cd) | 15 | 12 | 3 | 0 | 0 | 9 | 11 | 4 | 21 |
 | Ce | Cerium (Ce) | 13 | 7 | 6 | 0 | 0 | 12 | 9 | 10 | 14 |
 | Cl | Chlorine (Cl) | 9 | 8 | 0 | 1 | 0 | 9 | 9 | 9 | 1 |

@@ -35,8 +35,12 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
   fractions of dissolved species where no solid precipitates; `thermal_scale` and
   `--boltzmann-scale` remain as deprecated aliases.
 
-- 794 species and 2618 retained observations across 74 supported elemental systems, with
+- 794 species and 2625 retained observations across 74 supported elemental systems, with
   recommended Gibbs energies for 702.
+- Seven open calcium observations: the missing Ca²⁺ formation enthalpy and six
+  original-fit CaCO3(aq)/CaHCO3+ formation alternatives. Earlier recommendations
+  and calculations are preserved. Original fit derivatives and inconsistent
+  WATEQ4F reaction-enthalpy points have separate source decisions.
 - Original Fe/Mn carbonate calorimetry and open NBS ion enthalpies: four observations,
   two newly available preferred enthalpies, and explicit links between the original
   entropy measurements and later critical evaluations. Existing recommendations and

@@ -14,11 +14,11 @@
     "species": 794,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2618,
-    "recommended_values": 1902,
-    "source_records": 1657,
-    "distinct_citations": 153,
-    "warnings": 1146,
+    "reported_thermochemistry": 2625,
+    "recommended_values": 1903,
+    "source_records": 1664,
+    "distinct_citations": 154,
+    "warnings": 1148,
     "phase_records": 460,
     "resolved_phase_records": 242,
     "mp_matches": 105,
@@ -32,7 +32,7 @@
       "species": 466,
       "gibbs": 397,
       "entropy": 397,
-      "enthalpy": 268
+      "enthalpy": 269
     },
     {
       "phase": "solid",
@@ -67,7 +67,7 @@
     },
     {
       "property": "Formation enthalpy",
-      "available": 527
+      "available": 528
     }
   ],
   "gibbs_status": {
@@ -1046,8 +1046,8 @@
       "liquid": 0,
       "gibbs": 22,
       "entropy": 22,
-      "enthalpy": 19,
-      "warnings": 48
+      "enthalpy": 20,
+      "warnings": 50
     },
     {
       "symbol": "Cd",
@@ -1979,6 +1979,10 @@
       "count": 8
     },
     {
+      "warning_type": "r07_original_fit_nbs_pressure_approximation",
+      "count": 8
+    },
+    {
       "warning_type": "nitrogen_equilibrium_scope",
       "count": 8
     },
@@ -2024,10 +2028,6 @@
     },
     {
       "warning_type": "usgs_sulfate_evaluation_interval_entropy",
-      "count": 6
-    },
-    {
-      "warning_type": "r07_original_fit_nbs_pressure_approximation",
       "count": 6
     },
     {

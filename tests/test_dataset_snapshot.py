@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 794), ("reported_thermochemistry", 2618),
-                                 ("sources", 1657), ("warnings", 1146),
+            for table, count in (("species", 794), ("reported_thermochemistry", 2625),
+                                 ("sources", 1664), ("warnings", 1148),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -959,6 +959,36 @@ class DatasetSnapshotTests(unittest.TestCase):
                 self.assertAlmostEqual(fraction, 0.5, places=10)
                 self.assertAlmostEqual((dissolved + 2e-5 * fraction) / 2e-5, 1, places=12)
 
+    def test_calcium_original_association_fit_and_missing_ion_enthalpy(self) -> None:
+        ion = self.database.species_records(("gfe-ca-ca-q+2-aqueous-aq",))[0]
+        h = ion.thermochemistry.formation_enthalpy_J_mol
+        self.assertEqual(h.value, -542830)
+        self.assertEqual(h.status, pb.EvidenceStatus.VERIFIED)
+        self.assertIn("10.18434/M32124", h.source.url)
+        self.assertIn("logical record 9196", h.source.locator)
+        for formula, log_k, selected_g in (
+            ("CaCO3", 3.22, -1099084), ("CaHCO3", 1.11, -1145214),
+        ):
+            charge = 0 if formula == "CaCO3" else 1
+            rid = f"gfe-ca-{formula.lower()}-q+{charge}-aqueous-aq"
+            record = self.database.species_records((rid,))[0]
+            fitted = {r.property: r for r in record.reported
+                      if r.value_id.endswith(":original-fit-nbs-pressure-flat")}
+            self.assertEqual(len(fitted), 3)
+            self.assertTrue(all(not r.selected_as_recommended for r in fitted.values()))
+            self.assertTrue(all(r.uncertainty is None for r in fitted.values()))
+            self.assertTrue(all(r.status == pb.EvidenceStatus.SOURCE_VERIFIED_ESTIMATE
+                                for r in fitted.values()))
+            ligand_g = -527810 if charge == 0 else -586770
+            reaction_g = fitted["gibbs_energy_of_formation"].value + 553580 - ligand_g
+            observed = -reaction_g / (8.31446261815324 * 298.15 * math.log(10))
+            self.assertAlmostEqual(observed, log_k, delta=.005)
+            self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, selected_g)
+            self.assertIn("pressure-flat reaction approximation",
+                          fitted["gibbs_energy_of_formation"].source.locator)
+            self.assertIn("different reaction-H point entries",
+                          fitted["enthalpy_of_formation"].source.locator)
+
     def test_fe_mn_original_calorimetry_and_open_ion_enthalpies(self) -> None:
         for symbol, phase, original_s, interval, evaluated_s, enthalpy in (
             ("Fe", "siderite", 95.47, .15, 95.5, -89100),
@@ -1715,9 +1745,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 702, "absolute_entropy": 673, "enthalpy_of_formation": 527})
+                         {"gibbs_energy_of_formation": 702, "absolute_entropy": 673, "enthalpy_of_formation": 528})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "0354263d2b1386ca",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "62814a5d0ef6071d",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

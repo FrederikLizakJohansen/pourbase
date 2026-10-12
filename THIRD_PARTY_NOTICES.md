@@ -29,6 +29,16 @@ retain the published values, conversion and unavailable uncertainty.
 
 ## USGS mineral evaluations
 
+The calcium aqueous-association continuation retains six G/H/S estimates from
+the original Plummer and Busenberg (1982) numerical abstract, equations 4–5,
+at <https://pubs.usgs.gov/publication/70011789>. These individually attributed
+USGS-authored numerical fits use the carried-forward federal fact reuse route
+and open NBS Ca²⁺/carbonate/bicarbonate anchors. USGS and NIST are acknowledged.
+The estimates explicitly assume a locally pressure-flat reaction between 1 atm
+and 1 bar; total uncertainty remains unavailable. Original equation images
+remain in the external review. The missing Ca²⁺ formation enthalpy comes from
+open NBS CSV logical record 9196, zero-based column 7, converted to J/mol.
+
 The database retains the plattnerite PbO2 Gibbs energy, formation enthalpy and absolute entropy
 from Robie and Hemingway (1995), USGS Bulletin 2131, printed pp. 18 and 209, at 298.15 K and
 1 bar. Source-specific uncertainty intervals and the government evaluation's lineage are

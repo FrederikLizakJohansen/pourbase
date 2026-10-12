@@ -767,3 +767,26 @@ All previously stored rows and preferred values are preserved; two missing
 ion H fields become available. All 74 default diagrams and six carbonate-enabled
 Fe/Mn diagrams and metal balances are unchanged. The current snapshot has
 794 species, 2,618 observations and 702/673/527 selected G/S/H fields.
+
+The calcium aqueous-association continuation adds seven observations: the
+missing Ca²⁺ formation enthalpy (−542,830 J/mol, open NBS CSV logical record
+9196) and six original-fit G/H/S alternatives for existing CaCO3(aq) and
+CaHCO3+ records. Plummer and Busenberg (1982), original numerical abstract
+equations 4–5, supply the association functions. Their exact printed
+bicarbonate coefficient is 0.31294. Fit derivatives give reaction H/S;
+open NBS ion and ligand properties give the separate formation anchors.
+These class E estimates use the documented local pressure-flat approximation
+and NULL total uncertainty. Miron formation recommendations remain preferred.
+
+WATEQ4F (1991), printed p. 26, lists the same association functions with
+reaction-enthalpy point entries of 5.410 kcal/mol for CaHCO3+ and 4.030 kcal/mol
+for CaCO3(aq). The function derivatives at 298.15 K give approximately
+2.692 and 3.545 kcal/mol respectively. Their source-specific discrepancy is
+recorded; the new estimates consistently use the original fit derivatives.
+Current native WATEQ4F/Tipping_Hurley files instead list approximately 2.69
+and 3.545 kcal/mol. Native pressure, reference-component and model variants
+remain separate from the admitted NBS-anchored formation estimates.
+
+All prior observations and recommendations are preserved. Ca²⁺ H fills one
+missing field; all default and checked carbonate diagrams remain unchanged.
+Current totals: 794 species, 2,625 observations and 702/673/528 selected G/S/H.
