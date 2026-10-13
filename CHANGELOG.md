@@ -4,6 +4,12 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Review the original Christ/Hostetler (1970) magnesite study: distinguish the
+  measured 90°C activity product from calculated values, document inherited
+  CRC/JANAF supporting inputs and retain explicit reconstruction holds. This
+  source-review checkpoint adds zero observations and preserves the database
+  and paper numbers.
+
 - Species without a recommended Gibbs energy are left out and reported by default;
   `allow_incomplete=False` and `--require-complete` stop instead.
 - Ligand reservoirs are global, with a master switch and per-ligand toggles on the periodic table.

@@ -914,3 +914,20 @@ are numerically inconsistent and supply no input to this reconstruction.
 Every earlier row and preferred value remains intact; all 74 default diagrams
 and five checked carbonate diagrams/metal balances are unchanged. Current totals:
 800 species, 2,654 observations and 707/677/533 selected G/S/H.
+
+The original Christ and Hostetler (1970), American Journal of Science 268,
+439–453, DOI 10.2475/ajs.268.5.439, supplies additional context for magnesite.
+Its experimental activity-product pK is 9.1 ±0.3 at approximately 90°C;
+the assigned interval encompasses specimen differences. The calculated values
+are 9.29 at 90°C and 8.09 at 25°C. Table 3 adopts the solid formation G,
+so the 25°C result provides a forward consistency calculation. It supplies no
+independent 298.15 K formation-energy observation.
+
+The experimental CO2-pressure calculation uses CRC water-vapour data, and the
+adopted solid G inherits the previously reviewed JANAF-dependent 1965 fit.
+These outputs remain in the external source review pending eligible independent
+supporting inputs and a compatible temperature/pressure reconstruction. The
+charge-balance argument concerns dilute 90°C experimental solutions and supplies
+no fitted MgCO3(aq) or MgHCO3+ association constant. The earlier apparent-solubility
+complexing caveat remains applicable. This review adds zero thermochemical rows;
+the database counts, recommendations and paper numbers above are preserved.
