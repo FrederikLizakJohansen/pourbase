@@ -10,6 +10,28 @@ from PySide6.QtWidgets import (
 )
 
 
+class JumpSlider(QSlider):
+    """A slider whose handle jumps to the clicked point and can be dragged from there."""
+
+    def mousePressEvent(self, event) -> None:
+        from PySide6.QtWidgets import QStyle, QStyleOptionSlider
+
+        if event.button() == Qt.LeftButton:
+            option = QStyleOptionSlider()
+            self.initStyleOption(option)
+            handle = self.style().subControlRect(QStyle.CC_Slider, option, QStyle.SC_SliderHandle, self)
+            if not handle.contains(event.position().toPoint()):
+                groove = self.style().subControlRect(QStyle.CC_Slider, option, QStyle.SC_SliderGroove, self)
+                if self.orientation() == Qt.Horizontal:
+                    span, position = groove.width() - handle.width(), event.position().x() - groove.x() - handle.width() / 2
+                else:
+                    span, position = groove.height() - handle.height(), event.position().y() - groove.y() - handle.height() / 2
+                value = QStyle.sliderValueFromPosition(self.minimum(), self.maximum(), int(position), max(span, 1),
+                                                       option.upsideDown)
+                self.setValue(value)
+        super().mousePressEvent(event)
+
+
 class FloatSlider(QWidget):
     """
     A slider coupled to a spin box, emitting valueChanged(float).
@@ -35,7 +57,7 @@ class FloatSlider(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         self.label = QLabel(label)
         self.label.setMinimumWidth(label_width)
-        self.slider = QSlider(Qt.Horizontal)
+        self.slider = JumpSlider(Qt.Horizontal)
         self.slider.setRange(0, self.STEPS)
         self.slider.setMinimumWidth(100)
         self.spin = QDoubleSpinBox()
@@ -49,6 +71,12 @@ class FloatSlider(QWidget):
         layout.addWidget(self.label)
         layout.addWidget(self.slider, 1)
         layout.addWidget(self.spin)
+        self.default = value
+        self.reset_button = QToolButton()
+        self.reset_button.setText("↺")
+        self.reset_button.setAutoRaise(True)
+        self.reset_button.clicked.connect(self.reset)
+        layout.addWidget(self.reset_button)
 
         self.extend_button = None
         if self._hard_maximum > maximum:
@@ -67,6 +95,16 @@ class FloatSlider(QWidget):
         self.slider.sliderMoved.connect(self._slider_moved)
         self.spin.valueChanged.connect(self._spin_changed)
         self.setValue(value)
+        self.set_default(value)
+
+    def set_default(self, value: float) -> None:
+        """The value the reset button restores."""
+        self.default = value
+        self.reset_button.setToolTip(f"Reset to {self.spin.textFromValue(value)}{self.spin.suffix()}")
+
+    def reset(self) -> None:
+        self.setValue(self.default)
+        self.valueChanged.emit(self.spin.value())
 
 
     def _to_position(self, value: float) -> int:
@@ -156,75 +194,41 @@ class FloatSlider(QWidget):
             self.extend_button.setEnabled(self._maximum < self._hard_maximum)
 
 
-class LoadingOverlay(QWidget):
-    """Greys out a widget and draws a spinner while its content is being calculated.
+class LoadingOverlay(QObject):
+    """Tracks whether a view waits for a background result; ``changed`` reports the state.
 
-    ``start()`` shows the overlay after ``delay_ms``, so quick updates do not flicker;
-    ``stop()`` hides it. The overlay follows the size of the widget it covers.
+    The view keeps its previous picture while it waits and cross-fades to the new one, so
+    nothing is drawn over it.
     """
 
-    def __init__(self, target: QWidget, delay_ms: int = 150) -> None:
+    changed = Signal(bool)
+
+    def __init__(self, target: QWidget, delay_ms: int = 300) -> None:
         super().__init__(target)
-        from PySide6.QtCore import QEvent, QTimer
+        from PySide6.QtCore import QTimer
 
-        self._event_resize = QEvent.Resize
-        self.setAttribute(Qt.WA_TransparentForMouseEvents, False)
-        self.hide()
-        self._angle = 0
-        self._spin = QTimer(self, interval=40)
-        self._spin.timeout.connect(self._advance)
+        self._waiting = False
         self._delay = QTimer(self, singleShot=True, interval=delay_ms)
-        self._delay.timeout.connect(self._appear)
-        target.installEventFilter(self)
-
-    def eventFilter(self, watched, event) -> bool:
-        if event.type() == self._event_resize:
-            self.setGeometry(watched.rect())
-        return False
+        self._delay.timeout.connect(lambda: self.changed.emit(True))
 
     @property
     def active(self) -> bool:
-        return self._delay.isActive() or self.isVisible()
+        return self._waiting
+
+    def isVisible(self) -> bool:
+        return self._waiting and not self._delay.isActive()
 
     def start(self) -> None:
-        if not self.active:
+        if not self._waiting:
+            self._waiting = True
             self._delay.start()
 
     def stop(self) -> None:
+        was_shown = self._waiting and not self._delay.isActive()
+        self._waiting = False
         self._delay.stop()
-        self._spin.stop()
-        self.hide()
-
-    def _appear(self) -> None:
-        self.setGeometry(self.parentWidget().rect())
-        self.raise_()
-        self.show()
-        self._spin.start()
-
-    def _advance(self) -> None:
-        self._angle = (self._angle + 30) % 360
-        self.update()
-
-    def paintEvent(self, _event) -> None:
-        from PySide6.QtCore import QRectF
-        from PySide6.QtGui import QColor, QPainter, QPen
-
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing)
-        background = self.palette().window().color()
-        veil = QColor(background)
-        veil.setAlpha(150)
-        painter.fillRect(self.rect(), veil)
-        size = 34.0
-        box = QRectF(self.width() / 2 - size / 2, self.height() / 2 - size / 2, size, size)
-        track = QColor(self.palette().text().color())
-        track.setAlpha(40)
-        painter.setPen(QPen(track, 4))
-        painter.drawEllipse(box)
-        painter.setPen(QPen(self.palette().highlight().color(), 4, Qt.SolidLine, Qt.RoundCap))
-        painter.drawArc(box, -self._angle * 16, 100 * 16)
-        painter.setPen(self.palette().text().color())
-        painter.drawText(QRectF(0, box.bottom() + 8, self.width(), 20), Qt.AlignHCenter, "Calculating…")
+        if was_shown:
+            self.changed.emit(False)
 
 
 class WheelGuard(QObject):
@@ -247,3 +251,81 @@ class WheelGuard(QObject):
 
 _WHEEL = QEvent.Wheel
 _VALUE_INPUTS = (QAbstractSpinBox, QComboBox, QAbstractSlider)
+
+
+def cross_fade(target: QWidget, duration_ms: int = 180) -> None:
+    """Fade from the current picture of ``target`` to whatever it draws next.
+
+    Call it just before ``target`` is redrawn: a snapshot of the old content lies on top and fades
+    out over ``duration_ms``, then removes itself.
+    """
+    from PySide6.QtCore import QPropertyAnimation
+    from PySide6.QtWidgets import QGraphicsOpacityEffect
+
+    if not target.isVisible() or target.width() < 2 or target.height() < 2:
+        return
+    snapshot = QLabel(target)
+    snapshot.setPixmap(target.grab())
+    snapshot.setGeometry(target.rect())
+    snapshot.setAttribute(Qt.WA_TransparentForMouseEvents)
+    effect = QGraphicsOpacityEffect(snapshot)
+    snapshot.setGraphicsEffect(effect)
+    snapshot.show()
+    snapshot.raise_()
+    animation = QPropertyAnimation(effect, b"opacity", snapshot)
+    animation.setDuration(duration_ms)
+    animation.setStartValue(1.0)
+    animation.setEndValue(0.0)
+    animation.finished.connect(snapshot.deleteLater)
+    animation.start()
+
+
+class Section(QWidget):
+    """A titled group of controls that folds away; its open or closed state is remembered.
+
+    Put the controls in ``body``. ``key`` names the stored state; without it the state is not kept.
+    """
+
+    def __init__(self, title: str, key: str | None = None, expanded: bool = True, parent=None) -> None:
+        super().__init__(parent)
+        from PySide6.QtCore import QSettings
+        from PySide6.QtWidgets import QFrame, QToolButton, QVBoxLayout
+
+        self._settings = QSettings("pourbase", "pourbase") if key else None
+        self._key = f"sections/{key}" if key else None
+        if self._settings is not None and self._settings.contains(self._key):
+            expanded = self._settings.value(self._key, expanded, type=bool)
+        self.header = QToolButton()
+        self.header.setText(title)
+        self.header.setCheckable(True)
+        self.header.setChecked(expanded)
+        self.header.setAutoRaise(True)
+        self.header.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        from PySide6.QtWidgets import QSizePolicy
+
+        self.header.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        font = self.header.font()
+        font.setPointSizeF(font.pointSizeF() * 1.05)
+        self.header.setFont(font)
+        self.header.toggled.connect(self.set_expanded)
+        self.body = QFrame()
+        self.body.setFrameShape(QFrame.StyledPanel)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 2, 0, 2)
+        layout.setSpacing(2)
+        layout.addWidget(self.header)
+        layout.addWidget(self.body)
+        self.set_expanded(expanded, store=False)
+
+    @property
+    def expanded(self) -> bool:
+        return self.header.isChecked()
+
+    def set_expanded(self, expanded: bool, store: bool = True) -> None:
+        self.header.blockSignals(True)
+        self.header.setChecked(expanded)
+        self.header.blockSignals(False)
+        self.header.setArrowType(Qt.DownArrow if expanded else Qt.RightArrow)
+        self.body.setVisible(expanded)
+        if store and self._settings is not None:
+            self._settings.setValue(self._key, expanded)

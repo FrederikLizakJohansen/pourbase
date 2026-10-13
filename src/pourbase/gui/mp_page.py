@@ -63,6 +63,8 @@ class MaterialsProjectPage(QWidget):
         self.summary.setWordWrap(True)
         self.summary.setOpenExternalLinks(True)
         self.pairs = QTableWidget(0, 3)
+        self.pairs.horizontalHeader().setHighlightSections(False)
+        self.pairs.verticalHeader().setHighlightSections(False)
         self.pairs.setHorizontalHeaderLabels(["Experimental species", "Materials Project phase", "Share of grid"])
         self.pairs.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.pairs.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -127,8 +129,8 @@ class MaterialsProjectPage(QWidget):
             for column, value in enumerate((species, pretty_label(phase), f"{count / total:.1%}")):
                 self.pairs.setItem(row, column, QTableWidgetItem(value))
         details = (
-            f"<b>{comparison.equivalent_domain_fraction:.1%}</b> of the grid and "
-            f"<b>{comparison.water_window_equivalent_domain_fraction:.1%}</b> of the water-stability "
+            f"{comparison.equivalent_domain_fraction:.1%} of the grid and "
+            f"{comparison.water_window_equivalent_domain_fraction:.1%} of the water-stability "
             "window have the same thermodynamic species in both datasets. "
             f"MP database {html.escape(official.database_version)}, mp-api "
             f"{html.escape(official.mp_api_version)}, pymatgen {html.escape(official.pymatgen_version)}; "

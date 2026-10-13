@@ -13,6 +13,7 @@ from PySide6.QtCore import QPointF, QRectF, Qt, Signal
 from PySide6.QtGui import QColor
 
 from ..boltzmann import boltzmann_smooth
+from .figure_export import install_export_menu
 from ..speciation import dissolved_blend_weights
 from ..grid import phase_boundary_segments
 from ..uncertainty import stability_uncertainty
@@ -116,6 +117,7 @@ class DiagramView(pg.PlotWidget):
         self.getPlotItem().setContentsMargins(4, 12, 14, 4)
         self.setMenuEnabled(False)
         self.showGrid(x=False, y=False)
+        install_export_menu(self, self.export_table, self.export_name)
         self.image = pg.ImageItem(axisOrder="row-major")
         self.addItem(self.image)
         self.hatch = pg.ImageItem(axisOrder="row-major")
@@ -150,6 +152,47 @@ class DiagramView(pg.PlotWidget):
     def set_dark(self, dark: bool) -> None:
         self.dark = dark
         apply_plot_theme(self, dark)
+
+    python_code = None  # set by the owner: a callable returning code that reproduces this figure
+    preview_mode = False  # True while a coarse preview is drawn during a slider drag
+    prepare_labels = True  # False for a quick first picture; the full draw prepares them
+
+    def matplotlib_figure(self):
+        """The shown diagram redrawn with the package's Matplotlib functions, or None for a plain grid."""
+        source = getattr(self, "_figure_source", None)
+        if source is None:
+            return None
+        from ..export import diagram_figure
+        from ..plotting import plot_uncertainty
+
+        diagram, options = source
+        figure = diagram_figure(diagram, labels=options.labels, legend=options.legend,
+                                boundaries=options.boundaries, water=options.water,
+                                blend_width_kJ_mol=options.blend_width_kJ_mol if options.boltzmann else None)
+        if options.uncertainty and getattr(diagram, "transformed_gibbs_J_mol_metal", None) is not None:
+            plot_uncertainty(diagram, ax=figure.axes[0], confidence_sigma=options.uncertainty_sigma,
+                             assumed_uncertainty_kJ_mol=options.assumed_uncertainty_kJ_mol)
+        return figure
+
+    def export_name(self) -> str:
+        diagram = getattr(self, "diagram", None)
+        return f"pourbase-{diagram.system.symbol.lower()}-diagram" if diagram is not None else "pourbase-diagram"
+
+    def export_table(self):
+        """Every grid point of the shown map: its coordinates and stable species."""
+        if getattr(self, "_grid", None) is None:
+            return None
+        x_label, y_label = self._axes
+        names = [item.species for item in self._species]
+        ids = [item.record_id for item in self._species]
+        rows = []
+        for row, y_value in enumerate(self._y):
+            for column, x_value in enumerate(self._x):
+                if not self._valid[row, column]:
+                    continue
+                index = int(self._grid[row, column])
+                rows.append((f"{x_value:.6g}", f"{y_value:.6g}", names[index], ids[index]))
+        return (x_label, y_label, "stable species", "record_id"), rows
 
     def show_diagram(
         self,
@@ -192,6 +235,7 @@ class DiagramView(pg.PlotWidget):
             axes=("pH", axis_label(scale) if scale != "SHE" else "Eh (V vs SHE)"),
             valid=valid, hatch=hatch, scale=scale, blended_in=blended_in,
         )
+        self._figure_source = (diagram, options)
         line = "#dfe1e5" if self.dark else "#000000"
         water_pen = pg.mkPen(line, width=1.2, style=Qt.DashLine)
         self.her.setData(diagram.pH, to_scale(diagram.her_V, diagram.pH, scale, temperature), pen=water_pen)
@@ -226,6 +270,7 @@ class DiagramView(pg.PlotWidget):
 
         Points where ``valid`` is False stay empty; points where ``hatch`` is True are hatched.
         """
+        self._figure_source = None  # a plain grid has no diagram to redraw with matplotlib
         valid = np.ones(index.shape, dtype=bool) if valid is None else valid
         self._grid, self._x, self._y, self._species, self._valid = index, x, y, species, valid
         self._axes = axes
@@ -267,9 +312,9 @@ class DiagramView(pg.PlotWidget):
         for item in (self.her, self.oer, self.plating, self.probe):
             item.setVisible(False)
 
-        for label in self.labels:
-            self.removeItem(label)
-        self.labels = []
+        # label items are kept per species and only moved, so redrawing does not rebuild them
+        cache = self.__dict__.setdefault("_label_items", {})
+        shown: set = set()
         if options.labels:
             x_grid, y_grid = np.meshgrid(x, y)
             scale_x = max(float(np.ptp(x)), 1e-9)
@@ -284,22 +329,45 @@ class DiagramView(pg.PlotWidget):
                     (coordinates[:, 1] - target[1]) / scale_y
                 ) ** 2
                 px, py = coordinates[int(np.argmin(distances))]
-                label = pg.TextItem(
-                    html=f'<span style="color:#000; font-size:{LABEL_PT}pt">'
-                    f"{to_html(item.species, LABEL_PT)}</span>",
-                    anchor=(0.5, 0.5), fill=pg.mkBrush(255, 255, 255, 185),
-                )
+                label = cache.get(item.record_id)
+                if label is None:
+                    label = pg.TextItem(
+                        html=f'<span style="color:#000; font-size:{LABEL_PT}pt">'
+                        f"{to_html(item.species, LABEL_PT)}</span>",
+                        anchor=(0.5, 0.5), fill=pg.mkBrush(255, 255, 255, 185),
+                    )
+                    label.setZValue(5)
+                    self.addItem(label)
+                    cache[item.record_id] = label
                 label.setPos(float(px), float(py))
-                label.setZValue(5)
-                self.addItem(label)
-                self.labels.append(label)
+                label.setVisible(True)
+                shown.add(item.record_id)
+        if options.labels and not self.preview_mode and self.prepare_labels:
+            # prepare hidden labels for every species, so that a species appearing during a drag costs nothing
+            for item in species:
+                if item.record_id not in cache:
+                    label = pg.TextItem(
+                        html=f'<span style="color:#000; font-size:{LABEL_PT}pt">'
+                        f"{to_html(item.species, LABEL_PT)}</span>",
+                        anchor=(0.5, 0.5), fill=pg.mkBrush(255, 255, 255, 185),
+                    )
+                    label.setZValue(5)
+                    label.setVisible(False)
+                    self.addItem(label)
+                    cache[item.record_id] = label
+        for record_id, label in cache.items():
+            if record_id not in shown:
+                label.setVisible(False)
+        self.labels = [cache[record_id] for record_id in shown]
 
         legend_key = (options.legend, tuple((item.record_id, colors[item.record_id].name()) for item in stable),
                       tuple(item.record_id for item in blended_in or ()),
                       self.uncertainty.confidence_sigma if hatch is not None and self.uncertainty is not None else None,
                       self.dark)
-        rebuild = legend_key != getattr(self, "_legend_key", None)
-        self._legend_key = legend_key
+        # while a slider moves the legend stays as it is; it is rebuilt once with the full result
+        rebuild = legend_key != getattr(self, "_legend_key", None) and not self.preview_mode
+        if rebuild:
+            self._legend_key = legend_key
         if rebuild:
             self.legend.clear()
         self.legend.setVisible(options.legend)
@@ -320,11 +388,15 @@ class DiagramView(pg.PlotWidget):
                 self.legend.addItem(swatch, f"within {self.uncertainty.confidence_sigma:g}σ of another species")
 
         view = self.getPlotItem().vb
-        view.setLimits(xMin=None, xMax=None, yMin=None, yMax=None)
-        if reset_range:
-            self.setXRange(x0, x1, padding=0)
-            self.setYRange(y0, y1, padding=0)
-        view.setLimits(xMin=x0, xMax=x1, yMin=y0, yMax=y1)
+        limits = (x0, x1, y0, y1)
+        # a coarse preview keeps the axes as they are; changing the limits would redraw them every step
+        if reset_range or (limits != getattr(self, "_limits", None) and not self.preview_mode):
+            self._limits = limits
+            view.setLimits(xMin=None, xMax=None, yMin=None, yMax=None)
+            if reset_range:
+                self.setXRange(x0, x1, padding=0)
+                self.setYRange(y0, y1, padding=0)
+            view.setLimits(xMin=x0, xMax=x1, yMin=y0, yMax=y1)
 
     def set_water(self, pH: np.ndarray, her_V: np.ndarray, oer_V: np.ndarray, visible: bool) -> None:
         """Water-stability lines for a grid drawn with pH on the x axis and Eh on the y axis."""
@@ -388,6 +460,7 @@ class SpeciationView(pg.PlotWidget):
         self.setLabel("left", "Metal fraction")
         self.setYRange(0, 1.02, padding=0)
         self.setMenuEnabled(False)
+        install_export_menu(self, self.export_table, 'pourbase-speciation')
         self.legend = self.addLegend(offset=(-10, 10), labelTextSize=f"{LEGEND_PT:g}pt")
         self.text_color = "#1f1f1f"
         self.profile: Any = None
@@ -396,6 +469,26 @@ class SpeciationView(pg.PlotWidget):
         self.text_color = "#dfe1e5" if dark else "#1f1f1f"
         apply_plot_theme(self, dark)
         self.show_profile(self.profile)
+
+    python_code = None
+
+    def matplotlib_figure(self):
+        profile = getattr(self, "profile", None)
+        if profile is None:
+            return None
+        from ..speciation import plot_speciation_profile
+
+        return plot_speciation_profile(profile).figure
+
+    def export_table(self):
+        """Metal fractions of every species along pH."""
+        profile = getattr(self, "profile", None)
+        if profile is None:
+            return None
+        header = ("pH", *(f"{item.species} ({item.record_id})" for item in profile.species))
+        rows = [(f"{pH:.6g}", *(f"{fraction:.6g}" for fraction in profile.metal_fraction[:, column]))
+                for column, pH in enumerate(profile.pH)]
+        return header, rows
 
     def show_profile(self, profile: Any | None) -> None:
         self.profile = profile
@@ -421,6 +514,7 @@ class PhaseStripView(pg.PlotWidget):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setMenuEnabled(False)
+        install_export_menu(self, self.export_table, 'pourbase-phase-strip')
         self.setMouseEnabled(x=False, y=False)
         self.hideButtons()
         self.setLabel("bottom", "pH")
@@ -433,8 +527,20 @@ class PhaseStripView(pg.PlotWidget):
     def set_dark(self, dark: bool) -> None:
         apply_plot_theme(self, dark)
 
+    def export_table(self):
+        """The stable species along pH for every row of the strip."""
+        shown = getattr(self, "_rows", None)
+        if not shown:
+            return None
+        pH, rows = shown
+        header = ("pH", *(title for title, *_rest in rows))
+        table = [(f"{value:.6g}", *(species[int(indices[column])].species for _title, indices, species, _colors in rows))
+                 for column, value in enumerate(pH)]
+        return header, table
+
     def show_rows(self, pH: np.ndarray, rows: list[tuple[str, np.ndarray, tuple, dict[str, QColor]]]) -> None:
         """``rows`` holds ``(title, species index along pH, species list, colors)`` per source."""
+        self._rows = (pH, rows)
         for label in self.labels:
             self.removeItem(label)
         self.labels = []

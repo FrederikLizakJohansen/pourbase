@@ -20,7 +20,7 @@ from ..uncertainty import StabilityMargin
 from ..speciation import speciation_profile
 from .formula import formula_delegate, phase_label, to_html
 from .placeholder import StackedView
-from .plots import DiagramView, DisplayOptions, PhaseStripView, SpeciationView
+from .plots import DiagramView, DisplayOptions, PhaseStripView, SpeciationView, record_colors
 from .scales import to_scale
 
 PUBLIC_TABLES = (
@@ -45,6 +45,14 @@ STATUS_LABELS = {
     "ligand_reference_unavailable": "omitted: no ligand reference",
     "mass_balance_nonmonometal_aqueous_unsupported": "omitted: polynuclear (mass balance)",
 }
+
+
+def _swatch(color) -> "QIcon":
+    from PySide6.QtGui import QIcon, QPixmap
+
+    pixmap = QPixmap(12, 12)
+    pixmap.fill(color)
+    return QIcon(pixmap)
 
 
 def status_label(status: str | None) -> str:
@@ -89,6 +97,8 @@ def _table(columns: list[str]) -> QTableWidget:
     table.setHorizontalHeaderLabels(columns)
     table.setEditTriggers(QAbstractItemView.NoEditTriggers)
     table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+    table.horizontalHeader().setHighlightSections(False)  # Qt draws the selected row's header in bold
+    table.verticalHeader().setHighlightSections(False)
     table.setItemDelegateForColumn(0, formula_delegate(table))
     return table
 
@@ -97,6 +107,15 @@ class DiagramPage(StackedView):
     """The diagram, the value under the cursor and the probe panel."""
 
     probeMoved = Signal(float, float)
+    speciesRequested = Signal()
+
+    def _open_link(self, url) -> None:
+        if url.scheme() == "pourbase":
+            self.speciesRequested.emit()
+        else:
+            from PySide6.QtGui import QDesktopServices
+
+            QDesktopServices.openUrl(url)
 
     def __init__(self, parent=None) -> None:
         diagram = DiagramView()
@@ -104,7 +123,8 @@ class DiagramPage(StackedView):
         cursor.setTextFormat(Qt.RichText)
         cursor.setFixedHeight(cursor.fontMetrics().height() * 2)
         probe = QTextBrowser()
-        probe.setOpenExternalLinks(True)
+        probe.setOpenLinks(False)
+        probe.anchorClicked.connect(self._open_link)
         probe.setFixedHeight(200)
         body = QWidget()
         layout = QVBoxLayout(body)
@@ -127,79 +147,97 @@ class DiagramPage(StackedView):
 
     def show_probe(self, probe: Probe, record: SpeciesRecord | None, dft_phase: str | None,
                    margin: StabilityMargin | None = None) -> None:
+        """The species at the probe: what it is, how firmly it holds, where its value comes from."""
         self.diagram.set_probe(probe.pH, probe.eh_V)
         species = probe.species
         muted = "#8c8f94" if self.dark else "#6a6f76"
+        warn = "#d19a2a" if self.dark else "#9a6400"
 
-        def row(label: str, value: str) -> str:
-            return (f'<tr><td style="color:{muted}; padding-right:10px" valign="top">{label}</td>'
-                    f"<td>{value}</td></tr>")
+        def caption(text: str) -> str:
+            return f'<div style="color:{muted}; font-size:8pt; letter-spacing:1px">{text.upper()}</div>'
+
+        def line(text: str, small: bool = False) -> str:
+            size = "font-size:8pt; " if small else ""
+            return f'<div style="{size}margin-top:1px">{text}</div>'
+
+        scale = self.display.potential_scale
+        scaled = (f", {float(to_scale(probe.eh_V, probe.pH, scale)):+.3f} V vs {html.escape(scale)}"
+                  if scale != "SHE" else "")
+        header = (f'<div style="font-size:13pt">{to_html(species.species, 13)}'
+                  f'&nbsp;<span style="color:{muted}; font-size:10pt">{html.escape(phase_label(species))}</span></div>'
+                  f'<div style="color:{muted}">Stable at pH {probe.pH:.2f}, Eh {probe.eh_V:+.3f} V vs SHE{scaled}</div>')
+
+        summary = ""
+        if margin is not None and margin.runner_up is not None and margin.margin_J_mol_metal is not None:
+            sigma = margin.margin_uncertainty_J_mol_metal or 0.0
+            gap = margin.margin_J_mol_metal / 1000
+            text = (f"Next lowest is {to_html(margin.runner_up.species)}, {gap:.2f}"
+                    + (f" ± {sigma / 1000:.2f}" if sigma else "") + " kJ/mol metal higher")
+            if sigma and gap * 1000 < sigma:
+                text += f'; <span style="color:{warn}">within the uncertainty of the data, so either could be stable here</span>'
+            elif sigma and gap * 1000 < 2 * sigma:
+                text += ", separated by one to two combined uncertainties"
+            elif sigma:
+                text += ", clearly separated"
+            if margin.runner_up_uses_assumed_uncertainty:
+                text += f' <span style="color:{muted}">(assumed uncertainty)</span>'
+            summary = f'<div style="margin-top:4px">{text}.</div>'
 
         gibbs = record.thermochemistry.gibbs_energy_J_mol if record else PropertyValue(None, None, None, None)
-        energy = f"{kilojoules(species.gibbs_energy_J_mol)} kJ/mol"
+        energy = f"ΔfG° = {kilojoules(species.gibbs_energy_J_mol)} kJ/mol"
         if gibbs.uncertainty is not None:
             energy += f" ± {kilojoules(gibbs.uncertainty)}"
-        rows = [
-            row("ΔfG°", energy),
-            row("Status", html.escape(species.gibbs_status.value.replace("_", " "))),
-            row("Source", source_html(gibbs.source)),
-            row("Record", f"<code>{species.record_id}</code>"),
-        ]
+        source = gibbs.source
+        citation = html.escape((source.citation or source.source_id) if source else "no source")
+        if source is not None and source.url:
+            citation = f'<a href="{html.escape(source.url)}">{citation}</a>'
+        locator = (source.locator or "") if source is not None else ""
+        if len(locator) > 140:
+            locator = locator[:138].rstrip(" ,;") + "…"
+        value_column = (caption("Gibbs energy") + line(energy)
+                        + line(f'<span style="color:{muted}">{html.escape(status_label(species.gibbs_status.value))}</span>')
+                        + line(citation, small=True)
+                        + (line(f'<span style="color:{muted}">{html.escape(locator)}</span>', small=True) if locator else ""))
         if dft_phase:
-            rows.append(row("DFT (MP)", to_html(dft_phase)))
-        columns = [f'<td valign="top" width="58%"><b>Thermochemistry</b><table cellspacing="0" cellpadding="1">'
-                   f'{"".join(rows)}</table></td>']
-        if probe.dissolved_metal_mol_L is not None:
-            inventory = [
-                row("Dissolved", f"{probe.dissolved_metal_mol_L:.3g} mol/L"),
-                row("Precipitated", f"{probe.precipitated_fraction:.1%} of the metal"),
-            ] + [
-                row(to_html(item["species"]), f"{item['metal_fraction']:.1%}")
-                for item in probe.speciation[:6] if item["metal_fraction"] >= 1e-3
-            ]
-            columns.append(f'<td valign="top" style="padding-left:18px"><b>Metal inventory</b>'
-                           f'<table cellspacing="0" cellpadding="1">{"".join(inventory)}</table></td>')
+            value_column += line(f'<span style="color:{muted}">Materials Project: </span>{to_html(dft_phase)}', small=True)
+        columns = [f'<td valign="top" width="52%">{value_column}</td>']
+
         if margin is not None:
-            columns.append(f'<td valign="top" style="padding-left:18px"><b>Stability</b>'
-                           f'<table cellspacing="0" cellpadding="1">{self._stability_rows(margin, row)}</table></td>')
-        warnings = "".join(
-            f'<div style="color:#c77700">⚠ {html.escape(item.message)}</div>' for item in (record.warnings if record else ())
-        )
-        scale = self.display.potential_scale
-        scaled = (f" ({float(to_scale(probe.eh_V, probe.pH, scale)):+.3f} V vs {html.escape(scale)})"
-                  if scale != "SHE" else "")
+            def neighbour(boundary, change: str, unit: str, digits: int) -> str:
+                if boundary is None:
+                    return f'<span style="color:{muted}">{change}: no change</span>'
+                amount = f"{abs(boundary.distance):.{digits}f}" + (f" {unit}" if unit else "")
+                return (f'<span style="color:{muted}">{change} by {amount}:</span> '
+                        f"{to_html(boundary.species.species)}")
+            boundaries = (caption("Nearby boundaries")
+                          + line(neighbour(margin.higher_potential, "E up", "V", 3))
+                          + line(neighbour(margin.lower_potential, "E down", "V", 3))
+                          + line(neighbour(margin.higher_pH, "pH up", "", 2))
+                          + line(neighbour(margin.lower_pH, "pH down", "", 2)))
+            columns.append(f'<td valign="top" style="padding-left:18px">{boundaries}</td>')
+        if probe.dissolved_metal_mol_L is not None:
+            inventory = (caption("Metal inventory")
+                         + line(f"{probe.dissolved_metal_mol_L:.3g} mol/L dissolved")
+                         + line(f"{probe.precipitated_fraction:.1%} precipitated")
+                         + "".join(line(f'{to_html(item["species"])} <span style="color:{muted}">'
+                                        f'{item["metal_fraction"]:.1%}</span>', small=True)
+                                   for item in probe.speciation[:5] if item["metal_fraction"] >= 1e-3))
+            columns.append(f'<td valign="top" style="padding-left:18px">{inventory}</td>')
+
+        warnings = record.warnings if record else ()
+        notes = ""
+        if warnings:
+            first = warnings[0].message
+            first = first if len(first) <= 120 else first[:118].rstrip(" ,;") + "…"
+            count = f"{len(warnings)} notes" if len(warnings) > 1 else "1 note"
+            notes = (f'<div style="margin-top:6px; font-size:8pt"><span style="color:{warn}">{count} on this record:</span> '
+                     f'{html.escape(first)} <a href="pourbase:species">All details in the Species tab</a></div>')
+        footer = f'<div style="color:{muted}; font-size:8pt; margin-top:4px">Record {species.record_id}</div>'
         self.probe.setHtml(
-            f'<span style="font-size:12pt"><b>{to_html(species.species, 12)}</b></span>'
-            f"&nbsp; {html.escape(phase_label(species))}&nbsp;&nbsp;"
-            f'<span style="color:{muted}">at pH {probe.pH:.2f}, Eh {probe.eh_V:+.3f} V vs SHE{scaled}</span>'
-            f'<table width="100%" cellspacing="0" cellpadding="0" style="margin-top:4px">'
-            f"<tr>{''.join(columns)}</tr></table>{warnings}"
+            header + summary
+            + f'<table width="100%" cellspacing="0" cellpadding="0" style="margin-top:6px"><tr>{"".join(columns)}</tr></table>'
+            + notes + footer
         )
-
-    def _stability_rows(self, margin: StabilityMargin, row: Callable[[str, str], str]) -> str:
-        rows = []
-        if margin.runner_up is not None and margin.margin_J_mol_metal is not None:
-            sigma = margin.margin_uncertainty_J_mol_metal or 0.0
-            text = (f"{to_html(margin.runner_up.species)} {margin.margin_J_mol_metal / 1000:.2f} "
-                    f"± {sigma / 1000:.2f} kJ/mol metal higher")
-            if margin.runner_up_uses_assumed_uncertainty:
-                text += " <small>(assumed σ)</small>"
-            rows.append(row("Runner-up", text))
-            if sigma > 0:
-                ratio = margin.margin_J_mol_metal / sigma
-                verdict = "distinct" if ratio >= 2 else "distinct within 1σ" if ratio >= 1 else "not distinguishable"
-                rows.append(row("Verdict", f"{verdict} ({ratio:.1f}σ)"))
-
-        def neighbour(boundary, unit: str, digits: int) -> str:
-            if boundary is None:
-                return "no change"
-            return f"{to_html(boundary.species.species)} at {boundary.distance:+.{digits}f} {unit}"
-
-        rows.append(row("Higher E", neighbour(margin.higher_potential, "V", 3)))
-        rows.append(row("Lower E", neighbour(margin.lower_potential, "V", 3)))
-        rows.append(row("Higher pH", neighbour(margin.higher_pH, "pH", 2) + " <small>at this Eh</small>"))
-        rows.append(row("Lower pH", neighbour(margin.lower_pH, "pH", 2) + " <small>at this Eh</small>"))
-        return "".join(rows)
 
 
 class SpeciesPage(QSplitter):
@@ -207,7 +245,7 @@ class SpeciesPage(QSplitter):
 
     COLUMNS = ["Species", "Phase", "Ligand", "ΔfG° (kJ/mol)", "±", "Status", "Class", "Spread (kJ/mol)", "Stable",
                "Warnings", "Record ID"]
-    STATUS, SPREAD, RECORD = 5, 7, 10
+    STATUS, SPREAD, STABLE, RECORD = 5, 7, 8, 10
     PROPERTIES = (("Gibbs energy of formation", "gibbs_energy_of_formation", "gibbs_energy_J_mol", "kJ/mol", 1000),
                   ("Formation enthalpy", "enthalpy_of_formation", "formation_enthalpy_J_mol", "kJ/mol", 1000),
                   ("Absolute entropy", "absolute_entropy", "entropy_J_mol_K", "J/(mol K)", 1))
@@ -258,6 +296,7 @@ class SpeciesPage(QSplitter):
 
         rows = [row for row in rows if row[0] in records]
         rows.sort(key=order)
+        swatches = record_colors([item.record_id for item in calculation.stable_species])
         table = self.table
         table.blockSignals(True)
         table.setUpdatesEnabled(False)
@@ -285,12 +324,12 @@ class SpeciesPage(QSplitter):
                 if column in (3, self.SPREAD) and value:
                     cell.setData(Qt.EditRole, float(value))
                 if column == self.SPREAD and flagged:
-                    font = cell.font()
-                    font.setBold(True)
-                    cell.setFont(font)
                     cell.setForeground(QColor("#b26a00"))
                     cell.setToolTip(f"The eligible values differ by more than the policy's review threshold "
                                     f"({len(selection.candidates)} values)")
+                if column == self.STABLE and record_id in swatches:
+                    cell.setIcon(_swatch(swatches[record_id]))
+                    cell.setToolTip("Color of this species in the diagram")
                 if excluded:
                     cell.setForeground(Qt.gray)
                 table.setItem(index, column, cell)
@@ -308,8 +347,8 @@ class SpeciesPage(QSplitter):
         record = self.records.get(self.table.item(selected[0].row(), self.RECORD).text()) if selected else None
         if record is None:
             return
-        parts = [f"<h3>{to_html(record.species, 13)} <small>({html.escape((record.phase_detail or record.phase).strip('()'))})"
-                 f"</small></h3><code>{record.record_id}</code>"]
+        parts = [f"<div style='font-size:13pt'>{to_html(record.species, 13)} <small>({html.escape((record.phase_detail or record.phase).strip('()'))})"
+                 f"</small></div><code>{record.record_id}</code>"]
         thermo = record.thermochemistry
         for label, property_name, attribute, unit, divisor in self.PROPERTIES:
             value = getattr(thermo, attribute)
@@ -321,20 +360,20 @@ class SpeciesPage(QSplitter):
                           else f" (class {html.escape(chosen.evidence_class)}, {html.escape(chosen.family)})")
                 basis = (f"<br><small>Selected by {html.escape(self.policy_name)}: {html.escape(selection.basis)}"
                          f"{origin}"
-                         + (", <b>sources disagree by more than the review threshold</b>" if selection.needs_review
+                         + (", the eligible sources differ by more than the review threshold" if selection.needs_review
                             else "") + "</small>")
                 source = next((item.source for item in record.reported if item.source
                                and item.source.source_id == chosen.source_id), value.source)
-                parts.append(f"<p><b>{label}:</b> {text} <i>({html.escape(status_label(chosen.status))})</i>"
+                parts.append(f"<p>{label}: {text} <i>({html.escape(status_label(chosen.status))})</i>"
                              f"<br>{source_html(source)}{basis}</p>")
                 continue
             text = "—" if value.value is None else f"{value.value / divisor:.3f} {unit}"
-            parts.append(f"<p><b>{label}:</b> {text} <i>({html.escape(status_label(value.status))})</i>"
+            parts.append(f"<p>{label}: {text} <i>({html.escape(status_label(value.status))})</i>"
                          f"<br>{source_html(value.source)}</p>")
         if record.fallback:
             fallback = record.fallback
             parts.append(
-                f"<p><b>Materials Project fallback:</b> {html.escape(fallback.canonical_mp_id)}, "
+                f"<p>Materials Project fallback: {html.escape(fallback.canonical_mp_id)}, "
                 f"{fallback.gibbs_energy_J_mol / 1000:.2f} kJ/mol at {fallback.temperature_K:g} K "
                 f"({html.escape(fallback.model)}), {html.escape(fallback.mapping_confidence)} mapping "
                 f"confidence. {html.escape(fallback.notes or '')}</p>"
@@ -345,9 +384,9 @@ class SpeciesPage(QSplitter):
                 identity.identified_phase or identity.possible_phases, identity.spacegroup_symbol,
                 identity.evidence_summary,
             ) if value)
-            parts.append(f"<p><b>Phase identity</b> ({html.escape(identity.status)}): {details}</p>")
+            parts.append(f"<p>Phase identity ({html.escape(identity.status)}): {details}</p>")
         if record.warnings:
-            parts.append("<p><b>Warnings</b><ul>"
+            parts.append("<p>Notes on this record<ul>"
                          + "".join(f"<li>{html.escape(item.message)}</li>" for item in record.warnings) + "</ul></p>")
         if record.reported:
             candidates = {candidate.value_id: candidate for (record_id, _property), selection in self.selections.items()
@@ -364,9 +403,9 @@ class SpeciesPage(QSplitter):
                         f"<td>{html.escape(status_label(item.status))}</td><td>{origin}</td><td>{'✓' if recommended else ''}</td>"
                         f"<td>{html.escape(item.source.citation or '') if item.source else ''}</td></tr>")
 
-            parts.append("<p><b>Reported values</b></p><table border='1' cellspacing='0' cellpadding='3'>"
-                         "<tr><th>Property</th><th>Value</th><th>Unit</th><th>Status</th><th>Class</th>"
-                         f"<th>Recommended</th><th>Source</th></tr>{''.join(row(item) for item in record.reported)}</table>")
+            parts.append("<p>Reported values</p><table border='1' cellspacing='0' cellpadding='3'>"
+                         "<tr><td style='color:gray'>Property</td><td style='color:gray'>Value</td><td style='color:gray'>Unit</td><td style='color:gray'>Status</td><td style='color:gray'>Class</td>"
+                         f"<td style='color:gray'>Recommended</td><td style='color:gray'>Source</td></tr>{''.join(row(item) for item in record.reported)}</table>")
         self.details.setHtml("".join(parts))
 
 
@@ -465,6 +504,8 @@ class DatabasePage(QWidget):
         self.proxy.setFilterCaseSensitivity(Qt.CaseInsensitive)
         self.filter.textChanged.connect(self._filter)
         self.view = QTableView()
+        self.view.horizontalHeader().setHighlightSections(False)
+        self.view.verticalHeader().setHighlightSections(False)
         self.view.setModel(self.proxy)
         self.view.setSortingEnabled(True)
         self.view.setEditTriggers(QAbstractItemView.NoEditTriggers)

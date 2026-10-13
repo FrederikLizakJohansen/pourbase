@@ -45,6 +45,8 @@ class PolicyComparisonDialog(QDialog):
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.setSortingEnabled(True)
+        self.table.horizontalHeader().setHighlightSections(False)
+        self.table.verticalHeader().setHighlightSections(False)
         self.table.setItemDelegateForColumn(0, formula_delegate(self.table))
         header = self.table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Interactive)
@@ -92,7 +94,7 @@ class PolicyComparisonDialog(QDialog):
             ])
         counts = {name: sum(change.property_name == name for change in changes) for name in UNITS}
         self.summary.setText(
-            f"<b>{label}</b> ({policy.name}, {policy.fingerprint}) against the default policy "
+            f"{label} ({policy.name}, {policy.fingerprint}) against the default policy "
             f"({default.fingerprint}): {len(changes)} recommended values change — "
             f"{counts['gibbs_energy_of_formation']} Gibbs energies, {counts['enthalpy_of_formation']} enthalpies, "
             f"{counts['absolute_entropy']} entropies. The evidence is the same; only the choice differs.")

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import html
+import math
 import json
 import re
 import time
@@ -24,13 +25,14 @@ from ..exceptions import IncompleteSystemError
 from ..export import diagram_figure, grid_csv, save_figure
 from ..models import ExclusionReason
 from ..records import SpeciesRecord
-from ..scenario import Calculation, Mode
+from ..scenario import Calculation, Mode, calculate
 from ..uncertainty import stability_margin
 from ..selection import SelectionPolicy, select, with_policy
 from ..exceptions import DatabaseSchemaError
 from ..user_data import open_dataset, with_user_species
 from . import logo_pixmap
 from .compare import ComparePage
+from .context_bar import ACCENT, NEUTRAL, WARNING, ContextBar, power_of_ten
 from .credentials import storage_description
 from .dft import DftController
 from .materials import matched_colors, phase_views, pretty_label
@@ -44,10 +46,10 @@ from .session import (
     SessionError, read_session, session_selection_policy, session_user_species, sidecar_path, write_session,
 )
 from .settings_panel import SettingsPanel
-from .state import CONCENTRATION_UNITS, LigandSetting, Session, Settings, python_code
+from .state import CONCENTRATION_UNITS, LigandSetting, Session, Settings, database_code, python_code
 from .sweep import SweepPage
 from .tasks import TaskRunner
-from .widgets import LoadingOverlay, WheelGuard
+from .widgets import LoadingOverlay, WheelGuard, cross_fade
 from .theme import THEME_MODES, apply_theme
 
 DEBOUNCE_MS = 30
@@ -123,11 +125,19 @@ class MainWindow(QMainWindow):
         self.panel.probeChanged.connect(self.set_probe)
         self.diagram_page = DiagramPage()
         self.diagram_page.probeMoved.connect(self.set_probe)
+        self.diagram_page.speciesRequested.connect(lambda: self.views.setCurrentWidget(self.species_page))
         self.species_page = SpeciesPage()
         self.boundaries_page = BoundariesPage()
         self.speciation_page = SpeciationPage()
         self.compare_page = ComparePage(self.systems)
         self.compare_page.changed.connect(lambda: self.refresh_view())
+        self.compare_page.preview.connect(self._compare_preview)
+        self.diagram_page.diagram.python_code = self.python_code
+        self.compare_page.views[0].python_code = self.python_code
+        self.compare_page.views[1].python_code = lambda: self._code_for(
+            self.compare_page.right_settings(self.settings))
+        self.speciation_page.profile.python_code = self._speciation_code
+        self.overview.canvas.python_code = self._overview_code
         self._compare_shown = False
         self.sweep_page = SweepPage()
         self.sweep_page.requested.connect(self.request_sweep)
@@ -159,11 +169,20 @@ class MainWindow(QMainWindow):
         self.views_loading = LoadingOverlay(self.views)
         self.compare_loading = LoadingOverlay(self.compare_page)
         self.overview_loading = LoadingOverlay(self.overview.canvas)
+        for flag in (self.views_loading, self.compare_loading, self.overview_loading):
+            flag.changed.connect(self._show_busy)
         self._wanted: dict[str, Any] = {}
         self._shown: dict[Any, Any] = {}
         system = QSplitter()
         system.addWidget(self.panel)
-        system.addWidget(self.views)
+        self.context_bar = ContextBar()
+        right = QWidget()
+        column = QVBoxLayout(right)
+        column.setContentsMargins(0, 0, 0, 0)
+        column.setSpacing(0)
+        column.addWidget(self.context_bar)
+        column.addWidget(self.views, 1)
+        system.addWidget(right)
         system.setStretchFactor(1, 1)
         system.setCollapsible(0, False)
         system.setSizes([self.panel.minimumWidth(), 10_000])
@@ -187,7 +206,7 @@ class MainWindow(QMainWindow):
         name = QLabel("pourbase")
         font = name.font()
         font.setPointSizeF(font.pointSizeF() * 1.25)
-        font.setWeight(QFont.DemiBold)
+        font.setWeight(QFont.Normal)
         name.setFont(font)
         masthead = QWidget()
         layout = QHBoxLayout(masthead)
@@ -282,10 +301,62 @@ class MainWindow(QMainWindow):
         self._settings_changed(False)
 
     def _settings_changed(self, reset_range: bool) -> None:
-        self._overview_timer.start()
+        if self.pages.currentIndex() == 0:  # the periodic table is screened again when it is shown
+            self._overview_timer.start()
+        else:
+            self._overview_stale = True
         self._reset_range |= reset_range
         self.pages.setTabText(1, self.systems.get(self.settings.symbol, self.settings.symbol))
+        if self._dragging():
+            self._preview()
         self._calculate_timer.start()
+
+    @staticmethod
+    def _dragging() -> bool:
+        """True while a mouse button is held, for example on a slider being dragged."""
+        return QApplication.mouseButtons() != Qt.NoButton
+
+    def _preview(self) -> None:
+        """Draw a coarse diagram at once while a slider moves; the full grid follows on release."""
+        scenario = self.settings.scenario()
+        coarse = replace(scenario, pH_points=max(scenario.pH_points // 4, 41),
+                         eh_points=max(scenario.eh_points // 4, 41))
+        try:
+            calculation = calculate(coarse, self.session.database)  # previews bypass the result cache
+        except Exception:
+            return
+        self.calculation = calculation
+        self._previewing = True
+        views = (self.diagram_page.diagram, *self.compare_page.views)
+        for view in views:
+            view.preview_mode = True
+        try:
+            self.refresh_view()
+        finally:
+            self._previewing = False
+            for view in views:
+                view.preview_mode = False
+
+    def _compare_preview(self) -> None:
+        """While the comparison slider moves, draw the right diagram on a coarse grid at once."""
+        page = self.compare_page
+        if not self._dragging() or self.calculation is None or page.calculations is None:
+            return
+        scenario = page.right_settings(self.settings).scenario()
+        coarse = replace(scenario, pH_points=max(scenario.pH_points // 4, 41),
+                         eh_points=max(scenario.eh_points // 4, 41))
+        try:
+            right = calculate(coarse, self.session.database)
+        except Exception:
+            return
+        for view in page.views:
+            view.preview_mode = True
+        try:
+            page.show_calculations(self.calculation, right, self.display, False,
+                                   (self.settings.probe_pH, self.settings.probe_eh_V))
+        finally:
+            for view in page.views:
+                view.preview_mode = False
 
     def recalculate(self) -> None:
         settings = self.settings
@@ -300,6 +371,9 @@ class MainWindow(QMainWindow):
 
     def calculate_in_background(self) -> None:
         """Calculate the current settings off the UI thread; the views grey out while it runs."""
+        if self._dragging():
+            self._calculate_timer.start(120)  # the full grid waits until the slider is released
+            return
         scenario = self.settings.scenario()
         key = (scenario, id(self.session))
         if self.session.cached("calculation", scenario) is not None:
@@ -392,6 +466,9 @@ class MainWindow(QMainWindow):
             self.dft_page.set_probe(pH, eh_V)
 
     def _update_probe(self) -> None:
+        if getattr(self, "_previewing", False):
+            self.diagram_page.diagram.set_probe(self.settings.probe_pH, self.settings.probe_eh_V)
+            return
         if self.calculation is None:
             return
         settings = self.settings
@@ -433,11 +510,39 @@ class MainWindow(QMainWindow):
         self.panel.set_settings(settings)
         self.pages.setCurrentIndex(1)
         self.views.setCurrentWidget(self.diagram_page)
-        self.recalculate()
+        self.pages.setTabText(1, self.systems.get(symbol, symbol))
+        if self.session.cached("calculation", settings.scenario()) is None:
+            # never show the previous element's diagram under the new element's name
+            self.diagram_page.show_message(self.systems.get(symbol, symbol), "Calculating the diagram…", glyph="…")
+        # the page appears at once; the diagram follows in stages: a coarse preview on the next event-loop
+        # pass, then the full grid from the background, which fades in
+        QTimer.singleShot(0, self._open_element_content)
+
+    def _open_element_content(self) -> None:
+        scenario = self.settings.scenario()
+        if self.session.cached("calculation", scenario) is not None:
+            self.recalculate()
+            return
+        coarse = replace(scenario, pH_points=max(scenario.pH_points // 4, 41),
+                         eh_points=max(scenario.eh_points // 4, 41))
+        try:
+            self.calculation = calculate(coarse, self.session.database)
+        except Exception as error:
+            self._show_calculation_error(error)
+            return
+        self._reset_range = True
+        view = self.diagram_page.diagram
+        view.prepare_labels = False
+        try:
+            self.refresh_view()
+        finally:
+            view.prepare_labels = True
+        self.calculate_in_background()
 
     def _page_changed(self, index: int) -> None:
         if index == 0:
-            self.update_overview()
+            self._overview_stale = False
+            self.screen_in_background()
         elif index == 1:
             self.dft.warm_up()
         elif index == 2:
@@ -479,7 +584,78 @@ class MainWindow(QMainWindow):
         self._shown[page] = key
         return False
 
+    def update_context(self) -> None:
+        """State in the context bar what the shown result is calculated from."""
+        bar, settings, display, calculation = self.context_bar, self.settings, self.display, self.calculation
+        panel = self.panel
+        chips = bar.chips
+        name = self.systems.get(settings.symbol, settings.symbol)
+        chips["element"].configure(name, "The element of the diagram. Click to choose another.",
+                                   action=lambda: panel.reveal(panel.symbol), dark=self.dark)
+        if calculation is not None:
+            conversion = calculation.concentration
+            if calculation.scenario.mode is Mode.MASS_BALANCE:
+                text = f"Mass balance · c_T = {power_of_ten(math.log10(conversion.molar_concentration))} M"
+                tip = ("Closed system: this total metal concentration is shared between dissolved species and "
+                       "at most one precipitating solid.")
+            else:
+                text = f"Fixed activity · a = {power_of_ten(conversion.log10_standard_activity)}"
+                tip = "Every dissolved species of the element has this activity, as in Pourbaix's atlas."
+            preview = calculation.diagram.stable_species_index.shape != (settings.eh_points, settings.pH_points)
+            chips["model"].configure(text + (" · preview" if preview else ""),
+                                     tip + (" A coarse preview is shown while a slider moves." if preview else "")
+                                     + " Click to change the model or concentration.",
+                                     action=lambda: panel.reveal(panel.concentration), dark=self.dark)
+        own = len(getattr(self.session.database, "user_species", ()) or ())
+        if self.dataset_name:
+            data, tip, tone = f"Dataset: {self.dataset_name}", "This window calculates with your dataset only.", ACCENT
+        else:
+            data, tip, tone = "Bundled data", f"The bundled database, release {self.database.data_version}.", NEUTRAL
+        if own:
+            data += f" + {own} own species"
+            tip += f" {own} species from {Path(self.user_species_path).name} are added or replace bundled ones."
+            tone = ACCENT
+        chips["data"].configure(data, tip, tone, dark=self.dark, menu=[
+            ("Load own species (CSV)…", self.open_user_species), ("Remove own species", lambda: self.load_user_species(None)),
+            ("Open a dataset in a new window…", self.open_dataset)])
+        policy_text = (f"Policy: {Path(self.policy_path).name}" if self.policy_path else "Default selection policy")
+        chips["policy"].configure(
+            policy_text,
+            ("The selection policy chooses one recommended value per species from the reported values. "
+             + (f"{self.policy.name} ({self.policy.fingerprint})." if self.policy_path else "The bundled default.")),
+            ACCENT if self.policy_path else NEUTRAL, dark=self.dark, menu=[
+                ("Load selection policy (TOML)…", self.open_policy), ("Use the default selection policy",
+                                                                     lambda: self.load_policy(None)),
+                ("Compare selection policies…", self.compare_policies)])
+        ligands = settings.ligand_activities()
+        names = {item.ligand_id: item.name for item in self.database.available_ligands()}
+        ligand_names = [names.get(item.ligand_id, item.ligand_id).split(" (")[0] for item in ligands]
+        chips["ligands"].configure(
+            (("Ligands: " + ", ".join(ligand_names)) if len(ligand_names) <= 2 else f"Ligands: {len(ligand_names)} on")
+            if ligands else "No ligands",
+            (("Buffered ligand reservoirs whose complexes take part in the calculation: " + ", ".join(ligand_names) + ".")
+             if ligands else "No ligand reservoirs are switched on.") + " Click to edit them.",
+            ACCENT if ligands else NEUTRAL, action=lambda: panel.reveal(panel.ligands_section), dark=self.dark)
+        missing = len(calculation.diagram.system.missing_gibbs) if calculation is not None else 0
+        chips["omitted"].configure(
+            f"{missing} species left out" if missing else "",
+            f"{missing} species of this system have no recommended Gibbs energy and are left out of the "
+            "calculation. Click to see them in the Species tab.", WARNING,
+            action=lambda: self.views.setCurrentWidget(self.species_page), dark=self.dark)
+        extras = []
+        if display.boltzmann:
+            extras.append(f"blend ε = {display.blend_width_kJ_mol:g} kJ/mol")
+        if display.uncertainty:
+            extras.append(f"hatching within {display.uncertainty_sigma:g}σ")
+        if display.potential_scale != "SHE":
+            extras.append(f"E vs {display.potential_scale.split(' (')[0]}")
+        view_text = ", ".join(extras)
+        chips["view"].configure(view_text[:1].upper() + view_text[1:],
+                                "Display options that change how the result is drawn, not what is calculated. "
+                                "Click to edit them.", action=lambda: panel.setCurrentIndex(2), dark=self.dark)
+
     def refresh_view(self, reset_range: bool = False) -> None:
+        self.update_context()
         current = self.views.currentWidget()
         calculation = self.calculation
         if reset_range or self._reset_range:
@@ -633,6 +809,10 @@ class MainWindow(QMainWindow):
                 return  # superseded by a newer request
             del self._wanted[kind]
             if kind == "calculate":
+                coarse = (self.calculation is not None and self.calculation.diagram.stable_species_index.shape
+                          != (self.settings.eh_points, self.settings.pH_points))
+                if self.views_loading.isVisible() or coarse:  # fade after a wait or over a coarse picture
+                    cross_fade(self.views.currentWidget())
                 self.views_loading.stop()
                 calculation, elapsed = result if result is not None else (RuntimeError(error), 0.0)
                 if isinstance(calculation, Exception):
@@ -640,9 +820,13 @@ class MainWindow(QMainWindow):
                 else:
                     self._apply_calculation(calculation, elapsed)
             elif kind == "screen":
+                if self.overview_loading.isVisible():
+                    cross_fade(self.overview.canvas)
                 self.overview_loading.stop()
                 self.update_overview()
             else:
+                if self.compare_loading.isVisible():
+                    cross_fade(self.compare_page)
                 self.compare_loading.stop()
                 self._show_compare()
             return
@@ -976,13 +1160,42 @@ class MainWindow(QMainWindow):
 
     def python_code(self) -> str:
         """Python code that reproduces the current diagram, including the data, policy and view."""
-        return python_code(self.settings, self.display, dataset_path=self.dataset_path,
-                           policy_path=self.policy_path, user_species_path=self.user_species_path)
+        return self._code_for(self.settings)
+
+    def _code_for(self, settings: Settings, plot: bool = True) -> str:
+        return python_code(settings, self.display, dataset_path=self.dataset_path, policy_path=self.policy_path,
+                           user_species_path=self.user_species_path, plot=plot)
+
+    def _speciation_code(self) -> str:
+        """Code for the speciation profile at the probe potential (mass-balance mode)."""
+        return "\n".join((
+            self._code_for(self.settings, plot=False),
+            f"profile = pb.speciation_profile(calculation.diagram, {self.settings.probe_eh_V!r})",
+            "pb.plot_speciation_profile(profile)",
+        ))
+
+    def _overview_code(self) -> str:
+        """Code for the periodic-table screen at the current conditions and ligands."""
+        arguments = self._screen_arguments()
+        ligands = arguments.pop("ligands")
+        text = ", ".join(f"{key}={value!r}" for key, value in sorted(arguments.items()))
+        if ligands:
+            text += ", ligands=(" + ", ".join(
+                "pb.LigandActivity(" + ", ".join([repr(item.ligand_id)] + [
+                    f"{name}={getattr(item, name)!r}" for name in
+                    ("log10_free_activity", "total_unbound_mol_L", "acid_pKa") if getattr(item, name) is not None])
+                + ")" for item in ligands) + ",)"
+        lines = database_code(self.dataset_path, self.policy_path, self.user_species_path)
+        lines += [f"screen = pb.screen_periodic_table(database, {text})",
+                  "for element in screen.elements:",
+                  "    if element.stable is not None:",
+                  "        print(element.symbol, element.stable.species, element.energy_margin_J_mol_metal)"]
+        return "\n".join(lines)
 
     def about(self) -> None:
         QMessageBox.about(
             self, "About pourbase",
-            f"<b>pourbase {__version__}</b>, dataset {html.escape(self.database.data_version)}"
+            f"pourbase {__version__}, dataset {html.escape(self.database.data_version)}"
             "<p>Source-linked experimental thermochemistry and Pourbaix diagrams at 298.15 K and "
             "1 bar.</p><p>Cite this release and the scientific sources attached to each value. "
             "See CITATION.cff and THIRD_PARTY_NOTICES.md.</p>",
@@ -999,6 +1212,14 @@ class MainWindow(QMainWindow):
             widget.set_dark(self.dark)
         self.refresh_view()
         self._set_status(*self._status)
+
+    def _show_busy(self, busy: bool) -> None:
+        """A longer background calculation is reported in the status bar; the views stay as they are."""
+        if busy:
+            self.status_label.setText("Calculating…")
+            self.status_label.setStyleSheet("color: gray;")
+        else:
+            self._set_status(*self._status)
 
     def _set_status(self, text: str, error: bool = False) -> None:
         self._status = (text, error)

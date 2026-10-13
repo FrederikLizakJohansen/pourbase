@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
 
 from ..overview import Category, ElementResult, ElementStatus, PeriodicScreen
 from .formula import draw_formula, phase_label, pretty_formula
+from .figure_export import install_export_menu
 from .widgets import FloatSlider
 
 CATEGORY_COLORS = {
@@ -77,6 +78,7 @@ class PeriodicTableCanvas(QWidget):
         self.setMouseTracking(True)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setMinimumSize(760, 520)
+        install_export_menu(self, self.export_table, "pourbase-periodic-table")
         self.screen: PeriodicScreen | None = None
         self.elements: dict[str, ElementResult] = {}
         self.hovered: str | None = None
@@ -417,6 +419,26 @@ class PeriodicTableCanvas(QWidget):
             self.elementClicked.emit(symbol)
         elif symbol is not None:
             QToolTip.showText(event.globalPosition().toPoint(), "No pourbase system for this element", self)
+
+
+def _export_table(canvas) -> object:
+    screen = canvas.screen
+    if screen is None:
+        return None
+    rows = []
+    for element in screen.elements:
+        stable = element.stable
+        rows.append((element.atomic_number, element.symbol, element.system or "", element.status.value,
+                     stable.species if stable else "", phase_label(stable) if stable else "",
+                     element.category.label,
+                     f"{element.energy_margin_J_mol_metal / 1000:.3f}" if element.energy_margin_J_mol_metal is not None else "",
+                     element.gibbs_source.citation if element.gibbs_source and element.gibbs_source.citation else ""))
+    header = ("Z", "symbol", "system", "status", "stable species", "phase", "category",
+              "margin to next species (kJ/mol metal)", "Gibbs energy source")
+    return header, rows
+
+
+PeriodicTableCanvas.export_table = _export_table
 
 
 class OverviewPage(QWidget):

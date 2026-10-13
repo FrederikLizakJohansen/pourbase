@@ -143,16 +143,25 @@ class Settings:
         ))
 
 
-def python_code(settings: Settings, display, *, dataset_path: str | None = None, policy_path: str | None = None,
-                user_species_path: str | None = None) -> str:
-    """Python code that reproduces the diagram on screen: data, policy, own species, scenario and view."""
+def database_code(dataset_path: str | None = None, policy_path: str | None = None,
+                  user_species_path: str | None = None) -> list[str]:
+    """Lines that open the data the application calculates with."""
     lines = ["import pourbase as pb", ""]
     lines.append(f"database = pb.open_dataset({dataset_path!r})" if dataset_path else "database = pb.open_database()")
     if policy_path:
         lines.append(f"database = pb.with_policy(database, {policy_path!r})")
     if user_species_path:
         lines.append(f"database = pb.with_user_species(database, {user_species_path!r})")
+    return lines
+
+
+def python_code(settings: Settings, display, *, dataset_path: str | None = None, policy_path: str | None = None,
+                user_species_path: str | None = None, plot: bool = True) -> str:
+    """Python code that reproduces the diagram on screen: data, policy, own species, scenario and view."""
+    lines = database_code(dataset_path, policy_path, user_species_path)
     lines.append(f"calculation = pb.calculate({settings.scenario_code()}, database)")
+    if not plot:
+        return "\n".join(lines)
     if settings.mode == Mode.MASS_BALANCE.value:
         lines.append("figure, axes = pb.plot_mass_balance_summary(calculation.diagram)")
     elif display.boltzmann:

@@ -153,7 +153,7 @@ class WindowTests(WindowTestCase):
         view._probe_moved()
         self.assertAlmostEqual(window.settings.probe_eh_V, 0.1, places=6)
         text = window.diagram_page.probe.toPlainText()
-        self.assertIn("Runner-up", text)
+        self.assertIn("Next lowest is", text)
         self.assertIn("V vs RHE", text)
         window.views.setCurrentWidget(window.compare_page)
         self.app.processEvents()
@@ -344,6 +344,121 @@ class WindowTests(WindowTestCase):
             after = widget.value() if hasattr(widget, "value") else widget.currentIndex()
             self.assertEqual(before, after, type(widget).__name__)
 
+    def test_every_figure_exports_its_picture_and_data(self) -> None:
+        window = self.window
+        self.open("Fe")
+        window.views.setCurrentWidget(window.diagram_page)
+        self.app.processEvents()
+        handler = window.diagram_page.diagram.export_menu
+        for suffix, magic in (("png", b"\x89PNG"), ("pdf", b"%PDF"), ("svg", b"<?xml")):
+            path = os.path.join(self.directory.name, f"diagram.{suffix}")
+            handler.save_figure(suffix, path)
+            with open(path, "rb") as handle:
+                self.assertTrue(handle.read(8).startswith(magic), suffix)
+        for suffix, delimiter in (("csv", ","), ("txt", "\t")):
+            path = os.path.join(self.directory.name, f"diagram.{suffix}")
+            handler.save_data(suffix, delimiter, path)
+            with open(path, encoding="utf-8") as handle:
+                lines = handle.read().splitlines()
+            self.assertEqual(lines[0].split(delimiter)[2], "stable species")
+            self.assertGreater(len(lines), 1000)
+        svg = os.path.join(self.directory.name, "diagram.svg")
+        handler.save_figure("svg", svg)
+        with open(svg, encoding="utf-8") as handle:
+            text = handle.read()
+        # redrawn with Matplotlib: axes, text, boundaries and legend are vectors, the domains one image
+        self.assertGreater(text.count("<path"), 100)
+        self.assertIn("Matplotlib", text)
+        code = os.path.join(self.directory.name, "diagram.py")
+        handler.save_code(code)
+        namespace: dict = {}
+        with open(code, encoding="utf-8") as handle:
+            exec(handle.read().split("\nax = ")[0], namespace)
+        self.assertTrue(np.array_equal(namespace["calculation"].diagram.stable_species_index,
+                                       window.calculation.diagram.stable_species_index))
+        for view in (window.compare_page.views[1], window.speciation_page.profile, window.overview.canvas):
+            self.assertTrue(callable(view.python_code))
+        window.pages.setCurrentIndex(0)
+        window.update_overview()
+        header, rows = window.overview.canvas.export_table()
+        self.assertEqual(len(rows), 118)
+        self.assertTrue(hasattr(window.compare_page.views[0], "export_menu"))
+        self.assertTrue(hasattr(window.sweep_page.view3d, "export_menu"))
+        window.pages.setCurrentIndex(1)
+
+    def test_dragging_a_slider_previews_on_a_coarse_grid(self) -> None:
+        window = self.window
+        self.open("Fe")
+        full = window.calculation.diagram.stable_species_index.shape
+        with mock.patch.object(type(window), "_dragging", staticmethod(lambda: True)):
+            window.settings.concentration = -3.0
+            window._settings_changed(False)
+            preview = window.calculation.diagram.stable_species_index.shape
+            self.assertLess(preview[0] * preview[1], full[0] * full[1] / 4)
+            self.assertAlmostEqual(window.calculation.scenario.concentration, -3.0)
+        window.calculate_in_background()
+        self.wait(lambda: window.calculation.diagram.stable_species_index.shape == full)
+        self.assertEqual(window.calculation.diagram.stable_species_index.shape, full)
+
+    def test_the_context_bar_states_what_the_result_is_calculated_from(self) -> None:
+        window = self.window
+        self.open("Fe")
+        text = window.context_bar.text()
+        for part in ("Iron (Fe)", "Fixed activity · a = 10⁻⁶", "Bundled data", "Default selection policy", "No ligands"):
+            self.assertIn(part, text)
+        self.assertIn("species left out", text)  # aqueous Fe(OH)₃ has no Gibbs energy
+        window._overview_ligand_toggled("chloride-cl", True)
+        window.recalculate()
+        self.assertIn("Ligands: Chloride", window.context_bar.text())
+        window.panel.setCurrentIndex(1)
+        window.context_bar.chips["ligands"].click()
+        self.assertEqual(window.panel.currentIndex(), 0)
+        self.assertTrue(window.panel.ligands_section.expanded)
+        minimum = window.minimumSizeHint().width()
+        ligands = [item.ligand_id for item in window.database.available_ligands()]
+        for ligand in ligands:
+            window._overview_ligand_toggled(ligand, True)
+        window.recalculate()
+        self.assertIn(f"Ligands: {len(ligands)} on", window.context_bar.text())
+        self.assertLessEqual(window.minimumSizeHint().width(), minimum)  # the bar never widens the window
+        for ligand in ligands:
+            window._overview_ligand_toggled(ligand, False)
+        self.open("Zn", mode="mass_balance")
+        self.assertIn("Mass balance · c_T = 10⁻⁶ M", window.context_bar.text())
+        self.open("Fe")
+
+    def test_sliders_jump_to_the_click_and_reset_to_their_default(self) -> None:
+        from PySide6.QtCore import QPoint, QPointF, Qt
+        from PySide6.QtGui import QMouseEvent
+
+        window = self.window
+        self.open("Fe")
+        control = window.panel.concentration
+        control.slider.resize(400, 24)
+        before = control.value()
+        point = QPointF(control.slider.width() * 0.9, control.slider.height() / 2)
+        for kind in (QMouseEvent.MouseButtonPress, QMouseEvent.MouseButtonRelease):
+            QApplication.sendEvent(control.slider, QMouseEvent(kind, point, point, Qt.LeftButton, Qt.LeftButton,
+                                                               Qt.NoModifier))
+        self.assertGreater(control.value(), before + 3)  # one page step would move it by far less
+        self.assertAlmostEqual(window.settings.concentration, control.value())
+        control.reset_button.click()
+        self.assertAlmostEqual(control.value(), -6.0)
+        self.assertAlmostEqual(window.settings.concentration, -6.0)
+
+    def test_opening_an_element_switches_the_page_at_once_and_loads_in_stages(self) -> None:
+        window = self.window
+        window.pages.setCurrentIndex(0)
+        window.update_overview()
+        window.open_element("Mn")
+        self.assertEqual(window.pages.currentIndex(), 1)
+        self.assertIs(window.diagram_page.currentWidget(), window.diagram_page.placeholder)
+        full = (window.settings.eh_points, window.settings.pH_points)
+        self.wait(lambda: window.calculation is not None and window.calculation.diagram.system.symbol == "Mn"
+                  and window.calculation.diagram.stable_species_index.shape == full)
+        self.assertEqual(window.calculation.diagram.stable_species_index.shape, full)
+        self.assertIs(window.diagram_page.currentWidget(), window.diagram_page.view)
+
     def test_sweep_runs_in_the_background_and_is_cached(self) -> None:
         window = self.window
         self.open("Fe")
@@ -424,7 +539,7 @@ class WindowTests(WindowTestCase):
         self.app.processEvents()
         page = window.species_page
         flagged = [page.table.item(row, 0).text() for row in range(page.table.rowCount())
-                   if page.table.item(row, page.SPREAD).font().bold()]
+                   if page.table.item(row, page.SPREAD).toolTip()]
         self.assertIn("Co₃O₄", flagged)
         statuses = {page.table.item(row, page.STATUS).text() for row in range(page.table.rowCount())}
         self.assertFalse(any("_" in status for status in statuses))
@@ -458,7 +573,7 @@ class DftTests(WindowTestCase):
         self.assertGreater(window.dft_page.pairs.rowCount(), 0)
         window.views.setCurrentWidget(window.diagram_page)
         window.set_probe(7.0, 0.0)
-        self.assertIn("DFT (MP)", window.diagram_page.probe.toPlainText())
+        self.assertIn("Materials Project:", window.diagram_page.probe.toPlainText())
         self.open("Fe", mode="mass_balance")
         window.views.setCurrentWidget(window.speciation_page)
         self.assertTrue(window.speciation_page.button.isHidden())

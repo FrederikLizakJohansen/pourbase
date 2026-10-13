@@ -19,6 +19,7 @@ from PySide6.QtWidgets import (
 )
 
 from ..uncertainty import stability_margin
+from .pages import status_label
 from .formula import phase_label, to_html
 from .placeholder import StackedView
 from .plots import DiagramView, DisplayOptions, record_colors
@@ -31,6 +32,7 @@ class ComparePage(StackedView):
     concentration on the right. Species shared by both diagrams keep one color."""
 
     changed = Signal()
+    preview = Signal()  # the slider moved: a coarse diagram can be drawn at once
 
     def __init__(self, systems: dict[str, str], parent=None) -> None:
         body = QWidget()
@@ -77,7 +79,7 @@ class ComparePage(StackedView):
         # wait until the slider settles before recalculating the right diagram
         self._settle = QTimer(self, singleShot=True, interval=120)
         self._settle.timeout.connect(self.changed.emit)
-        self.concentration.valueChanged.connect(lambda _value: self._settle.start())
+        self.concentration.valueChanged.connect(lambda _value: (self.preview.emit(), self._settle.start()))
 
     def set_dark(self, dark: bool) -> None:
         for view in self.views:
@@ -100,7 +102,7 @@ class ComparePage(StackedView):
             view.show_diagram(calculation.diagram, display, reset_range=reset_range, colors=colors)
         for title, calculation in zip((self.left_title, self.right_title), (left, right), strict=True):
             conversion = calculation.concentration
-            title.setText(f"<b>{calculation.diagram.system.system}</b>, log₁₀ c = "
+            title.setText(f"{calculation.diagram.system.system}, log₁₀ c = "
                           f"{np.log10(conversion.molar_concentration):.2f} mol/L ({calculation.scenario.mode.value.replace('_', ' ')})")
         self.summary.setText(self._summary(left, right))
         self.set_point(*(self.point or point))
@@ -128,9 +130,9 @@ class ComparePage(StackedView):
         if None in stable:
             verdict = ""
         elif stable[0] == stable[1]:
-            verdict = " — <b>same species</b>"
+            verdict = " — same species"
         else:
-            verdict = " — <b>different species</b>"
+            verdict = " — different species"
         self.details.setHtml(
             f"At pH {pH:.2f}, Eh {eh_V:+.3f} V vs SHE{scaled}{verdict}"
             f'<table width="100%" cellspacing="0" cellpadding="2"><tr>{"".join(columns)}</tr></table>'
@@ -138,8 +140,9 @@ class ComparePage(StackedView):
 
     def _column(self, calculation: Any, probe: Any) -> str:
         species = probe.species
-        lines = [f"<b>{to_html(species.species)}</b> {html.escape(phase_label(species))}, "
-                 f"ΔfG° {species.gibbs_energy_J_mol / 1000:.2f} kJ/mol"]
+        lines = [f"<span style=\"font-size:11pt\">{to_html(species.species)}</span> {html.escape(phase_label(species))}, "
+                 f"ΔfG° {species.gibbs_energy_J_mol / 1000:.2f} kJ/mol "
+                 f"<i>({html.escape(status_label(species.gibbs_status.value))})</i>"]
         if probe.dissolved_metal_mol_L is not None:
             lines.append(f"Dissolved {probe.dissolved_metal_mol_L:.3g} mol/L, "
                          f"precipitated {probe.precipitated_fraction:.1%}")

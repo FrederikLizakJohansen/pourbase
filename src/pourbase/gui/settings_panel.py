@@ -14,7 +14,7 @@ from .ligands import LigandPanel
 from .plots import DisplayOptions
 from .scales import REFERENCE_ELECTRODES_V
 from .state import CONCENTRATION_UNITS, MAX_GRID_POINTS, MODES, Settings
-from .widgets import FloatSlider
+from .widgets import FloatSlider, Section
 
 UNIT_RANGES = {
     "log10_molar": (-12.0, 1.0, False, 3),
@@ -58,16 +58,35 @@ class SettingsPanel(QTabWidget):
         self._updating = False
         self.systems = dict(database.available_systems())
         pages = (self._system_tab(), self._grid_tab(), self._display_tab())
+        self._areas = []
         for page, title in zip(pages, ("System", "Grid", "Display")):
-            self.addTab(_scroll(page), title)
+            area = _scroll(page)
+            self._areas.append(area)
+            self.addTab(area, title)
         widest = max(page.minimumSizeHint().width() for page in pages)
         self.setMinimumWidth(widest + self.style().pixelMetric(QStyle.PM_ScrollBarExtent) + 24)
+
+    def reveal(self, widget: QWidget) -> None:
+        """Show ``widget``: its tab, its section opened, scrolled into view and focused."""
+        from .widgets import Section
+
+        for index, area in enumerate(self._areas):
+            if area.widget().isAncestorOf(widget):
+                self.setCurrentIndex(index)
+                parent = widget
+                while parent is not None and parent is not area:
+                    if isinstance(parent, Section):
+                        parent.set_expanded(True)
+                    parent = parent.parentWidget()
+                area.ensureWidgetVisible(widget, 0, 40)
+                widget.setFocus(Qt.OtherFocusReason)
+                return
 
     def _system_tab(self) -> QWidget:
         page = QWidget()
         layout = QVBoxLayout(page)
-        box = QGroupBox("Element")
-        form = QFormLayout(box)
+        box = Section("Element", "element")
+        form = QFormLayout(box.body)
         self.symbol = QComboBox()
         for symbol, name in self.systems.items():
             self.symbol.addItem(name, symbol)
@@ -80,8 +99,8 @@ class SettingsPanel(QTabWidget):
         form.addRow("Model", self.mode)
         layout.addWidget(box)
 
-        box = QGroupBox("Metal concentration")
-        form = QFormLayout(box)
+        box = Section("Metal concentration", "metal-concentration")
+        form = QFormLayout(box.body)
         self.unit = QComboBox()
         for key, label in CONCENTRATION_UNITS.items():
             self.unit.addItem(label, key)
@@ -102,8 +121,8 @@ class SettingsPanel(QTabWidget):
         form.addRow(self.concentration_note)
         layout.addWidget(box)
 
-        box = QGroupBox("Activities")
-        form = QFormLayout(box)
+        box = Section("Activities", "activities")
+        form = QFormLayout(box.body)
         self.davies = QCheckBox("Davies activity coefficients (mass balance)")
         self.davies.toggled.connect(lambda value: self._set("davies", value))
         form.addRow(self.davies)
@@ -116,8 +135,8 @@ class SettingsPanel(QTabWidget):
         form.addRow("log₁₀ gas fugacity", self.gas)
         layout.addWidget(box)
 
-        box = QGroupBox("Evidence policy")
-        column = QVBoxLayout(box)
+        box = Section("Evidence policy", "evidence-policy")
+        column = QVBoxLayout(box.body)
         self.require_complete = QCheckBox("Require a Gibbs energy for every species")
         self.require_complete.setToolTip(
             "By default, species without a recommended Gibbs energy are left out of the calculation and listed "
@@ -129,8 +148,9 @@ class SettingsPanel(QTabWidget):
         column.addWidget(self.use_mp_fallbacks)
         layout.addWidget(box)
 
-        box = QGroupBox("Ligands")
-        column = QVBoxLayout(box)
+        box = Section("Ligands", "ligands")
+        self.ligands_section = box
+        column = QVBoxLayout(box.body)
         self.use_ligands = QCheckBox("Use ligand reservoirs")
         self.use_ligands.setToolTip("Switch every buffered ligand reservoir on or off at once; the individual "
                                     "settings are kept. The same switch is on the periodic table.")
@@ -146,8 +166,8 @@ class SettingsPanel(QTabWidget):
     def _grid_tab(self) -> QWidget:
         page = QWidget()
         layout = QVBoxLayout(page)
-        box = QGroupBox("Axes")
-        form = QFormLayout(box)
+        box = Section("Axes", "axes")
+        form = QFormLayout(box.body)
         self.axes: dict[str, QDoubleSpinBox] = {}
         for name, label, low, high, step in (
             ("pH_min", "pH minimum", -4.0, 18.0, 0.5),
@@ -178,8 +198,8 @@ class SettingsPanel(QTabWidget):
         form.addRow(reset)
         layout.addWidget(box)
 
-        box = QGroupBox("Probe point")
-        form = QFormLayout(box)
+        box = Section("Probe point", "probe-point")
+        form = QFormLayout(box.body)
         self.probe_pH = QDoubleSpinBox()
         self.probe_pH.setRange(-4.0, 18.0)
         self.probe_eh = QDoubleSpinBox()
@@ -201,8 +221,8 @@ class SettingsPanel(QTabWidget):
     def _display_tab(self) -> QWidget:
         page = QWidget()
         layout = QVBoxLayout(page)
-        box = QGroupBox("Diagram")
-        column = QVBoxLayout(box)
+        box = Section("Diagram", "diagram")
+        column = QVBoxLayout(box.body)
         self.display_checks: dict[str, QCheckBox] = {}
         for name, label in DISPLAY_CHECKS:
             check = QCheckBox(label)
@@ -211,8 +231,8 @@ class SettingsPanel(QTabWidget):
             self.display_checks[name] = check
             column.addWidget(check)
         layout.addWidget(box)
-        box = QGroupBox("Potential scale")
-        form = QFormLayout(box)
+        box = Section("Potential scale", "potential-scale")
+        form = QFormLayout(box.body)
         self.potential_scale = QComboBox()
         for name, offset in REFERENCE_ELECTRODES_V.items():
             detail = "pH-dependent" if offset is None else f"{offset:+.3f} V vs SHE"
@@ -225,8 +245,8 @@ class SettingsPanel(QTabWidget):
         note.setWordWrap(True)
         form.addRow(note)
         layout.addWidget(box)
-        box = QGroupBox("Uncertainty (fixed activity)")
-        form = QFormLayout(box)
+        box = Section("Uncertainty (fixed activity)", "uncertainty-fixed-activity")
+        form = QFormLayout(box.body)
         self.uncertainty = QCheckBox("Hatch where another species lies within")
         self.uncertainty.toggled.connect(lambda value: self._set_display("uncertainty", value))
         form.addRow(self.uncertainty)
@@ -246,8 +266,8 @@ class SettingsPanel(QTabWidget):
         note.setWordWrap(True)
         form.addRow(note)
         layout.addWidget(box)
-        box = QGroupBox("Blend dissolved species")
-        form = QFormLayout(box)
+        box = Section("Blend dissolved species", "blend-dissolved-species")
+        form = QFormLayout(box.body)
         self.boltzmann = QCheckBox("Blend the colors of dissolved species")
         self.boltzmann.toggled.connect(lambda value: self._set_display("boltzmann", value))
         form.addRow(self.boltzmann)
@@ -286,6 +306,7 @@ class SettingsPanel(QTabWidget):
         self.probe_eh.setValue(settings.probe_eh_V)
         self.ligands.set_settings(settings.ligands)
         self.ligands.set_system(settings.symbol, self.database.ligand_species.get(settings.symbol, {}))
+        self.ligands_section.set_expanded(bool(self.database.ligand_species.get(settings.symbol)), store=False)
         self._updating = False
         self._update_enabled()
 
@@ -315,6 +336,10 @@ class SettingsPanel(QTabWidget):
             )
         self.concentration.set_range(low, high, log, decimals)
         self.concentration.setValue(self.settings.concentration)
+        # the reset button restores 10⁻⁶ mol/L of metal, expressed in the chosen unit
+        self.concentration.set_default(express_concentration(
+            self.settings.symbol, 1e-6, self.settings.concentration_unit,
+            solution_density_kg_L=self.settings.solution_density_kg_L))
 
     def _unit_changed(self) -> None:
         if self._updating:
@@ -347,6 +372,7 @@ class SettingsPanel(QTabWidget):
         setattr(self.settings, name, value)
         if name == "symbol":
             self.ligands.set_system(value, self.database.ligand_species.get(value, {}))
+            self.ligands_section.set_expanded(bool(self.database.ligand_species.get(value)), store=False)
         self._update_enabled()
         self.changed.emit(reset_range)
 

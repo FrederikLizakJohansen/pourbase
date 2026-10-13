@@ -14,6 +14,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from .figure_export import install_export_menu
+from .widgets import JumpSlider
 from .plots import DiagramView, DisplayOptions, record_colors
 from ..sweeps import MAX_SWEEP_POINTS
 from .state import MAX_GRID_POINTS, SweepSettings
@@ -122,6 +124,7 @@ class SweepView3D(QWidget):
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
+        install_export_menu(self, None, "pourbase-sweep-3d")
         self.setMinimumSize(280, 300)
         self.volume: SweepVolume | None = None
         self.axis = "level"
@@ -383,7 +386,7 @@ class SweepPage(QWidget):
             spin.setToolTip(f"Number of {tip}")
             spin.valueChanged.connect(lambda _v: self.requested.emit())
             self.slice_counts[axis] = spin
-        self.opacity = QSlider(Qt.Horizontal)
+        self.opacity = JumpSlider(Qt.Horizontal)
         self.opacity.setRange(5, 100)
         self.opacity.setValue(35)
         self.opacity.setMinimumWidth(120)
@@ -425,7 +428,7 @@ class SweepPage(QWidget):
         self.next = QPushButton("▶")
         for button in (self.previous, self.next):
             button.setFixedWidth(36)
-        self.slider = QSlider(Qt.Horizontal)
+        self.slider = JumpSlider(Qt.Horizontal)
         self.slice_label = QLabel()
         self.slice_label.setMinimumWidth(220)
         selector = QHBoxLayout()
