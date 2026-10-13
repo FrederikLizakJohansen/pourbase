@@ -35,8 +35,13 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
   fractions of dissolved species where no solid precipitates; `thermal_scale` and
   `--boltzmann-scale` remain as deprecated aliases.
 
-- 798 species and 2642 retained observations across 74 supported elemental systems, with
-  recommended Gibbs energies for 706.
+- 800 species and 2649 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 708.
+- Seven magnesium mineral observations: original artinite entropy with its residual-disorder
+  model, and six openly licensed NBS properties. Lansfordite and a distinct four-Mg basic
+  carbonate retain complete hydration. The unchanged NBS-first policy selects four older
+  mineral properties; both older and later evaluations remain accessible. Corrected the
+  artinite formation values' parent-publication locators.
 - Four magnesium carbonate minerals and 17 observations: 12 USGS mineral properties,
   three original entropy alternatives, Mg²⁺ enthalpy and MgHCO3+ Gibbs energy.
   Complete hydrated/basic-carbonate formula units fill 13 missing properties. The default

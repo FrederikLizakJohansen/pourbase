@@ -825,3 +825,36 @@ hydration and proton balances remain conserved. Native four-Mg hydromagnesite,
 mixed Ca/Mg phases, isotope models, association originals and exact native
 pressure/reference transfers remain separate source/model follow-ups.
 Current totals: 798 species, 2,642 observations and 706/677/533 selected G/S/H.
+
+The subsequent magnesium mineral-variant checkpoint adds seven observations and
+two crystalline compositions. Original artinite absolute entropy is
+(55.67 ±0.16) ×4.184 = 232.92328 ±0.66944 J/(mol K), with unspecified pressure.
+The authors add a 1.38 cal/(mol K) configurational residual term to the measured
+54.29 cal/(mol K) increment and assume that disorder persists to zero temperature.
+The absolute value has `source_verified_estimate` status; the calorimetric increment
+stays external. The critical artinite entropy remains selected. The two existing
+USGS artinite energy locators now correctly identify parent reference 169 as
+Hemingway and Robie (1973), USGS Journal of Research 1, 535–541.
+
+Open NBS supplies three magnesite properties and Gibbs energies for nesquehonite,
+lansfordite and the crystalline composition Mg4(CO3)3(OH)2(H2O)3. The last two
+are new species with G only. Lansfordite has five hydration waters, metal/carbonate
+counts 1/1 and core O/H counts 5/10. The four-Mg composition has counts 4/3 and
+core O/H 5/8; its crystal structure and mineral name remain unspecified. It is
+stored separately from the five-Mg hydromagnesite record. Both use their complete
+source formula units and two electrons per metal.
+
+The unchanged class B ordering selects older NBS magnesite G/H/S and nesquehonite
+G over the stored USGS values. Magnesite G changes from −1,029,500 to −1,012,100
+J/mol, H from −1,113,300 to −1,095,800 J/mol and S from 65.1 to 65.7 J/(mol K).
+Nesquehonite G changes from −1,723,800 to −1,726,100 J/mol. All earlier numerical
+evidence remains stored. The Mg table was prepared in 1967; source-network
+dependencies and missing uncertainties remain explicit. This retention does not
+establish that the older values improve the later critical evaluations.
+
+With the same selected ion and carbonate references, the magnesite dissolution
+log10 K changes from −8.21477 to −5.16642. The 74 ligand-free diagrams are
+unchanged, while carbonate-enabled magnesium precipitation changes substantially.
+Independent dissolution-boundary and closed-metal checks verify full hydration,
+basic-carbonate proton terms and conservation. Current totals: 800 species,
+2,649 observations and 708/677/533 selected G/S/H.

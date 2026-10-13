@@ -29,6 +29,20 @@ retain the published values, conversion and unavailable uncertainty.
 
 ## USGS mineral evaluations
 
+The original artinite entropy alternative comes from Hemingway and Robie (1972),
+American Mineralogist 57, 1754–1767, printed p. 1765. The authors add a modelled
+configurational residual entropy to the calorimetric increment. Its assumption,
+conversion and shared experimental lineage are retained under the existing
+individually attributed USGS numerical-fact route; journal material stays external.
+USGS is acknowledged. Original source: <http://www.minsocam.org/ammin/AM57/AM57_1754.pdf>.
+
+Six further Mg mineral properties use the explicitly licensed NIST PDR digitization,
+Table 93:Mg, logical records 9085, 9086, 9087 and 9098. Exact formula units and
+crystalline labels were corroborated against original NBS printed p. 2-264.
+The existing data licence applies; NIST is acknowledged. Source age and competing
+evaluations remain explicit. Original NBS pages are external corroboration; the
+distributed numerical observations come from the licensed digitization.
+
 The magnesium continuation adds 12 Bulletin 2131 properties for magnesite,
 nesquehonite, hydromagnesite and artinite, printed p. 25. The existing federal
 public-domain evaluation review covers these individually cited observations;

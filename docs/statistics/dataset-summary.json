@@ -11,16 +11,16 @@
     "water_gibbs_energy_J_mol": "-237129.0"
   },
   "totals": {
-    "species": 798,
+    "species": 800,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2642,
-    "recommended_values": 1916,
-    "source_records": 1681,
-    "distinct_citations": 156,
-    "warnings": 1157,
-    "phase_records": 464,
-    "resolved_phase_records": 246,
+    "reported_thermochemistry": 2649,
+    "recommended_values": 1918,
+    "source_records": 1688,
+    "distinct_citations": 157,
+    "warnings": 1162,
+    "phase_records": 466,
+    "resolved_phase_records": 247,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
@@ -36,8 +36,8 @@
     },
     {
       "phase": "solid",
-      "species": 321,
-      "gibbs": 298,
+      "species": 323,
+      "gibbs": 300,
       "entropy": 269,
       "enthalpy": 252
     },
@@ -59,7 +59,7 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 706
+      "available": 708
     },
     {
       "property": "Entropy",
@@ -71,7 +71,7 @@
     }
   ],
   "gibbs_status": {
-    "verified": 399,
+    "verified": 401,
     "source_verified_estimate": 233,
     "not_available": 86,
     "defined_reference_state": 74,
@@ -160,7 +160,7 @@
       "symbol": "Mg",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 20
+      "species": 22
     },
     {
       "atomic_number": 13,
@@ -1377,15 +1377,15 @@
     {
       "symbol": "Mg",
       "system": "Magnesium (Mg)",
-      "species": 20,
+      "species": 22,
       "aqueous": 8,
-      "solid": 12,
+      "solid": 14,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 18,
+      "gibbs": 20,
       "entropy": 18,
       "enthalpy": 18,
-      "warnings": 41
+      "warnings": 46
     },
     {
       "symbol": "Mn",
@@ -2063,6 +2063,10 @@
       "count": 4
     },
     {
+      "warning_type": "r07_nbs_magnesium_mineral_variant",
+      "count": 4
+    },
+    {
       "warning_type": "r07_mg_carbonate_formula_and_buffer",
       "count": 4
     },
@@ -2251,6 +2255,10 @@
       "count": 1
     },
     {
+      "warning_type": "r07_artinite_original_residual_entropy",
+      "count": 1
+    },
+    {
       "warning_type": "minium_shared_evaluations_and_intervals",
       "count": 1
     },
@@ -2410,7 +2418,7 @@
   "phase_identity": [
     {
       "identity_status": "resolved",
-      "count": 236
+      "count": 237
     },
     {
       "identity_status": "aqueous_species_identified",
@@ -2423,6 +2431,10 @@
     {
       "identity_status": "ambiguous",
       "count": 8
+    },
+    {
+      "identity_status": "source_composition_resolved_crystal_structure_unspecified",
+      "count": 1
     },
     {
       "identity_status": "phase_identity_incomplete",
