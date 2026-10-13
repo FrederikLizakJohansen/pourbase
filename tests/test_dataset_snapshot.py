@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 800), ("reported_thermochemistry", 2653),
-                                 ("sources", 1693), ("warnings", 1165),
+            for table, count in (("species", 800), ("reported_thermochemistry", 2654),
+                                 ("sources", 1694), ("warnings", 1166),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1089,6 +1089,30 @@ class DatasetSnapshotTests(unittest.TestCase):
                          if e.record_id == "r07-mg-basic-carbonate-four-mg-trihydrate")
         self.assertIn("incorrect", exclusion.reason)
         self.assertEqual(len(self.database.policy.exclusions), 3)
+
+    def test_magnesite_1965_solubility_estimate_uses_correct_gas_reference(self) -> None:
+        record = self.database.species_records(("r07-mg-magnesite",))[0]
+        estimate = next(r for r in record.reported
+                        if r.value_id.endswith(":open-1965-solubility-reconstruction"))
+        rt = 8.31446261815324 * 298.15
+        reaction_atm = -rt * math.log(6.3e-6)
+        reaction_bar = reaction_atm + rt * math.log(1.01325)
+        self.assertAlmostEqual(estimate.value,
+                               -454800 + 2 * -586770 + 394359 + 237129 - reaction_bar)
+        self.assertEqual(estimate.status, pb.EvidenceStatus.SOURCE_VERIFIED_ESTIMATE)
+        self.assertIsNone(estimate.uncertainty)
+        self.assertFalse(estimate.selected_as_recommended)
+        self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, -1012100)
+        self.assertIn("complexing", estimate.source.locator)
+        self.assertIn("Eq.21", estimate.source.locator)
+        self.assertIn("pressure-flat", estimate.source.locator)
+        # Chemical potentials balance at the source's 1 atm CO2 pressure.
+        magnesium_activity = 1e-5
+        bicarbonate_activity = math.sqrt(6.3e-6 / magnesium_activity)
+        reactants = estimate.value - 394359 + rt * math.log(1.01325) - 237129
+        products = (-454800 + rt * math.log(magnesium_activity)
+                    + 2 * (-586770 + rt * math.log(bicarbonate_activity)))
+        self.assertAlmostEqual(reactants, products, places=8)
 
     def test_calcium_original_association_fit_and_missing_ion_enthalpy(self) -> None:
         ion = self.database.species_records(("gfe-ca-ca-q+2-aqueous-aq",))[0]

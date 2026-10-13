@@ -35,8 +35,13 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
   fractions of dissolved species where no solid precipitates; `thermal_scale` and
   `--boltzmann-scale` remain as deprecated aliases.
 
-- 800 species and 2653 retained observations across 74 supported elemental systems, with
+- 800 species and 2654 retained observations across 74 supported elemental systems, with
   recommended Gibbs energies for 707.
+- One conditional magnesite Gibbs alternative uses the original 1965 solubility
+  evaluation and openly licensed ion/gas/water anchors. The ideal CO2 reference
+  correction is explicit; source complexing and pressure assumptions remain attached.
+  Existing preferred values are preserved. The JANAF-dependent decomposition fit
+  remains a separate source hold.
 - Four formation estimates reconstruct nesquehonite and five-Mg hydromagnesite from
   original calorimetric reaction heats and openly licensed constituent anchors.
   Earlier recommendations remain selected. The historical four-Mg hydromagnesite

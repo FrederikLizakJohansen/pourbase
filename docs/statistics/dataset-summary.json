@@ -14,11 +14,11 @@
     "species": 800,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2653,
+    "reported_thermochemistry": 2654,
     "recommended_values": 1917,
-    "source_records": 1693,
-    "distinct_citations": 159,
-    "warnings": 1165,
+    "source_records": 1694,
+    "distinct_citations": 160,
+    "warnings": 1166,
     "phase_records": 466,
     "resolved_phase_records": 247,
     "mp_matches": 105,
@@ -1385,7 +1385,7 @@
       "gibbs": 19,
       "entropy": 18,
       "enthalpy": 18,
-      "warnings": 49
+      "warnings": 50
     },
     {
       "symbol": "Mn",
@@ -2264,6 +2264,10 @@
     },
     {
       "warning_type": "r07_artinite_original_residual_entropy",
+      "count": 1
+    },
+    {
+      "warning_type": "r07_1965_magnesite_source_and_solubility_model",
       "count": 1
     },
     {

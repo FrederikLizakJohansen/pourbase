@@ -891,3 +891,26 @@ exclusions; policy fingerprint `f77a781b3168`. All earlier numerical evidence is
 preserved. Current totals: 800 species, 2,653 observations and 707/677/533 selected
 G/S/H. The 74 default diagrams and five checked magnesium carbonate diagrams and
 closed-metal balances are unchanged by this checkpoint.
+
+The complete 1965 magnesite report supplies a separate apparent-solubility
+alternative. Its Eq. 21 uses MgCO3(cr) + CO2(g) + H2O(l) = Mg²⁺ + 2HCO3⁻,
+K = 6.3×10⁻⁶ at 298.15 K and 1 atm CO2. The local reconstruction uses
+ΔrG(1 atm) = −RT ln K and ΔrG(1 bar) = ΔrG(1 atm) + RT ln(1.01325), with
+an exact ideal-CO2 reference term of 32.630478 J/mol. Condensed and aqueous
+standard Gibbs terms are assumed pressure-flat over this small pressure interval;
+exact reaction-volume evidence is unavailable.
+
+Open NBS Mg²⁺, HCO3⁻, CO2(g) and water G values of −454,800, −586,770,
+−394,359 and −237,129 J/mol give local MgCO3 G = −1,026,570.044041 J/mol.
+The observation has `source_verified_estimate` status and NULL total uncertainty.
+Robie explicitly cautions that agreement with decomposition results may be
+fortuitous because aqueous MgCO3 complexing matters. The stored alternative
+therefore retains the source's apparent free-ion model and outstanding specimen,
+ionic-strength and complete activity/speciation review.
+
+The original decomposition fit remains held for new admission because its CO2
+thermal functions cite JANAF. The source's later Eq. 22 and Eq. 25 K/G pairs
+are numerically inconsistent and supply no input to this reconstruction.
+Every earlier row and preferred value remains intact; all 74 default diagrams
+and five checked carbonate diagrams/metal balances are unchanged. Current totals:
+800 species, 2,654 observations and 707/677/533 selected G/S/H.

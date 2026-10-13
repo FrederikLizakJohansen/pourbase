@@ -29,6 +29,15 @@ retain the published values, conversion and unavailable uncertainty.
 
 ## USGS mineral evaluations
 
+One local magnesite Gibbs estimate uses Robie (1965), USGS Professional Paper
+525-D, printed D69, Eq. 21, as an individually attributed federal equilibrium
+evaluation. Exact Mg²⁺, HCO3−, CO2(g) and water Gibbs anchors come from the
+explicitly licensed NIST PDR digitization, DOI 10.18434/M32124. The source's
+aqueous-complexing caveat and local pressure model are retained. USGS, NIST and
+UNT are acknowledged. Original report pages and the held JANAF-dependent
+decomposition calculations remain external. Complete original report:
+<https://digital.library.unt.edu/ark:/67531/metadc872685/m2/1/high_res_d/report.pdf>.
+
 Four local formation estimates for nesquehonite and five-Mg hydromagnesite combine
 the original USGS-authored 1973 calorimetric reaction heats and 1972 entropy facts
 with constituent enthalpies and elemental entropies from the explicitly licensed

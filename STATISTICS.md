@@ -11,10 +11,10 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended Gibbs energies | 707 (88 %) |
 | Recommended entropies | 677 (85 %) |
 | Recommended formation enthalpies | 533 (67 %) |
-| Reported values retained | 2653 |
-| Source records | 1693 (159 distinct citations) |
+| Reported values retained | 2654 |
+| Source records | 1694 (160 distinct citations) |
 | Phase records | 466 (247 resolved) |
-| Warnings | 1165 |
+| Warnings | 1166 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 12 |
@@ -44,10 +44,10 @@ Species by phase:
 |---|---|---|
 | `species` | 800 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `selected_thermochemistry` | 800 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 2653 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1693 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 2654 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1694 | Full citations, links, locators and access dates |
 | `phases` | 466 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 1165 | Scientific cautions attached to records |
+| `warnings` | 1166 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -123,7 +123,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | La | Lanthanum (La) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 8 | 13 |
 | Li | Lithium (Li) | 4 | 3 | 1 | 0 | 0 | 4 | 4 | 2 | 3 |
 | Lu | Lutetium (Lu) | 10 | 6 | 4 | 0 | 0 | 10 | 7 | 7 | 11 |
-| Mg | Magnesium (Mg) | 22 | 8 | 14 | 0 | 0 | 19 | 18 | 18 | 49 |
+| Mg | Magnesium (Mg) | 22 | 8 | 14 | 0 | 0 | 19 | 18 | 18 | 50 |
 | Mn | Manganese (Mn) | 21 | 10 | 11 | 0 | 0 | 18 | 20 | 15 | 31 |
 | Mo | Molybdenum (Mo) | 5 | 1 | 4 | 0 | 0 | 5 | 5 | 3 | 2 |
 | N | Nitrogen (N) | 8 | 5 | 0 | 3 | 0 | 8 | 8 | 8 | 20 |
