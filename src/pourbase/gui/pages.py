@@ -9,7 +9,7 @@ from typing import Callable
 from PySide6.QtCore import QSortFilterProxyModel, Qt, Signal
 from PySide6.QtGui import QColor, QStandardItem, QStandardItemModel
 from PySide6.QtWidgets import (
-    QAbstractItemView, QComboBox, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QPushButton, QSplitter,
+    QAbstractItemView, QComboBox, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QPushButton, QSizePolicy, QSplitter,
     QTableView, QTableWidget, QTableWidgetItem, QTextBrowser, QVBoxLayout, QWidget,
 )
 
@@ -298,6 +298,8 @@ class SpeciesPage(QSplitter):
         rows.sort(key=order)
         swatches = record_colors([item.record_id for item in calculation.stable_species])
         table = self.table
+        selected = table.selectedItems()
+        previous = table.item(selected[0].row(), self.RECORD).text() if selected else None
         table.blockSignals(True)
         table.setUpdatesEnabled(False)
         header = table.horizontalHeader()
@@ -339,8 +341,15 @@ class SpeciesPage(QSplitter):
         table.setUpdatesEnabled(True)
         table.blockSignals(False)
         self.details.clear()
+        # keep the selected species across redraws; a species asked for from search takes precedence
+        wanted = getattr(self, "pending_record", None) or previous
+        ids = [table.item(index, self.RECORD).text() for index in range(table.rowCount())]
+        target = ids.index(wanted) if wanted in ids else 0
+        if getattr(self, "pending_record", None) in ids:
+            self.pending_record = None
         if rows:
-            table.selectRow(0)
+            table.selectRow(target)
+            table.scrollToItem(table.item(target, 0))
 
     def _show_details(self) -> None:
         selected = self.table.selectedItems()
@@ -554,3 +563,216 @@ class DatabasePage(QWidget):
     def _filter(self, text: str) -> None:
         self.proxy.setFilterFixedString(text)
         self.count.setText(f"{self.proxy.rowCount()} of {self.model.rowCount()} rows")
+
+
+class SensitivityPage(StackedView):
+    """Where the diagram is not fixed by the published data, and which species and sources cause it."""
+
+    sourcesChanged = Signal()
+
+    def __init__(self, parent=None) -> None:
+        import pyqtgraph as pg
+        from PySide6.QtWidgets import QButtonGroup, QRadioButton
+
+        from .figure_export import install_export_menu
+
+        body = QWidget()
+        layout = QVBoxLayout(body)
+        controls = QHBoxLayout()
+        self.all_values = QRadioButton("All eligible values")
+        self.critical = QRadioButton("Critical evaluations only (classes A–C)")
+        self.all_values.setChecked(True)
+        group = QButtonGroup(body)
+        for button in (self.all_values, self.critical):
+            group.addButton(button)
+            controls.addWidget(button)
+            button.toggled.connect(lambda checked: checked and self.sourcesChanged.emit())
+        controls.addStretch(1)
+        header = QWidget()
+        header_layout = QVBoxLayout(header)
+        header_layout.setContentsMargins(0, 0, 0, 0)
+        header_layout.addLayout(controls)
+        self.summary = QLabel()
+        self.summary.setWordWrap(True)
+        self.summary.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
+        header_layout.addWidget(self.summary)
+        self.point_info = QLabel("Click the diagram to see which species are stable at that point across the "
+                                 "selections.")
+        self.point_info.setWordWrap(True)
+        self.point_info.setTextFormat(Qt.RichText)
+        self.point_info.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
+        header_layout.addWidget(self.point_info)
+        header.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        layout.addWidget(header)
+        splitter = QSplitter(Qt.Vertical)
+        self.plot = pg.PlotWidget()
+        self.plot.setMenuEnabled(False)
+        self.plot.setLabel("bottom", "pH")
+        self.plot.setLabel("left", "Eh (V vs SHE)")
+        self.plot.getPlotItem().layout.setContentsMargins(4, 12, 14, 4)  # room for the edge tick labels
+        self.image = pg.ImageItem(axisOrder="row-major")
+        self.plot.addItem(self.image)
+        self.lines = pg.PlotDataItem(pen=pg.mkPen("#1f6f8b", width=1.2), connect="pairs")
+        self.plot.addItem(self.lines)
+        self.result = None
+        self.diagram = None
+        self.selections = None
+        self.labels: dict[str, pg.TextItem] = {}
+        self.marker = pg.ScatterPlotItem(size=11, symbol="+", pen=pg.mkPen("#1f6f8b", width=2), brush=None)
+        self.marker.setZValue(6)
+        self.plot.addItem(self.marker)
+        self.plot.scene().sigMouseClicked.connect(self._clicked)
+        self.plot.scene().sigMouseMoved.connect(self._hovered)
+        install_export_menu(self.plot, self.export_table, "pourbase-sensitivity")
+        from .plots import apply_plot_theme
+
+        apply_plot_theme(self.plot, False)
+        self.table = _table(["Species", "Spread (kJ/mol)", "Diagram changed when replaced alone", "Values (kJ/mol)",
+                             "Sources"])
+        splitter.addWidget(self.plot)
+        splitter.addWidget(self.table)
+        splitter.setSizes([520, 220])
+        layout.addWidget(splitter, 1)
+        super().__init__(body, parent)
+
+    def set_dark(self, dark: bool) -> None:
+        from .plots import apply_plot_theme
+
+        apply_plot_theme(self.plot, dark)
+
+    def critical_only(self) -> bool:
+        return self.critical.isChecked()
+
+    def _grid_point(self, scene_position):
+        import numpy as np
+
+        if self.result is None or not self.plot.sceneBoundingRect().contains(scene_position):
+            return None
+        point = self.plot.getPlotItem().vb.mapSceneToView(scene_position)
+        pH, eh = self.result.pH, self.result.eh_V
+        if not (pH[0] <= point.x() <= pH[-1] and eh[0] <= point.y() <= eh[-1]):
+            return None
+        return int(np.abs(eh - point.y()).argmin()), int(np.abs(pH - point.x()).argmin())
+
+    def _hovered(self, position) -> None:
+        cell = self._grid_point(position)
+        if cell is None:
+            self.plot.setToolTip("")
+            return
+        row, column = cell
+        species = self.diagram.system.species[int(self.diagram.stable_species_index[row, column])]
+        self.plot.setToolTip(f"{to_html(species.species)}: another species in "
+                             f"{self.result.changed_fraction[row, column]:.0%} of selections")
+
+    def _clicked(self, event) -> None:
+        from ..sensitivity import point_outcomes
+
+        if event.button() != Qt.LeftButton or self.selections is None:
+            return
+        cell = self._grid_point(event.scenePos())
+        if cell is None:
+            return
+        row, column = cell
+        pH, eh = float(self.result.pH[column]), float(self.result.eh_V[row])
+        self.marker.setData([pH], [eh])
+        current = self.diagram.system.species[int(self.diagram.stable_species_index[row, column])].species
+        outcomes = point_outcomes(self.diagram, self.selections, row, column, samples=self.result.samples or 1,
+                                  classes={"A", "B", "C"} if self.critical_only() else None)
+        shares = ", ".join(f"{to_html(name)} {share:.0%}" for name, share in outcomes.items())
+        self.point_info.setText(f"pH {pH:.2f}, Eh {eh:+.3f} V: {to_html(current)} is stable in the current "
+                                f"diagram. Stable across the selections: {shares}.")
+        for index in range(self.table.rowCount()):
+            item = self.table.item(index, 0)
+            if item is not None and item.text() in outcomes and item.text() != current:
+                self.table.selectRow(index)
+                break
+
+    def show_result(self, result, diagram, selections=None) -> None:
+        import numpy as np
+        import pyqtgraph as pg
+        from matplotlib import colormaps
+
+        from ..grid import phase_boundary_segments
+
+        self.result = result
+        self.diagram = diagram
+        self.selections = selections
+        self.marker.setData([], [])
+        self.point_info.setText("Click the diagram to see which species are stable at that point across the "
+                                "selections.")
+        lut = (colormaps["magma_r"](np.linspace(0, 1, 256))[:, :3] * 255).astype(np.uint8)
+        lut[0] = (245, 245, 245)
+        self.image.setImage(result.changed_fraction, lut=lut, levels=(0, 1), autoLevels=False)
+        x0, x1, y0, y1 = result.pH[0], result.pH[-1], result.eh_V[0], result.eh_V[-1]
+        self.image.setRect(pg.QtCore.QRectF(x0, y0, x1 - x0, y1 - y0))
+        points = [point for segment in phase_boundary_segments(diagram.stable_species_index, diagram.pH, diagram.eh_V)
+                  for point in segment]
+        array = np.asarray(points) if points else np.zeros((0, 2))
+        self.lines.setData(array[:, 0], array[:, 1]) if len(array) else self.lines.setData([], [])
+        self.plot.setXRange(x0, x1, padding=0)
+        self.plot.setYRange(y0, y1, padding=0)
+        self._place_labels(diagram)
+        sources = "critical evaluations" if self.critical_only() else "all eligible published values"
+        if result.samples == 0:
+            self.summary.setText(f"No species of this system has more than one eligible Gibbs energy among the "
+                                 f"{sources}; the diagram is fixed by the data in the database.")
+        else:
+            self.summary.setText(
+                f"The stable species depends on which published value is used on {result.unfixed_fraction:.1%} of the "
+                f"diagram ({result.samples} random selections from {sources}). Darker regions change in more "
+                "selections; lines are the boundaries of the current diagram. Right-click to export.")
+        rows = result.species
+        self.table.setRowCount(len(rows))
+        for index, entry in enumerate(rows):
+            values = ", ".join(f"{item.value_J_mol / 1000:.2f}" + (" (in use)" if item.in_use else "")
+                               for item in sorted(entry.alternatives, key=lambda item: item.value_J_mol))
+            sources = "; ".join(dict.fromkeys(short_citation(item.citation, item.source_id) + f" [{item.evidence_class}]"
+                                              for item in entry.alternatives))
+            cells = (entry.species, f"{entry.spread_J_mol / 1000:.2f}", f"{entry.changed_fraction_alone:.1%}",
+                     values, sources)
+            for column, value in enumerate(cells):
+                cell = QTableWidgetItem(value)
+                if column == 4:
+                    cell.setToolTip("\n".join(dict.fromkeys(item.citation for item in entry.alternatives)))
+                self.table.setItem(index, column, cell)
+        self.table.resizeColumnsToContents()
+        self.show_view()
+
+    def _place_labels(self, diagram) -> None:
+        import numpy as np
+        import pyqtgraph as pg
+
+        from .plots import LABEL_PT
+
+        index = diagram.stable_species_index
+        x_grid, y_grid = np.meshgrid(diagram.pH, diagram.eh_V)
+        scale_x, scale_y = max(float(np.ptp(diagram.pH)), 1e-9), max(float(np.ptp(diagram.eh_V)), 1e-9)
+        shown = set()
+        for position, item in enumerate(diagram.system.species):
+            mask = index == position
+            if not mask.any():
+                continue
+            xs, ys = x_grid[mask], y_grid[mask]
+            distances = ((xs - xs.mean()) / scale_x) ** 2 + ((ys - ys.mean()) / scale_y) ** 2
+            nearest = int(np.argmin(distances))
+            label = self.labels.get(item.record_id)
+            if label is None:
+                label = pg.TextItem(html=f'<span style="color:#000; font-size:{LABEL_PT}pt">'
+                                         f"{to_html(item.species, LABEL_PT)}</span>",
+                                    anchor=(0.5, 0.5), fill=pg.mkBrush(255, 255, 255, 185))
+                label.setZValue(5)
+                self.plot.addItem(label)
+                self.labels[item.record_id] = label
+            label.setPos(float(xs[nearest]), float(ys[nearest]))
+            label.setVisible(True)
+            shown.add(item.record_id)
+        for record_id, label in self.labels.items():
+            label.setVisible(record_id in shown)
+
+    def export_table(self):
+        result = self.result
+        if result is None:
+            return None
+        rows = [(f"{pH:.6g}", f"{eh:.6g}", f"{result.changed_fraction[row, column]:.4f}")
+                for row, eh in enumerate(result.eh_V) for column, pH in enumerate(result.pH)]
+        return ("pH", "Eh_V_vs_SHE", "share of selections with another stable species"), rows

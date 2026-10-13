@@ -425,3 +425,24 @@ class DatasetTests(unittest.TestCase):
             record = database.species_records((calculation.stable_species[0].record_id,))[0]
             self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.source.citation in {"reference", "notes"}, True)
             self.assertEqual(pb.open_dataset(database.path).available_systems(), database.available_systems())
+
+
+class SensitivityAndSourcesTests(unittest.TestCase):
+    def test_selection_sensitivity_reproduces_the_paper(self) -> None:
+        database = pb.ThermodynamicDatabase.bundled()
+        diagram = pb.calculate(pb.Scenario("Gd"), database).diagram
+        result = pb.selection_sensitivity(diagram, database.selections, samples=300)
+        self.assertAlmostEqual(result.unfixed_fraction, 0.256, delta=0.01)
+        critical = pb.selection_sensitivity(pb.calculate(pb.Scenario("Fe"), database).diagram, database.selections,
+                                            samples=300, classes={"A", "B", "C"})
+        self.assertAlmostEqual(critical.unfixed_fraction, 0.020, delta=0.005)
+
+    def test_diagram_sources_group_publications(self) -> None:
+        from pourbase.citations import diagram_sources, to_bibtex
+
+        calculation = pb.calculate(pb.Scenario("Co"))
+        publications = diagram_sources(calculation)
+        labels = [item.label for item in publications]
+        self.assertEqual(len(labels), len(set(labels)))
+        self.assertEqual(to_bibtex(publications).count("@misc{"), len(publications))
+

@@ -459,6 +459,52 @@ class WindowTests(WindowTestCase):
         self.assertEqual(window.calculation.diagram.stable_species_index.shape, full)
         self.assertIs(window.diagram_page.currentWidget(), window.diagram_page.view)
 
+    def test_sensitivity_tab_maps_where_the_data_do_not_fix_the_diagram(self) -> None:
+        window = self.window
+        self.open("Co")
+        window.views.setCurrentWidget(window.sensitivity_page)
+        self.wait(lambda: window.sensitivity_page.result is not None
+                  and window.sensitivity_page.result.pH.size == window.settings.pH_points)
+        result = window.sensitivity_page.result
+        self.assertAlmostEqual(result.unfixed_fraction, 0.079, delta=0.01)  # the paper's cobalt value
+        self.assertEqual(result.species[0].species, "Co₃O₄")
+        self.assertEqual(window.sensitivity_page.table.item(0, 0).text(), "Co₃O₄")
+        window.views.setCurrentWidget(window.diagram_page)
+
+    def test_sources_dialog_lists_publications_and_writes_bibtex(self) -> None:
+        from pourbase.gui.sources_dialog import SourcesDialog
+
+        window = self.window
+        self.open("Fe")
+        dialog = SourcesDialog(window.calculation, "Iron (Fe)")
+        self.assertGreater(dialog.table.rowCount(), 3)
+        path = os.path.join(self.directory.name, "sources.bib")
+        dialog.save_bibtex(path)
+        with open(path, encoding="utf-8") as handle:
+            text = handle.read()
+        self.assertEqual(text.count("@misc{"), dialog.table.rowCount())
+        self.assertIn("Wagman", text)
+        dialog.close()
+
+    def test_search_finds_elements_species_sources_and_commands(self) -> None:
+        from pourbase.gui.search import rank
+
+        window = self.window
+        self.open("Fe")
+        entries = window._search_entries()
+        self.assertEqual(rank(entries, "copper")[0].title, "Copper (Cu)")
+        self.assertEqual(rank(entries, "fe2o3")[0].title, "Fe₂O₃")
+        self.assertEqual(rank(entries, "robie")[0].kind, "Source")
+        self.assertEqual(rank(entries, "export figure")[0].kind, "Command")
+        species = next(entry for entry in rank(entries, "cuprite") if entry.kind == "Species")
+        species.activate()
+        self.wait(lambda: window.settings.symbol == "Cu" and window.calculation.diagram.system.symbol == "Cu"
+                  and window.calculation.diagram.stable_species_index.shape
+                  == (window.settings.eh_points, window.settings.pH_points))
+        table = window.species_page.table
+        self.assertEqual(table.item(table.currentRow(), 1).text(), "cuprite")
+        self.open("Fe")
+
     def test_sweep_runs_in_the_background_and_is_cached(self) -> None:
         window = self.window
         self.open("Fe")

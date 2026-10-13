@@ -37,7 +37,7 @@ from .credentials import storage_description
 from .dft import DftController
 from .materials import matched_colors, phase_views, pretty_label
 from .mp_page import MaterialsProjectPage
-from .pages import BoundariesPage, DatabasePage, DiagramPage, SpeciationPage, SpeciesPage
+from .pages import BoundariesPage, DatabasePage, DiagramPage, SensitivityPage, SpeciationPage, SpeciesPage
 from .periodic import OverviewPage
 from .placeholder import StackedView
 from .plots import record_colors
@@ -129,6 +129,8 @@ class MainWindow(QMainWindow):
         self.species_page = SpeciesPage()
         self.boundaries_page = BoundariesPage()
         self.speciation_page = SpeciationPage()
+        self.sensitivity_page = SensitivityPage()
+        self.sensitivity_page.sourcesChanged.connect(lambda: self.refresh_view())
         self.compare_page = ComparePage(self.systems)
         self.compare_page.changed.connect(lambda: self.refresh_view())
         self.compare_page.preview.connect(self._compare_preview)
@@ -160,7 +162,8 @@ class MainWindow(QMainWindow):
         self.views.setDocumentMode(True)
         for page, title in (
             (self.diagram_page, "Diagram"), (self.species_page, "Species"), (self.boundaries_page, "Boundaries"),
-            (self.speciation_page, "Speciation"), (self.compare_page, "Compare"),
+            (self.speciation_page, "Speciation"), (self.sensitivity_page, "Sensitivity"),
+            (self.compare_page, "Compare"),
             (self.sweep_stack, "Concentration sweep"),
             (self.dft_stack, "DFT comparison"),
         ):
@@ -252,6 +255,10 @@ class MainWindow(QMainWindow):
             self.theme_actions[mode] = action
         view.addAction("Reset zoom", lambda: self.refresh_view(reset_range=True)).setShortcut("Ctrl+0")
         tools = self.menuBar().addMenu("&Tools")
+        search = tools.addAction("Search…", self.show_search)
+        search.setShortcuts([QKeySequence("Ctrl+K"), QKeySequence.Find])
+        tools.addSeparator()
+        tools.addAction("Sources behind this diagram…", self.show_sources)
         tools.addAction("Compare selection policies…", self.compare_policies)
         tools.addSeparator()
         tools.addAction("DFT comparison (Materials Project)", self.show_dft)
@@ -616,6 +623,7 @@ class MainWindow(QMainWindow):
             tip += f" {own} species from {Path(self.user_species_path).name} are added or replace bundled ones."
             tone = ACCENT
         chips["data"].configure(data, tip, tone, dark=self.dark, menu=[
+            ("Sources behind this diagram…", self.show_sources),
             ("Load own species (CSV)…", self.open_user_species), ("Remove own species", lambda: self.load_user_species(None)),
             ("Open a dataset in a new window…", self.open_dataset)])
         policy_text = (f"Policy: {Path(self.policy_path).name}" if self.policy_path else "Default selection policy")
@@ -681,6 +689,8 @@ class MainWindow(QMainWindow):
             self._show_boundaries()
         elif current is self.speciation_page:
             self._show_speciation()
+        elif current is self.sensitivity_page:
+            self._show_sensitivity()
         elif current is self.compare_page:
             self._show_compare(reset_range)
         elif current is self.sweep_stack:
@@ -691,6 +701,48 @@ class MainWindow(QMainWindow):
     def _set_mode(self, mode: Mode) -> None:
         self.panel.mode.setCurrentIndex(self.panel.mode.findData(mode.value))
         self.recalculate()
+
+    def _show_sensitivity(self) -> None:
+        """Map where the stable species depends on the choice between published values."""
+        page = self.sensitivity_page
+        calculation = self.calculation
+        if self.settings.mode == Mode.MASS_BALANCE.value:
+            page.show_message("Sensitivity is calculated for fixed-activity diagrams",
+                              "Switch to fixed activity to see where the choice between published values changes "
+                              "the stable species.", ("Switch to fixed activity", lambda: self._set_mode(Mode.FIXED_ACTIVITY)))
+            return
+        if calculation is None or calculation.diagram.stable_species_index.shape != (self.settings.eh_points,
+                                                                                    self.settings.pH_points):
+            return  # wait for the full grid
+        database = self.session.database
+        key = (id(calculation), id(database))
+        cached = getattr(self, "_sensitivity_results", None)
+        if cached is not None and cached[0] == key:
+            shown = (key, page.critical_only())
+            if getattr(self, "_sensitivity_key", None) != shown:
+                self._sensitivity_key = shown
+                page.show_result(cached[1][page.critical_only()], cached[2], cached[3])
+            return
+        if self._wanted.get("sensitivity") == key:
+            return
+        diagram = calculation.diagram
+        self._wanted["sensitivity"] = key
+        page.show_message(self.systems.get(self.settings.symbol, self.settings.symbol),
+                          "Comparing the diagram over the eligible published values…", glyph="…")
+
+        def work(progress):
+            from ..sensitivity import selection_sensitivity
+
+            def part(offset):
+                return lambda fraction: progress(0.5 * (offset + fraction))
+
+            results = {critical: selection_sensitivity(diagram, database.selections, samples=300,
+                                                       classes={"A", "B", "C"} if critical else None,
+                                                       progress=part(index))
+                       for index, critical in enumerate((False, True))}
+            return results, diagram, database.selections
+
+        self.tasks.submit("sensitivity", key, work)
 
     def _show_boundaries(self) -> None:
         page = self.boundaries_page
@@ -804,6 +856,18 @@ class MainWindow(QMainWindow):
             self.sweep_page.hint.setText(f"Evaluating the Materials Project sweep… {fraction:.0%}")
 
     def _task_finished(self, kind: str, key: Any, result: Any, error: str) -> None:
+        if kind == "sensitivity":
+            if self._wanted.get(kind) != key:
+                return
+            del self._wanted[kind]
+            if error or result is None:
+                self.sensitivity_page.show_message("The sensitivity cannot be calculated", html.escape(error or ""),
+                                                   glyph="!")
+                return
+            self._sensitivity_results = (key, *result)
+            self._sensitivity_key = None
+            self._show_sensitivity()
+            return
         if kind in ("calculate", "screen", "compare"):
             if self._wanted.get(kind) != key:
                 return  # superseded by a newer request
@@ -1153,6 +1217,78 @@ class MainWindow(QMainWindow):
         QGuiApplication.clipboard().setText(self.python_code())
         self._set_status("Copied the equivalent Python code to the clipboard")
 
+    def show_search(self) -> None:
+        from .search import SearchDialog
+
+        dialog = SearchDialog(self._search_entries(), self)
+        dialog.field.setFocus()
+        dialog.exec()
+
+    def _search_entries(self) -> list:
+        """Every element, species, source and menu command, built once per database."""
+        from ..citations import group_sources
+        from .search import Entry, normalize
+
+        cached = getattr(self, "_search_cache", None)
+        if cached is not None and cached[0] is self.session.database:
+            return cached[1]
+        database = self.session.database
+        entries = []
+        for symbol, name in self.systems.items():
+            entries.append(Entry("Element", name, "Element: open its diagram", normalize(f"{name} {symbol} element"),
+                                 lambda symbol=symbol: self.open_element(symbol)))
+        rows = database._rows("SELECT record_id, symbol, species, formula_ascii, phase, phase_detail FROM species")
+        names = {}
+        for row in rows:
+            system = self.systems.get(row["symbol"], row["symbol"])
+            detail = f"Species in {system}: {(row['phase_detail'] or row['phase']).strip('()')}"
+            names[row["record_id"]] = (row["species"], row["symbol"])
+            entries.append(Entry("Species", row["species"], detail,
+                                 normalize(f"{row['species']} {row['formula_ascii']} {row['phase_detail']} {system} "
+                                           f"{row['record_id']}"),
+                                 lambda record=row["record_id"], symbol=row["symbol"]: self.show_species(symbol, record)))
+        pairs = []
+        for row in database._rows("SELECT record_id, source_id FROM reported_thermochemistry WHERE source_id IS NOT NULL"):
+            if row["record_id"] in names:
+                pairs.append((database.source(row["source_id"]), row["record_id"]))
+        for publication in group_sources(pairs):
+            first = publication.species[0]
+            species = [names[record][0] for record in publication.species if record in names]
+            entries.append(Entry("Source", publication.citation[:110],
+                                 f"Source for {len(species)} species, e.g. {', '.join(species[:3])}",
+                                 normalize(" ".join(publication.citations)),
+                                 lambda record=first: self.show_species(names[record][1], record)))
+
+        def actions(menu, prefix=""):
+            for action in menu.actions():
+                if action.menu():
+                    yield from actions(action.menu(), prefix + action.menu().title().replace("&", "") + " → ")
+                elif action.text() and not action.isSeparator() and action.text() != "Search…":
+                    yield prefix, action
+        for prefix, action in actions(self.menuBar()):
+            label = action.text().replace("&", "")
+            entries.append(Entry("Command", label, f"Command: {prefix}{label}", normalize(f"{prefix} {label}"),
+                                 action.trigger))
+        self._search_cache = (database, entries)
+        return entries
+
+    def show_species(self, symbol: str, record_id: str) -> None:
+        """Open an element with one species selected in the Species tab."""
+        self.species_page.pending_record = record_id
+        if symbol != self.settings.symbol or self.pages.currentIndex() != 1:
+            self.open_element(symbol)
+        self.views.setCurrentWidget(self.species_page)
+        self.refresh_view()
+
+    def show_sources(self) -> None:
+        """The publications behind the shown diagram, with BibTeX export."""
+        from .sources_dialog import SourcesDialog
+
+        if self.calculation is None:
+            QMessageBox.information(self, "Sources", "Sources appear once a diagram is calculated.")
+            return
+        SourcesDialog(self.calculation, self.systems.get(self.settings.symbol, self.settings.symbol), self).exec()
+
     def compare_policies(self) -> None:
         from .policy_compare import PolicyComparisonDialog
 
@@ -1208,7 +1344,7 @@ class MainWindow(QMainWindow):
         self.theme_actions[self.theme_mode].setChecked(True)
         self.diagram_page.dark = self.dark
         for widget in (self.diagram_page.diagram, self.speciation_page, self.sweep_page, self.dft_page,
-                       self.compare_page, self.overview.canvas):
+                       self.compare_page, self.overview.canvas, self.sensitivity_page):
             widget.set_dark(self.dark)
         self.refresh_view()
         self._set_status(*self._status)

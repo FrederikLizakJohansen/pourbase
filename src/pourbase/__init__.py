@@ -49,6 +49,7 @@ from .models import (
 )
 from .mp_thermochemistry import comparison_metrics, plot_mp_thermochemistry_comparison, write_mp_thermochemistry_bundle
 from .overview import Category, ElementResult, ElementStatus, PeriodicScreen, screen_periodic_table
+from .sensitivity import SelectionSensitivity, selection_sensitivity
 from .plotting import (
     plot_boltzmann_diagram,
     plot_diagram,
@@ -159,6 +160,8 @@ __all__ = [
     "plot_official_materials_project_diagram",
     "plot_speciation_profile",
     "plot_uncertainty",
+    "selection_sensitivity",
+    "SelectionSensitivity",
     "read_user_species",
     "save_figure",
     "screen_periodic_table",
