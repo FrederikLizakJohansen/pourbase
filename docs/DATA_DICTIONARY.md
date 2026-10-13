@@ -931,3 +931,31 @@ charge-balance argument concerns dilute 90°C experimental solutions and supplie
 no fitted MgCO3(aq) or MgHCO3+ association constant. The earlier apparent-solubility
 complexing caveat remains applicable. This review adds zero thermochemical rows;
 the database counts, recommendations and paper numbers above are preserved.
+
+The magnesium association source review traces Nordstrom et al. (1990),
+DOI 10.1021/bk-1990-0416.ch031, Table 2 III, to Siebert and Hostetler (1977),
+American Journal of Science 277, 697–715 and 716–734. Both original studies
+were recovered. Their Mg²⁺ activity-coefficient calibrations use MgCl2 data
+from the commercial Harned and Owen (1958) compilation. The carbonate study
+also uses ion-size parameters from Klotz (1964) and the bicarbonate model.
+These supporting inputs remain excluded from new copying under the open-source
+import rules. Licensed formation anchors alone leave this calibration ancestry
+unresolved; the original fits and six candidate formation estimates stay external.
+
+At 298.15 K, the later carbonate and bicarbonate association functions give
+log10 K = 2.9796605 and 1.06821589. Their derivatives give reaction enthalpies
+of +11,351.293 and +3,288.207 J/mol. The original authors' electrostatic-model
+dissociation enthalpies, with their sign reversed for association, are +8,439
+and +4,987.3 J/mol. Preserve these as distinct evaluations with separate model
+ancestry. The carbonate paper prints a Mg²⁺ size parameter of 5.5 Å, while the
+bicarbonate paper prints 6.5 Å; an independent reconstruction must resolve
+this difference. The original raw measurements and source uncertainties are
+kept in the external review.
+
+Malmberg and Maryott (1956), original NBS Journal of Research 56, 1–8,
+DOI 10.6028/jres.056.001, supplies an independently recovered water-dielectric
+polynomial. This resolves retrieval of that supporting source. The activity
+calibration, exact later refit, uncertainty and native pressure/reference models
+remain follow-ups. All 21 reviewed native association representations retain
+explicit holds. This checkpoint adds zero observations and preserves the
+800-species, 2,654-observation database, selected properties and paper numbers.

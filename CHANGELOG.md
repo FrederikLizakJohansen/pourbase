@@ -4,6 +4,12 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Trace Nordstrom (1990) magnesium carbonate/bicarbonate models to the original
+  Siebert/Hostetler (1977) studies and review 21 native association blocks.
+  Document commercial activity-calibration ancestry, differing thermal models
+  and an independently recovered federal dielectric source. Numerical imports
+  remain held pending complete eligible reconstructions; release counts are unchanged.
+
 - Review the original Christ/Hostetler (1970) magnesite study: distinguish the
   measured 90°C activity product from calculated values, document inherited
   CRC/JANAF supporting inputs and retain explicit reconstruction holds. This
