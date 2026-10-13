@@ -22,6 +22,9 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
 - Application: policy comparison dialog, copied code that reproduces the shown diagram
   (`pb.plot_uncertainty`), flagged source disagreements, grouped ligand complexes, background
   calculations behind a loading overlay, faster tables and tabs, no wheel changes on inputs.
+- Application: a Sensitivity tab mapping where the stable species depends on the choice between
+  eligible published Gibbs energies (`pb.selection_sensitivity`), the publications behind a diagram
+  with BibTeX export, and search over elements, species, sources and commands (Ctrl+K).
 - Schema 8: the database file stores evidence only. The recommended values are derived from the
   reported values by the active selection policy when the database is opened and appear to every
   connection as the temporary table `selected_thermochemistry`. Reported values gain `source_locator`; six
