@@ -35,8 +35,13 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
   fractions of dissolved species where no solid precipitates; `thermal_scale` and
   `--boltzmann-scale` remain as deprecated aliases.
 
-- 800 species and 2649 retained observations across 74 supported elemental systems, with
-  recommended Gibbs energies for 708.
+- 800 species and 2653 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 707.
+- Four formation estimates reconstruct nesquehonite and five-Mg hydromagnesite from
+  original calorimetric reaction heats and openly licensed constituent anchors.
+  Earlier recommendations remain selected. The historical four-Mg hydromagnesite
+  formula is disputed by the original authors; its reported value remains stored
+  and is excluded from calculations pending independent phase evidence.
 - Seven magnesium mineral observations: original artinite entropy with its residual-disorder
   model, and six openly licensed NBS properties. Lansfordite and a distinct four-Mg basic
   carbonate retain complete hydration. The unchanged NBS-first policy selects four older

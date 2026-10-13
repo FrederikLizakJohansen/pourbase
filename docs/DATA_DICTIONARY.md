@@ -858,3 +858,36 @@ unchanged, while carbonate-enabled magnesium precipitation changes substantially
 Independent dissolution-boundary and closed-metal checks verify full hydration,
 basic-carbonate proton terms and conservation. Current totals: 800 species,
 2,649 observations and 708/677/533 selected G/S/H.
+
+The original 1973 formation-input review adds four local H/G estimates for
+nesquehonite and five-Mg hydromagnesite. The source's oxide-formation heats at
+298.15 K are −29,780 and −120,310 cal/mol. Multiply by 4.1840 J/cal and add
+the stoichiometric enthalpies of MgO(cr), CO2(g) and H2O(l) from the open NBS
+PDR release: −601,700, −393,509 and −285,830 J/mol. The resulting full-formula
+enthalpies are −1,977,298.52 and −6,515,063.04 J/mol.
+
+G = H −TΔfS uses the original compound entropy with licensed elemental S values
+for Mg, graphite, O2 and H2: 32.68, 5.740, 205.138 and 130.684 J/(mol K).
+The corresponding G estimates are −1,723,798.819996 and −5,864,394.767348 J/mol.
+All four have `source_verified_estimate` status and NULL total uncertainty.
+They explicitly assume condensed-phase reaction H and mineral S are pressure-flat
+over 1 atm to 1 bar; ideal-gas H is pressure-independent. The original entropy
+and specimen/temperature-correction assumptions and shared covariance remain
+explicit. Existing higher-ranked mineral properties remain selected.
+
+The original printed formation outputs remain outside this import: the 1968
+MgO auxiliary H/G references combine Coughlin with JANAF, and elemental Mg
+entropy points to the commercial Hultgren compilation. Artinite has additional
+reaction-cycle conflicts: corrected solution heats sum to −43,227 cal/mol at
+303.15 K, versus the reported −43,329; the abstract's −45,132 cal/mol at 298.15 K
+also differs from the main text's −43,132. Artinite reconstructions stay held.
+
+The original 1973 authors identify the four-Mg hydromagnesite formula as incorrect
+and use the five-Mg composition. The historical four-Mg NBS row remains stored;
+its phase identity is `reported_composition_disputed`. A source-specific policy
+exclusion prevents calculation use pending independently verified evidence for
+that exact crystalline composition. There are now 43 overrides and three
+exclusions; policy fingerprint `f77a781b3168`. All earlier numerical evidence is
+preserved. Current totals: 800 species, 2,653 observations and 707/677/533 selected
+G/S/H. The 74 default diagrams and five checked magnesium carbonate diagrams and
+closed-metal balances are unchanged by this checkpoint.

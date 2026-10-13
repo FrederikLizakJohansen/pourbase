@@ -29,6 +29,20 @@ retain the published values, conversion and unavailable uncertainty.
 
 ## USGS mineral evaluations
 
+Four local formation estimates for nesquehonite and five-Mg hydromagnesite combine
+the original USGS-authored 1973 calorimetric reaction heats and 1972 entropy facts
+with constituent enthalpies and elemental entropies from the explicitly licensed
+NIST PDR release, DOI 10.18434/M32124. The established individual-source fact route
+and explicit data licence apply; USGS and NIST are acknowledged. These are local
+estimates with an explicit pressure model and unavailable total uncertainty.
+The original 1968 auxiliary absolute-property values are replaced completely.
+Original journal text, pages and held formation outputs remain external.
+Original source: <https://pubs.usgs.gov/journal/1973/vol1issue5/report.pdf>, pp. 543–547.
+
+The same original paper, pp. 544/546, identifies the older four-Mg hydromagnesite
+formula as incorrect. Its NBS observation remains historical evidence with an
+explicit scientific exclusion; it supplies no active calculation value.
+
 The original artinite entropy alternative comes from Hemingway and Robie (1972),
 American Mineralogist 57, 1754–1767, printed p. 1765. The authors add a modelled
 configurational residual entropy to the calorimetric increment. Its assumption,

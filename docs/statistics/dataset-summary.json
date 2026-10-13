@@ -14,11 +14,11 @@
     "species": 800,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2649,
-    "recommended_values": 1918,
-    "source_records": 1688,
-    "distinct_citations": 157,
-    "warnings": 1162,
+    "reported_thermochemistry": 2653,
+    "recommended_values": 1917,
+    "source_records": 1693,
+    "distinct_citations": 159,
+    "warnings": 1165,
     "phase_records": 466,
     "resolved_phase_records": 247,
     "mp_matches": 105,
@@ -37,7 +37,7 @@
     {
       "phase": "solid",
       "species": 323,
-      "gibbs": 300,
+      "gibbs": 299,
       "entropy": 269,
       "enthalpy": 252
     },
@@ -59,7 +59,7 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 708
+      "available": 707
     },
     {
       "property": "Entropy",
@@ -71,9 +71,9 @@
     }
   ],
   "gibbs_status": {
-    "verified": 401,
+    "verified": 400,
     "source_verified_estimate": 233,
-    "not_available": 86,
+    "not_available": 87,
     "defined_reference_state": 74,
     "terminal_evidence_gap": 6
   },
@@ -1382,10 +1382,10 @@
       "solid": 14,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 20,
+      "gibbs": 19,
       "entropy": 18,
       "enthalpy": 18,
-      "warnings": 46
+      "warnings": 49
     },
     {
       "symbol": "Mn",
@@ -2123,6 +2123,10 @@
       "count": 2
     },
     {
+      "warning_type": "r07_open_calorimetry_reconstruction_basis",
+      "count": 2
+    },
+    {
       "warning_type": "r07_nbs_magnesium_evaluation_basis",
       "count": 2
     },
@@ -2252,6 +2256,10 @@
     },
     {
       "warning_type": "retained_usgs_plattnerite_evaluation",
+      "count": 1
+    },
+    {
+      "warning_type": "r07_four_mg_historical_formula_excluded",
       "count": 1
     },
     {
@@ -2433,7 +2441,7 @@
       "count": 8
     },
     {
-      "identity_status": "source_composition_resolved_crystal_structure_unspecified",
+      "identity_status": "reported_composition_disputed",
       "count": 1
     },
     {

@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 800), ("reported_thermochemistry", 2649),
-                                 ("sources", 1688), ("warnings", 1162),
+            for table, count in (("species", 800), ("reported_thermochemistry", 2653),
+                                 ("sources", 1693), ("warnings", 1165),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -974,7 +974,6 @@ class DatasetSnapshotTests(unittest.TestCase):
             ("hydromagnesite", 5, 4, 6, 10, -5864200),
             ("artinite", 2, 1, 5, 8, -2568400),
             ("lansfordite", 1, 1, 5, 10, -2199200),
-            ("basic-carbonate-four-mg-trihydrate", 4, 3, 5, 8, -4603300),
         ):
             solid = next(s for s in system.species if s.record_id == f"r07-mg-{phase}")
             self.assertEqual((solid.metal_count, solid.ligand_count,
@@ -1054,15 +1053,42 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertTrue(any(r.value == -1029500 for r in magnesite.reported))
         self.assertTrue(any(r.value == -1113300 for r in magnesite.reported))
         system = self.database.load_system("Mg", ligand_ids=("carbonate-co3",))
-        four = next(s for s in system.species
-                    if s.record_id == "r07-mg-basic-carbonate-four-mg-trihydrate")
+        four_id = "r07-mg-basic-carbonate-four-mg-trihydrate"
+        four = self.database.species_records((four_id,))[0]
+        self.assertIsNone(four.thermochemistry.gibbs_energy_J_mol.value)
+        self.assertTrue(any(r.value == -4603300 for r in four.reported))
+        self.assertIn(four_id, {s.record_id for s in system.excluded})
         five = next(s for s in system.species if s.record_id == "r07-mg-hydromagnesite")
-        self.assertEqual((four.metal_count, four.ligand_count, four.protons_per_metal), (4, 3, .5))
         self.assertEqual((five.metal_count, five.ligand_count, five.protons_per_metal), (5, 4, .4))
         lansfordite = self.database.species_records(("r07-mg-lansfordite",))[0]
         self.assertEqual(lansfordite.thermochemistry.gibbs_energy_J_mol.value, -2199200)
         self.assertIsNone(lansfordite.thermochemistry.entropy_J_mol_K.value)
         self.assertIsNone(lansfordite.thermochemistry.formation_enthalpy_J_mol.value)
+
+    def test_open_carbonate_calorimetry_reconstruction_preserves_source_assumptions(self) -> None:
+        for phase, enthalpy, gibbs in (
+            ("nesquehonite", -1977298.52, -1723798.819996),
+            ("hydromagnesite", -6515063.04, -5864394.767348),
+        ):
+            record = self.database.species_records((f"r07-mg-{phase}",))[0]
+            estimates = {r.property: r for r in record.reported
+                         if r.value_id.endswith(":open-calorimetry-reconstruction")}
+            self.assertAlmostEqual(estimates["enthalpy_of_formation"].value, enthalpy)
+            self.assertAlmostEqual(estimates["gibbs_energy_of_formation"].value, gibbs)
+            for value in estimates.values():
+                self.assertEqual(value.status, pb.EvidenceStatus.SOURCE_VERIFIED_ESTIMATE)
+                self.assertIsNone(value.uncertainty)
+                self.assertFalse(value.selected_as_recommended)
+                self.assertIn("pressure-flat", value.source.locator)
+                self.assertIn("205.138", value.source.locator)
+                self.assertIn("10.18434/M32124", value.source.locator)
+        artinite = self.database.species_records(("r07-mg-artinite",))[0]
+        self.assertFalse(any(r.value_id.endswith(":open-calorimetry-reconstruction")
+                             for r in artinite.reported))
+        exclusion = next(e for e in self.database.policy.exclusions
+                         if e.record_id == "r07-mg-basic-carbonate-four-mg-trihydrate")
+        self.assertIn("incorrect", exclusion.reason)
+        self.assertEqual(len(self.database.policy.exclusions), 3)
 
     def test_calcium_original_association_fit_and_missing_ion_enthalpy(self) -> None:
         ion = self.database.species_records(("gfe-ca-ca-q+2-aqueous-aq",))[0]
@@ -1850,9 +1876,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 708, "absolute_entropy": 677, "enthalpy_of_formation": 533})
+                         {"gibbs_energy_of_formation": 707, "absolute_entropy": 677, "enthalpy_of_formation": 533})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "38639d275973c43f",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "b6f0358a48b05fbf",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:
