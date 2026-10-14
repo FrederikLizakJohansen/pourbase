@@ -251,6 +251,25 @@ and 78 explicitly gas-free ideal/Davies balances pass. No bare gas is added
 to default Zr calculations. Original request coverage remains **116/131**.
 The 29 earlier Fe/Ni/Sn solid/model holds retain their separate review history.
 
+## Completed NEA02e derived-route crosswalk
+
+The targeted crosswalk covers 42,009 property slots across PSI/Nagra,
+eight SUPCRT variants and three MINES releases, with routes for all440 PSI
+reactions. It finds one missing original NEA observation: Ni(OH)3(-),
+G=-590519 +/-9735J/mol, stored as G=-353390J/mol in the existing HNiO2(-)
+component basis by subtracting one project-water reference (-237129J/mol).
+Both complete-formula reactions and their transformed energies agree at
+unit water activity. The policy selects this observation while preserving
+all older evidence and independent H/S estimates. The source total interval
+is retained; the mixed reference set supplies no new temperature validation.
+
+Production now contains **963 species /3,075 observations /74 systems**;
+selected G/S/H counts remain **850/771/648**. Nickel changes412/7371 sampled
+points; the other73 default diagrams are unchanged. Historical request
+coverage stays116/131. The targeted deliverable is complete; wider R11/R12
+source/version reviews and independent permission holds remain open.
+See [the crosswalk results and remaining routes](nea-derived-crosswalk.md).
+
 ## Further exploration
 
 The first expansion covers a useful aqueous-ion/hydrolysis subset. Continue

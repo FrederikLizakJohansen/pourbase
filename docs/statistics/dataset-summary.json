@@ -16,11 +16,11 @@
     "species": 963,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 3074,
+    "reported_thermochemistry": 3075,
     "recommended_values": 2269,
     "source_records": 1702,
     "distinct_citations": 165,
-    "warnings": 1297,
+    "warnings": 1298,
     "phase_records": 541,
     "resolved_phase_records": 322,
     "mp_matches": 105,
@@ -73,8 +73,8 @@
     }
   ],
   "gibbs_status": {
-    "verified": 547,
-    "source_verified_estimate": 229,
+    "verified": 548,
+    "source_verified_estimate": 228,
     "not_available": 107,
     "defined_reference_state": 74,
     "terminal_evidence_gap": 6
@@ -1478,7 +1478,7 @@
       "gibbs": 45,
       "entropy": 37,
       "enthalpy": 38,
-      "warnings": 51
+      "warnings": 52
     },
     {
       "symbol": "Os",
@@ -2286,6 +2286,10 @@
     },
     {
       "warning_type": "r07_1965_magnesite_source_and_solubility_model",
+      "count": 1
+    },
+    {
+      "warning_type": "nea02e_water_component_normalization",
       "count": 1
     },
     {

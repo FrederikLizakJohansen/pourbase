@@ -4,6 +4,10 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Complete the targeted NEA-derived PSI/Nagra, SUPCRT and MINES crosswalk.
+  Add the selected nickel trihydroxo Gibbs value in the existing HNiO2⁻
+  water-component basis, preserving the source interval and all alternatives.
+  One preferred value changes; wider source/version reviews stay tracked.
 - Inventory all 97 selected rows of NEA zirconium volume 8 and add 148
   observations and 63 species. Fill 137 properties and change 11 selections
   under the existing policy. Add an open NBS free-sulfite reference; retain

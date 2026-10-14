@@ -11,10 +11,10 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended Gibbs energies | 850 (88 %) |
 | Recommended entropies | 771 (80 %) |
 | Recommended formation enthalpies | 648 (67 %) |
-| Reported values retained | 3074 |
+| Reported values retained | 3075 |
 | Source records | 1702 (165 distinct citations) |
 | Phase records | 541 (322 resolved) |
-| Warnings | 1297 |
+| Warnings | 1298 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 16 |
@@ -23,8 +23,8 @@ Gibbs energies by evidence status:
 
 | Status | Species |
 |---|---|
-| `verified` | 547 |
-| `source_verified_estimate` | 229 |
+| `verified` | 548 |
+| `source_verified_estimate` | 228 |
 | `not_available` | 107 |
 | `defined_reference_state` | 74 |
 | `terminal_evidence_gap` | 6 |
@@ -44,10 +44,10 @@ Species by phase:
 |---|---|---|
 | `species` | 963 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `selected_thermochemistry` | 963 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 3074 | Every retained reported value, recommended or not, with supersession links |
+| `reported_thermochemistry` | 3075 | Every retained reported value, recommended or not, with supersession links |
 | `sources` | 1702 | Full citations, links, locators and access dates |
 | `phases` | 541 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 1297 | Scientific cautions attached to records |
+| `warnings` | 1298 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
@@ -130,7 +130,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Na | Sodium (Na) | 17 | 10 | 7 | 0 | 0 | 16 | 15 | 13 | 37 |
 | Nb | Niobium (Nb) | 7 | 4 | 3 | 0 | 0 | 7 | 4 | 4 | 5 |
 | Nd | Neodymium (Nd) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 9 | 15 |
-| Ni | Nickel (Ni) | 50 | 22 | 28 | 0 | 0 | 45 | 37 | 38 | 51 |
+| Ni | Nickel (Ni) | 50 | 22 | 28 | 0 | 0 | 45 | 37 | 38 | 52 |
 | Os | Osmium (Os) | 7 | 2 | 4 | 1 | 0 | 7 | 5 | 5 | 8 |
 | P | Phosphorus (P) | 9 | 7 | 2 | 0 | 0 | 9 | 7 | 7 | 2 |
 | Pb | Lead (Pb) | 19 | 10 | 9 | 0 | 0 | 17 | 18 | 14 | 42 |

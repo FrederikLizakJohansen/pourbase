@@ -495,3 +495,22 @@ The retained entries consist of individually referenced numerical facts and labe
   <https://doi.org/10.3133/b2131>
 - USGS data policy: <https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits>
 - NBS Tables with errata: <https://doi.org/10.18434/M32124>
+
+## NEA02e nickel water-component normalization
+
+The selected Ni(OH)3(-) Gibbs evaluation is from Gamsjäger et al.(2005),
+*Chemical Thermodynamics of Nickel*, OECD Nuclear Energy Agency volume6,
+TableIII-1 p.44, with the hydrolysis discussion on pp.101–102. OECD and NEA
+are acknowledged. G=-590519 +/-9735J/mol is represented in the existing
+HNiO2(-) water-component basis as -353390J/mol after subtracting the pinned
+project-water reference -237129J/mol at298.15K and unit water activity.
+The original source value, conversion and uncertainty convention are retained
+in the observation locator. Existing numerical alternatives remain stored.
+
+The clarified OECD data terms cover use, adaptation and redistribution,
+including commercial use, subject to source-specific additional restrictions.
+Every sublicense of work using these data must include the same OECD
+acknowledgment requirement and require further sublicensees to pass it on.
+The [source crosswalk](docs/sources/nea-derived-crosswalk.md) documents the
+admission and remaining routes. The private permission correspondence and
+complete source publications are retained outside the distribution.

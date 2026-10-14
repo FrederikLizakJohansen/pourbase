@@ -20,7 +20,7 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 14 October 2026 checkpoint contains **963 species and 3,074 observations**
+The latest 14 October 2026 checkpoint contains **963 species and 3,075 observations**
 across 74 supported systems, with **850/771/648 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
@@ -28,6 +28,14 @@ evidence hash, terms URL, applicable source IDs and downstream acknowledgment
 requirement. See [the source instructions](sources/nea-tdb-reuse.md) and
 [distributed notices](../THIRD_PARTY_NOTICES.md). Check source-specific
 additional restrictions; other sources retain their own permission status.
+
+NEA02e adds one selected Ni(OH)3(-) Gibbs evaluation in the existing HNiO2(-)
+water-component basis: -590519 - (-237129) = -353390 J/mol. Charge and the
+metal/water reaction coefficients are preserved at unit water activity.
+The source interval9735J/mol and all older alternatives remain stored;
+independent H/S estimates keep their source identities. Re-normalize if the
+water convention changes. See [the targeted derived-route crosswalk](sources/nea-derived-crosswalk.md)
+for the finite inventory, scientific checks and remaining source routes.
 
 All 28 originally requested NEA values already matched stored observations.
 Six source locators and 34 observation locators now record the clarified reuse
