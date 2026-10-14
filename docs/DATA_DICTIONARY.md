@@ -18,6 +18,32 @@ thermochemical quantities use one formula unit as the molar basis.
 | `materials_project_energies` | Published method-specific Materials Project energy records and calculation provenance |
 | `ligands` | Free-ligand reference states available to ligand-aware calculations |
 
+## NEA-TDB permission and selected-data extension
+
+The 14 October 2026 checkpoint contains **806 species and 2,679 observations**
+across 74 supported systems, with **714/679/539 selected G/S/H properties**.
+NEA-TDB data are available under OECD data terms following written clarification.
+The metadata key `source_permission_NEA_TDB` records the permission ID,
+evidence hash, terms URL, applicable source IDs and downstream acknowledgment
+requirement. See [the source instructions](sources/nea-tdb-reuse.md) and
+[distributed notices](../THIRD_PARTY_NOTICES.md). Check source-specific
+additional restrictions; other sources retain their own permission status.
+
+All 28 originally requested NEA values already matched stored observations.
+Six source locators and 34 observation locators now record the clarified reuse
+status. Scientific-gap records keep their existing eligibility. The further
+iron/nickel/tin selected-table import adds 25 observations and six aqueous
+species, fills 15 properties and changes ten earlier selections under the
+unchanged policy. Every earlier numerical observation is preserved.
+
+Each reported observation exposes its own `source_locator` through the API,
+falling back to the general source locator when absent. NEA uncertainty
+intervals retain the source's total-interval interpretation (in principle 95%
+confidence); they have no inferred one-sigma conversion. New polynuclear ions
+retain full formula units and metal counts. Fixed-activity diagrams support
+these records; closed metal balance excludes and reports polynuclear aqueous
+species under the current model.
+
 ## Units
 
 | Suffix | Unit |

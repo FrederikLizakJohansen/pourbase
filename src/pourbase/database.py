@@ -316,7 +316,10 @@ class ThermodynamicDatabase:
                     unit=row["unit"], status=row["status"],
                     selected_as_recommended=row["value_id"] in recommended,
                     uncertainty=row["uncertainty"],
-                    source=self.source(row["source_id"]),
+                    source=self.source(
+                        row["source_id"],
+                        row["source_locator"] if "source_locator" in row.keys() else None,
+                    ),
                     supersedes_value_id=row["supersedes_value_id"],
                 ))
             for values in reported.values():

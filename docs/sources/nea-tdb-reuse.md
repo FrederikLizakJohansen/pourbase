@@ -1,0 +1,102 @@
+# Adding NEA-TDB observations
+
+NEA-TDB selected and evaluated thermochemical data are available to pourbase
+under the OECD data terms. Written clarification from Alexia, supplied by
+Frederik on 14 October 2026, confirms use, adaptation and redistribution,
+including commercial use, with appropriate OECD attribution and a downstream
+acknowledgment obligation. Check additional restrictions for the particular
+source before admission. Permission record: `NEA-TDB-OECD-2026-10-14`.
+
+The applicable terms are [OECD Terms and Conditions, section 3, Data](https://www.oecd.org/en/about/terms-conditions.html)
+(accessed 14 October 2026). Credit the associated data citation; where there is
+none, use OECD (year), dataset name, data source, DOI or URL and access date.
+Every sublicense of work created using the data must carry the same OECD
+acknowledgment requirement and require further sublicensees to pass it on.
+[THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md) contains the distributed
+acknowledgment and the review citations. These source terms accompany the
+project's GPL-3.0 software and compilation licence.
+
+## Permission evidence
+
+The supplied email body is retained with the private permission correspondence
+and the external source-review checkpoint, together with a captured copy of the
+applicable OECD data terms. The record distinguishes the date supplied from the
+original email date: message headers, sender address and original date were
+not supplied. SHA-256 of the preserved email body:
+`c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4`.
+The database metadata key `source_permission_NEA_TDB` records the permission
+ID, terms URL, evidence hash, applicable source IDs and obligations.
+
+The clarification resolves the NEA-TDB permission request. NIST SRD, JAEA,
+commercial compilations and other independently restricted sources keep their
+separate permission status. Carry forward completed source reviews. Reopen a
+specific decision when new evidence, an erratum or an identified discrepancy
+warrants it.
+
+## Admission procedure
+
+1. Identify the exact NEA review, release, table, page and species. Preserve
+   the associated citation, access date, source-file hash and any errata check.
+   Check stated additional restrictions and identified third-party ownership.
+   The current grant covers NEA's own selected/evaluated data. An upstream
+   scientific citation alone does not establish an additional restriction on
+   that evaluation. Independently copied third-party tables and separately
+   licensed software need their own reuse basis. Keep complete publications
+   and page images in the external review workspace.
+2. Match the existing species by formula unit, charge, hydration, phase and
+   conventions. Retain scientific gaps and identity holds until resolved.
+   Add a complete species record only for a distinct supported identity.
+3. Record every eligible observation in schema 8 `reported_thermochemistry`.
+   Preserve alternatives; a permission change updates reuse metadata without
+   duplicating numerical observations. Put the exact property/table/row
+   location in `source_locator` and confirm that API reads retain it.
+4. Normalize formation G/H to J/mol and S to J/(mol K), per full stored formula
+   unit. Preserve the source's uncertainty interval and its interpretation.
+   A total interval described as corresponding in principle to 95% confidence
+   remains that interval; a one-sigma conversion requires separate justification.
+   Identify source-internal calculations and retain the reported precision.
+   The uncertainty screen uses retained widths directly, so mixed interval
+   conventions do not support a uniform confidence-level interpretation.
+5. Validate a staged copy against the current database. Check old-row
+   preservation, integrity, foreign keys, duplicate prevention, idempotence,
+   stoichiometry and the default policy's selections. The policy chooses one
+   eligible value per property. Review changed selections, Gibbs spreads,
+   diagrams and relevant ligand-enabled or mass-balance calculations.
+6. Apply the authorized batch. Update source notices, regression expectations,
+   statistics, manuscript assets and numbers, and the running checklist.
+   Build the distributions and verify that they contain the acknowledgment.
+   Preserve concurrent work when committing the owned changes.
+
+## Completed checkpoint: 14 October 2026
+
+- All **28 originally requested NEA observations already existed** with matching
+  numerical values. Their reuse status is now available under the clarified
+  terms. All 28 selected observation IDs are preserved; no duplicate rows were
+  added for the permission change. Six legacy source locators and 34 observation
+  locators carry the updated conditions, including six scientific-gap records
+  whose numerical eligibility remains unchanged.
+- Table III-1 of the iron (2013, volume 13a), nickel (2005, volume 6) and tin
+  (2012, volume 12) reviews supplies **25 further observations and six aqueous
+  species**. They fill **15 missing properties** and change **ten existing
+  selections** under the unchanged policy. The nickel errata were checked;
+  they do not change the imported 298.15 K G/H/S rows.
+- The database now has **806 species and 2,679 observations across 74 systems**,
+  with selected G/S/H counts **714/679/539**. All earlier numerical evidence
+  remains stored. New polynuclear ions retain their full formula units; the
+  current closed metal-balance model excludes and reports polynuclear aqueous
+  species. Fixed-activity diagrams can include them.
+- Historical request coverage is **116/131**: **28/28 NEA** and **88/103 NIST**
+  have an available compatible value. The increase of 15 is permission
+  clearance for existing observations. The 25 extension observations are
+  separate additions. NIST permission holds remain independent.
+
+## Further exploration
+
+The first expansion covers a useful aqueous-ion/hydrolysis subset. Continue
+with unimported selected solid phases and ligand complexes, other NEA reviews,
+and NEA-derived candidates already routed through PSI/Nagra, SUPCRT or MINES.
+Review each candidate's identity, additional restrictions, scientific
+conventions and calculation support. Preserve the earlier numerical reviews
+and keep source permission, missing evidence and unsupported chemistry as
+separate tracker states. Record a finite candidate inventory for each batch;
+completion of this checkpoint does not complete the entire NEA catalogue.

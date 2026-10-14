@@ -4,6 +4,16 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Apply written NEA-TDB permission under OECD data terms, preserve the evidence,
+  and distribute OECD attribution with the required downstream acknowledgment.
+  All 28 historical NEA requests already match stored observations; their reuse
+  status is updated. NIST and other source permission holds remain separate.
+- Add 25 NEA iron/nickel/tin observations and six aqueous species, filling 15
+  properties. The unchanged policy changes ten earlier selections and preserves
+  all alternatives. Exact locators retain units and source uncertainty intervals.
+- Expose each reported observation's property-specific source locator through the
+  database API, with the general source locator as fallback.
+
 - Trace Nordstrom (1990) magnesium carbonate/bicarbonate models to the original
   Siebert/Hostetler (1977) studies and review 21 native association blocks.
   Document commercial activity-calibration ancestry, differing thermal models
@@ -50,8 +60,8 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
   fractions of dissolved species where no solid precipitates; `thermal_scale` and
   `--boltzmann-scale` remain as deprecated aliases.
 
-- 800 species and 2654 retained observations across 74 supported elemental systems, with
-  recommended Gibbs energies for 707.
+- 806 species and 2679 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 714.
 - One conditional magnesite Gibbs alternative uses the original 1965 solubility
   evaluation and openly licensed ion/gas/water anchors. The ideal CO2 reference
   correction is explicit; source complexing and pressure assumptions remain attached.

@@ -4,6 +4,53 @@ pourbase combines individual thermochemical values traced to scientific sources 
 Materials Project records. The GPL-3.0 license covers the code and the compilation. Source-specific
 terms and scientific citation obligations remain in force.
 
+## OECD Nuclear Energy Agency Thermochemical Database (NEA-TDB)
+
+OECD and the Nuclear Energy Agency are acknowledged as the source of the NEA-TDB
+selected thermochemical data retained in pourbase. Cite the review associated
+with each observation, including its table and page. Written clarification
+supplied by Frederik on 14 October 2026 confirms that the OECD data terms apply
+to these data. They permit extraction, copying, adaptation and redistribution
+for any purpose, including commercial use, subject to additional restrictions
+identified for a particular source.
+
+**Required downstream acknowledgment:** When sharing or licensing work created
+using these data, include the same requirement to give appropriate credit to
+the OECD in every sublicense you grant. Require each further sublicensee to
+include and pass on that acknowledgment requirement in their own sublicenses.
+Use the citation associated with the data. Where none is provided, cite
+OECD (year), dataset name, data source, DOI or URL, and access date.
+
+Applicable terms, section 3, Data:
+<https://www.oecd.org/en/about/terms-conditions.html> (accessed 14 October 2026).
+This source-specific acknowledgment obligation accompanies the project's
+GPL-3.0 software and compilation licence. See
+`docs/sources/nea-tdb-reuse.md` for scope and source-admission instructions.
+
+The 14 October 2026 expansion uses Table III-1 of these reviews (accessed
+14 October 2026). Individual database locators identify the exact rows,
+published uncertainty intervals and conversions from kJ/mol to J/mol.
+
+- Lemire, R. J., Berner, U., Musikas, C., Palmer, D. A., Taylor, P. and
+  Tochiyama, O. (2013), *Chemical Thermodynamics of Iron, Part 1*,
+  Chemical Thermodynamics 13a, OECD Nuclear Energy Agency, NEA No. 6355,
+  printed p. 44.
+  <https://www.oecd-nea.org/upload/docs/application/pdf/2019-12/6355-vol13a-iron.pdf>
+- Gamsjäger, H., Bugajski, J., Gajda, T., Lemire, R. J. and Preis, W. (2005),
+  *Chemical Thermodynamics of Nickel*, Chemical Thermodynamics 6,
+  OECD Nuclear Energy Agency, printed p. 44.
+  <https://www.oecd-nea.org/dbtdb/pubs/vol6-nickel.pdf>
+- Gamsjäger, H., Gajda, T., Sangster, J., Saxena, S. K. and Voigt, W. (2012),
+  *Chemical Thermodynamics of Tin*, Chemical Thermodynamics 12,
+  OECD Nuclear Energy Agency, ISBN 978-92-64-99206-1, printed pp. 44–45.
+  <https://www.oecd.org/content/dam/oecd/en/publications/reports/2012/12/chemical-thermodynamics-of-tin-volume-12_g1g39522/9789264992061-en.pdf>
+
+The earlier NEA observations retain their own associated review citations in
+the database. Pourbase retains alternative evaluations and normalizes units
+and formula encodings for calculation. Complete publications, page images,
+independent third-party tables and electronic database software retain their
+own terms; their redistribution requires a separate applicable reuse basis.
+
 ## NIST and NBS
 
 Most NBS values come from the NIST Public Data Repository dataset *The NBS Tables of Chemical

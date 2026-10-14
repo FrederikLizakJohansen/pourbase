@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 800), ("reported_thermochemistry", 2654),
-                                 ("sources", 1694), ("warnings", 1166),
+            for table, count in (("species", 806), ("reported_thermochemistry", 2679),
+                                 ("sources", 1697), ("warnings", 1169),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -162,14 +162,14 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual(lead.thermochemistry.gibbs_energy_J_mol.value, -401769.4)
         self.assertEqual(lead.thermochemistry.entropy_J_mol_K.value, 161.958)
         self.assertEqual(tin.thermochemistry.entropy_J_mol_K.value, 131.8332)
-        self.assertIsNone(tin.thermochemistry.gibbs_energy_J_mol.value)
+        self.assertEqual(tin.thermochemistry.gibbs_energy_J_mol.value, -457833)
         self.assertIsNone(tin.thermochemistry.formation_enthalpy_J_mol.value)
         self.assertIn("source formula + 1 H2O(l)", tin.reported[0].source.locator)
         solute = next(s for s in self.database.load_system("Pb").species
                       if s.record_id == lead.record_id)
         self.assertEqual((solute.core_oxygen_count, solute.core_hydrogen_count,
                           solute.electrons_per_metal, solute.protons_per_metal), (2, 2, 2, 2))
-        self.assertNotIn(tin.record_id, {s.record_id for s in self.database.load_system("Sn").species})
+        self.assertIn(tin.record_id, {s.record_id for s in self.database.load_system("Sn").species})
 
     def test_slop_retains_zero_and_distinct_entropy_evaluations(self) -> None:
         silver, barium = self.database.species_records((
@@ -191,7 +191,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual(rows["absolute_entropy"].value, 90.83)
         self.assertEqual(rows["enthalpy_of_formation"].value, -1431792.2426)
         self.assertIn("Hydration", rows["absolute_entropy"].source.locator)
-        self.assertIn("NBS-reference", rows["enthalpy_of_formation"].source.locator)
+        self.assertIn("NBS CSV column 10", rows["enthalpy_of_formation"].source.locator)
 
     def test_slop_entropy_only_records_keep_original_charge_and_missing_gibbs(self) -> None:
         beryllium, thallium = self.database.species_records((
@@ -1169,15 +1169,17 @@ class DatasetSnapshotTests(unittest.TestCase):
             ion = self.database.species_records((
                 f"gfe-{symbol.lower()}-{symbol.lower()}-q+2-aqueous-aq",
             ))[0]
-            h = ion.thermochemistry.formation_enthalpy_J_mol
+            h = next(r for r in ion.reported if r.property == "enthalpy_of_formation"
+                     and r.source and r.source.source_id.startswith(f"NBS_R07_{symbol}_ion"))
             self.assertEqual(h.value, enthalpy)
             self.assertEqual(h.status, pb.EvidenceStatus.VERIFIED)
             self.assertIsNone(h.uncertainty)
             self.assertIn("10.18434/M32124", h.source.url)
             self.assertIn("zero-based column 7", h.source.locator)
             if symbol == "Fe":
-                self.assertEqual(ion.thermochemistry.gibbs_energy_J_mol.value, -90530)
-                self.assertIn("Parker", ion.thermochemistry.gibbs_energy_J_mol.source.citation)
+                self.assertEqual(ion.thermochemistry.gibbs_energy_J_mol.value, -90719)
+                self.assertTrue(any(r.value == -90530 and r.source and "Parker" in r.source.citation
+                                    for r in ion.reported))
 
     def test_open_sr_ba_anchors_and_original_fit_alternatives(self) -> None:
         for symbol, enthalpy, previous_g in (
@@ -1661,8 +1663,11 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual(nickel.thermochemistry.gibbs_energy_J_mol.status, "source_verified_estimate")
         original_iron = next(row for row in hydrated.reported if row.source
                             and row.source.source_id.startswith("Furst_2025_2026_original_fit_"))
+        original_parent = next(row for row in iron.reported
+                               if row.value_id == "gfe-fe-fe-q+2-aqueous-aq:gf:preferred")
         self.assertEqual(hydrated.thermochemistry.gibbs_energy_J_mol.value, -370871.0)
-        self.assertAlmostEqual(-(original_iron.value - iron.thermochemistry.gibbs_energy_J_mol.value
+        # The original fit retains its recorded parent evaluation when policy choices change.
+        self.assertAlmostEqual(-(original_iron.value - original_parent.value
                                  - 2 * self.database.reference_state.water_gibbs_energy_J_mol)
                                / rt_log10, -32.48, places=6)
         self.assertIn("Fe(OH)3(-)=HFeO2(-)+H2O", original_iron.source.locator)
@@ -1851,7 +1856,7 @@ class DatasetSnapshotTests(unittest.TestCase):
     def test_periodic_screen(self) -> None:
         screen = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                           allow_incomplete=False)
-        self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 74, 56))
+        self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 74, 57))
         default = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE")
         self.assertEqual(sum(item.stable is not None for item in default.elements), 74)
         self.assertIs(screen.element("Fe").status, pb.ElementStatus.INCOMPLETE)
@@ -1864,7 +1869,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                          ("TiO₂", pb.Category.SOLID_OXIDE, "rutile"))
         fallback = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                             energy_policy="experimental_then_mp", allow_incomplete=False)
-        self.assertEqual(fallback.calculated_count, 59)
+        self.assertEqual(fallback.calculated_count, 60)
         platinum = self.database.load_system("Pt", energy_policy="experimental_then_mp")
         self.assertEqual({item.formula_ascii for item in platinum.species
                           if item.gibbs_status is pb.EvidenceStatus.MATERIALS_PROJECT_FALLBACK}, {"PtO", "PtO2"})
@@ -1900,9 +1905,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 707, "absolute_entropy": 677, "enthalpy_of_formation": 533})
+                         {"gibbs_energy_of_formation": 714, "absolute_entropy": 679, "enthalpy_of_formation": 539})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "b6f0358a48b05fbf",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "3d614a0d5c30f34b",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:
