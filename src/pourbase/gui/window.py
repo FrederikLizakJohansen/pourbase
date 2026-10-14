@@ -195,6 +195,7 @@ class MainWindow(QMainWindow):
         self.pages.addTab(system, "System")
         self.pages.addTab(self.database_page, "Database")
         self.pages.setCornerWidget(self._masthead(), Qt.TopLeftCorner)
+        self.pages.setCornerWidget(self._search_button(), Qt.TopRightCorner)
         self.pages.currentChanged.connect(self._page_changed)
         self.setCentralWidget(self.pages)
         self.status_label = QLabel()
@@ -218,6 +219,20 @@ class MainWindow(QMainWindow):
         layout.addWidget(logo)
         layout.addWidget(name)
         return masthead
+
+    def _search_button(self) -> QWidget:
+        from PySide6.QtWidgets import QPushButton
+
+        button = QPushButton("Search elements, species, sources and commands (Ctrl+K)")
+        button.setToolTip("Find an element, species, source or command")
+        button.setFocusPolicy(Qt.NoFocus)
+        button.clicked.connect(self.show_search)
+        corner = QWidget()
+        layout = QHBoxLayout(corner)
+        layout.setContentsMargins(6, 3, 8, 3)
+        layout.addWidget(button)
+        self.search_button = button
+        return corner
 
     def _build_menu(self) -> None:
         menu = self.menuBar().addMenu("&File")
