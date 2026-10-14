@@ -49,7 +49,11 @@ from .models import (
 )
 from .mp_thermochemistry import comparison_metrics, plot_mp_thermochemistry_comparison, write_mp_thermochemistry_bundle
 from .overview import Category, ElementResult, ElementStatus, PeriodicScreen, screen_periodic_table
+from .measurements import MeasuredPoint, PointAssessment, assess_points
+from .paths import Crossing, PhasePath, path_curve, phase_path
+from .sections import LigandPredominance, Solubility, ligand_predominance, solubility
 from .sensitivity import SelectionSensitivity, selection_sensitivity
+from .water import WATER_PRESETS, WaterPreset
 from .plotting import (
     plot_boltzmann_diagram,
     plot_diagram,
@@ -161,6 +165,19 @@ __all__ = [
     "plot_speciation_profile",
     "plot_uncertainty",
     "selection_sensitivity",
+    "MeasuredPoint",
+    "PointAssessment",
+    "assess_points",
+    "Crossing",
+    "PhasePath",
+    "phase_path",
+    "path_curve",
+    "LigandPredominance",
+    "Solubility",
+    "ligand_predominance",
+    "solubility",
+    "WATER_PRESETS",
+    "WaterPreset",
     "SelectionSensitivity",
     "read_user_species",
     "save_figure",

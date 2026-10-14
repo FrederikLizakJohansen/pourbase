@@ -36,6 +36,7 @@ from . import logo_pixmap
 from .compare import ComparePage
 from .context_bar import ACCENT, NEUTRAL, WARNING, ContextBar, power_of_ten
 from .credentials import storage_description
+from .fixed_potential import FixedPotentialPage
 from .history import History
 from .pinned import PinnedDiagram
 from .dft import DftController
@@ -141,6 +142,9 @@ class MainWindow(QMainWindow):
         self.boundaries_page = BoundariesPage()
         self.speciation_page = SpeciationPage()
         self.sensitivity_page = SensitivityPage()
+        self.fixed_page = FixedPotentialPage()
+        self.fixed_page.changed.connect(lambda: self.refresh_view())
+        self.fixed_page.potentialChanged.connect(lambda eh: self.set_probe(self.settings.probe_pH, eh))
         self.sensitivity_page.sourcesChanged.connect(lambda: self.refresh_view())
         self.compare_page = ComparePage(self.systems)
         self.compare_page.changed.connect(lambda: self.refresh_view())
@@ -173,7 +177,8 @@ class MainWindow(QMainWindow):
         self.views.setDocumentMode(True)
         for page, title in (
             (self.diagram_page, "Diagram"), (self.species_page, "Species"), (self.boundaries_page, "Boundaries"),
-            (self.speciation_page, "Speciation"), (self.sensitivity_page, "Sensitivity"),
+            (self.speciation_page, "Speciation"), (self.fixed_page, "Fixed potential"),
+            (self.sensitivity_page, "Sensitivity"),
             (self.compare_page, "Compare"),
             (self.sweep_stack, "Concentration sweep"),
             (self.dft_stack, "DFT comparison"),
@@ -620,6 +625,8 @@ class MainWindow(QMainWindow):
             window.set_probe(pH, eh_V)
         self._update_probe()
         current = self.views.currentWidget()
+        if current is self.fixed_page:
+            self._show_fixed_potential()
         if current is self.speciation_page:
             self._show_speciation()
         elif current is self.dft_stack and self.comparison is not None:
@@ -850,6 +857,8 @@ class MainWindow(QMainWindow):
             self._show_boundaries()
         elif current is self.speciation_page:
             self._show_speciation()
+        elif current is self.fixed_page:
+            self._show_fixed_potential()
         elif current is self.sensitivity_page:
             self._show_sensitivity()
         elif current is self.compare_page:
@@ -862,6 +871,42 @@ class MainWindow(QMainWindow):
     def _set_mode(self, mode: Mode) -> None:
         self.panel.mode.setCurrentIndex(self.panel.mode.findData(mode.value))
         self.recalculate()
+
+    def _show_fixed_potential(self) -> None:
+        """Solubility or ligand predominance at the potential of the probe."""
+        from ..sections import ligand_predominance, solubility
+
+        page = self.fixed_page
+        calculation = self.calculation
+        if calculation is None:
+            return
+        eh_V = self.settings.probe_eh_V
+        page.set_potential(eh_V)
+        symbol = self.settings.symbol
+        names = {item.ligand_id: item.name for item in self.database.available_ligands()}
+        page.set_ligands([(ligand_id, names.get(ligand_id, ligand_id))
+                          for ligand_id in self.database.ligand_species.get(symbol, {})])
+        mode = page.mode()
+        key = (id(calculation), mode, round(eh_V, 6), page.ligand.currentData())
+        if getattr(self, "_fixed_key", None) == key:
+            return
+        log10_metal = calculation.concentration.log10_standard_activity
+        name = self.systems.get(symbol, symbol)
+        try:
+            if mode == "solubility":
+                page.show_solubility(solubility(calculation, eh_V), log10_metal, calculation.is_mass_balance)
+            else:
+                ligand_id = page.ligand.currentData()
+                if ligand_id is None:
+                    page.show_message(f"{name} forms no ligand species in the database",
+                                      "Ligand predominance needs complexes or solids of this element with a ligand.")
+                    self._fixed_key = key
+                    return
+                page.show_predominance(ligand_predominance(calculation, ligand_id, eh_V),
+                                       page.ligand.currentText(), log10_metal)
+        except ValueError as error:
+            page.show_message(f"No {mode} diagram for {name}", html.escape(str(error)))
+        self._fixed_key = key
 
     def _show_sensitivity(self) -> None:
         """Map where the stable species depends on the choice between published values."""
@@ -1515,8 +1560,9 @@ class MainWindow(QMainWindow):
         self.dark = apply_theme(self.theme_mode)
         self.theme_actions[self.theme_mode].setChecked(True)
         self.diagram_page.dark = self.dark
+        self.diagram_page.path_panel.set_dark(self.dark)
         for widget in (self.diagram_page.diagram, self.speciation_page, self.sweep_page, self.dft_page,
-                       self.compare_page, self.overview.canvas, self.sensitivity_page):
+                       self.compare_page, self.overview.canvas, self.sensitivity_page, self.fixed_page):
             widget.set_dark(self.dark)
         for window in self.pinned:
             window.set_dark(self.dark)

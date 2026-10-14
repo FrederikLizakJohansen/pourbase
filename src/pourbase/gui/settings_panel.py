@@ -9,11 +9,12 @@ from PySide6.QtWidgets import (
 )
 
 from ..conversions import express_concentration
+from ..water import WATER_PRESETS, WaterPreset
 from ..database import ThermodynamicDatabase
 from .ligands import LigandPanel
 from .plots import DisplayOptions
 from .scales import REFERENCE_ELECTRODES_V
-from .state import CONCENTRATION_UNITS, MAX_GRID_POINTS, MODES, Settings
+from .state import CONCENTRATION_UNITS, MAX_GRID_POINTS, MODES, LigandSetting, Settings
 from .widgets import FloatSlider, Section
 
 UNIT_RANGES = {
@@ -128,6 +129,23 @@ class SettingsPanel(QTabWidget):
         form.addRow("Solution density", self.density)
         self.concentration_note = QLabel()
         form.addRow(self.concentration_note)
+        layout.addWidget(box)
+
+        box = Section("Water", "water")
+        form = QFormLayout(box.body)
+        self.water = QComboBox()
+        for preset in WATER_PRESETS.values():
+            self.water.addItem(preset.name, preset.key)
+        self.water.addItem("Custom", "")
+        self.water.model().item(self.water.count() - 1).setEnabled(False)
+        self.water.setToolTip("Sets the ligand reservoirs, the ionic strength and the probe pH of a water "
+                              "composition")
+        self.water.activated.connect(lambda _index: self.apply_water(self.water.currentData()))
+        form.addRow("Composition", self.water)
+        self.water_note = QLabel()
+        self.water_note.setWordWrap(True)
+        self.water_note.setStyleSheet("color: gray;")
+        form.addRow(self.water_note)
         layout.addWidget(box)
 
         box = Section("Activities", "activities")
@@ -294,6 +312,35 @@ class SettingsPanel(QTabWidget):
         layout.addStretch(1)
         return page
 
+    def apply_water(self, key: str) -> None:
+        """Set the ligands, ionic strength and probe pH of a water composition."""
+        preset = WATER_PRESETS.get(key)
+        if preset is None:
+            return
+        _apply_preset(self.settings, preset)
+        self.set_settings(self.settings)
+        self.changed.emit(False)
+
+    def _sync_water(self) -> None:
+        """Show the composition that the current ligands match, or Custom."""
+        key = next((preset.key for preset in WATER_PRESETS.values() if _matches(self.settings, preset)), "")
+        self.water.blockSignals(True)
+        self.water.setCurrentIndex(self.water.findData(key))
+        self.water.blockSignals(False)
+        preset = WATER_PRESETS.get(key)
+        if preset is None:
+            self.water_note.setText("The ligands differ from every listed composition.")
+            return
+        names = {item.ligand_id: item.name.split(" (")[0] for item in self.database.available_ligands()}
+        parts = [f"{names.get(ligand_id, ligand_id)} {value:.3g} mol/L"
+                 for ligand_id, value in preset.concentrations_mol_L]
+        note = ", ".join(parts) if parts else "No dissolved ligands"
+        if preset.ionic_strength_mol_L > 0.1:
+            note += (f". Ionic strength {preset.ionic_strength_mol_L:.3g} mol/L lies beyond the Davies limit of "
+                     "0.1 mol/L and is not applied")
+        self.water_note.setText(note + ".")
+        self.water_note.setToolTip(preset.citation)
+
     def set_settings(self, settings: Settings) -> None:
         """Show ``settings`` in the controls without emitting changes."""
         self.settings = settings
@@ -317,6 +364,7 @@ class SettingsPanel(QTabWidget):
         self.ligands.set_settings(settings.ligands)
         self.ligands.set_system(settings.symbol, self.database.ligand_species.get(settings.symbol, {}))
         self.ligands_section.set_expanded(bool(self.database.ligand_species.get(settings.symbol)), store=False)
+        self._sync_water()
         self._updating = False
         self._update_enabled()
 
@@ -389,9 +437,11 @@ class SettingsPanel(QTabWidget):
     def _use_ligands_toggled(self, value: bool) -> None:
         self.ligands.setEnabled(value)
         self._set("use_ligands", value)
+        self._sync_water()
 
     def _ligands_changed(self) -> None:
         if not self._updating:
+            self._sync_water()
             self.changed.emit(False)
 
     def _set_display(self, name: str, value: object) -> None:
@@ -420,3 +470,27 @@ class SettingsPanel(QTabWidget):
         if not self._updating:
             self.settings.probe_pH, self.settings.probe_eh_V = self.probe_pH.value(), self.probe_eh.value()
             self.probeChanged.emit(self.settings.probe_pH, self.settings.probe_eh_V)
+
+
+def _preset_settings(preset: WaterPreset) -> dict[str, LigandSetting]:
+    from ..water import PKA
+
+    return {ligand_id: LigandSetting(enabled=True, mode="total", total_unbound_mol_L=value,
+                                     use_pKa=ligand_id in PKA, acid_pKa=PKA.get(ligand_id, 7.0))
+            for ligand_id, value in preset.concentrations_mol_L}
+
+
+def _apply_preset(settings: Settings, preset: WaterPreset) -> None:
+    for setting in settings.ligands.values():
+        setting.enabled = False
+    settings.ligands.update(_preset_settings(preset))
+    settings.use_ligands = bool(preset.concentrations_mol_L)
+    if preset.ionic_strength_mol_L <= 0.1:
+        settings.ionic_strength_mol_L = preset.ionic_strength_mol_L
+    if preset.pH is not None:
+        settings.probe_pH = preset.pH
+
+
+def _matches(settings: Settings, preset: WaterPreset) -> bool:
+    enabled = {key: value for key, value in settings.ligands.items() if value.enabled} if settings.use_ligands else {}
+    return enabled == _preset_settings(preset)

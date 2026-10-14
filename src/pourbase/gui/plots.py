@@ -105,12 +105,31 @@ class DisplayOptions:
     overlay_symbol: str = ""  # a second element whose boundaries are drawn over the diagram
 
 
+class _PathVertex(pg.TargetItem):
+    """A draggable point of a path; a click selects it for the arrow keys."""
+
+    def __init__(self, index: int, owner, **options) -> None:
+        super().__init__(movable=True, size=11, **options)
+        self.index, self.owner = index, owner
+
+    def mouseClickEvent(self, event) -> None:
+        if event.button() == Qt.LeftButton:
+            event.accept()
+            self.owner.select_vertex(self.index)
+
+    def mouseDragEvent(self, event) -> None:
+        if event.isStart():
+            self.owner.select_vertex(self.index)
+        super().mouseDragEvent(event)
+
+
 class DiagramView(pg.PlotWidget):
     """Phase map with boundaries, water lines, labels, a legend and a draggable probe."""
 
     cursorMoved = Signal(str)
     probeMoved = Signal(float, float)
     boundaryClicked = Signal(str, str, QPointF)  # the two record IDs and the screen position
+    pathEdited = Signal(list)  # the path points, (pH, Eh vs SHE), after a drag or an arrow-key move
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -157,6 +176,7 @@ class DiagramView(pg.PlotWidget):
 
     python_code = None  # set by the owner: a callable returning code that reproduces this figure
     preview_mode = False  # True while a coarse preview is drawn during a slider drag
+    clickable_boundaries = False  # True where a click on a boundary opens its details
     prepare_labels = True  # False for a quick first picture; the full draw prepares them
 
     def matplotlib_figure(self):
@@ -472,6 +492,151 @@ class DiagramView(pg.PlotWidget):
             self.addItem(label)
             self.overlay_labels.append(label)
 
+    def _she_to_view(self, pH, eh_V):
+        temperature = self.diagram.conditions.temperature_K if self.diagram is not None else 298.15
+        return to_scale(eh_V, pH, self.scale, temperature)
+
+    def show_path(self, path: tuple[list[tuple[float, float]], bool] | None) -> None:
+        """Draw a path ``(points, smooth)`` of ``(pH, Eh vs SHE)`` points with draggable handles, or remove it."""
+        if not hasattr(self, "path_item"):
+            self.path_item = pg.PlotDataItem()
+            self.path_item.setZValue(5.5)
+            self.addItem(self.path_item)
+            self.vertex_items: list[_PathVertex] = []
+            self.selected_vertex: int | None = None
+            self.setFocusPolicy(Qt.ClickFocus)
+        self._path_state = (list(path[0]), path[1]) if path is not None and path[0] else None
+        vertices = self._path_state[0] if self._path_state else []
+        if len(vertices) == len(self.vertex_items):  # move the handles that exist; rebuilding them is slower
+            for item, (pH, eh) in zip(self.vertex_items, vertices):
+                item.blockSignals(True)
+                item.setPos(pH, float(self._she_to_view(pH, eh)))
+                item.blockSignals(False)
+            vertices = []
+        else:
+            for item in self.vertex_items:
+                self.removeItem(item)
+            self.vertex_items = []
+        if self._path_state is None:
+            self.selected_vertex = None
+            self.path_item.setData([], [])
+            return
+        if self.selected_vertex is not None and self.selected_vertex >= len(self._path_state[0]):
+            self.selected_vertex = None
+        for index, (pH, eh) in enumerate(vertices):
+            item = _PathVertex(index, self, pos=(pH, float(self._she_to_view(pH, eh))))
+            item.setZValue(5.7)
+            item.sigPositionChanged.connect(lambda item=item: self._vertex_moved(item, finished=False))
+            item.sigPositionChangeFinished.connect(lambda item=item: self._vertex_moved(item, finished=True))
+            self.addItem(item)
+            self.vertex_items.append(item)
+        self._style_vertices()
+        self._draw_path_line()
+
+    def _draw_path_line(self) -> None:
+        from ..paths import path_curve
+
+        vertices, smooth = self._path_state
+        color = "#ffffff" if self.dark else "#111111"
+        if len(vertices) < 2:
+            self.path_item.setData([], [])
+            return
+        _position, pH, eh = path_curve(vertices, smooth, 300)
+        self.path_item.setData(pH, np.asarray(self._she_to_view(pH, eh)),
+                               pen=pg.mkPen(color, width=2, style=Qt.DashLine))
+
+    def _style_vertices(self) -> None:
+        color = "#ffffff" if self.dark else "#111111"
+        for item in self.vertex_items:
+            selected = item.index == self.selected_vertex
+            item.setPen(pg.mkPen("#e67e22" if selected else color, width=2.5 if selected else 1.5))
+            item.setBrush(pg.mkBrush("#e67e22" if selected else color))
+
+    def select_vertex(self, index: int | None) -> None:
+        self.selected_vertex = index
+        self._style_vertices()
+        if index is not None:
+            self.setFocus()
+
+    def _vertex_moved(self, item: _PathVertex, finished: bool) -> None:
+        if self._path_state is None or item.index >= len(self._path_state[0]):
+            return
+        position = item.pos()
+        self._path_state[0][item.index] = (position.x(), float(self._she(position.x(), position.y())))
+        self._draw_path_line()
+        if finished:
+            self.pathEdited.emit(list(self._path_state[0]))
+
+    def keyPressEvent(self, event) -> None:
+        index = getattr(self, "selected_vertex", None)
+        state = getattr(self, "_path_state", None)
+        if index is None or state is None or getattr(self, "_pick", None) is not None:
+            super().keyPressEvent(event)
+            return
+        key = event.key()
+        if key == Qt.Key_Escape:
+            self.select_vertex(None)
+            return
+        vertices = state[0]
+        if key in (Qt.Key_Delete, Qt.Key_Backspace):
+            del vertices[index]
+            self.selected_vertex = None
+            self.pathEdited.emit(list(vertices))
+            return
+        factor = 10.0 if event.modifiers() & Qt.ShiftModifier else 1.0
+        steps = {Qt.Key_Left: (-0.05, 0.0), Qt.Key_Right: (0.05, 0.0), Qt.Key_Up: (0.0, 0.01), Qt.Key_Down: (0.0, -0.01)}
+        if key not in steps:
+            super().keyPressEvent(event)
+            return
+        pH, eh = vertices[index]
+        vertices[index] = (round(pH + steps[key][0] * factor, 4), round(eh + steps[key][1] * factor, 5))
+        self.pathEdited.emit(list(vertices))
+
+    def show_points(self, points: list[tuple[str, float, float, bool]]) -> None:
+        """Mark measured points, each ``(label, pH, Eh vs SHE, flagged)``; flagged points are drawn hollow."""
+        if not hasattr(self, "points_item"):
+            self.points_item = pg.ScatterPlotItem(size=9)
+            self.points_item.setZValue(5.6)
+            self.addItem(self.points_item)
+            self.point_labels: list[pg.TextItem] = []
+        for label in self.point_labels:
+            self.removeItem(label)
+        self.point_labels = []
+        color = "#ffffff" if self.dark else "#111111"
+        spots = []
+        for label, pH, eh, flagged in points:
+            y = float(self._she_to_view(pH, eh))
+            spots.append({"pos": (pH, y), "symbol": "s", "pen": pg.mkPen(color, width=1.5),
+                          "brush": None if flagged else pg.mkBrush(color)})
+            text = pg.TextItem(html=f'<span style="color:{color}; font-size:{LABEL_PT}pt">{label}</span>',
+                               anchor=(-0.15, 1.0))
+            text.setPos(pH, y)
+            text.setZValue(5.6)
+            self.addItem(text)
+            self.point_labels.append(text)
+        self.points_item.setData(spots)
+
+    def pick_points(self, done, smooth=lambda: False) -> None:
+        """Collect clicks as ``(pH, Eh vs SHE)`` points until :meth:`finish_pick` or a double-click, then pass
+        them to ``done``. While picking, the path runs on to the mouse."""
+        self._picked: list[tuple[float, float]] = []
+        self._pick = (done, smooth)
+        self.show_path(None)
+        self.viewport().setCursor(Qt.CrossCursor)
+
+    def finish_pick(self) -> None:
+        pick = getattr(self, "_pick", None)
+        if pick is None:
+            return
+        points = list(self._picked)
+        self.cancel_pick()
+        pick[0](points)
+
+    def cancel_pick(self) -> None:
+        self._pick = None
+        self._picked = []
+        self.viewport().setCursor(Qt.ArrowCursor)
+
     def boundary_at(self, x: float, y: float, pixels: float = 5.0) -> tuple[Any, Any] | None:
         """The two species of the boundary within ``pixels`` of a point, nearest first, or None."""
         grid = getattr(self, "_grid", None)
@@ -506,13 +671,29 @@ class DiagramView(pg.PlotWidget):
             return
         point = self.getPlotItem().vb.mapSceneToView(position)
         self.cursorMoved.emit(self._species_text(point.x(), point.y()))
-        near = self.receivers(self.boundaryClicked) and self.boundary_at(point.x(), point.y())
+        if getattr(self, "_pick", None) is not None:
+            if self._picked:  # the path runs on to the mouse until picking ends
+                self.show_path((self._picked + [(point.x(), self._she(point.x(), point.y()))], self._pick[1]()))
+            return
+        near = self.clickable_boundaries and self.boundary_at(point.x(), point.y())
         self.viewport().setCursor(Qt.PointingHandCursor if near else Qt.ArrowCursor)
 
     def _mouse_clicked(self, event) -> None:
+        if event.button() == Qt.LeftButton and event.double() and getattr(self, "_pick", None) is not None:
+            self.finish_pick()  # the first click of the double-click has already added the last point
+            return
         if event.button() != Qt.LeftButton or event.double():
             return
+        if event.isAccepted() is True:  # a path point took the click
+            return
+        if getattr(self, "selected_vertex", None) is not None and getattr(self, "_pick", None) is None:
+            self.select_vertex(None)
         point = self.getPlotItem().vb.mapSceneToView(event.scenePos())
+        pick = getattr(self, "_pick", None)
+        if pick is not None:  # collecting the points of a path
+            self._picked.append((point.x(), self._she(point.x(), point.y())))
+            self.show_path((self._picked, pick[1]()))
+            return
         pair = self.boundary_at(point.x(), point.y())
         screen = QPointF(self.mapToGlobal(self.mapFromScene(event.scenePos())))
         # empty IDs close an open boundary popup; the same click still moves the probe

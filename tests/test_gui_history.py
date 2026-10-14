@@ -102,6 +102,63 @@ class UndoBoundaryOverlayTests(WindowTestCase):
         self.wait(lambda: not window.pinned, timeout=2)
         self.assertEqual(window.pinned, [])
 
+    def test_water_path_points_and_fixed_potential(self) -> None:
+        from pourbase.measurements import MeasuredPoint
+
+        window = self.window
+        self.open("Cu")
+        self.assertEqual(window.panel.water.currentData(), "pure")
+        window.panel.apply_water("seawater")
+        window.recalculate()
+        self.assertEqual(window.panel.water.currentData(), "seawater")
+        self.assertEqual(window.settings.probe_pH, 8.1)
+        self.assertTrue(window.settings.ligands["chloride-cl"].enabled)
+        page = window.diagram_page
+        page.path_panel._from_probe("eh")
+        self.assertIn("CuCl", page.path_panel.crossings.toPlainText())
+        self.assertNotIn("chloride-cl", page.path_panel.crossings.toPlainText())
+        view = page.diagram
+
+        def click(x, y, double=False):
+            from PySide6.QtCore import QPointF, Qt
+
+            scene = view.getPlotItem().vb.mapViewToScene(QPointF(x, y))
+            view._mouse_clicked(unittest.mock.Mock(button=lambda: Qt.LeftButton, double=lambda: double,
+                                                   scenePos=lambda: scene))
+
+        page.path_panel.pick.setChecked(True)
+        self.assertEqual(page.path_panel.vertices, [])  # the previous path is gone at once
+        for x, y in ((2.0, -1.0), (7.0, 0.5), (12.0, -0.5)):
+            click(x, y)
+        click(12.0, -0.5, double=True)
+        self.assertEqual(len(page.path_panel.vertices), 3)
+        self.assertFalse(page.path_panel.pick.isChecked())
+        from PySide6.QtCore import Qt
+        from PySide6.QtGui import QKeyEvent
+
+        view.select_vertex(1)
+        view.keyPressEvent(QKeyEvent(QKeyEvent.KeyPress, Qt.Key_Up, Qt.ShiftModifier))
+        self.assertAlmostEqual(page.path_panel.vertices[1][1], 0.6, places=3)
+        view.vertex_items[0].setPos(3.0, -1.0)
+        view.vertex_items[0].sigPositionChangeFinished.emit(view.vertex_items[0])
+        self.assertAlmostEqual(page.path_panel.vertices[0][0], 3.0)
+        page.path_panel.along.setValue(500)
+        self.assertIn("is stable", page.path_panel.here.text())
+        view.select_vertex(2)
+        view.keyPressEvent(QKeyEvent(QKeyEvent.KeyPress, Qt.Key_Delete, Qt.NoModifier))
+        self.assertEqual(len(page.path_panel.vertices), 2)
+        page.points_panel.set_points([MeasuredPoint("A", 8.1, 0.05)])
+        self.assertEqual(page.points_panel.table.item(0, 3).text(), "CuCl₂⁻")
+        window.views.setCurrentWidget(window.fixed_page)
+        self.assertIsNotNone(window.fixed_page.result)
+        window.fixed_page.predominance_button.setChecked(True)
+        self.assertEqual(window.fixed_page.ligand.currentData() is not None, True)
+        window.views.setCurrentWidget(page)
+        window.panel.apply_water("pure")
+        self.assertFalse(window.settings.use_ligands)
+        page.path_panel.set_vertices([])
+        page.points_panel.set_points([])
+
 
 if __name__ == "__main__":
     unittest.main()

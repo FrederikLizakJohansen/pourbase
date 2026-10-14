@@ -125,21 +125,86 @@ class DiagramPage(StackedView):
         probe = QTextBrowser()
         probe.setOpenLinks(False)
         probe.anchorClicked.connect(self._open_link)
-        probe.setFixedHeight(200)
-        body = QWidget()
-        layout = QVBoxLayout(body)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(diagram, 1)
-        layout.addWidget(cursor)
-        layout.addWidget(probe)
+        from PySide6.QtWidgets import QTabWidget
+
+        from .diagram_tools import PathPanel, PointsPanel
+
+        self.path_panel = PathPanel()
+        self.points_panel = PointsPanel()
+        self.tools = QTabWidget()
+        self.tools.setDocumentMode(True)
+        self.tools.addTab(probe, "Probe")
+        self.tools.addTab(self.path_panel, "Path")
+        self.tools.addTab(self.points_panel, "Measured points")
+        self.tools.setMinimumHeight(140)
+        # the cursor readout sits on the bottom edge of the diagram, so it takes no height of its own
+        cursor.setParent(diagram)
+        cursor.setAttribute(Qt.WA_TransparentForMouseEvents)
+        cursor.setFixedHeight(cursor.fontMetrics().height() + 4)
+        body = QSplitter(Qt.Vertical)
+        body.setChildrenCollapsible(False)
+        body.addWidget(diagram)
+        body.addWidget(self.tools)
+        body.setStretchFactor(0, 1)
+        body.setSizes([520, 320])
         super().__init__(body, parent)
         self.diagram, self.cursor, self.probe = diagram, cursor, probe
         self.dark = False
         self.display = DisplayOptions()
-        self.diagram.cursorMoved.connect(lambda text: self.cursor.setText(text or " "))
+        self.diagram.cursorMoved.connect(self._show_cursor)
+        self.cursor.hide()
         self.diagram.probeMoved.connect(self.probeMoved)
         self.diagram.boundaryClicked.connect(self.show_boundary)
+        self.diagram.clickable_boundaries = True
         self.calculation: Calculation | None = None
+        self.path_panel.changed.connect(self.update_tools)
+        self.path_panel.probeRequested.connect(self.probeMoved)
+        self.path_panel.pickRequested.connect(
+            lambda: self.diagram.pick_points(self.path_panel.finish_pick, self.path_panel.smooth))
+        self.path_panel.pickFinished.connect(self.diagram.finish_pick)
+        self.diagram.pathEdited.connect(self.path_panel.set_vertices)
+        self.points_panel.changed.connect(self.update_tools)
+        self.points_panel.probeRequested.connect(self.probeMoved)
+
+    def _show_cursor(self, text: str) -> None:
+        """The value under the mouse, on the bottom-left edge of the plot area."""
+        if not text:
+            self.cursor.hide()
+            return
+        if getattr(self, "_cursor_dark", None) != self.dark:  # restyling is slow; only on a theme change
+            self._cursor_dark = self.dark
+            background = "rgba(30, 32, 36, 210)" if self.dark else "rgba(255, 255, 255, 210)"
+            self.cursor.setStyleSheet(f"background: {background}; padding: 1px 6px; border-radius: 3px;")
+        self.cursor.setText(text)
+        self.cursor.adjustSize()
+        area = self.diagram.getPlotItem().vb.sceneBoundingRect()
+        corner = self.diagram.mapFromScene(area.bottomLeft())
+        self.cursor.move(corner.x() + 4, corner.y() - self.cursor.height() - 4)
+        self.cursor.show()
+        self.cursor.raise_()
+
+    def update_tools(self) -> None:
+        """The path and the measured points for the current calculation, on the diagram and in their panels."""
+        from ..measurements import assess_points
+        from ..paths import phase_path
+
+        calculation = self.calculation
+        if calculation is None:
+            return
+        diagram = calculation.diagram
+        self.path_panel.window_limits = ((float(diagram.pH[0]), float(diagram.pH[-1])),
+                                         (float(diagram.eh_V[0]), float(diagram.eh_V[-1])))
+        path = self.path_panel.path()
+        if getattr(self.diagram, "_pick", None) is None:  # while picking, the diagram draws the path itself
+            self.diagram.show_path(path)
+        if path is not None:
+            stable = [item.record_id for item in diagram.stable_species]
+            self.path_panel.show_result(phase_path(calculation, *path[0], smooth=path[1]), stable,
+                                        calculation.database)
+        assessments = assess_points(calculation, self.points_panel.points)
+        self.points_panel.show_assessments(assessments)
+        self.diagram.show_points([(item.point.label, item.point.pH, item.point.eh_V, item.within_uncertainty)
+                                  for item in assessments if item.inside])
 
     def show_boundary(self, first: str, second: str, position) -> None:
         """A popup with the reaction, equation and sources of the boundary between two species."""
@@ -164,7 +229,9 @@ class DiagramPage(StackedView):
                 sources.append(html.escape(short_citation(citation, source_id)))
             kind = {"nernst": "Redox boundary (Eq. 3)", "acid_base": "Acid–base boundary (Eq. 4)",
                     "numerical": "Numerical boundary", "degenerate": "No pH or potential dependence"}
-            reaction = to_html(equation.reaction).replace(" e-", " e⁻")
+            from .diagram_tools import reaction_html
+
+            reaction = reaction_html(equation.reaction, calculation.database)
             body = (f"{reaction}<br>{html.escape(equation.equation).replace('-', '−')}<br>"
                     f"<span style='color:gray'>{kind.get(equation.kind, equation.kind)} · "
                     f"{'; '.join(sources)}</span>")
@@ -200,12 +267,14 @@ class DiagramPage(StackedView):
         plating = calculation.plating[0].potential_V_vs_SHE if calculation.plating else None
         self.display = display
         self.diagram.show_diagram(calculation.diagram, display, plating, reset_range=reset_range)
+        self.update_tools()
         self.show_view()
 
     def show_probe(self, probe: Probe, record: SpeciesRecord | None, dft_phase: str | None,
                    margin: StabilityMargin | None = None) -> None:
         """The species at the probe: what it is, how firmly it holds, where its value comes from."""
         self.diagram.set_probe(probe.pH, probe.eh_V)
+        self.path_panel.set_probe(probe.pH, probe.eh_V)
         species = probe.species
         muted = "#8c8f94" if self.dark else "#6a6f76"
         warn = "#d19a2a" if self.dark else "#9a6400"
