@@ -20,14 +20,24 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 14 October 2026 checkpoint contains **963 species and 3,075 observations**
-across 74 supported systems, with **850/771/648 selected G/S/H properties**.
+The latest 14 October 2026 checkpoint contains **966 species and 3,084 observations**
+across 74 supported systems, with **853/774/651 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
 requirement. See [the source instructions](sources/nea-tdb-reuse.md) and
 [distributed notices](../THIRD_PARTY_NOTICES.md). Check source-specific
 additional restrictions; other sources retain their own permission status.
+
+NEA02f adds all nine selected G/H/S observations for Ni(g), Ni(l) and
+SnH4(g). The two new gases have `optional_gas_phase` annotations in `warnings`:
+this key is a calculation-scope setting, separate from thermochemical evidence
+eligibility. `load_system(..., include_optional_gases=True)` includes them;
+the default returns `optional_gas_not_selected` exclusions. All values remain
+selected and accessible through the evidence API. Existing default closed
+balances and strict completeness are preserved. Formal Sn(IV) uses signed
+electron/proton coefficients -4 in the metal/water reaction. The liquid has
+unit activity and a distinct species identity. See [the phase review](sources/nea-adjacent-phases.md).
 
 NEA02e adds one selected Ni(OH)3(-) Gibbs evaluation in the existing HNiO2(-)
 water-component basis: -590519 - (-237129) = -353390 J/mol. Charge and the

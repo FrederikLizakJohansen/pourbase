@@ -4,6 +4,10 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Review all nine selected G/H/S cells for Ni(g), Ni(l) and SnH4(g).
+  Add nine observations and three phase identities, preserving all earlier
+  preferred values. Add explicit selection for the two new gas phases while
+  preserving default nickel/tin closed balances and strict completeness.
 - Complete the targeted NEA-derived PSI/Nagra, SUPCRT and MINES crosswalk.
   Add the selected nickel trihydroxo Gibbs value in the existing HNiO2⁻
   water-component basis, preserving the source interval and all alternatives.

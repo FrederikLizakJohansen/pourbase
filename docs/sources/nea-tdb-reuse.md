@@ -243,7 +243,7 @@ closed-balance integration and unsupported mixed-metal/component chemistry
 remain explicit follow-ups. These holds have numerical source candidates and
 locations; source permission alone does not resolve their scientific questions.
 
-Current totals are **963 species /3,074 observations /74 systems**, with
+Totals after NEA02d are **963 species /3,074 observations /74 systems**, with
 selected G/S/H counts **850/771/648**. The zirconium default diagram changes
 at 648/7,371 sampled points; the other 73 default diagrams are unchanged.
 Independent full-formula energies, aligned pymatgen, 39 plain/ligand scenarios
@@ -263,12 +263,35 @@ unit water activity. The policy selects this observation while preserving
 all older evidence and independent H/S estimates. The source total interval
 is retained; the mixed reference set supplies no new temperature validation.
 
-Production now contains **963 species /3,075 observations /74 systems**;
+Totals after NEA02e are **963 species /3,075 observations /74 systems**;
 selected G/S/H counts remain **850/771/648**. Nickel changes412/7371 sampled
 points; the other73 default diagrams are unchanged. Historical request
 coverage stays116/131. The targeted deliverable is complete; wider R11/R12
 source/version reviews and independent permission holds remain open.
 See [the crosswalk results and remaining routes](nea-derived-crosswalk.md).
+
+## Completed NEA02f adjacent-phase review
+
+All nine G/H/S cells for Ni(g), Ni(l) and SnH4(g) are verified and admitted:
+**nine observations /three species**, filling nine properties and preserving
+every earlier preferred ID. Ni(l) retains its hypothetical supercooled
+pure-liquid standard state. The gas observations remain fully available to
+the selection policy and evidence API. A documented `optional_gas_phase`
+annotation requires `include_optional_gases=True` to load these two gases for
+fixed-fugacity calculations; default Ni/Sn closed balances and strict
+completeness are preserved. Policy and user-species views and temperature
+caches retain the same phase-selection scope. Earlier gas inclusion rules
+are carried forward. The explicitly gas-containing closed-balance model
+remains unsupported; this affects model capability, not source admission.
+
+Production contains **966 species /3,084 observations /74 systems**, selected
+G/S/H **853/774/651**. All74 default phase maps and uncertainty masks are
+preserved; the liquid changes the nickel runner-up gap at2340/7371 points.
+Eight ideal/Davies metal inventories agree with the baseline, four nickel
+temperature maps agree, and the aligned pymatgen check passes. Gas-enabled
+tin changes1495/7371 points, all below the water-stability window. The source
+intervals retain their published interpretation. See [the source values,
+phase conventions and gas-selection example](nea-adjacent-phases.md).
 
 ## Further exploration
 

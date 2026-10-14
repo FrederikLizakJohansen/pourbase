@@ -39,6 +39,7 @@ class ExclusionReason(str, Enum):
     GIBBS_ENERGY_UNAVAILABLE = "recommended_gibbs_energy_unavailable"
     LIGAND_NOT_SELECTED = "ligand_species_not_selected"
     LIGAND_REFERENCE_UNAVAILABLE = "ligand_reference_unavailable"
+    GAS_NOT_SELECTED = "optional_gas_not_selected"
     POLYNUCLEAR_AQUEOUS = "mass_balance_nonmonometal_aqueous_unsupported"
     TEMPERATURE_DATA_UNAVAILABLE = "entropy_or_enthalpy_unavailable_for_temperature"
 

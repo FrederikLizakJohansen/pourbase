@@ -109,11 +109,16 @@ class DatabaseAtTemperature:
             self._entropy = result
         return self._entropy
 
-    def load_system(self, symbol: str, *, ligand_ids=(), energy_policy=None, **options) -> MetalSystem:
-        key = (symbol, tuple(sorted(ligand_ids)), energy_policy)
+    def load_system(self, symbol: str, *, ligand_ids=(), energy_policy=None,
+                    include_optional_gases: bool = False, **options) -> MetalSystem:
+        if not isinstance(include_optional_gases, bool):
+            raise TypeError("include_optional_gases must be a bool")
+        key = (symbol, tuple(sorted(ligand_ids)), energy_policy, include_optional_gases)
         if key in self._systems:
             return self._systems[key]
         arguments = {"ligand_ids": ligand_ids, **options}
+        if include_optional_gases:
+            arguments["include_optional_gases"] = True
         if energy_policy is not None:
             arguments["energy_policy"] = energy_policy
         system = self.base.load_system(symbol, **arguments)

@@ -514,3 +514,21 @@ acknowledgment requirement and require further sublicensees to pass it on.
 The [source crosswalk](docs/sources/nea-derived-crosswalk.md) documents the
 admission and remaining routes. The private permission correspondence and
 complete source publications are retained outside the distribution.
+
+## NEA02f nickel gas/liquid and stannane
+
+OECD and the Nuclear Energy Agency are acknowledged for selected Ni(g),
+Ni(l) and SnH4(g) data from Gamsjäger et al.(2005), *Chemical Thermodynamics
+of Nickel*, NEA volume6, TableIII-1 p.44 and sectionsV.1.1/V.1.3; and
+Gamsjäger et al.(2012), *Chemical Thermodynamics of Tin*, NEA volume12,
+TableIII-1 p.44 and sectionVII.3.1. The source table and exact property
+locators are described in [the phase review](docs/sources/nea-adjacent-phases.md).
+All nine observations are admitted. The two new gases have an explicit
+phase-selection scope; their G/H/S remain available as thermochemical evidence.
+
+The NEA-TDB-OECD-2026-10-14 clarification permits use, adaptation and
+redistribution, including commercially, subject to source-specific additional
+restrictions. Every sublicense of work using these data must include the
+same OECD acknowledgment requirement and require further sublicensees to
+pass it on. Complete publications and private correspondence retain their
+existing rights and stay outside the distributed package.

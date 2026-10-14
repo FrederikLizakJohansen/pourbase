@@ -139,8 +139,9 @@ class UserSpeciesDatabase(ThermodynamicDatabase):
                 raise ValueError(f"{item.species}: {item.symbol} is not a supported system")
             item.thermodynamic_species(item.symbol)
 
-    def _load_system_uncached(self, symbol, ligand_ids, energy_policy) -> MetalSystem:
-        system = self.base._load_system_uncached(symbol, ligand_ids, energy_policy)
+    def _load_system_uncached(self, symbol, ligand_ids, energy_policy,
+                              include_optional_gases=False) -> MetalSystem:
+        system = self.base._load_system_uncached(symbol, ligand_ids, energy_policy, include_optional_gases)
         added = [item for item in self.user_species if item.symbol == symbol]
         if not added:
             return system

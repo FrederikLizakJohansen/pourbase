@@ -13,14 +13,14 @@
     "source_permission_NEA_TDB_Zr_2005": "{\"check_source_specific_additional_restrictions\": true, \"downstream_acknowledgment_required\": true, \"email_sha256\": \"c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4\", \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"reviewed_on\": \"2026-10-14\", \"scope\": \"Zirconium volume8 selected/evaluated numerical data; excludes independent auxiliary tables and source holds.\", \"source_id\": \"NEA_OECD_20261014_Zr\", \"status\": \"available_under_OECD_data_terms\", \"terms_url\": \"https://www.oecd.org/en/about/terms-conditions.html\"}"
   },
   "totals": {
-    "species": 963,
+    "species": 966,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 3075,
-    "recommended_values": 2269,
+    "reported_thermochemistry": 3084,
+    "recommended_values": 2278,
     "source_records": 1702,
     "distinct_citations": 165,
-    "warnings": 1298,
+    "warnings": 1301,
     "phase_records": 541,
     "resolved_phase_records": 322,
     "mp_matches": 105,
@@ -45,35 +45,35 @@
     },
     {
       "phase": "gas",
-      "species": 32,
-      "gibbs": 29,
-      "entropy": 32,
-      "enthalpy": 29
+      "species": 34,
+      "gibbs": 31,
+      "entropy": 34,
+      "enthalpy": 31
     },
     {
       "phase": "liquid",
-      "species": 4,
-      "gibbs": 2,
-      "entropy": 2,
-      "enthalpy": 4
+      "species": 5,
+      "gibbs": 3,
+      "entropy": 3,
+      "enthalpy": 5
     }
   ],
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 850
+      "available": 853
     },
     {
       "property": "Entropy",
-      "available": 771
+      "available": 774
     },
     {
       "property": "Formation enthalpy",
-      "available": 648
+      "available": 651
     }
   ],
   "gibbs_status": {
-    "verified": 548,
+    "verified": 551,
     "source_verified_estimate": 228,
     "not_available": 107,
     "defined_reference_state": 74,
@@ -274,7 +274,7 @@
       "symbol": "Ni",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 50
+      "species": 52
     },
     {
       "atomic_number": 29,
@@ -428,7 +428,7 @@
       "symbol": "Sn",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 48
+      "species": 49
     },
     {
       "atomic_number": 51,
@@ -1470,15 +1470,15 @@
     {
       "symbol": "Ni",
       "system": "Nickel (Ni)",
-      "species": 50,
+      "species": 52,
       "aqueous": 22,
       "solid": 28,
-      "gas": 0,
-      "liquid": 0,
-      "gibbs": 45,
-      "entropy": 37,
-      "enthalpy": 38,
-      "warnings": 52
+      "gas": 1,
+      "liquid": 1,
+      "gibbs": 47,
+      "entropy": 39,
+      "enthalpy": 40,
+      "warnings": 54
     },
     {
       "symbol": "Os",
@@ -1691,15 +1691,15 @@
     {
       "symbol": "Sn",
       "system": "Tin (Sn)",
-      "species": 48,
+      "species": 49,
       "aqueous": 23,
       "solid": 17,
-      "gas": 7,
+      "gas": 8,
       "liquid": 1,
-      "gibbs": 46,
-      "entropy": 26,
-      "enthalpy": 24,
-      "warnings": 40
+      "gibbs": 47,
+      "entropy": 27,
+      "enthalpy": 25,
+      "warnings": 41
     },
     {
       "symbol": "Sr",
@@ -2153,6 +2153,10 @@
       "count": 2
     },
     {
+      "warning_type": "optional_gas_phase",
+      "count": 2
+    },
+    {
       "warning_type": "missing_recommended_gibbs",
       "count": 2
     },
@@ -2286,6 +2290,10 @@
     },
     {
       "warning_type": "r07_1965_magnesite_source_and_solubility_model",
+      "count": 1
+    },
+    {
+      "warning_type": "nea02f_phase_and_integration_scope",
       "count": 1
     },
     {

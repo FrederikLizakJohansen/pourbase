@@ -281,10 +281,11 @@ class PolicyDatabase(ThermodynamicDatabase):
         self._wraps = type(base) not in (ThermodynamicDatabase, PolicyDatabase) or base._stores_recommendations
         super().__init__(base.path, policy)
 
-    def _load_system_uncached(self, symbol, ligand_ids, energy_policy) -> MetalSystem:
+    def _load_system_uncached(self, symbol, ligand_ids, energy_policy,
+                              include_optional_gases=False) -> MetalSystem:
         if not self._wraps:
-            return super()._load_system_uncached(symbol, ligand_ids, energy_policy)
-        system = self.base._load_system_uncached(symbol, ligand_ids, energy_policy)
+            return super()._load_system_uncached(symbol, ligand_ids, energy_policy, include_optional_gases)
+        system = self.base._load_system_uncached(symbol, ligand_ids, energy_policy, include_optional_gases)
         chosen = {record_id: item.chosen for (record_id, name), item in self.selections.items()
                   if name == "gibbs_energy_of_formation"}
         species = []

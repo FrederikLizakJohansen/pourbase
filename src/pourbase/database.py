@@ -447,17 +447,28 @@ class ThermodynamicDatabase:
         *,
         ligand_ids: Iterable[str] = (),
         energy_policy: GibbsEnergyPolicy | str = GibbsEnergyPolicy.EXPERIMENTAL_ONLY,
+        include_optional_gases: bool = False,
     ) -> MetalSystem:
-        """Calculation-ready species of one element; results are cached."""
+        """Calculation-ready species; optionally include gases marked ``optional_gas_phase``.
+
+        These phases retain their selected properties while requiring explicit inclusion in
+        a gas-fugacity calculation. Existing gas records keep their current inclusion rules.
+        Results are cached separately for each gas selection.
+        """
+        if not isinstance(include_optional_gases, bool):
+            raise TypeError("include_optional_gases must be a bool")
         selected = frozenset(item.strip() for item in ligand_ids)
         if "" in selected:
             raise ValueError("ligand_ids must not contain empty strings")
         if unknown := sorted(selected - {item.ligand_id for item in self._ligands}):
             raise ValueError("No thermodynamic reference is available for: " + ", ".join(unknown))
-        return self._load_system(self._normalize_symbol(symbol), selected, GibbsEnergyPolicy(energy_policy))
+        return self._load_system(
+            self._normalize_symbol(symbol), selected, GibbsEnergyPolicy(energy_policy), include_optional_gases
+        )
 
     def _load_system_uncached(
-        self, symbol: str, ligand_ids: frozenset[str], energy_policy: GibbsEnergyPolicy
+        self, symbol: str, ligand_ids: frozenset[str], energy_policy: GibbsEnergyPolicy,
+        include_optional_gases: bool,
     ) -> MetalSystem:
         rows = self._rows(
             """SELECT s.record_id, s.system, s.symbol, s.species, s.formula_ascii,
@@ -468,7 +479,9 @@ class ThermodynamicDatabase:
                    t.gibbs_energy_J_mol, t.gibbs_status, t.gibbs_source_id, t.gibbs_uncertainty_J_mol,
                    f.gibbs_energy_J_mol AS fallback_gibbs_energy_J_mol,
                    f.canonical_mp_id AS fallback_mp_id,
-                   l.gibbs_energy_J_mol AS ligand_gibbs_energy_J_mol
+                   l.gibbs_energy_J_mol AS ligand_gibbs_energy_J_mol,
+                   EXISTS(SELECT 1 FROM warnings AS w WHERE w.record_id = s.record_id
+                          AND w.warning_type = 'optional_gas_phase') AS optional_gas_phase
                FROM species AS s
                JOIN selected_thermochemistry AS t USING(record_id)
                LEFT JOIN computational_fallbacks AS f USING(record_id)
@@ -493,6 +506,8 @@ class ThermodynamicDatabase:
                 reason = ExclusionReason.LIGAND_NOT_SELECTED
             elif ligand_count and row["ligand_gibbs_energy_J_mol"] is None:
                 reason = ExclusionReason.LIGAND_REFERENCE_UNAVAILABLE
+            elif row["phase"] == "gas" and row["optional_gas_phase"] and not include_optional_gases:
+                reason = ExclusionReason.GAS_NOT_SELECTED
             elif gibbs is None:
                 reason = ExclusionReason.GIBBS_ENERGY_UNAVAILABLE
             if reason is not None:
