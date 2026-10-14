@@ -18,12 +18,17 @@ project's GPL-3.0 software and compilation licence.
 
 ## Permission evidence
 
-The supplied email body is retained with the private permission correspondence
-and the external source-review checkpoint, together with a captured copy of the
-applicable OECD data terms. The record distinguishes the date supplied from the
-original email date: message headers, sender address and original date were
-not supplied. SHA-256 of the preserved email body:
+The supplied email body and subsequent full thread are retained with the private
+permission correspondence and external source-review checkpoint, together with
+a captured copy of the applicable OECD data terms. The full thread supplies the
+project mailbox, signatory's role, initial referral and displayed reply times.
+The record distinguishes displayed dates and contextual date interpretations
+from raw email headers, which were not supplied. The correspondence retains
+its “Restricted Use” marking and stays private. SHA-256 of the initially
+preserved email body:
 `c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4`.
+SHA-256 of the subsequently supplied full thread:
+`eb69c8661d760b6b4941f53a359446dbb66ddc4f748da5f52f1b955addbe6b4d`.
 The database metadata key `source_permission_NEA_TDB` records the permission
 ID, terms URL, evidence hash, applicable source IDs and obligations.
 
