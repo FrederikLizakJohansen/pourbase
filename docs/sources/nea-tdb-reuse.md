@@ -196,13 +196,60 @@ The closed metal-balance solver rejects gas-containing systems; gas-free
 subsets were checked separately. Ligand species remain excluded by the current
 temperature extension away from 298.15 K.
 
-Current totals are **900 species /2,926 observations /74 systems**, with
+Totals after NEA02c are **900 species /2,926 observations /74 systems**, with
 selected G/S/H counts **801/730/601** and **15 ligand references**. All 74
 sampled default diagrams are unchanged. Of 66 ligand-enabled scenarios,
 33 change as the added complexes become available; 132 gas-free ideal/Davies
 balances conserve metal. Historical request coverage stays **116/131**.
 The 29 prior solid/model holds remain separate. The new arsenate reference
 provides a route for a later mineral review; it does not complete that review.
+
+## Completed NEA02d zirconium review and inventory
+
+Brown, Curti and Grambow, with Ekberg (2005), *Chemical Thermodynamics of
+Zirconium*, NEA volume 8, supplies a finite inventory of **97 selected rows**
+in Table III-1, printed pp. 48–53 (PDF pp. 78–83). All six pages were checked.
+The release identity, official source-file hash and source-specific reuse
+review are recorded in the external checkpoint. No zirconium-specific errata
+document was found in the checked NEA listing and targeted search; this is
+not a claim that no errors exist. A later scientific caveat in NEA thorium
+volume 11, Appendix F, explicitly questions two oxide gas evaluations.
+
+The admitted batch contains **148 observations and 63 species** from 68 rows.
+It fills **137 properties** and changes **11 existing selections** under the
+unchanged policy. Every earlier SQL row and all original NEA request chosen
+IDs are preserved. The new permission metadata supplement,
+`source_permission_NEA_TDB_Zr_2005`, extends the recorded OECD terms to the
+selected zirconium evaluations. Appropriate OECD citation and the same
+acknowledgment requirement continue through every sublicense.
+
+One new free-ion reference comes from the previously reviewed open NBS PDR
+release: SO3²⁻, G = −486,500 J/mol, CSV logical record 573. Sixteen free-ligand
+references are now available. This adds a sulfite reservoir with prescribed
+free activity; total sulfite and protonation require an explicit separate model.
+
+New polynuclear ions retain complete formulas and metal counts. Epsilon-ZrH2
+retains formal valence +2 and reaction electron coefficient −2. ZrS2/ZrS3
+keep source-reviewed estimate status because their evaluations use third-law
+thermal functions and analogy entropies. Phase labels, hydrates and gas/aqueous
+forms remain distinct. Missing G stays explicit for entropy/enthalpy-only rows.
+
+The external ledger retains **27 specific scientific/model holds** and **two
+heat-capacity-only rows for R18**. Source/legacy water-equivalent hydrolysis
+mapping and physical zirconyl identity need a separate reconciliation. The
+ZrH correlation concerns mixed phases; ZrS1.5 has conflicting source text and
+composition descriptions. Questioned oxide gases, the bare gas's default
+closed-balance integration and unsupported mixed-metal/component chemistry
+remain explicit follow-ups. These holds have numerical source candidates and
+locations; source permission alone does not resolve their scientific questions.
+
+Current totals are **963 species /3,074 observations /74 systems**, with
+selected G/S/H counts **850/771/648**. The zirconium default diagram changes
+at 648/7,371 sampled points; the other 73 default diagrams are unchanged.
+Independent full-formula energies, aligned pymatgen, 39 plain/ligand scenarios
+and 78 explicitly gas-free ideal/Davies balances pass. No bare gas is added
+to default Zr calculations. Original request coverage remains **116/131**.
+The 29 earlier Fe/Ni/Sn solid/model holds retain their separate review history.
 
 ## Further exploration
 

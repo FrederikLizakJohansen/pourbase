@@ -4,6 +4,12 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Inventory all 97 selected rows of NEA zirconium volume 8 and add 148
+  observations and 63 species. Fill 137 properties and change 11 selections
+  under the existing policy. Add an open NBS free-sulfite reference; retain
+  27 specific scientific/model holds and two heat-capacity routes separately.
+  Zirconium stability regions change; the other 73 default diagrams are preserved.
+
 - Add 86 NEA iron/nickel/tin ligand observations and 45 species, filling
   82 properties and changing four selections under the unchanged policy.
   Add open NBS free-ion references for thiocyanate, pyrophosphate and arsenate.

@@ -20,8 +20,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 14 October 2026 checkpoint contains **900 species and 2,926 observations**
-across 74 supported systems, with **801/730/601 selected G/S/H properties**.
+The latest 14 October 2026 checkpoint contains **963 species and 3,074 observations**
+across 74 supported systems, with **850/771/648 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -100,6 +100,29 @@ from neutral SnCl4 gas and liquid; the selected liquid has only enthalpy.
 Gas-containing systems use fixed fugacity and the closed metal-balance solver
 rejects them. Ligand species remain excluded away from 298.15 K by the current
 temperature extension.
+
+The NEA02d zirconium continuation inventories all 97 rows of volume 8,
+Table III-1, printed pp. 48–53. It adds 148 observations and 63 species from
+68 rows, filling 137 properties and changing 11 existing selections. Every
+earlier SQL row is preserved. A new metadata entry,
+`source_permission_NEA_TDB_Zr_2005`, extends the existing NEA permission record
+to this selected-data source, with the same OECD acknowledgment requirement.
+
+Sixteen free-ligand references now include free SO3²⁻, G = −486,500 J/mol,
+from the open NBS PDR CSV logical record 573. Five new polynuclear zirconium
+ions keep their full formula units and metal counts. Fixed-activity calculations
+include them; closed metal balance excludes and reports them. Formal Zr(II)
+in epsilon-ZrH2 accompanies a reaction coefficient of −2. The selected ZrS2
+and ZrS3 evaluations retain the source's third-law and entropy-analogy estimates;
+ZrS3 uses formal Zr(IV) and a six-electron reaction against free sulfide.
+
+The external inventory preserves 27 specific scientific/model holds and two
+heat-capacity-only rows. These include source hydration/zirconyl reconciliation,
+the mixed-phase ZrH correlation, a conflicting ZrS1.5 description, gases
+questioned by the later NEA thorium review and unsupported component models.
+The bare Zr gas also retains a separate integration review, preserving the
+gas-free default closed balance. Optional halide gases use explicit fugacity.
+These holds carry the original values and source locations for later review.
 
 ## Units
 

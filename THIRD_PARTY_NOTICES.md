@@ -68,6 +68,19 @@ and formula encodings for calculation. Complete publications, page images,
 independent third-party tables and electronic database software retain their
 own terms; their redistribution requires a separate applicable reuse basis.
 
+The NEA02d zirconium continuation retains 148 selected observations from
+Brown, P. L., Curti, E. and Grambow, B., with Ekberg, C. (2005),
+*Chemical Thermodynamics of Zirconium*, OECD Nuclear Energy Agency,
+Chemical Thermodynamics Series, volume 8, Table III-1, printed pp. 48–53.
+OECD and NEA are acknowledged. Source URL:
+<https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/chemical_thermodynamics_of_zirconium_volume_8.pdf>
+(accessed 14 October 2026). Complete formula units, source phases, intervals,
+internal-calculation and estimation qualifications accompany these values.
+The same OECD acknowledgment requirement applies in every sublicense and must
+be passed on by further sublicensees. The source publication is retained in
+the external review workspace; independent third-party tables are outside this
+selected-data import.
+
 The NEA02c ligand continuation retains 86 further selected observations from
 the same iron, nickel and tin reviews, Table III-1, printed pp. 44–47.
 These comprise 42 aqueous rows, seven tin molecular gas rows and one liquid
@@ -89,6 +102,12 @@ AsO4³⁻ from that open NBS PDR release. The CSV logical records are 2096, 1281
 and 1473, respectively, including the two header records. Formation Gibbs
 energies are converted from kJ/mol to J/mol; the exact row, state, source-file
 hash and open licence are recorded in each reference's source locator.
+
+The NEA02d free-sulfite reference uses logical record 573 of the same open
+NBS PDR CSV, including its two header records. SO3²⁻ formation G at 298.15 K
+and 1 bar is converted from −486.5 kJ/mol to −486,500 J/mol. Its source
+locator records the exact aqueous-ion row, column, file hash and open licence.
+NIST is acknowledged; the data are supplied without warranty.
 
 On 5 October 2026, 86 additional evaluated NBS properties were retained as source-linked
 alternatives. Values in kJ/mol were converted to J/mol; entropy units were retained. Each
