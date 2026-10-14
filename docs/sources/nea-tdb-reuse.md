@@ -60,6 +60,12 @@ warrants it.
    A total interval described as corresponding in principle to 95% confidence
    remains that interval; a one-sigma conversion requires separate justification.
    Identify source-internal calculations and retain the reported precision.
+   For ligand species, name the buffered free ion and check residual O/H,
+   charge, ligand count and electron balance. Review new free-ion references
+   under their own source terms. Compare the assembled reaction constants
+   with source reaction data: different auxiliary evaluations can produce
+   substantial differences even when all quantities use the same standard
+   state. Preserve source formation values and document the difference.
    The uncertainty screen uses retained widths directly, so mixed interval
    conventions do not support a uniform confidence-level interpretation.
 5. Validate a staged copy against the current database. Check old-row
@@ -151,12 +157,52 @@ The new record preserves the stoichiometric FeO record and every existing
 selection. It resolves this one earlier solid hold, leaving29 of the NEA02a
 scientific/model holds open.
 
-Current totals are **855 species /2,840 observations /74 systems**, with
+Totals after NEA02b are **855 species /2,840 observations /74 systems**, with
 selected G/S/H counts **754/714/582**. Historical request coverage remains
 **116/131**; the stoichiometric FeO requests retain their separate status.
 The74 sampled default diagrams are unchanged. The new phase lies above the
 balanced Fe/magnetite combination at298.15K under the retained G convention,
 consistent with the source's metastability assessment.
+
+## Completed NEA02c ligand continuation
+
+All **50 remaining ligand-bearing aqueous, gas and liquid rows** in the
+three retained Table III-1 sets, printed pp. 44–47, have been reviewed:
+42 aqueous rows, seven tin molecular gases and one pure-liquid row. The batch
+retains **86 observations and 45 new species**, fills **82 properties** and
+changes **four existing selections** under the unchanged policy. All earlier
+observations and all 28 original NEA request selections remain stored.
+
+Three new free-ligand Gibbs references come from the explicitly open NBS PDR
+digitization, DOI 10.18434/M32124: SCN⁻, P2O7⁴⁻ and AsO4³⁻. Their exact CSV
+logical records, unit conversions, file hash and reuse basis are attached to
+their source records. NIST is acknowledged separately from OECD. Pyrophosphate
+has its own formula and charge. Protonated complexes use the deprotonated
+free reference and residual H; the input specifies that free ion's activity.
+
+The selected formation properties remain unchanged from NEA. The runtime
+reference set includes independent evaluations and therefore represents an
+assembled dataset. For example, the nickel tetracyanide, pentacyanide and
+unprotonated pyrophosphate association log10K values exceed the selected NEA
+reaction values by about **3.827, 4.784 and 2.891**, respectively, at 298.15 K.
+These differences follow from the free-ligand evaluations and are explicit in
+warnings and the external reaction ledger. A preferred formation value does
+not establish consistency with a review's entire auxiliary set or covariance.
+
+Aqueous SnCl4²⁻ retains Sn(II); neutral gaseous/liquid SnCl4 retains Sn(IV).
+The liquid has selected H only, so missing G remains explicit. Tin gases use
+prescribed fugacity and an independently buffered aqueous ligand activity.
+The closed metal-balance solver rejects gas-containing systems; gas-free
+subsets were checked separately. Ligand species remain excluded by the current
+temperature extension away from 298.15 K.
+
+Current totals are **900 species /2,926 observations /74 systems**, with
+selected G/S/H counts **801/730/601** and **15 ligand references**. All 74
+sampled default diagrams are unchanged. Of 66 ligand-enabled scenarios,
+33 change as the added complexes become available; 132 gas-free ideal/Davies
+balances conserve metal. Historical request coverage stays **116/131**.
+The 29 prior solid/model holds remain separate. The new arsenate reference
+provides a route for a later mineral review; it does not complete that review.
 
 ## Further exploration
 

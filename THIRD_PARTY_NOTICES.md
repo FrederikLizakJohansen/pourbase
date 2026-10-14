@@ -68,12 +68,27 @@ and formula encodings for calculation. Complete publications, page images,
 independent third-party tables and electronic database software retain their
 own terms; their redistribution requires a separate applicable reuse basis.
 
+The NEA02c ligand continuation retains 86 further selected observations from
+the same iron, nickel and tin reviews, Table III-1, printed pp. 44–47.
+These comprise 42 aqueous rows, seven tin molecular gas rows and one liquid
+row. OECD and the Nuclear Energy Agency are acknowledged. Complete formula
+units, charges, phases, source intervals and conversions accompany the data.
+The same OECD acknowledgment requirement must be included in sublicenses and
+passed on by further sublicensees. Runtime ligand reference evaluations remain
+explicit; they can give reaction constants different from the NEA auxiliary set.
+
 ## NIST and NBS
 
 Most NBS values come from the NIST Public Data Repository dataset *The NBS Tables of Chemical
 Thermodynamic Properties* (Wagman et al. 1982, with errata; doi:10.18434/M32124), published under
 the NIST open licence. NIST is acknowledged as the source of these data; the dataset is
 distributed without warranty. <https://www.nist.gov/open/license>
+
+The NEA02c continuation adds free-ion Gibbs references for SCN⁻, P2O7⁴⁻ and
+AsO4³⁻ from that open NBS PDR release. The CSV logical records are 2096, 1281
+and 1473, respectively, including the two header records. Formation Gibbs
+energies are converted from kJ/mol to J/mol; the exact row, state, source-file
+hash and open licence are recorded in each reference's source locator.
 
 On 5 October 2026, 86 additional evaluated NBS properties were retained as source-linked
 alternatives. Values in kJ/mol were converted to J/mol; entropy units were retained. Each

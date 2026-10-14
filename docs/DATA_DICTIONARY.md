@@ -8,7 +8,7 @@ thermochemical quantities use one formula unit as the molar basis.
 | `metadata` | Dataset version, database role, reference temperature, pressure, and water Gibbs energy |
 | `species` | Stable record ID, displayed species, ASCII formula, phase, charge, atom counts, ligand encoding, formal metal oxidation state, and signed electron coefficient for the metal/water reaction |
 | `selected_thermochemistry` | Derived when the database is opened: recommended Gibbs energy, entropy, formation enthalpy, scientific status, uncertainty, source ID, and exact source locator |
-| `reported_thermochemistry` | Every retained original and selected thermochemical value, including its recommendation flag, status, source, uncertainty, and supersession link |
+| `reported_thermochemistry` | Every retained thermochemical observation, with status, source, uncertainty, locator and supersession link |
 | `computational_fallbacks` | Opt-in 300 K Materials Project SISSO Gibbs estimates for experimental gaps, with phase mapping, confidence, identifiers, versions, and warnings |
 | `element_coverage` | One row for every element, recording whether it is supported, a reference component, deferred, or outside the current curated scope |
 | `sources` | Full scientific citations, URLs, general locators, and access dates |
@@ -20,8 +20,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 14 October 2026 checkpoint contains **855 species and 2,840 observations**
-across 74 supported systems, with **754/714/582 selected G/S/H properties**.
+The latest 14 October 2026 checkpoint contains **900 species and 2,926 observations**
+across 74 supported systems, with **801/730/601 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -82,6 +82,24 @@ confidence); they have no inferred one-sigma conversion. New polynuclear ions
 retain full formula units and metal counts. Fixed-activity diagrams support
 these records; closed metal balance excludes and reports polynuclear aqueous
 species under the current model.
+
+The NEA02c continuation reviews all 50 remaining ligand-bearing aqueous,
+gas and liquid rows in the same three selected tables. It adds 86 observations
+and 45 species, fills 82 properties and changes four existing selections.
+The 15 available free-ligand references include three new open NBS PDR rows:
+SCN⁻, P2O7⁴⁻ and AsO4³⁻. Protonated complexes retain residual hydrogen;
+pyrophosphate uses its own reference, separate from orthophosphate.
+
+Formation values retain their source conventions. Combining them with the
+project's ligand references can yield reaction constants different from NEA's
+auxiliary set. The nickel cyanide and pyrophosphate warnings quantify substantial
+differences; no source value is shifted to fit a different reference evaluation.
+All earlier observations remain stored. The two FeCl species with charges +2
+and +1 have one and two chlorides, respectively. Aqueous SnCl4²⁻ is distinct
+from neutral SnCl4 gas and liquid; the selected liquid has only enthalpy.
+Gas-containing systems use fixed fugacity and the closed metal-balance solver
+rejects them. Ligand species remain excluded away from 298.15 K by the current
+temperature extension.
 
 ## Units
 

@@ -4,6 +4,12 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Add 86 NEA iron/nickel/tin ligand observations and 45 species, filling
+  82 properties and changing four selections under the unchanged policy.
+  Add open NBS free-ion references for thiocyanate, pyrophosphate and arsenate.
+  Preserve aqueous, gas and liquid identities and document differences between
+  the runtime ligand references and NEA's internally consistent reaction set.
+
 - Add a distinct fixed-composition Fe0.932O phase with three NEA source-reviewed
   G/H/S estimates. Preserve fractional molar normalization, source metastability,
   third-law enthalpy assumptions and the omitted residual-entropy contribution.

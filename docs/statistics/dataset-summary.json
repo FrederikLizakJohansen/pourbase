@@ -12,28 +12,28 @@
     "source_permission_NEA_TDB": "{\"applicable_source_ids\": [\"NEA_TDB_Nickel_2005\", \"NEA_TDB_Nickel_2005_NiO\", \"NEA_TDB_Nickel_2005_beta_NiOOH\", \"NEA_TDB_Tin_2012\", \"OECD_NEA_2013_FeOH3_minus\", \"OECD_NEA_2013_selected_iron_data\", \"NEA_OECD_20261014_Fe\", \"NEA_OECD_20261014_Ni\", \"NEA_OECD_20261014_Sn\"], \"check_source_specific_additional_restrictions\": true, \"downstream_acknowledgment_required\": true, \"email_sha256\": \"c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4\", \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"recorded_on\": \"2026-10-14\", \"scope\": \"NEA-TDB selected/evaluated numerical data; other sources permission holds remain separate.\", \"status\": \"available_under_OECD_data_terms\", \"terms_url\": \"https://www.oecd.org/en/about/terms-conditions.html\"}"
   },
   "totals": {
-    "species": 855,
+    "species": 900,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 2840,
-    "recommended_values": 2050,
-    "source_records": 1697,
-    "distinct_citations": 163,
-    "warnings": 1179,
+    "reported_thermochemistry": 2926,
+    "recommended_values": 2132,
+    "source_records": 1700,
+    "distinct_citations": 164,
+    "warnings": 1229,
     "phase_records": 515,
     "resolved_phase_records": 296,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
-    "ligands": 12
+    "ligands": 15
   },
   "phases": [
     {
       "phase": "aqueous",
-      "species": 472,
-      "gibbs": 404,
-      "entropy": 399,
-      "enthalpy": 276
+      "species": 509,
+      "gibbs": 444,
+      "entropy": 408,
+      "enthalpy": 287
     },
     {
       "phase": "solid",
@@ -44,37 +44,37 @@
     },
     {
       "phase": "gas",
-      "species": 9,
-      "gibbs": 9,
-      "entropy": 9,
-      "enthalpy": 9
+      "species": 16,
+      "gibbs": 16,
+      "entropy": 16,
+      "enthalpy": 16
     },
     {
       "phase": "liquid",
-      "species": 2,
+      "species": 3,
       "gibbs": 2,
       "entropy": 2,
-      "enthalpy": 2
+      "enthalpy": 3
     }
   ],
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 754
+      "available": 801
     },
     {
       "property": "Entropy",
-      "available": 714
+      "available": 730
     },
     {
       "property": "Formation enthalpy",
-      "available": 582
+      "available": 601
     }
   ],
   "gibbs_status": {
-    "verified": 450,
-    "source_verified_estimate": 230,
-    "not_available": 95,
+    "verified": 498,
+    "source_verified_estimate": 229,
+    "not_available": 93,
     "defined_reference_state": 74,
     "terminal_evidence_gap": 6
   },
@@ -259,7 +259,7 @@
       "symbol": "Fe",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 55
+      "species": 65
     },
     {
       "atomic_number": 27,
@@ -273,7 +273,7 @@
       "symbol": "Ni",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 37
+      "species": 50
     },
     {
       "atomic_number": 29,
@@ -427,7 +427,7 @@
       "symbol": "Sn",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 26
+      "species": 48
     },
     {
       "atomic_number": 51,
@@ -1196,15 +1196,15 @@
     {
       "symbol": "Fe",
       "system": "Iron (Fe)",
-      "species": 55,
-      "aqueous": 17,
+      "species": 65,
+      "aqueous": 27,
       "solid": 38,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 42,
-      "entropy": 44,
-      "enthalpy": 39,
-      "warnings": 68
+      "gibbs": 54,
+      "entropy": 45,
+      "enthalpy": 41,
+      "warnings": 81
     },
     {
       "symbol": "Ga",
@@ -1469,15 +1469,15 @@
     {
       "symbol": "Ni",
       "system": "Nickel (Ni)",
-      "species": 37,
-      "aqueous": 9,
+      "species": 50,
+      "aqueous": 22,
       "solid": 28,
       "gas": 0,
       "liquid": 0,
-      "gibbs": 31,
-      "entropy": 31,
-      "enthalpy": 31,
-      "warnings": 36
+      "gibbs": 45,
+      "entropy": 37,
+      "enthalpy": 38,
+      "warnings": 51
     },
     {
       "symbol": "Os",
@@ -1690,15 +1690,15 @@
     {
       "symbol": "Sn",
       "system": "Tin (Sn)",
-      "species": 26,
-      "aqueous": 9,
+      "species": 48,
+      "aqueous": 23,
       "solid": 17,
-      "gas": 0,
-      "liquid": 0,
-      "gibbs": 25,
-      "entropy": 17,
-      "enthalpy": 14,
-      "warnings": 18
+      "gas": 7,
+      "liquid": 1,
+      "gibbs": 46,
+      "entropy": 26,
+      "enthalpy": 24,
+      "warnings": 40
     },
     {
       "symbol": "Sr",
@@ -1897,6 +1897,10 @@
     },
     {
       "warning_type": "shock_remaining_r06_original_model",
+      "count": 50
+    },
+    {
+      "warning_type": "nea02c_ligand_reference_scope",
       "count": 50
     },
     {
