@@ -20,8 +20,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The 14 October 2026 latest checkpoint contains **854 species and 2,837 observations**
-across 74 supported systems, with **753/713/581 selected G/S/H properties**.
+The latest 14 October 2026 checkpoint contains **855 species and 2,840 observations**
+across 74 supported systems, with **754/714/582 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -54,6 +54,26 @@ formula balance. Enthalpy-only records remain unavailable to Gibbs calculations.
 Heat capacities are retained externally for R18 and supply no entropy values.
 Dehydrated silicates require a compatible representation with the present
 H3SiO4- ligand and non-negative residual core atom counts, so they stay held.
+
+The NEA02b continuation adds one distinct fixed-composition Fe0.932O phase
+and three `source_verified_estimate` observations: G = −244,593 ±1,906 J/mol,
+H = −265,800 ±1,900 J/mol and S = 56.690 ±0.490 J/(mol K), per complete
+Fe0.932O formula unit. The record stores 0.932 Fe, one O, 1.932 atoms and
+mean Fe oxidation/electron coefficient 2/0.932. Energies normalize per mole
+Fe during calculations. The source gives the ambient average cubic Fm-3m
+structure; defect superstructures and a new Materials Project match are
+unassigned.
+
+The phase is quenched and metastable at298.15K relative to Fe and magnetite.
+The source H is a third-law estimate with a bridging heat-capacity model.
+Its S is the calorimetric entropy increment with an unknown residual
+configurational contribution omitted; the same convention underlies source G.
+These qualifications and the chapter's broadened composition uncertainty
+remain in three warnings and exact observation locators. The existing
+stoichiometric FeO record, all earlier selections and NIST request coverage
+are preserved. Fixed composition supplies one evaluated point in a
+nonstoichiometric phase field; the calculator has no continuous solid-solution
+or defect-population model.
 
 Each reported observation exposes its own `source_locator` through the API,
 falling back to the general source locator when absent. NEA uncertainty

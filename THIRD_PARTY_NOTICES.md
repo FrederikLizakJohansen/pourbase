@@ -54,6 +54,14 @@ OECD attribution and downstream acknowledgment requirement above applies.
 The selected numerical data use the existing permission route; other sources
 retain their separate terms. Complete publication pages remain external.
 
+The NEA02b continuation adds the selected Fe0.932O formation G/H and entropy
+from iron volume13a, Table III-1, printed p.44, with the composition and
+qualifications in sectionVII.2.8, printed pp.205–212. OECD and the Nuclear
+Energy Agency are acknowledged. These are retained as source-reviewed
+estimates for a fixed-composition metastable solid. The entropy follows the
+published convention that omits an unknown residual configurational term.
+The same OECD attribution and downstream acknowledgment requirements apply.
+
 The earlier NEA observations retain their own associated review citations in
 the database. Pourbase retains alternative evaluations and normalizes units
 and formula encodings for calculation. Complete publications, page images,

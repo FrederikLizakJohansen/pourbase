@@ -85,7 +85,7 @@ warrants it.
   species**. They fill **15 missing properties** and change **ten existing
   selections** under the unchanged policy. The nickel errata were checked;
   they do not change the imported 298.15 K G/H/S rows.
-- The database now has **806 species and 2,679 observations across 74 systems**,
+- The first checkpoint contained **806 species and 2,679 observations across 74 systems**,
   with selected G/S/H counts **714/679/539**. All earlier numerical evidence
   remains stored. New polynuclear ions retain their full formula units; the
   current closed metal-balance model excludes and reports polynuclear aqueous
@@ -107,7 +107,7 @@ beta-Sn entropy remains an alternative to the higher-ranked CODATA selection.
 All earlier numerical evidence and all 28 historical NEA request selections
 are preserved.
 
-Current totals are **854 species /2,837 observations /74 systems**, with
+Totals after NEA02a are **854 species /2,837 observations /74 systems**, with
 selected G/S/H counts **753/713/581**. The existing source-specific OECD
 permission review covers these additional selected numerical data; the same
 attribution and downstream acknowledgment requirements apply. New observations
@@ -120,13 +120,43 @@ NiS. Complete hydrate amounts and large formula units are retained. NiS2's
 formal Ni(II) and four-electron reaction coefficient reflect its disulfide
 composition and the free-sulfide calculation reference.
 
-Held rows include nonstoichiometric compositions, mixed-metal compounds,
+At that checkpoint, held rows included nonstoichiometric compositions, mixed-metal compounds,
 unrepresented iodate/arsenic chemistry and dehydrated silicates whose present
 H3SiO4- reference would require negative residual core atom counts. Their
 source facts remain in the external review ledger. Source permission and
 scientific/model holds stay separate. Heat-capacity-only rows are routed to
 R18. NIST request coverage and the six original crystalline Gibbs gaps are
 unchanged.
+
+## Completed NEA02b fixed-composition wüstite review
+
+Fe0.932O is retained as a separate nominal composition with three
+`source_verified_estimate` observations: G −244.593 ±1.906 kJ/mol,
+H −265.800 ±1.900 kJ/mol and S 56.690 ±0.490 J/(mol K), per mole of
+Fe0.932O. The source is iron volume13a Table III-1, printed p.44, with
+sectionVII.2.8, printed pp.205–212, establishing the molar basis, ambient
+average structure, metastability and estimation conventions.
+
+The model stores0.932 Fe and one O per formula and uses2/0.932 electrons
+and protons per Fe for the water/metal reaction. Fractional metal-count
+normalization and precipitation were independently checked by rescaling to
+Fe233O250. This is one fixed source composition. The chapter's composition
+uncertainty and defect/solid-solution qualifications remain in provenance.
+
+The enthalpy is a third-law estimate; the entropy excludes an unknown
+zero-point configurational term. The source-calculated G retains that entropy
+convention. All three observations keep source intervals and explicit
+warnings, with the established OECD permission and downstream acknowledgment.
+The new record preserves the stoichiometric FeO record and every existing
+selection. It resolves this one earlier solid hold, leaving29 of the NEA02a
+scientific/model holds open.
+
+Current totals are **855 species /2,840 observations /74 systems**, with
+selected G/S/H counts **754/714/582**. Historical request coverage remains
+**116/131**; the stoichiometric FeO requests retain their separate status.
+The74 sampled default diagrams are unchanged. The new phase lies above the
+balanced Fe/magnetite combination at298.15K under the retained G convention,
+consistent with the source's metastability assessment.
 
 ## Further exploration
 

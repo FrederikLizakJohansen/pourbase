@@ -4,6 +4,11 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Add a distinct fixed-composition Fe0.932O phase with three NEA source-reviewed
+  G/H/S estimates. Preserve fractional molar normalization, source metastability,
+  third-law enthalpy assumptions and the omitted residual-entropy contribution.
+  All earlier selections and the stoichiometric FeO request status are preserved.
+
 - Review all 103 solid rows of the retained iron/nickel/tin NEA selected tables.
   Add 158 observations and 48 species, filling 115 properties and changing
   42 selections under the unchanged policy. Preserve all earlier evidence;
@@ -66,8 +71,8 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
   fractions of dissolved species where no solid precipitates; `thermal_scale` and
   `--boltzmann-scale` remain as deprecated aliases.
 
-- 854 species and 2837 retained observations across 74 supported elemental systems, with
-  recommended Gibbs energies for 753.
+- 855 species and 2840 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 754.
 - One conditional magnesite Gibbs alternative uses the original 1965 solubility
   evaluation and openly licensed ion/gas/water anchors. The ideal CO2 reference
   correction is explicit; source complexing and pressure assumptions remain attached.
