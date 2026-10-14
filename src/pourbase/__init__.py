@@ -49,6 +49,7 @@ from .models import (
 )
 from .mp_thermochemistry import comparison_metrics, plot_mp_thermochemistry_comparison, write_mp_thermochemistry_bundle
 from .overview import Category, ElementResult, ElementStatus, PeriodicScreen, screen_periodic_table
+from .inverse import KINDS, StabilityRegion, WindowResult, screen_window, stability_region
 from .measurements import MeasuredPoint, PointAssessment, assess_points
 from .paths import Crossing, PhasePath, path_curve, phase_path
 from .sections import LigandPredominance, Solubility, ligand_predominance, solubility
@@ -165,6 +166,11 @@ __all__ = [
     "plot_speciation_profile",
     "plot_uncertainty",
     "selection_sensitivity",
+    "KINDS",
+    "StabilityRegion",
+    "WindowResult",
+    "screen_window",
+    "stability_region",
     "MeasuredPoint",
     "PointAssessment",
     "assess_points",

@@ -127,7 +127,7 @@ class DiagramPage(StackedView):
         probe.anchorClicked.connect(self._open_link)
         from PySide6.QtWidgets import QTabWidget
 
-        from .diagram_tools import PathPanel, PointsPanel
+        from .diagram_tools import PathPanel, PointsPanel, RegionPanel
 
         self.path_panel = PathPanel()
         self.points_panel = PointsPanel()
@@ -136,6 +136,8 @@ class DiagramPage(StackedView):
         self.tools.addTab(probe, "Probe")
         self.tools.addTab(self.path_panel, "Path")
         self.tools.addTab(self.points_panel, "Measured points")
+        self.region_panel = RegionPanel()
+        self.tools.addTab(self.region_panel, "Find region")
         self.tools.setMinimumHeight(140)
         # the cursor readout sits on the bottom edge of the diagram, so it takes no height of its own
         cursor.setParent(diagram)
@@ -164,6 +166,8 @@ class DiagramPage(StackedView):
         self.path_panel.pickFinished.connect(self.diagram.finish_pick)
         self.diagram.pathEdited.connect(self.path_panel.set_vertices)
         self.points_panel.changed.connect(self.update_tools)
+        self.region_panel.changed.connect(self.update_tools)
+        self.tools.currentChanged.connect(lambda _index: self.update_tools())
         self.points_panel.probeRequested.connect(self.probeMoved)
 
     def _show_cursor(self, text: str) -> None:
@@ -201,6 +205,18 @@ class DiagramPage(StackedView):
             stable = [item.record_id for item in diagram.stable_species]
             self.path_panel.show_result(phase_path(calculation, *path[0], smooth=path[1]), stable,
                                         calculation.database)
+        from ..inverse import stability_region
+
+        self.region_panel.set_species(diagram.system.species)
+        target, margin, sigma = self.region_panel.options()
+        if self.tools.currentWidget() is self.region_panel and target:  # shaded while its panel is open
+            region = stability_region(calculation, target, margin, sigma)
+            names = {item.record_id: item.species for item in diagram.system.species}
+            self.diagram.show_region(region)
+            self.region_panel.show_region(region, self.region_panel.kinds.get(target) or names.get(target, target),
+                                          calculation.is_mass_balance)
+        else:
+            self.diagram.show_region(None)
         assessments = assess_points(calculation, self.points_panel.points)
         self.points_panel.show_assessments(assessments)
         self.diagram.show_points([(item.point.label, item.point.pH, item.point.eh_V, item.within_uncertainty)

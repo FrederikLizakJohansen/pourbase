@@ -184,6 +184,24 @@ class UndoBoundaryOverlayTests(WindowTestCase):
         self.assertEqual(window.overview.temperature.value(), 25.0)
         window.recalculate()
 
+    def test_find_region_and_window_search(self) -> None:
+        window = self.window
+        self.open("Fe")
+        page = window.diagram_page
+        page.tools.setCurrentWidget(page.region_panel)
+        panel = page.region_panel
+        panel.target.setCurrentIndex(panel.target.findData("passivation"))
+        self.assertIn("holds on", panel.summary.text())
+        panel.target.setCurrentIndex(panel.target.findData("gfe-fe-fe2o3-q+0-solid-hematite"))
+        panel.margin.setValue(5.0)
+        self.assertIn("nowhere", panel.summary.text())  # FeOOH lies within 1.25 kJ/mol of hematite
+        page.tools.setCurrentIndex(0)
+        overview = window.overview
+        overview.color.setCurrentIndex(overview.color.findData("window"))
+        self.wait(lambda: overview.canvas.window is not None)
+        self.assertEqual(overview.canvas.window["Ti"].fraction, 1.0)
+        overview.color.setCurrentIndex(overview.color.findData("category"))
+
 
 if __name__ == "__main__":
     unittest.main()

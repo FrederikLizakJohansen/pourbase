@@ -6,6 +6,7 @@ import csv
 import html
 from pathlib import Path
 
+import numpy as np
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QAbstractItemView, QComboBox, QFileDialog, QGridLayout, QHBoxLayout, QHeaderView, QLabel, QMessageBox,
@@ -353,3 +354,86 @@ class PointsPanel(QWidget):
 def stable_ids(calculation) -> list[str]:
     return [item.record_id for item in calculation.diagram.stable_species]
 
+
+
+class RegionPanel(QWidget):
+    """Where a species, or a kind of species, is stable with a chosen margin (Eq. 17)."""
+
+    changed = Signal()
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        from PySide6.QtWidgets import QDoubleSpinBox, QFormLayout
+
+        from ..inverse import KINDS
+
+        self.kinds = KINDS
+        self.target = QComboBox()
+        self.target.currentIndexChanged.connect(lambda _index: self.changed.emit())
+        self.margin = QDoubleSpinBox()
+        self.margin.setRange(0.0, 100.0)
+        self.margin.setDecimals(1)
+        self.margin.setSingleStep(1.0)
+        self.margin.setSuffix(" kJ/mol")
+        self.margin.setKeyboardTracking(False)
+        self.margin.setToolTip("The target holds where its species lie at least this far below every other species")
+        self.margin.valueChanged.connect(lambda _value: self.changed.emit())
+        self.sigma = QComboBox()
+        self.sigma.addItem("Energy margin above", None)
+        for k in (1.0, 2.0, 3.0):
+            self.sigma.addItem(f"At least {k:g} combined uncertainties", k)
+        self.sigma.currentIndexChanged.connect(self._sigma_changed)
+        form = QFormLayout()
+        form.addRow("Stable", self.target)
+        form.addRow("Require", self.sigma)
+        form.addRow("Margin", self.margin)
+        self.summary = QLabel("Choose a species or a kind of species to shade where it is stable.")
+        self.summary.setWordWrap(True)
+        self.summary.setTextFormat(Qt.RichText)
+        self.summary.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+        layout = QHBoxLayout(self)
+        layout.addLayout(form)
+        layout.addWidget(self.summary, 1)
+        self._species_key = None
+
+    def _sigma_changed(self) -> None:
+        self.margin.setEnabled(self.sigma.currentData() is None)
+        self.changed.emit()
+
+    def set_species(self, species) -> None:
+        """The kinds, then every species of the system; the choice is kept when it still exists."""
+        key = tuple(item.record_id for item in species)
+        if key == self._species_key:
+            return
+        self._species_key = key
+        current = self.target.currentData()
+        self.target.blockSignals(True)
+        self.target.clear()
+        for kind, label in self.kinds.items():
+            self.target.addItem(label, kind)
+        self.target.insertSeparator(self.target.count())
+        for item in sorted(species, key=lambda item: item.species):
+            self.target.addItem(f"{item.species}  ({item.phase})", item.record_id)
+        index = self.target.findData(current) if current is not None else -1
+        self.target.setCurrentIndex(index if index >= 0 else 0)
+        self.target.blockSignals(False)
+
+    def options(self) -> tuple[str, float, float | None]:
+        return self.target.currentData(), self.margin.value() * 1000, self.sigma.currentData()
+
+    def show_region(self, region, name: str, mass_balance: bool) -> None:
+        if region is None:
+            self.summary.setText("")
+            return
+        if region.fraction == 0:
+            text = f"{to_html(name)} is stable nowhere in the diagram with this margin."
+        else:
+            pH_range, eh_range = region.pH_range, region.eh_range
+            text = (f"{to_html(name)} holds on {region.fraction:.1%} of the diagram, within pH {pH_range[0]:.2f} to "
+                    f"{pH_range[1]:.2f} and Eh {eh_range[0]:+.3f} to {eh_range[1]:+.3f} V vs SHE.")
+            finite = region.margin_J_mol_metal[region.satisfied & np.isfinite(region.margin_J_mol_metal)]
+            if finite.size:
+                text += f" Its largest margin there is {finite.max() / 1000:.1f} kJ/mol metal."
+        if mass_balance:
+            text += " In the mass-balance model the region follows the dominant species; margins do not apply."
+        self.summary.setText(text)

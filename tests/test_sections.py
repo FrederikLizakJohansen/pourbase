@@ -54,6 +54,34 @@ class PathTests(unittest.TestCase):
         self.assertEqual([c.after.species for c in straight.crossings][:2], ["Fe²⁺", "Fe₂O₃"])
 
 
+class InverseTests(unittest.TestCase):
+    def test_kinds_partition_the_diagram(self) -> None:
+        from pourbase.inverse import stability_region
+
+        calculation = pb.calculate(pb.Scenario("Fe"))
+        shares = [stability_region(calculation, kind).fraction for kind in ("immunity", "passivation", "corrosion")]
+        gases = np.mean([calculation.diagram.system.species[i].is_gas for i in calculation.diagram.stable_species_index.ravel()])
+        self.assertAlmostEqual(sum(shares) + gases, 1.0, places=6)
+
+    def test_zero_margin_is_the_stability_region_and_margins_shrink_it(self) -> None:
+        from pourbase.inverse import stability_region
+
+        calculation = pb.calculate(pb.Scenario("Fe"))
+        hematite = "gfe-fe-fe2o3-q+0-solid-hematite"
+        region = stability_region(calculation, hematite)
+        index = [item.record_id for item in calculation.diagram.system.species].index(hematite)
+        np.testing.assert_array_equal(region.satisfied, calculation.diagram.stable_species_index == index)
+        self.assertLessEqual(stability_region(calculation, "passivation", 5000).fraction,
+                             stability_region(calculation, "passivation").fraction)
+
+    def test_window_screen(self) -> None:
+        from pourbase.inverse import screen_window
+
+        results = screen_window(pb.ThermodynamicDatabase.bundled(), "passivation", (2.0, 4.0), (0.8, 1.2))
+        self.assertEqual(results["Ti"].fraction, 1.0)
+        self.assertEqual(results["Na"].fraction, 0.0)
+
+
 class MeasurementTests(unittest.TestCase):
     def test_points_are_assessed_and_converted_from_the_reference_electrode(self) -> None:
         from pourbase.gui.diagram_tools import read_points

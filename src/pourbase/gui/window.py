@@ -129,6 +129,7 @@ class MainWindow(QMainWindow):
         self.overview.canvas.elementClicked.connect(self.open_element)
         self.overview.ligandToggled.connect(self._overview_ligand_toggled)
         self.overview.temperatureChanged.connect(lambda value: self.panel.temperature.spin.setValue(value))
+        self.overview.windowChanged.connect(self.search_window)
         self.panel = SettingsPanel(self.database)
         self.panel.changed.connect(self._settings_changed)
         self.panel.displayChanged.connect(self.refresh_view)
@@ -561,6 +562,7 @@ class MainWindow(QMainWindow):
 
     def screen_in_background(self) -> None:
         """Screen the periodic table off the UI thread; the table greys out while it runs."""
+        self.search_window()
         arguments = self._screen_arguments()
         key = (tuple(sorted(arguments.items())), id(self.session))
         if self.session.cached("screen", key[0]) is not None:
@@ -729,6 +731,32 @@ class MainWindow(QMainWindow):
                     solution_density_kg_L=settings.solution_density_kg_L,
                     allow_incomplete=settings.allow_incomplete, energy_policy=settings.energy_policy.value,
                     ligands=settings.ligand_activities(), temperature_K=round(settings.temperature_C + 273.15, 6))
+
+    def search_window(self) -> None:
+        """Share of the periodic table's pH–potential window where its criterion holds, for every element."""
+        from ..inverse import KINDS, screen_window
+
+        overview = self.overview
+        if overview.color.currentData() != "window":
+            return
+        window = overview.window()
+        settings = self.settings
+        scenario = dict(concentration=settings.concentration, concentration_unit=settings.concentration_unit,
+                        solution_density_kg_L=settings.solution_density_kg_L, ligands=settings.ligand_activities(),
+                        allow_incomplete=settings.allow_incomplete, energy_policy=settings.energy_policy,
+                        temperature_K=round(settings.temperature_C + 273.15, 6))
+        if not (window["pH"][0] < window["pH"][1] and window["eh_V"][0] < window["eh_V"][1]):
+            overview.canvas.show_window(None, "")
+            self._set_status("The window needs a lower and a higher pH and potential")
+            return
+        key = (tuple(sorted((k, str(v)) for k, v in window.items())), tuple(sorted((k, str(v)) for k, v in scenario.items())),
+               id(self.session))
+        label = KINDS[window["kind"]] + (f", margin ≥ {window['min_margin_J_mol'] / 1000:g} kJ/mol"
+                                        if window["min_margin_J_mol"] else "")
+        self._window_label = label
+        self._wanted["window"] = key
+        database = self.session.database
+        self.tasks.submit("window", key, lambda _progress: screen_window(database, **window, **scenario))
 
     def update_overview(self) -> None:
         settings = self.settings
@@ -1083,6 +1111,15 @@ class MainWindow(QMainWindow):
             self.sweep_page.hint.setText(f"Evaluating the Materials Project sweep… {fraction:.0%}")
 
     def _task_finished(self, kind: str, key: Any, result: Any, error: str) -> None:
+        if kind == "window":
+            if self._wanted.get(kind) != key:
+                return
+            del self._wanted[kind]
+            if error or result is None:
+                self._set_status(f"The window search failed: {error}")
+                return
+            self.overview.canvas.show_window(result, self._window_label)
+            return
         if kind == "overlay":
             if self._wanted.get(kind) != key:
                 return

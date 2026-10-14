@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import math
 
+import numpy as np
+from matplotlib import colormaps
+
 from PySide6.QtCore import QPointF, QRectF, Qt, Signal
 from PySide6.QtGui import (
     QBrush, QColor, QFont, QFontMetricsF, QLinearGradient, QPainter, QPainterPath, QPen, QPixmap,
@@ -26,7 +29,8 @@ CATEGORY_COLORS = {
     Category.OTHER_SOLID: "#79c07f",
     Category.INCOMPLETE: "#f2a0a0",
 }
-COLOR_MODES = {"category": "Stable species category", "margin": "Stability margin"}
+COLOR_MODES = {"category": "Stable species category", "margin": "Stability margin",
+               "window": "Share of a pH–potential window"}
 UNIT_LABELS = {"log10_molar": "log₁₀ M", "molar": "M", "ppm": "ppm", "wt_percent": "wt %"}
 F_BLOCK_MARKERS = {(5, 2): "57–71", (6, 2): "89–103"}
 CARD_CELLS = ((0, 2), (2, 11))
@@ -38,6 +42,12 @@ def formula_only(name: str) -> str:
     import re
 
     return re.sub(r"\s+\([^()]*\)$", "", name)
+
+
+def window_color(fraction: float) -> QColor:
+    """Sequential color for the share of a window where a criterion holds, 0 to 1."""
+    red, green, blue, _alpha = colormaps["YlGn"](0.12 + 0.83 * max(0.0, min(fraction, 1.0)))
+    return QColor.fromRgbF(red, green, blue)
 
 
 def table_position(atomic_number: int) -> tuple[int, int]:
@@ -85,6 +95,8 @@ class PeriodicTableCanvas(QWidget):
         self.selected: str | None = None
         self.highlight_category: Category | None = None
         self.color_mode = "category"
+        self.window: dict | None = None  # symbol → WindowResult of the window search
+        self.window_label = ""
         self.dark = False
         self._tiles: dict[str, QRectF] = {}
         self._chips: dict[Category, QRectF] = {}
@@ -98,6 +110,14 @@ class PeriodicTableCanvas(QWidget):
     def set_selected(self, symbol: str | None) -> None:
         self.selected = symbol
         self._redraw()
+
+    def show_window(self, results: dict | None, label: str) -> None:
+        self.window, self.window_label = results, label
+        self._redraw()
+
+    def _window_fraction(self, symbol: str) -> float | None:
+        result = (self.window or {}).get(symbol)
+        return None if result is None else result.fraction
 
     def set_color_mode(self, mode: str) -> None:
         self.color_mode = mode
@@ -136,6 +156,9 @@ class PeriodicTableCanvas(QWidget):
     def _fill(self, element: ElementResult) -> QColor | None:
         if element.category not in CATEGORY_COLORS:
             return None
+        if self.color_mode == "window":
+            fraction = self._window_fraction(element.symbol)
+            return QColor(128, 128, 128, 40) if fraction is None else window_color(fraction)
         if self.color_mode == "margin" and element.energy_margin_J_mol_metal is not None:
             color = margin_color(element.energy_margin_J_mol_metal / 1000)
         else:
@@ -221,7 +244,8 @@ class PeriodicTableCanvas(QWidget):
             border.setAlpha(fill.alpha())
             painter.setPen(QPen(border, 1))
             dimmed = self.highlight_category and element.category != self.highlight_category
-            text = self._muted() if dimmed else QColor("#15181c")
+            dark_fill = fill.alpha() > 200 and fill.lightnessF() < 0.42  # white text on dark tiles
+            text = self._muted() if dimmed else QColor("#ffffff" if dark_fill else "#15181c")
         else:
             painter.fillPath(path, QColor("#2b2d30" if self.dark else "#f4f5f7"))
             painter.setPen(QPen(self._muted(), 0.8, Qt.DotLine))
@@ -250,7 +274,12 @@ class PeriodicTableCanvas(QWidget):
         painter.setFont(large)
         painter.drawText(QRectF(cell.left(), cell.top() + cell.height() * 0.14, cell.width(), cell.height() * 0.5),
                          Qt.AlignCenter, element.symbol)
-        if element.stable is not None:
+        if self.color_mode == "window" and self._window_fraction(element.symbol) is not None:
+            painter.setFont(small)
+            painter.drawText(QRectF(cell.left() + pad, cell.bottom() - cell.height() * 0.34,
+                                    cell.width() - 2 * pad, cell.height() * 0.28), Qt.AlignCenter,
+                             f"{self._window_fraction(element.symbol):.0%}")
+        elif element.stable is not None:
             draw_formula(painter, QRectF(cell.left() + pad, cell.bottom() - cell.height() * 0.34,
                                          cell.width() - 2 * pad, cell.height() * 0.28), pretty_formula(formula_only(element.stable.species)), small)
 
@@ -290,6 +319,15 @@ class PeriodicTableCanvas(QWidget):
         painter.drawText(inner.adjusted(pitch * 0.3, 0, 0, 0), Qt.AlignLeft | Qt.AlignTop,
                          element.system or element.symbol)
         lines: list[str | tuple[str, str]] = [element.category.label]
+        if self.color_mode == "window" and self.window is not None:
+            result = self.window.get(element.symbol)
+            if result is not None and result.fraction is not None:
+                text = f"{self.window_label}: {result.fraction:.0%} of the window"
+                if result.minimum_margin_J_mol_metal is not None and np.isfinite(result.minimum_margin_J_mol_metal):
+                    text += f"; smallest margin {result.minimum_margin_J_mol_metal / 1000:+.1f} kJ/mol metal"
+                lines.append(text)
+            elif result is not None:
+                lines.append(f"Not calculated in the window: {result.note}")
         if element.stable is not None:
             phase = phase_label(element.stable)
             phase = phase if len(phase) <= 48 else phase[:46].rstrip(" ,;(") + "…"
@@ -341,7 +379,21 @@ class PeriodicTableCanvas(QWidget):
         provisional = sum(item.status.is_provisional for item in self.elements.values())
         key_text = f"{PROVISIONAL_LABEL}  {provisional}"
         key_width = metrics.horizontalAdvance(key_text) + 40 if provisional else 0.0
-        if self.color_mode == "margin":
+        if self.color_mode == "window":
+            width = min(area.width() * 0.5, 420)
+            bar = QRectF(area.center().x() - width / 2, area.top() + 6, width, 12)
+            for step in range(100):
+                painter.fillRect(QRectF(bar.left() + step * width / 100, bar.top(), width / 100 + 1, bar.height()),
+                                 window_color(step / 99))
+            painter.setPen(self._muted())
+            for value in (0, 25, 50, 75, 100):
+                x = bar.left() + width * value / 100
+                painter.drawText(QRectF(x - 30, bar.bottom() + 2, 60, 16), Qt.AlignCenter, f"{value}%")
+            caption = f"Share of the window: {self.window_label}" if self.window is not None else \
+                "Set a window and a criterion above"
+            painter.drawText(QRectF(bar.left() - 100, bar.bottom() + 18, width + 200, 16), Qt.AlignCenter, caption)
+            x = bar.right() + 36
+        elif self.color_mode == "margin":
             width = min(area.width() * 0.5, 420)
             bar = QRectF(area.center().x() - width / 2, area.top() + 6, width, 12)
             for step in range(100):
@@ -467,12 +519,13 @@ class OverviewPage(QWidget):
         self.ligand_actions: dict[str, object] = {}
         self.note = QLabel()
         self.note.setStyleSheet("color: gray;")
+        self.window_bar = self._window_controls()
         self.canvas = PeriodicTableCanvas()
         for slider in (self.pH, self.potential):
             slider.valueChanged.connect(lambda _value: self.changed.emit())
         self.reference.currentIndexChanged.connect(lambda _index: self.changed.emit())
         self.temperature.valueChanged.connect(self.temperatureChanged)
-        self.color.currentIndexChanged.connect(lambda _index: self.canvas.set_color_mode(self.color.currentData()))
+        self.color.currentIndexChanged.connect(self._color_mode_changed)
         controls = QHBoxLayout()
         controls.addWidget(self.pH, 3)
         controls.addSpacing(16)
@@ -489,7 +542,9 @@ class OverviewPage(QWidget):
         layout.setContentsMargins(16, 12, 16, 8)
         layout.addLayout(controls)
         layout.addWidget(self.note)
+        layout.addWidget(self.window_bar)
         layout.addWidget(self.canvas, 1)
+        self.window_bar.hide()
 
     def set_ligands(self, references, settings) -> None:
         """Show the ligand reservoirs of ``settings`` for the ligands in ``references``."""
@@ -518,6 +573,58 @@ class OverviewPage(QWidget):
         self.ligand_button.setText(f"Ligands: {len(names)} on" if active else "Ligands: off")
         self.ligand_button.setToolTip("Buffered ligand reservoirs for every element, here and in the element "
                                       "view: " + (", ".join(names) if active else "none"))
+
+    windowChanged = Signal()
+
+    def _window_controls(self) -> QWidget:
+        """pH and potential limits, a criterion and a margin for the window search."""
+        from PySide6.QtWidgets import QDoubleSpinBox
+
+        from ..inverse import KINDS
+
+        bar = QWidget()
+        row = QHBoxLayout(bar)
+        row.setContentsMargins(0, 0, 0, 0)
+
+        def spin(low, high, value, decimals, step, suffix=""):
+            box = QDoubleSpinBox()
+            box.setRange(low, high)
+            box.setDecimals(decimals)
+            box.setSingleStep(step)
+            box.setValue(value)
+            box.setSuffix(suffix)
+            box.setKeyboardTracking(False)
+            box.valueChanged.connect(lambda _value: self.windowChanged.emit())
+            return box
+
+        self.window_pH = (spin(-2, 16, 2.0, 2, 0.5), spin(-2, 16, 4.0, 2, 0.5))
+        self.window_eh = (spin(-2.5, 2.5, 0.8, 3, 0.05, " V"), spin(-2.5, 2.5, 1.2, 3, 0.05, " V"))
+        self.window_kind = QComboBox()
+        for key, label in KINDS.items():
+            self.window_kind.addItem(label, key)
+        self.window_kind.setCurrentIndex(self.window_kind.findData("passivation"))
+        self.window_kind.currentIndexChanged.connect(lambda _index: self.windowChanged.emit())
+        self.window_margin = spin(0.0, 100.0, 0.0, 1, 1.0, " kJ/mol")
+        self.window_margin.setToolTip("The criterion holds where its species lie at least this far below all others")
+        for widget in (QLabel("Window: pH"), self.window_pH[0], QLabel("to"), self.window_pH[1],
+                       QLabel("  E vs SHE"), self.window_eh[0], QLabel("to"), self.window_eh[1],
+                       QLabel("  Criterion"), self.window_kind, QLabel("  Margin at least"), self.window_margin):
+            row.addWidget(widget)
+        row.addStretch(1)
+        return bar
+
+    def window(self) -> dict:
+        return {"kind": self.window_kind.currentData(),
+                "pH": (self.window_pH[0].value(), self.window_pH[1].value()),
+                "eh_V": (self.window_eh[0].value(), self.window_eh[1].value()),
+                "min_margin_J_mol": self.window_margin.value() * 1000}
+
+    def _color_mode_changed(self) -> None:
+        mode = self.color.currentData()
+        self.window_bar.setVisible(mode == "window")
+        self.canvas.set_color_mode(mode)
+        if mode == "window":
+            self.windowChanged.emit()
 
     def conditions(self) -> dict[str, object]:
         return {

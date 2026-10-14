@@ -637,6 +637,33 @@ class DiagramView(pg.PlotWidget):
         self._picked = []
         self.viewport().setCursor(Qt.ArrowCursor)
 
+    def show_region(self, region) -> None:
+        """Shade a :class:`~pourbase.inverse.StabilityRegion` and outline it, or remove it."""
+        if not hasattr(self, "region_image"):
+            self.region_image = pg.ImageItem(axisOrder="row-major")
+            self.region_image.setZValue(2.5)
+            self.addItem(self.region_image)
+            self.region_outline = pg.PlotDataItem(connect="pairs")
+            self.region_outline.setZValue(3.5)
+            self.addItem(self.region_outline)
+        if region is None or self.diagram is None:
+            self.region_image.clear()
+            self.region_outline.setData([], [])
+            return
+        temperature = self.diagram.conditions.temperature_K
+        axis, rows, valid = resample(region.pH, region.eh_V, self.scale, temperature)
+        columns = np.arange(region.pH.size)[np.newaxis, :]
+        inside = region.satisfied[rows, columns] & valid
+        overlay = np.zeros((*inside.shape, 4), dtype=np.ubyte)
+        overlay[~inside & valid] = (255, 255, 255, 150) if not self.dark else (20, 22, 26, 170)
+        self.region_image.setImage(overlay, levels=(0, 255))
+        x0, x1 = _edges(region.pH)
+        y0, y1 = _edges(axis)
+        self.region_image.setRect(QRectF(x0, y0, x1 - x0, y1 - y0))
+        points = np.array(phase_boundary_segments(inside.astype(int), region.pH, axis)).reshape(-1, 2)
+        self.region_outline.setData(points[:, 0] if len(points) else [], points[:, 1] if len(points) else [],
+                                    pen=pg.mkPen("#e67e22", width=2.2))
+
     def boundary_at(self, x: float, y: float, pixels: float = 5.0) -> tuple[Any, Any] | None:
         """The two species of the boundary within ``pixels`` of a point, nearest first, or None."""
         grid = getattr(self, "_grid", None)
