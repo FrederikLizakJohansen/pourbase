@@ -8,6 +8,7 @@ from enum import Enum
 from functools import cached_property
 from typing import Any
 
+from .temperature import at_temperature
 from .activity_coefficients import DaviesActivityCoefficientModel, IdealActivityCoefficientModel
 from .conversions import ConcentrationConversion, convert_concentration
 from .database import ThermodynamicDatabase
@@ -45,7 +46,8 @@ class Scenario:
     mode; None means ideal. ``activity_overrides`` maps species record IDs, names or
     formulas to their own log10 activity in fixed-activity mode. Species without a recommended
     Gibbs energy are left out and listed in ``Calculation.excluded``; ``allow_incomplete=False``
-    raises :class:`IncompleteSystemError` instead.
+    raises :class:`IncompleteSystemError` instead. ``temperature_K`` between 273.15 and 373.15 K
+    extrapolates every Gibbs energy with its entropy of formation (see :mod:`pourbase.temperature`).
     """
 
     symbol: str
@@ -65,6 +67,7 @@ class Scenario:
     allow_incomplete: bool = True
     energy_policy: GibbsEnergyPolicy = GibbsEnergyPolicy.EXPERIMENTAL_ONLY
     activity_overrides: tuple[tuple[str, float], ...] = ()
+    temperature_K: float = 298.15
 
     def __post_init__(self) -> None:
         overrides = self.activity_overrides
@@ -88,7 +91,7 @@ class Scenario:
             log10_activity = self.concentration_conversion.log10_standard_activity
         return PourbaixConditions(
             pH_min=self.pH_min, pH_max=self.pH_max, eh_min_V=self.eh_min_V, eh_max_V=self.eh_max_V,
-            pH_points=self.pH_points, eh_points=self.eh_points,
+            pH_points=self.pH_points, eh_points=self.eh_points, temperature_K=self.temperature_K,
             aqueous_activities=AqueousActivityModel(log10_activity, dict(self.activity_overrides)),
             gas_fugacities=GasFugacityModel(self.log10_gas_fugacity),
             ligand_activities=LigandActivityModel(self.ligands) if self.ligands else None,
@@ -179,7 +182,7 @@ class Calculation:
 
 def calculate(scenario: Scenario, database: ThermodynamicDatabase | None = None) -> Calculation:
     """Calculate a scenario with the bundled database unless another is given."""
-    database = database or ThermodynamicDatabase.bundled()
+    database = at_temperature(database or ThermodynamicDatabase.bundled(), scenario.temperature_K)
     concentration = scenario.concentration_conversion
     conditions = scenario.conditions(concentration.log10_standard_activity)
     if scenario.mode is Mode.MASS_BALANCE:

@@ -58,6 +58,7 @@ class Settings:
     log10_gas_fugacity: float = 0.0
     allow_incomplete: bool = True
     use_mp_fallbacks: bool = False
+    temperature_C: float = 25.0
     pH_min: float = 0.0
     pH_max: float = 14.0
     eh_min_V: float = -1.5
@@ -88,6 +89,7 @@ class Settings:
             pH_min=self.pH_min, pH_max=self.pH_max, eh_min_V=self.eh_min_V, eh_max_V=self.eh_max_V,
             pH_points=self.pH_points, eh_points=self.eh_points,
             allow_incomplete=self.allow_incomplete, energy_policy=self.energy_policy,
+            temperature_K=round(self.temperature_C + 273.15, 6),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -230,7 +232,9 @@ class Session:
         self, scenario: Scenario, settings: SweepSettings, progress: Callable[[float], bool] | None = None
     ) -> ConcentrationSweep:
         def build() -> ConcentrationSweep:
-            return ConcentrationSweepEngine(self.database).calculate(
+            from ..temperature import at_temperature
+
+            return ConcentrationSweepEngine(at_temperature(self.database, scenario.temperature_K)).calculate(
                 scenario.symbol, scenario.conditions(), settings.log10_min, settings.log10_max,
                 settings.levels, allow_incomplete=scenario.allow_incomplete,
                 energy_policy=scenario.energy_policy, progress=progress,

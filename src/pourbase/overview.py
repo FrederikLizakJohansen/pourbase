@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 from .database import ThermodynamicDatabase
+from .models import ExclusionReason
 from .engine import transformed_gibbs_J_mol_metal, validate_reference_conditions
 from .grid import nernst_slope_V
 from .models import (
@@ -148,14 +149,18 @@ def screen_periodic_table(
     allow_incomplete: bool = True,
     energy_policy: GibbsEnergyPolicy | str = GibbsEnergyPolicy.EXPERIMENTAL_ONLY,
     ligands: tuple[LigandActivity, ...] = (),
+    temperature_K: float = 298.15,
 ) -> PeriodicScreen:
     """The lowest-energy species of every element at one pH and potential.
 
     ``ligands`` are buffered ligand reservoirs; their complexes take part for every element that
     forms them. Species without a recommended Gibbs energy are left out unless
-    ``allow_incomplete`` is False, which marks such elements as incomplete instead.
+    ``allow_incomplete`` is False, which marks such elements as incomplete instead. ``temperature_K``
+    extrapolates the Gibbs energies as in :mod:`pourbase.temperature`.
     """
-    database = database or ThermodynamicDatabase.bundled()
+    from .temperature import at_temperature
+
+    database = at_temperature(database or ThermodynamicDatabase.bundled(), temperature_K)
     reference = reference.upper()
     if reference not in ("SHE", "RHE"):
         raise ValueError("reference must be SHE or RHE")
@@ -193,7 +198,10 @@ def screen_periodic_table(
         if any(item.gibbs_status is EvidenceStatus.MATERIALS_PROJECT_FALLBACK for item in system.species):
             status = ElementStatus.CALCULATED_WITH_FALLBACK
         else:
-            status = ElementStatus.CALCULATED_WITH_GAPS if missing else ElementStatus.CALCULATED
+            without_entropy = any(item.reason is ExclusionReason.TEMPERATURE_DATA_UNAVAILABLE
+                                  for item in system.excluded)
+            status = (ElementStatus.CALCULATED_WITH_GAPS if missing or without_entropy
+                      else ElementStatus.CALCULATED)
         margin = energies[1][0] - energies[0][0] if len(energies) > 1 else None
         calculated[symbol] = (status, system.species[energies[0][1]], margin, missing)
 

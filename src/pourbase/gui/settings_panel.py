@@ -148,6 +148,19 @@ class SettingsPanel(QTabWidget):
         form.addRow(self.water_note)
         layout.addWidget(box)
 
+        box = Section("Temperature", "temperature")
+        form = QFormLayout(box.body)
+        self.temperature = FloatSlider("T", 0.0, 100.0, 25.0, decimals=1, step=5.0, unit="°C", label_width=20)
+        self.temperature.valueChanged.connect(lambda value: self._set("temperature_C", value))
+        form.addRow(self.temperature)
+        self.temperature_note = QLabel("The data describe 25 °C. Other temperatures, up to 100 °C, extrapolate each "
+                                       "Gibbs energy with its entropy of formation; species without entropy data "
+                                       "and ligand species are left out.")
+        self.temperature_note.setWordWrap(True)
+        self.temperature_note.setStyleSheet("color: gray;")
+        form.addRow(self.temperature_note)
+        layout.addWidget(box)
+
         box = Section("Activities", "activities")
         form = QFormLayout(box.body)
         self.davies = QCheckBox("Davies activity coefficients (mass balance)")
@@ -353,6 +366,7 @@ class SettingsPanel(QTabWidget):
         self.davies.setChecked(settings.davies)
         self.ionic_strength.setValue(settings.ionic_strength_mol_L)
         self.gas.setValue(settings.log10_gas_fugacity)
+        self.temperature.setValue(settings.temperature_C)
         self.require_complete.setChecked(not settings.allow_incomplete)
         self.use_ligands.setChecked(settings.use_ligands)
         self.ligands.setEnabled(settings.use_ligands)

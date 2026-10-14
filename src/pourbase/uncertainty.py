@@ -19,6 +19,7 @@ and the nearest boundary above (below) is the smallest positive (largest negativ
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 import numpy as np
@@ -36,9 +37,10 @@ def gibbs_uncertainty_J_mol(species: ThermodynamicSpecies, assumed_J_mol: float)
     """``(uncertainty of ΔfG°, whether it is assumed)`` for one species."""
     if species.gibbs_status is EvidenceStatus.DEFINED_REFERENCE_STATE:
         return 0.0, False
+    extrapolation = species.temperature_uncertainty_J_mol
     if species.gibbs_uncertainty_J_mol is not None:
-        return species.gibbs_uncertainty_J_mol, False
-    return assumed_J_mol, True
+        return math.hypot(species.gibbs_uncertainty_J_mol, extrapolation), False
+    return math.hypot(assumed_J_mol, extrapolation), True
 
 
 def _energies(diagram: PourbaixDiagram) -> npt.NDArray[np.float64]:

@@ -49,6 +49,9 @@ class ComparePage(StackedView):
         right.addRow("Right element", self.symbol)
         form.addLayout(right)
         form.addWidget(self.concentration, 1)
+        self.temperature = FloatSlider("T", 0.0, 100.0, 25.0, decimals=1, step=5.0, unit="°C", label_width=20)
+        self.temperature.setToolTip("Temperature of the right diagram; the left one follows System → Temperature")
+        form.addWidget(self.temperature, 1)
         self.left_title, self.right_title = QLabel(), QLabel()
         self.views = (DiagramView(), DiagramView())
         self.cursors = (QLabel(" "), QLabel(" "))
@@ -80,6 +83,7 @@ class ComparePage(StackedView):
         self._settle = QTimer(self, singleShot=True, interval=120)
         self._settle.timeout.connect(self.changed.emit)
         self.concentration.valueChanged.connect(lambda _value: (self.preview.emit(), self._settle.start()))
+        self.temperature.valueChanged.connect(lambda _value: (self.preview.emit(), self._settle.start()))
 
     def set_dark(self, dark: bool) -> None:
         for view in self.views:
@@ -90,7 +94,7 @@ class ComparePage(StackedView):
         symbol = self.symbol.currentData() or settings.symbol
         ligands = settings.ligands if symbol == settings.symbol else {}
         return replace(settings, symbol=symbol, concentration=self.concentration.value(),
-                       concentration_unit="log10_molar", ligands=ligands)
+                       concentration_unit="log10_molar", ligands=ligands, temperature_C=self.temperature.value())
 
     def show_calculations(self, left: Any, right: Any, display: DisplayOptions, reset_range: bool,
                           point: tuple[float, float] = (7.0, 0.0)) -> None:

@@ -40,6 +40,7 @@ class ExclusionReason(str, Enum):
     LIGAND_NOT_SELECTED = "ligand_species_not_selected"
     LIGAND_REFERENCE_UNAVAILABLE = "ligand_reference_unavailable"
     POLYNUCLEAR_AQUEOUS = "mass_balance_nonmonometal_aqueous_unsupported"
+    TEMPERATURE_DATA_UNAVAILABLE = "entropy_or_enthalpy_unavailable_for_temperature"
 
 
 @dataclass(frozen=True, slots=True)
@@ -235,6 +236,7 @@ class ThermodynamicSpecies:
     formal_metal_oxidation_state: float | None = None
     electron_coefficient_per_metal: float | None = None
     gibbs_uncertainty_J_mol: float | None = None
+    temperature_uncertainty_J_mol: float = 0.0  # added in quadrature away from 298.15 K; see temperature.py
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "gibbs_status", EvidenceStatus(self.gibbs_status))

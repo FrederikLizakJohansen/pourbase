@@ -85,7 +85,7 @@ def selection_sensitivity(
         values = sorted({round(c.value, 3) for c in candidates})
         if len(values) < 2:
             continue
-        used = item.gibbs_energy_J_mol
+        used = selection.chosen.value if selection.chosen is not None else item.gibbs_energy_J_mol
         deltas = np.array([c.value - used for c in candidates]) / item.metal_count
         farthest = deltas[int(np.argmax(np.abs(deltas)))]
         shifted = energies.copy()

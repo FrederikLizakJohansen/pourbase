@@ -310,9 +310,20 @@ class DiagramPage(StackedView):
             summary = f'<div style="margin-top:4px">{text}.</div>'
 
         gibbs = record.thermochemistry.gibbs_energy_J_mol if record else PropertyValue(None, None, None, None)
-        energy = f"ΔfG° = {kilojoules(species.gibbs_energy_J_mol)} kJ/mol"
-        if gibbs.uncertainty is not None:
-            energy += f" ± {kilojoules(gibbs.uncertainty)}"
+        import math
+
+        extrapolation = species.temperature_uncertainty_J_mol
+        if extrapolation:
+            temperature = self.calculation.scenario.temperature_K - 273.15 if self.calculation else 25.0
+            energy = f"ΔfG° at {temperature:g} °C = {kilojoules(species.gibbs_energy_J_mol)} kJ/mol"
+            if gibbs.uncertainty is not None:
+                energy += f" ± {kilojoules(math.hypot(gibbs.uncertainty, extrapolation))}"
+            if gibbs.value is not None:
+                energy += f'<br><span style="color:{muted}">extrapolated from {kilojoules(gibbs.value)} kJ/mol at 25 °C</span>'
+        else:
+            energy = f"ΔfG° = {kilojoules(species.gibbs_energy_J_mol)} kJ/mol"
+            if gibbs.uncertainty is not None:
+                energy += f" ± {kilojoules(gibbs.uncertainty)}"
         source = gibbs.source
         citation = html.escape((source.citation or source.source_id) if source else "no source")
         if source is not None and source.url:

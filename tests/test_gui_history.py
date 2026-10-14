@@ -159,6 +159,31 @@ class UndoBoundaryOverlayTests(WindowTestCase):
         page.path_panel.set_vertices([])
         page.points_panel.set_points([])
 
+    def test_temperature_reaches_every_view(self) -> None:
+        window = self.window
+        self.open("Fe")
+        window.panel.temperature.spin.setValue(90.0)
+        window.recalculate()
+        self.assertAlmostEqual(window.calculation.scenario.temperature_K, 363.15)
+        self.assertIn("90 °C", window.context_bar.text())
+        self.assertAlmostEqual(window._screen_arguments()["temperature_K"], 363.15)
+        right = window.compare_page.right_settings(window.settings)
+        self.assertEqual(right.temperature_C, window.compare_page.temperature.value())
+        window.views.setCurrentWidget(window.fixed_page)
+        self.assertIsNotNone(window.fixed_page.result)
+        window.views.setCurrentWidget(window.dft_stack)
+        self.assertIs(window.dft_stack.currentWidget(), window.dft_stack.placeholder)
+        window.views.setCurrentWidget(window.diagram_page)
+        window.overview.temperature.spin.setValue(60.0)  # the periodic table sets the same temperature
+        self.assertEqual(window.settings.temperature_C, 60.0)
+        self.assertEqual(window.panel.temperature.value(), 60.0)
+        window.update_overview()
+        self.assertIn("60 °C", window.overview.note.text())
+        window.panel.temperature.spin.setValue(25.0)
+        window.update_overview()
+        self.assertEqual(window.overview.temperature.value(), 25.0)
+        window.recalculate()
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -30,7 +30,7 @@ COLOR_MODES = {"category": "Stable species category", "margin": "Stability margi
 UNIT_LABELS = {"log10_molar": "log₁₀ M", "molar": "M", "ppm": "ppm", "wt_percent": "wt %"}
 F_BLOCK_MARKERS = {(5, 2): "57–71", (6, 2): "89–103"}
 CARD_CELLS = ((0, 2), (2, 11))
-PROVISIONAL_LABEL = "Some species without a Gibbs energy are left out"
+PROVISIONAL_LABEL = "Some species are left out for missing data"
 
 
 def formula_only(name: str) -> str:
@@ -446,6 +446,7 @@ class OverviewPage(QWidget):
 
     changed = Signal()
     ligandToggled = Signal(str, bool)  # ligand ID, or "" for every reservoir at once
+    temperatureChanged = Signal(float)  # °C; the same setting as System → Temperature
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -453,6 +454,8 @@ class OverviewPage(QWidget):
         self.potential = FloatSlider("E", -2.5, 2.5, 0.0, decimals=3, step=0.05, unit="V", label_width=14)
         self.reference = QComboBox()
         self.reference.addItems(["vs SHE", "vs RHE"])
+        self.temperature = FloatSlider("T", 0.0, 100.0, 25.0, decimals=1, step=5.0, unit="°C", label_width=14)
+        self.temperature.setToolTip("Temperature of every element; the same setting as System → Temperature")
         self.color = QComboBox()
         for key, label in COLOR_MODES.items():
             self.color.addItem(label, key)
@@ -468,12 +471,15 @@ class OverviewPage(QWidget):
         for slider in (self.pH, self.potential):
             slider.valueChanged.connect(lambda _value: self.changed.emit())
         self.reference.currentIndexChanged.connect(lambda _index: self.changed.emit())
+        self.temperature.valueChanged.connect(self.temperatureChanged)
         self.color.currentIndexChanged.connect(lambda _index: self.canvas.set_color_mode(self.color.currentData()))
         controls = QHBoxLayout()
         controls.addWidget(self.pH, 3)
         controls.addSpacing(16)
         controls.addWidget(self.potential, 3)
         controls.addWidget(self.reference)
+        controls.addSpacing(16)
+        controls.addWidget(self.temperature, 2)
         controls.addSpacing(16)
         controls.addWidget(self.ligand_button)
         controls.addSpacing(16)

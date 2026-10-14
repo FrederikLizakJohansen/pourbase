@@ -128,6 +128,7 @@ class MainWindow(QMainWindow):
         self.overview.changed.connect(self._overview_timer.start)
         self.overview.canvas.elementClicked.connect(self.open_element)
         self.overview.ligandToggled.connect(self._overview_ligand_toggled)
+        self.overview.temperatureChanged.connect(lambda value: self.panel.temperature.spin.setValue(value))
         self.panel = SettingsPanel(self.database)
         self.panel.changed.connect(self._settings_changed)
         self.panel.displayChanged.connect(self.refresh_view)
@@ -587,6 +588,11 @@ class MainWindow(QMainWindow):
                  + (f", calculated in {elapsed * 1e3:.0f} ms" if elapsed > 1e-3 else "")]
         if missing:
             parts.append(f"{missing} species omitted for missing Gibbs data")
+        cold = reasons.count(ExclusionReason.TEMPERATURE_DATA_UNAVAILABLE)
+        if cold:
+            other -= cold
+            parts.append(f"{cold} species omitted at {calculation.scenario.temperature_K - 273.15:g} °C for "
+                         "missing entropy data")
         if ligand:
             parts.append(f"{ligand} ligand species available (System → Ligands)")
         if other:
@@ -722,7 +728,7 @@ class MainWindow(QMainWindow):
                     concentration_unit=settings.concentration_unit,
                     solution_density_kg_L=settings.solution_density_kg_L,
                     allow_incomplete=settings.allow_incomplete, energy_policy=settings.energy_policy.value,
-                    ligands=settings.ligand_activities())
+                    ligands=settings.ligand_activities(), temperature_K=round(settings.temperature_C + 273.15, 6))
 
     def update_overview(self) -> None:
         settings = self.settings
@@ -732,6 +738,7 @@ class MainWindow(QMainWindow):
             self._set_status(f"!{type(error).__name__}: {error}")
             return
         self.overview.set_ligands(self.database.available_ligands(), settings)
+        self.overview.temperature.setValue(settings.temperature_C)  # shown without emitting a change
         canvas = self.overview.canvas
         canvas.selected = settings.symbol
         canvas.show_screen(screen)
@@ -739,6 +746,8 @@ class MainWindow(QMainWindow):
             f"Metal concentration {settings.concentration:g} {CONCENTRATION_UNITS[settings.concentration_unit]}"
             + ("" if settings.allow_incomplete else ", a Gibbs energy required for every species")
             + (f", {len(settings.ligand_activities())} ligand reservoir(s)" if settings.ligand_activities() else "")
+            + (f", {settings.temperature_C:g} °C (extrapolated; species without entropy data left out)"
+               if abs(settings.temperature_C - 25.0) > 1e-9 else "")
             + (", MP estimates in use" if settings.use_mp_fallbacks else "")
             + ". These follow the System settings."
         )
@@ -773,6 +782,10 @@ class MainWindow(QMainWindow):
             else:
                 text = f"Fixed activity · a = {power_of_ten(conversion.log10_standard_activity)}"
                 tip = "Every dissolved species of the element has this activity, as in Pourbaix's atlas."
+            if abs(settings.temperature_C - 25.0) > 1e-9:
+                text += f" · {settings.temperature_C:g} °C"
+                tip += (" Gibbs energies are extrapolated from 25 °C with constant enthalpies and entropies of "
+                        "formation; uncertainties include the neglected heat capacity.")
             preview = calculation.diagram.stable_species_index.shape != (settings.eh_points, settings.pH_points)
             chips["model"].configure(text + (" · preview" if preview else ""),
                                      tip + (" A coarse preview is shown while a slider moves." if preview else "")
@@ -810,10 +823,18 @@ class MainWindow(QMainWindow):
              if ligands else "No ligand reservoirs are switched on.") + " Click to edit them.",
             ACCENT if ligands else NEUTRAL, action=lambda: panel.reveal(panel.ligands_section), dark=self.dark)
         missing = len(calculation.diagram.system.missing_gibbs) if calculation is not None else 0
+        cold = sum(item.reason is ExclusionReason.TEMPERATURE_DATA_UNAVAILABLE
+                   for item in calculation.diagram.system.excluded) if calculation is not None else 0
+        reasons = []
+        if missing:
+            reasons.append(f"{missing} have no recommended Gibbs energy")
+        if cold:
+            reasons.append(f"{cold} have no entropy data to extrapolate to {settings.temperature_C:g} °C or are "
+                           "ligand species")
         chips["omitted"].configure(
-            f"{missing} species left out" if missing else "",
-            f"{missing} species of this system have no recommended Gibbs energy and are left out of the "
-            "calculation. Click to see them in the Species tab.", WARNING,
+            f"{missing + cold} species left out" if missing + cold else "",
+            f"Of the species of this system, {' and '.join(reasons)}; they are left out of the calculation. "
+            "Click to see them in the Species tab.", WARNING,
             action=lambda: self.views.setCurrentWidget(self.species_page), dark=self.dark)
         extras = []  # (text, control that edits it)
         if display.boltzmann:
@@ -1143,6 +1164,13 @@ class MainWindow(QMainWindow):
 
     def _show_dft(self, reset_range: bool = False) -> None:
         symbol = self.settings.symbol
+        if abs(self.settings.temperature_C - 25.0) > 1e-9:
+            self.dft_stack.show_message(
+                "The Materials Project comparison is made at 25 °C",
+                "Materials Project formation energies and the comparison with experiment describe 25 °C. "
+                f"The diagram is set to {self.settings.temperature_C:g} °C.",
+                ("Set 25 °C", lambda: self.panel.temperature.spin.setValue(25.0)))
+            return
         blocker = self.dft.blocker(symbol)
         if blocker is not None:
             action = (blocker.action_label, lambda: self._resolve(blocker.action)) if blocker.action else None
