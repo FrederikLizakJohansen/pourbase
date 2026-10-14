@@ -87,6 +87,21 @@ class UndoBoundaryOverlayTests(WindowTestCase):
         window.panel.overlay.setCurrentIndex(0)
         self.assertEqual(view.overlay_labels, [])
 
+    def test_popped_out_diagrams_share_the_probe(self) -> None:
+        window = self.window
+        for concentration in (-6.0, -2.0):
+            self.open("Fe", concentration=concentration)
+            window.pop_out_diagram()
+        self.assertEqual(len(window.pinned), 2)
+        self.assertNotEqual(window.pinned[0].windowTitle(), window.pinned[1].windowTitle())
+        window.pinned[1].probeMoved.emit(10.0, -0.5)
+        self.assertEqual((window.settings.probe_pH, window.settings.probe_eh_V), (10.0, -0.5))
+        self.assertTrue(window.pinned[0].readout.text().startswith("pH 10.00, Eh -0.500"))
+        self.assertTrue(window.pinned[0].sources.text().endswith("sources"))
+        window.close_pinned()
+        self.wait(lambda: not window.pinned, timeout=2)
+        self.assertEqual(window.pinned, [])
+
 
 if __name__ == "__main__":
     unittest.main()

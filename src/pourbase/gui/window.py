@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from PySide6.QtCore import QSettings, QStandardPaths, Qt, QTimer
+from PySide6.QtCore import QPoint, QSettings, QStandardPaths, Qt, QTimer
 from PySide6.QtGui import QAction, QActionGroup, QFont, QGuiApplication, QKeySequence
 from PySide6.QtWidgets import (
     QApplication,
@@ -37,6 +37,7 @@ from .compare import ComparePage
 from .context_bar import ACCENT, NEUTRAL, WARNING, ContextBar, power_of_ten
 from .credentials import storage_description
 from .history import History
+from .pinned import PinnedDiagram
 from .dft import DftController
 from .materials import matched_colors, phase_views, pretty_label
 from .mp_page import MaterialsProjectPage
@@ -95,6 +96,7 @@ class MainWindow(QMainWindow):
         self._calculate_timer = QTimer(self, singleShot=True, interval=DEBOUNCE_MS, timeout=self.calculate_in_background)
         self._overview_timer = QTimer(self, singleShot=True, interval=DEBOUNCE_MS, timeout=self.screen_in_background)
         self.history = History()
+        self.pinned: list[PinnedDiagram] = []
         self._history_timer = QTimer(self, singleShot=True, interval=600, timeout=self._record_history)
         self._build()
         self._build_menu()
@@ -131,6 +133,8 @@ class MainWindow(QMainWindow):
         self.panel.displayChanged.connect(self._history_timer.start)
         self.panel.probeChanged.connect(self.set_probe)
         self.diagram_page = DiagramPage()
+        self.diagram_page.diagram.export_menu.extra_actions.append(
+            ("Pop out as a window (Ctrl+Shift+D)", self.pop_out_diagram))
         self.diagram_page.probeMoved.connect(self.set_probe)
         self.diagram_page.speciesRequested.connect(lambda: self.views.setCurrentWidget(self.species_page))
         self.species_page = SpeciesPage()
@@ -293,6 +297,54 @@ class MainWindow(QMainWindow):
         session = self.session
         self.tasks.submit("overlay", key, lambda _progress: session.calculate(second))
 
+    def pop_out_diagram(self) -> None:
+        """Keep the current diagram in its own window; its probe follows the probes of all other diagrams."""
+        calculation = self.calculation
+        if calculation is None:
+            return
+        if calculation.diagram.stable_species_index.shape != (self.settings.eh_points, self.settings.pH_points):
+            self._set_status("The diagram is still being calculated; pop it out when it is complete")
+            return
+        context = self.context_bar.text()
+        chips = self.context_bar.chips
+        title = " · ".join(text for text in (chips["element"].text(), chips["model"].text()) if text) \
+            or self.settings.symbol
+        window = PinnedDiagram(calculation, self.display, title, context, self.dark, self)
+        window.probeMoved.connect(self._pinned_probe_moved)
+        window.destroyed.connect(lambda _object=None, window=window: self._forget_pinned(window))
+        offset = 30 * (len(self.pinned) % 10)
+        window.move(self.geometry().topLeft() + QPoint(80 + offset, 80 + offset))
+        self.pinned.append(window)
+        window.set_probe(self.settings.probe_pH, self.settings.probe_eh_V)
+        window.show()
+        self._set_status(f"Popped out {title}; probes in all diagrams move together")
+
+    def _pinned_probe_moved(self, pH: float, eh_V: float) -> None:
+        self.set_probe(pH, eh_V)
+        self.diagram_page.diagram.set_probe(pH, eh_V)
+
+    def _forget_pinned(self, window) -> None:
+        if window in self.pinned:
+            self.pinned.remove(window)
+
+    def close_pinned(self) -> None:
+        for window in list(self.pinned):
+            window.close()
+
+    def arrange_pinned(self) -> None:
+        """Tile the popped-out diagrams over the screen of the main window."""
+        if not self.pinned:
+            return
+        area = self.screen().availableGeometry()
+        count = len(self.pinned)
+        columns = math.ceil(math.sqrt(count))
+        rows = math.ceil(count / columns)
+        width, height = area.width() // columns, area.height() // rows
+        for index, window in enumerate(self.pinned):
+            row, column = divmod(index, columns)
+            window.setGeometry(area.x() + column * width, area.y() + row * height, width, height - 30)
+            window.raise_()
+
     def _search_button(self) -> QWidget:
         from PySide6.QtWidgets import QPushButton
 
@@ -348,6 +400,10 @@ class MainWindow(QMainWindow):
             themes.addAction(action)
             self.theme_actions[mode] = action
         view.addAction("Reset zoom", lambda: self.refresh_view(reset_range=True)).setShortcut("Ctrl+0")
+        view.addSeparator()
+        view.addAction("Pop out diagram", self.pop_out_diagram).setShortcut("Ctrl+Shift+D")
+        view.addAction("Arrange popped-out diagrams", self.arrange_pinned)
+        view.addAction("Close popped-out diagrams", self.close_pinned)
         tools = self.menuBar().addMenu("&Tools")
         search = tools.addAction("Search…", self.show_search)
         search.setShortcuts([QKeySequence("Ctrl+K"), QKeySequence.Find])
@@ -560,6 +616,8 @@ class MainWindow(QMainWindow):
 
     def set_probe(self, pH: float, eh_V: float) -> None:
         self.panel.set_probe(pH, eh_V)
+        for window in self.pinned:  # every popped-out diagram aims at the same point
+            window.set_probe(pH, eh_V)
         self._update_probe()
         current = self.views.currentWidget()
         if current is self.speciation_page:
@@ -1460,6 +1518,8 @@ class MainWindow(QMainWindow):
         for widget in (self.diagram_page.diagram, self.speciation_page, self.sweep_page, self.dft_page,
                        self.compare_page, self.overview.canvas, self.sensitivity_page):
             widget.set_dark(self.dark)
+        for window in self.pinned:
+            window.set_dark(self.dark)
         self.refresh_view()
         self._set_status(*self._status)
 

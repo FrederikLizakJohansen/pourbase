@@ -124,6 +124,7 @@ class _ContextMenu(QObject):
     def __init__(self, widget: QWidget, data: DataSource | None, name: Callable[[], str]) -> None:
         super().__init__(widget)
         self.widget, self.data, self.name = widget, data, name
+        self.extra_actions: list[tuple[str, Callable[[], None]]] = []  # listed first, e.g. "Pop out"
 
     def eventFilter(self, watched, event) -> bool:
         if event.type() == QEvent.ContextMenu:
@@ -133,6 +134,10 @@ class _ContextMenu(QObject):
 
     def show_menu(self, position) -> None:
         menu = QMenu(self.widget)
+        for label, callback in self.extra_actions:
+            menu.addAction(label, callback)
+        if self.extra_actions:
+            menu.addSeparator()
         for suffix, label in FORMATS.items():
             menu.addAction(f"Export figure as {suffix.upper()}…", lambda suffix=suffix: self.save_figure(suffix))
         if callable(getattr(self.widget, "python_code", None)):
