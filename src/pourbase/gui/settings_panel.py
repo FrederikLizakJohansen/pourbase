@@ -59,7 +59,7 @@ class SettingsPanel(QTabWidget):
         self.systems = dict(database.available_systems())
         pages = (self._system_tab(), self._grid_tab(), self._display_tab())
         self._areas = []
-        for page, title in zip(pages, ("System", "Grid", "Display")):
+        for page, title in zip(pages, ("System", "Axes", "Display")):
             area = _scroll(page)
             self._areas.append(area)
             self.addTab(area, title)
@@ -97,6 +97,15 @@ class SettingsPanel(QTabWidget):
             self.mode.addItem(label, key)
         self.mode.currentIndexChanged.connect(lambda _index: self._set("mode", self.mode.currentData()))
         form.addRow("Model", self.mode)
+        self.overlay = QComboBox()
+        self.overlay.addItem("None", "")
+        for symbol, name in self.systems.items():
+            self.overlay.addItem(name, symbol)
+        self.overlay.setToolTip("Draws the boundaries of a second element at the same conditions as dashed lines, "
+                                "with its species names in italics.")
+        self.overlay.currentIndexChanged.connect(
+            lambda _index: self._set_display("overlay_symbol", self.overlay.currentData()))
+        form.addRow("Overlay", self.overlay)
         layout.addWidget(box)
 
         box = Section("Metal concentration", "metal-concentration")
@@ -166,7 +175,7 @@ class SettingsPanel(QTabWidget):
     def _grid_tab(self) -> QWidget:
         page = QWidget()
         layout = QVBoxLayout(page)
-        box = Section("Axes", "axes")
+        box = Section("Range and resolution", "axes")
         form = QFormLayout(box.body)
         self.axes: dict[str, QDoubleSpinBox] = {}
         for name, label, low, high, step in (
@@ -196,6 +205,21 @@ class SettingsPanel(QTabWidget):
         reset = QPushButton("Default axes")
         reset.clicked.connect(self.reset_axes)
         form.addRow(reset)
+        layout.addWidget(box)
+
+        box = Section("Potential scale", "potential-scale")
+        form = QFormLayout(box.body)
+        self.potential_scale = QComboBox()
+        for name, offset in REFERENCE_ELECTRODES_V.items():
+            detail = "pH-dependent" if offset is None else f"{offset:+.3f} V vs SHE"
+            self.potential_scale.addItem(f"{name}  ({detail})" if name != "SHE" else name, name)
+        self.potential_scale.currentIndexChanged.connect(
+            lambda _index: self._set_display("potential_scale", self.potential_scale.currentData()))
+        form.addRow("Diagram axis", self.potential_scale)
+        note = QLabel("Calculations and the probe position use the SHE. On the RHE scale, regions outside "
+                      "the calculated potential window stay empty.")
+        note.setWordWrap(True)
+        form.addRow(note)
         layout.addWidget(box)
 
         box = Section("Probe point", "probe-point")
@@ -231,21 +255,7 @@ class SettingsPanel(QTabWidget):
             self.display_checks[name] = check
             column.addWidget(check)
         layout.addWidget(box)
-        box = Section("Potential scale", "potential-scale")
-        form = QFormLayout(box.body)
-        self.potential_scale = QComboBox()
-        for name, offset in REFERENCE_ELECTRODES_V.items():
-            detail = "pH-dependent" if offset is None else f"{offset:+.3f} V vs SHE"
-            self.potential_scale.addItem(f"{name}  ({detail})" if name != "SHE" else name, name)
-        self.potential_scale.currentIndexChanged.connect(
-            lambda _index: self._set_display("potential_scale", self.potential_scale.currentData()))
-        form.addRow("Diagram axis", self.potential_scale)
-        note = QLabel("Calculations and the probe position use the SHE. On the RHE scale, regions outside "
-                      "the calculated potential window stay empty.")
-        note.setWordWrap(True)
-        form.addRow(note)
-        layout.addWidget(box)
-        box = Section("Uncertainty (fixed activity)", "uncertainty-fixed-activity")
+        box = Section("Uncertainty hatching (fixed activity)", "uncertainty-fixed-activity")
         form = QFormLayout(box.body)
         self.uncertainty = QCheckBox("Hatch where another species lies within")
         self.uncertainty.toggled.connect(lambda value: self._set_display("uncertainty", value))
@@ -396,6 +406,7 @@ class SettingsPanel(QTabWidget):
         for name, check in self.display_checks.items():
             check.setChecked(getattr(display, name))
         self.potential_scale.setCurrentIndex(max(self.potential_scale.findData(display.potential_scale), 0))
+        self.overlay.setCurrentIndex(max(self.overlay.findData(display.overlay_symbol), 0))
         self.uncertainty.setChecked(display.uncertainty)
         self.uncertainty_sigma.setCurrentIndex(max(self.uncertainty_sigma.findData(display.uncertainty_sigma), 0))
         self.assumed_uncertainty.setValue(display.assumed_uncertainty_kJ_mol)

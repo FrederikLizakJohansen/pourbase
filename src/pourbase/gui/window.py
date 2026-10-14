@@ -7,6 +7,7 @@ import math
 import json
 import re
 import time
+import copy
 from dataclasses import replace
 from pathlib import Path
 from typing import Any
@@ -21,6 +22,7 @@ from PySide6.QtWidgets import (
 )
 
 from .. import __version__
+from ..conversions import express_concentration
 from ..exceptions import IncompleteSystemError
 from ..export import diagram_figure, grid_csv, save_figure
 from ..models import ExclusionReason
@@ -34,6 +36,7 @@ from . import logo_pixmap
 from .compare import ComparePage
 from .context_bar import ACCENT, NEUTRAL, WARNING, ContextBar, power_of_ten
 from .credentials import storage_description
+from .history import History
 from .dft import DftController
 from .materials import matched_colors, phase_views, pretty_label
 from .mp_page import MaterialsProjectPage
@@ -91,6 +94,8 @@ class MainWindow(QMainWindow):
 
         self._calculate_timer = QTimer(self, singleShot=True, interval=DEBOUNCE_MS, timeout=self.calculate_in_background)
         self._overview_timer = QTimer(self, singleShot=True, interval=DEBOUNCE_MS, timeout=self.screen_in_background)
+        self.history = History()
+        self._history_timer = QTimer(self, singleShot=True, interval=600, timeout=self._record_history)
         self._build()
         self._build_menu()
         restored = self._restored_settings()
@@ -105,6 +110,7 @@ class MainWindow(QMainWindow):
         self.recalculate()
         self.update_overview()
         self.pages.setCurrentIndex(1 if symbol else 0)
+        self._record_history()
 
     @property
     def settings(self) -> Settings:
@@ -122,6 +128,7 @@ class MainWindow(QMainWindow):
         self.panel = SettingsPanel(self.database)
         self.panel.changed.connect(self._settings_changed)
         self.panel.displayChanged.connect(self.refresh_view)
+        self.panel.displayChanged.connect(self._history_timer.start)
         self.panel.probeChanged.connect(self.set_probe)
         self.diagram_page = DiagramPage()
         self.diagram_page.probeMoved.connect(self.set_probe)
@@ -220,6 +227,72 @@ class MainWindow(QMainWindow):
         layout.addWidget(name)
         return masthead
 
+    def _state(self):
+        return (self.settings, self.display)
+
+    def _record_history(self) -> None:
+        if self._dragging():
+            self._history_timer.start()  # record once the slider is released
+            return
+        self.history.record(self._state())
+        self._update_history_actions()
+
+    def _update_history_actions(self) -> None:
+        if hasattr(self, "undo_action"):
+            self.undo_action.setEnabled(self.history.can_undo())
+            self.redo_action.setEnabled(self.history.can_redo())
+
+    def undo(self) -> None:
+        self._record_history()  # a change still waiting to be recorded becomes the step undone
+        if self.history.can_undo():
+            self._restore(self.history.undo(), "Undo")
+
+    def redo(self) -> None:
+        if self.history.can_redo():
+            self._restore(self.history.redo(), "Redo")
+
+    def _restore(self, state, verb: str) -> None:
+        settings, display = state
+        self._history_timer.stop()
+        self.panel.set_settings(settings)
+        self.panel.set_display(display)
+        self._settings_changed(False)
+        self._history_timer.stop()
+        self.refresh_view()
+        self._update_history_actions()
+        self._set_status(verb)
+
+    def _show_overlay(self, calculation: Calculation) -> None:
+        """Draw the second element's boundaries over the diagram, calculating them off the UI thread."""
+        view = self.diagram_page.diagram
+        symbol = self.display.overlay_symbol
+        if not symbol or symbol == self.settings.symbol:
+            self._wanted.pop("overlay", None)
+            view.show_overlay(None, self.display)
+            return
+        if view.preview_mode:
+            return  # the overlay follows when the slider is released
+        scenario = calculation.scenario
+        molar = scenario.concentration_conversion.molar_concentration
+        settings = copy.deepcopy(self.settings)
+        settings.symbol = symbol
+        settings.concentration = express_concentration(symbol, molar, settings.concentration_unit,
+                                                       solution_density_kg_L=settings.solution_density_kg_L)
+        second = replace(settings.scenario(), pH_points=scenario.pH_points, eh_points=scenario.eh_points,
+                         pH_min=scenario.pH_min, pH_max=scenario.pH_max, eh_min_V=scenario.eh_min_V,
+                         eh_max_V=scenario.eh_max_V)
+        cached = self.session.cached("calculation", second)
+        if cached is not None:
+            self._wanted.pop("overlay", None)
+            view.show_overlay(cached.diagram, self.display)
+            return
+        key = (second, id(self.session))
+        if self._wanted.get("overlay") == key:
+            return
+        self._wanted["overlay"] = key
+        session = self.session
+        self.tasks.submit("overlay", key, lambda _progress: session.calculate(second))
+
     def _search_button(self) -> QWidget:
         from PySide6.QtWidgets import QPushButton
 
@@ -258,6 +331,12 @@ class MainWindow(QMainWindow):
             action = menu.addAction(text, slot)
             if shortcut is not None:
                 action.setShortcut(shortcut)
+        edit = self.menuBar().addMenu("&Edit")
+        self.undo_action = edit.addAction("Undo", self.undo)
+        self.undo_action.setShortcut(QKeySequence.Undo)
+        self.redo_action = edit.addAction("Redo", self.redo)
+        self.redo_action.setShortcuts([QKeySequence.Redo, QKeySequence("Ctrl+Shift+Z")])
+        self._update_history_actions()
         view = self.menuBar().addMenu("&View")
         themes = view.addMenu("Theme")
         group = QActionGroup(self)
@@ -328,6 +407,7 @@ class MainWindow(QMainWindow):
         else:
             self._overview_stale = True
         self._reset_range |= reset_range
+        self._history_timer.start()
         self.pages.setTabText(1, self.systems.get(self.settings.symbol, self.settings.symbol))
         if self._dragging():
             self._preview()
@@ -530,6 +610,7 @@ class MainWindow(QMainWindow):
         if screen is not None:
             settings.probe_pH, settings.probe_eh_V = screen.pH, screen.potential_V_vs_SHE
         self.panel.set_settings(settings)
+        self._history_timer.start()
         self.pages.setCurrentIndex(1)
         self.views.setCurrentWidget(self.diagram_page)
         self.pages.setTabText(1, self.systems.get(symbol, symbol))
@@ -612,7 +693,11 @@ class MainWindow(QMainWindow):
         panel = self.panel
         chips = bar.chips
         name = self.systems.get(settings.symbol, settings.symbol)
-        chips["element"].configure(name, "The element of the diagram. Click to choose another.",
+        overlay = display.overlay_symbol if display.overlay_symbol != self.settings.symbol else ""
+        if overlay:
+            name = f"{name} + {overlay} dashed"
+        chips["element"].configure(name, "The element of the diagram, and a second element drawn over it. "
+                                   "Click to choose another.",
                                    action=lambda: panel.reveal(panel.symbol), dark=self.dark)
         if calculation is not None:
             conversion = calculation.concentration
@@ -665,17 +750,19 @@ class MainWindow(QMainWindow):
             f"{missing} species of this system have no recommended Gibbs energy and are left out of the "
             "calculation. Click to see them in the Species tab.", WARNING,
             action=lambda: self.views.setCurrentWidget(self.species_page), dark=self.dark)
-        extras = []
+        extras = []  # (text, control that edits it)
         if display.boltzmann:
-            extras.append(f"blend ε = {display.blend_width_kJ_mol:g} kJ/mol")
+            extras.append((f"blend ε = {display.blend_width_kJ_mol:g} kJ/mol", panel.boltzmann))
         if display.uncertainty:
-            extras.append(f"hatching within {display.uncertainty_sigma:g}σ")
+            extras.append((f"hatching within {display.uncertainty_sigma:g}σ", panel.uncertainty))
         if display.potential_scale != "SHE":
-            extras.append(f"E vs {display.potential_scale.split(' (')[0]}")
-        view_text = ", ".join(extras)
+            extras.append((f"E vs {display.potential_scale.split(' (')[0]}", panel.potential_scale))
+        view_text = ", ".join(text for text, _control in extras)
+        control = extras[0][1] if extras else None
         chips["view"].configure(view_text[:1].upper() + view_text[1:],
                                 "Display options that change how the result is drawn, not what is calculated. "
-                                "Click to edit them.", action=lambda: panel.setCurrentIndex(2), dark=self.dark)
+                                "Click to edit them.", action=lambda: control and panel.reveal(control),
+                                dark=self.dark)
 
     def refresh_view(self, reset_range: bool = False) -> None:
         self.update_context()
@@ -690,6 +777,7 @@ class MainWindow(QMainWindow):
             return
         if current is self.diagram_page and calculation is not None:
             self.diagram_page.show_calculation(calculation, self.display, reset_range or self._reset_range)
+            self._show_overlay(calculation)
             self._reset_range = False
             self._update_probe()
         elif current is self.species_page:
@@ -871,6 +959,16 @@ class MainWindow(QMainWindow):
             self.sweep_page.hint.setText(f"Evaluating the Materials Project sweep… {fraction:.0%}")
 
     def _task_finished(self, kind: str, key: Any, result: Any, error: str) -> None:
+        if kind == "overlay":
+            if self._wanted.get(kind) != key:
+                return
+            del self._wanted[kind]
+            if error or result is None:
+                self._set_status(f"The second element cannot be calculated: {error}")
+                return
+            if self.calculation is not None and self.views.currentWidget() is self.diagram_page:
+                self.diagram_page.diagram.show_overlay(result.diagram, self.display)
+            return
         if kind == "sensitivity":
             if self._wanted.get(kind) != key:
                 return
@@ -1125,6 +1223,7 @@ class MainWindow(QMainWindow):
         self.pages.setCurrentIndex(1)
         self.recalculate()
         self.update_overview()
+        self._record_history()
         self._set_status(f"Opened the session {Path(path).name}")
         return True
 

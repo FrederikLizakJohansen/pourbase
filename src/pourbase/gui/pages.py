@@ -138,8 +138,65 @@ class DiagramPage(StackedView):
         self.display = DisplayOptions()
         self.diagram.cursorMoved.connect(lambda text: self.cursor.setText(text or " "))
         self.diagram.probeMoved.connect(self.probeMoved)
+        self.diagram.boundaryClicked.connect(self.show_boundary)
+        self.calculation: Calculation | None = None
+
+    def show_boundary(self, first: str, second: str, position) -> None:
+        """A popup with the reaction, equation and sources of the boundary between two species."""
+        from PySide6.QtWidgets import QFrame
+
+        self.hide_boundary()
+        calculation = self.calculation
+        if calculation is None or not first:
+            return
+        equation = next((item for item in calculation.boundaries
+                         if {item.left_record_id, item.right_record_id} == {first, second}), None)
+        names = {item.record_id: item.species for item in calculation.diagram.system.species}
+        title = f"{to_html(names.get(first, first))} | {to_html(names.get(second, second))}"
+        if equation is None:
+            body = ("In the mass-balance model this boundary is a numerical equilibrium that includes the metal "
+                    "concentration; it has no single equation.")
+        else:
+            sources = []
+            for source_id in equation.source_ids:
+                source = calculation.database.source(source_id)
+                citation = source.citation if source else None
+                sources.append(html.escape(short_citation(citation, source_id)))
+            kind = {"nernst": "Redox boundary (Eq. 3)", "acid_base": "Acid–base boundary (Eq. 4)",
+                    "numerical": "Numerical boundary", "degenerate": "No pH or potential dependence"}
+            reaction = to_html(equation.reaction).replace(" e-", " e⁻")
+            body = (f"{reaction}<br>{html.escape(equation.equation).replace('-', '−')}<br>"
+                    f"<span style='color:gray'>{kind.get(equation.kind, equation.kind)} · "
+                    f"{'; '.join(sources)}</span>")
+        # a tool-tip window takes no mouse grab, so the next click reaches the diagram directly
+        popup = QFrame(self, Qt.ToolTip | Qt.FramelessWindowHint)
+        popup.setFrameShape(QFrame.StyledPanel)
+        label = QLabel(f"{title}<br>{body}")
+        label.setTextFormat(Qt.RichText)
+        label.setWordWrap(True)
+        label.setMaximumWidth(460)
+        layout = QVBoxLayout(popup)
+        layout.setContentsMargins(10, 8, 10, 8)
+        layout.addWidget(label)
+        popup.adjustSize()
+        popup.move(int(position.x()) + 12, int(position.y()) + 12)
+        popup.setAttribute(Qt.WA_DeleteOnClose)
+        popup.show()
+        self.boundary_popup = popup
+
+    def hide_boundary(self) -> None:
+        popup = getattr(self, "boundary_popup", None)
+        if popup is not None:
+            popup.close()
+            self.boundary_popup = None
+
+    def hideEvent(self, event) -> None:
+        self.hide_boundary()
+        super().hideEvent(event)
 
     def show_calculation(self, calculation: Calculation, display: DisplayOptions, reset_range: bool) -> None:
+        self.calculation = calculation
+        self.hide_boundary()
         plating = calculation.plating[0].potential_V_vs_SHE if calculation.plating else None
         self.display = display
         self.diagram.show_diagram(calculation.diagram, display, plating, reset_range=reset_range)

@@ -102,6 +102,7 @@ class DisplayOptions:
     uncertainty: bool = False
     uncertainty_sigma: float = 1.0
     assumed_uncertainty_kJ_mol: float = 2.0
+    overlay_symbol: str = ""  # a second element whose boundaries are drawn over the diagram
 
 
 class DiagramView(pg.PlotWidget):
@@ -109,6 +110,7 @@ class DiagramView(pg.PlotWidget):
 
     cursorMoved = Signal(str)
     probeMoved = Signal(float, float)
+    boundaryClicked = Signal(str, str, QPointF)  # the two record IDs and the screen position
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -431,17 +433,92 @@ class DiagramView(pg.PlotWidget):
             f"({phase_label(species)})"
         )
 
+    def show_overlay(self, diagram: Any | None, options: DisplayOptions) -> None:
+        """Draw the boundaries and species names of a second element's diagram, dashed, over this one."""
+        if not hasattr(self, "overlay_lines"):
+            self.overlay_lines = pg.PlotDataItem(connect="pairs")
+            self.overlay_lines.setZValue(4.5)
+            self.addItem(self.overlay_lines)
+            self.overlay_labels: list[pg.TextItem] = []
+        for label in self.overlay_labels:
+            self.removeItem(label)
+        self.overlay_labels = []
+        if diagram is None:
+            self.overlay_lines.setData([], [])
+            return
+        scale, temperature = options.potential_scale, diagram.conditions.temperature_K
+        color = "#e8a33d" if self.dark else "#8a2be2"
+        index = diagram.stable_species_index
+        points = np.array(phase_boundary_segments(index, diagram.pH, diagram.eh_V)).reshape(-1, 2)
+        if len(points):
+            y = to_scale(points[:, 1], points[:, 0], scale, temperature)
+            self.overlay_lines.setData(points[:, 0], y, pen=pg.mkPen(color, width=1.6, style=Qt.DashLine))
+        else:
+            self.overlay_lines.setData([], [])
+        x_grid, y_grid = np.meshgrid(diagram.pH, diagram.eh_V)
+        scale_x = max(float(np.ptp(diagram.pH)), 1e-9)
+        scale_y = max(float(np.ptp(diagram.eh_V)), 1e-9)
+        for position, item in enumerate(diagram.system.species):
+            mask = index == position
+            if not mask.any():
+                continue
+            xs, ys = x_grid[mask], y_grid[mask]
+            nearest = int(np.argmin(((xs - xs.mean()) / scale_x) ** 2 + ((ys - ys.mean()) / scale_y) ** 2))
+            label = pg.TextItem(html=f'<span style="color:{color}; font-size:{LABEL_PT}pt; font-style:italic">'
+                                     f"{to_html(item.species, LABEL_PT)}</span>", anchor=(0.5, 0.5),
+                                fill=pg.mkBrush(40, 40, 40, 170) if self.dark else pg.mkBrush(255, 255, 255, 170))
+            label.setZValue(5)
+            label.setPos(float(xs[nearest]), float(to_scale(ys[nearest], xs[nearest], scale, temperature)))
+            self.addItem(label)
+            self.overlay_labels.append(label)
+
+    def boundary_at(self, x: float, y: float, pixels: float = 5.0) -> tuple[Any, Any] | None:
+        """The two species of the boundary within ``pixels`` of a point, nearest first, or None."""
+        grid = getattr(self, "_grid", None)
+        if grid is None or len(self._x) < 2 or len(self._y) < 2:
+            return None
+        if not (self._x[0] <= x <= self._x[-1] and self._y[0] <= y <= self._y[-1]):
+            return None
+        pixel_x, pixel_y = self.getPlotItem().vb.viewPixelSize()
+        step_x, step_y = abs(self._x[1] - self._x[0]), abs(self._y[1] - self._y[0])
+        reach_x = max(1, math.ceil(pixels * pixel_x / step_x))
+        reach_y = max(1, math.ceil(pixels * pixel_y / step_y))
+        column = int(np.abs(self._x - x).argmin())
+        row = int(np.abs(self._y - y).argmin())
+        if not self._valid[row, column]:
+            return None
+        rows = slice(max(row - reach_y, 0), row + reach_y + 1)
+        columns = slice(max(column - reach_x, 0), column + reach_x + 1)
+        window = grid[rows, columns]
+        other = (window != grid[row, column]) & self._valid[rows, columns]
+        if not other.any():
+            return None
+        found_rows, found_columns = np.nonzero(other)
+        distance = ((found_rows + rows.start - row) * step_y / pixel_y) ** 2 + (
+            (found_columns + columns.start - column) * step_x / pixel_x) ** 2
+        nearest = int(np.argmin(distance))
+        neighbour = int(window[found_rows[nearest], found_columns[nearest]])
+        return self._species[int(grid[row, column])], self._species[neighbour]
+
     def _mouse_moved(self, position) -> None:
         if not self.sceneBoundingRect().contains(position):
             self.cursorMoved.emit("")
             return
         point = self.getPlotItem().vb.mapSceneToView(position)
         self.cursorMoved.emit(self._species_text(point.x(), point.y()))
+        near = self.receivers(self.boundaryClicked) and self.boundary_at(point.x(), point.y())
+        self.viewport().setCursor(Qt.PointingHandCursor if near else Qt.ArrowCursor)
 
     def _mouse_clicked(self, event) -> None:
-        if not self.probe.isVisible() or event.button() != Qt.LeftButton or event.double():
+        if event.button() != Qt.LeftButton or event.double():
             return
         point = self.getPlotItem().vb.mapSceneToView(event.scenePos())
+        pair = self.boundary_at(point.x(), point.y())
+        screen = QPointF(self.mapToGlobal(self.mapFromScene(event.scenePos())))
+        # empty IDs close an open boundary popup; the same click still moves the probe
+        self.boundaryClicked.emit(*((pair[0].record_id, pair[1].record_id) if pair else ("", "")), screen)
+        if not self.probe.isVisible():
+            return
         if self._species_text(point.x(), point.y()):
             self.probe.setPos(point)
             self.probeMoved.emit(point.x(), self._she(point.x(), point.y()))
