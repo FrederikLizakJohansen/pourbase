@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 806), ("reported_thermochemistry", 2679),
-                                 ("sources", 1697), ("warnings", 1169),
+            for table, count in (("species", 854), ("reported_thermochemistry", 2837),
+                                 ("sources", 1697), ("warnings", 1176),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -915,9 +915,10 @@ class DatasetSnapshotTests(unittest.TestCase):
             rid = f"r07-{symbol.lower()}-{symbol.lower()}co3-{phase}"
             record = self.database.species_records((rid,))[0]
             self.assertEqual(record.phase_identity.identified_phase, phase)
-            self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, gibbs)
-            self.assertIn("10.3133/b2131", record.thermochemistry.gibbs_energy_J_mol.source.url)
             original = [r for r in record.reported if r.value_id.endswith(":usgs-b2131-1995")]
+            original_g = next(r for r in original if r.property == "gibbs_energy_of_formation")
+            self.assertEqual(original_g.value, gibbs)
+            self.assertIn("10.3133/b2131", original_g.source.url)
             self.assertTrue(all("Numbered numerical parents" in r.source.locator for r in original))
             if phase == "vaterite":
                 self.assertEqual(len(original), 1)
@@ -931,7 +932,8 @@ class DatasetSnapshotTests(unittest.TestCase):
             ion = next(s for s in system.species if s.formula_ascii == symbol and s.charge == 2)
             self.assertEqual((solid.electrons_per_metal, solid.protons_per_metal), (2, 0))
             restricted = replace(system, species=(ion, solid), excluded=())
-            log_ksp = (gibbs - ion.gibbs_energy_J_mol - solid.ligand_gibbs_energy_J_mol) / factor
+            log_ksp = (solid.gibbs_energy_J_mol - ion.gibbs_energy_J_mol
+                       - solid.ligand_gibbs_energy_J_mol) / factor
             for offset, winner in ((-0.1, ion), (0.1, solid)):
                 conditions = pb.PourbaixConditions(
                     pH_points=3, eh_points=3,
@@ -1158,7 +1160,9 @@ class DatasetSnapshotTests(unittest.TestCase):
             self.assertFalse(entropy.selected_as_recommended)
             self.assertIn("corrected pure MCO3 endmember", entropy.source.locator)
             self.assertIn("correlated representations", entropy.source.locator)
-            self.assertEqual(record.thermochemistry.entropy_J_mol_K.value, evaluated_s)
+            evaluation = next(r for r in record.reported if r.property == "absolute_entropy"
+                              and r.value_id.endswith(":usgs-b2131-1995"))
+            self.assertEqual(evaluation.value, evaluated_s)
             with closing(sqlite3.connect(self.database.path)) as c:
                 temperature, pressure = c.execute(
                     "SELECT temperature_K,pressure_bar FROM reported_thermochemistry WHERE value_id=?",
@@ -1526,20 +1530,22 @@ class DatasetSnapshotTests(unittest.TestCase):
             self.assertEqual((species.electrons_per_metal, species.protons_per_metal), (2, 0))
         self.assertEqual({s.gibbs_energy_J_mol for s in halves}, {-1436740, -1435780})
         nickel = self.database.load_system("Ni", ligand_ids=("sulfate-so4",))
-        hydrate = next(s for s in nickel.species if s.formula_ascii == "NiSO4(H2O)6")
+        hydrate = next(s for s in nickel.species if "alpha-green-tetragonal" in s.record_id)
         self.assertEqual((hydrate.core_oxygen_count, hydrate.core_hydrogen_count), (6, 12))
         self.assertIn("alpha-green-tetragonal", hydrate.record_id)
-        self.assertEqual(hydrate.gibbs_energy_J_mol, -2224610)
+        self.assertEqual(hydrate.gibbs_energy_J_mol, -2225467)
         ordinary = self.database.load_system("Ni")
         self.assertFalse(any(s.record_id == hydrate.record_id for s in ordinary.species))
         blue = self.database.species_records((
             "gfe-ni-niso4-h2o-6-q+0-solid-nickel-sulfate-beta-blue-monoclinic-hexahydrate",
         ))[0]
-        self.assertIsNone(blue.thermochemistry.gibbs_energy_J_mol.value)
+        self.assertEqual(blue.thermochemistry.gibbs_energy_J_mol.value, -2224915)
         self.assertEqual(blue.thermochemistry.gibbs_energy_J_mol.status,
-                         pb.EvidenceStatus.NOT_AVAILABLE.value)
-        self.assertEqual(blue.thermochemistry.formation_enthalpy_J_mol.value, -2672300)
-        self.assertFalse(any(s.record_id == blue.record_id for s in nickel.species))
+                         pb.EvidenceStatus.VERIFIED.value)
+        self.assertEqual(blue.thermochemistry.formation_enthalpy_J_mol.value, -2677287)
+        self.assertTrue(any(r.property == "enthalpy_of_formation" and r.value == -2672300
+                            for r in blue.reported))
+        self.assertTrue(any(s.record_id == blue.record_id for s in nickel.species))
 
     def test_hydrate_gibbs_estimate_preserves_open_enthalpy_and_water_basis(self) -> None:
         record = self.database.species_records((
@@ -1905,9 +1911,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 714, "absolute_entropy": 679, "enthalpy_of_formation": 539})
+                         {"gibbs_energy_of_formation": 753, "absolute_entropy": 713, "enthalpy_of_formation": 581})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "3d614a0d5c30f34b",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "a6e7a91f1391cc6c",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

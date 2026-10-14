@@ -366,7 +366,9 @@ class SelectionPolicyTests(unittest.TestCase):
             if not item.basis.startswith("override"):
                 self.assertEqual(self.policy.rank_of(item.chosen.family), best, item.record_id)
         contested = [item for item in self.selection.values()
-                     if {"NBS Tables", "NIST-JANAF"} <= {candidate.family for candidate in item.candidates}]
+                     if {"NBS Tables", "NIST-JANAF"} <= {candidate.family for candidate in item.candidates}
+                     and min(self.policy.rank_of(candidate.family)[0] for candidate in item.candidates)
+                     == self.policy.rank_of("NBS Tables")[0]]
         self.assertTrue(contested)
         self.assertTrue(all(item.chosen.family == "NBS Tables" for item in contested))
 

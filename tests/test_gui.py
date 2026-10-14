@@ -189,6 +189,9 @@ class WindowTests(WindowTestCase):
             'families = ["NBS Tables", "NBS Technical Notes", "NIST-JANAF"',
             'families = ["NIST-JANAF", "NBS Tables", "NBS Technical Notes"').replace(
             'name = "pourbase default"', 'name = "JANAF first"')
+        text += ('\n[[overrides]]\nrecord_id = "gfe-fe-fe2o3-q+0-solid-hematite"\n'
+                 'property = "gibbs_energy_of_formation"\nsource_id = "NIST_JANAF_Fe-030"\n'
+                 'reason = "Test selects the retained JANAF hematite evaluation"\n')
         path = os.path.join(self.directory.name, "janaf-first.toml")
         with open(path, "w", encoding="utf-8") as handle:
             handle.write(text)
@@ -206,7 +209,8 @@ class WindowTests(WindowTestCase):
                    if window.species_page.table.item(index, window.species_page.RECORD).text() == hematite)
         window.species_page.table.selectRow(row)
         self.assertIn("JANAF first", window.species_page.details.toPlainText())
-        self.assertIn("NIST-JANAF before NBS Tables", window.species_page.details.toPlainText())
+        self.assertIn("Test selects the retained JANAF hematite evaluation",
+                      window.species_page.details.toPlainText())
         self.assertTrue(window.load_policy(None))
         species = {item.record_id: item for item in window.calculation.diagram.system.species}
         self.assertEqual(species[hematite].gibbs_energy_J_mol, default_value)
@@ -483,7 +487,7 @@ class WindowTests(WindowTestCase):
         with open(path, encoding="utf-8") as handle:
             text = handle.read()
         self.assertEqual(text.count("@misc{"), dialog.table.rowCount())
-        self.assertIn("Wagman", text)
+        self.assertIn("Lemire", text)
         dialog.close()
 
     def test_search_finds_elements_species_sources_and_commands(self) -> None:
@@ -534,7 +538,7 @@ class WindowTests(WindowTestCase):
         self.assertGreater(window.database_page.proxy.rowCount(), 0)
         window.database_page.filter.setText("")
         window.database_page.tables.setCurrentText("selected_thermochemistry")
-        self.assertEqual(window.database_page.proxy.rowCount(), 806)
+        self.assertEqual(window.database_page.proxy.rowCount(), 854)
         self.assertFalse(window.database_page.note.isHidden())
 
     def test_copied_code_reproduces_the_diagram_with_policy_and_own_species(self) -> None:

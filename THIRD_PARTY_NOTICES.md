@@ -45,6 +45,15 @@ published uncertainty intervals and conversions from kJ/mol to J/mol.
   OECD Nuclear Energy Agency, ISBN 978-92-64-99206-1, printed pp. 44–45.
   <https://www.oecd.org/content/dam/oecd/en/publications/reports/2012/12/chemical-thermodynamics-of-tin-volume-12_g1g39522/9789264992061-en.pdf>
 
+The NEA02a solid-phase continuation uses the same reviews, Table III-1,
+printed pp. 44–47 in each volume. It retains 158 further G/H/S observations
+and 48 distinct solid species. OECD and the Nuclear Energy Agency are
+acknowledged. Full hydrated formula units, source phase labels, uncertainty
+intervals and unit conversions remain attached to every observation. The same
+OECD attribution and downstream acknowledgment requirement above applies.
+The selected numerical data use the existing permission route; other sources
+retain their separate terms. Complete publication pages remain external.
+
 The earlier NEA observations retain their own associated review citations in
 the database. Pourbase retains alternative evaluations and normalizes units
 and formula encodings for calculation. Complete publications, page images,

@@ -20,8 +20,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The 14 October 2026 checkpoint contains **806 species and 2,679 observations**
-across 74 supported systems, with **714/679/539 selected G/S/H properties**.
+The 14 October 2026 latest checkpoint contains **854 species and 2,837 observations**
+across 74 supported systems, with **753/713/581 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -35,6 +35,25 @@ status. Scientific-gap records keep their existing eligibility. The further
 iron/nickel/tin selected-table import adds 25 observations and six aqueous
 species, fills 15 properties and changes ten earlier selections under the
 unchanged policy. Every earlier numerical observation is preserved.
+
+The NEA02a continuation reviews all 103 solid rows in the three selected
+Table III-1 sets (printed pp. 44–47), adding 158 observations and 48 species.
+It fills 115 properties and changes 42 earlier selections under the same
+policy. One added beta-Sn entropy remains an alternative to the selected
+CODATA evaluation. Four previously retained NEA phase triplets are linked
+without duplication. Thirty rows retain chemistry or identity holds, and
+three have selected heat capacity only; their complete evidence stays in the
+external ledger.
+
+Amorphous SnO2 and cassiterite, alpha/beta tin, maghemite/hematite,
+lepidocrocite/goethite and mackinawite/troilite retain separate identities.
+Half-integral hydrate amounts and large formula units remain complete.
+NiS2 stores formal Ni(II) with a four-electron reaction coefficient against
+free sulfide; mean oxidation states in nickel subsulfides and Sn2S3 describe
+formula balance. Enthalpy-only records remain unavailable to Gibbs calculations.
+Heat capacities are retained externally for R18 and supply no entropy values.
+Dehydrated silicates require a compatible representation with the present
+H3SiO4- ligand and non-negative residual core atom counts, so they stay held.
 
 Each reported observation exposes its own `source_locator` through the API,
 falling back to the general source locator when absent. NEA uncertainty

@@ -95,10 +95,43 @@ warrants it.
   clearance for existing observations. The 25 extension observations are
   separate additions. NIST permission holds remain independent.
 
+## Completed NEA02a solid-phase continuation
+
+The remaining solid rows of Table III-1, printed pp. 44–47, in the retained
+iron (13a), nickel (6) and tin (12) reviews have explicit dispositions:
+**103 rows**, comprising 66 with additions, four already retained phase
+triplets, 30 chemistry/identity holds and three heat-capacity-only rows.
+The batch adds **158 observations and 48 species**, fills **115 properties**
+and changes **42 earlier selections** under the unchanged policy. The added
+beta-Sn entropy remains an alternative to the higher-ranked CODATA selection.
+All earlier numerical evidence and all 28 historical NEA request selections
+are preserved.
+
+Current totals are **854 species /2,837 observations /74 systems**, with
+selected G/S/H counts **753/713/581**. The existing source-specific OECD
+permission review covers these additional selected numerical data; the same
+attribution and downstream acknowledgment requirements apply. New observations
+reuse their associated volume citations and carry exact per-property locators.
+The published total uncertainty intervals retain their original interpretation.
+
+Distinct identities include amorphous SnO2 and cassiterite, alpha/beta tin,
+maghemite/hematite, lepidocrocite/goethite, mackinawite/troilite and alpha/beta
+NiS. Complete hydrate amounts and large formula units are retained. NiS2's
+formal Ni(II) and four-electron reaction coefficient reflect its disulfide
+composition and the free-sulfide calculation reference.
+
+Held rows include nonstoichiometric compositions, mixed-metal compounds,
+unrepresented iodate/arsenic chemistry and dehydrated silicates whose present
+H3SiO4- reference would require negative residual core atom counts. Their
+source facts remain in the external review ledger. Source permission and
+scientific/model holds stay separate. Heat-capacity-only rows are routed to
+R18. NIST request coverage and the six original crystalline Gibbs gaps are
+unchanged.
+
 ## Further exploration
 
 The first expansion covers a useful aqueous-ion/hydrolysis subset. Continue
-with unimported selected solid phases and ligand complexes, other NEA reviews,
+with the recorded solid-phase identity/model holds, ligand complexes, other NEA reviews,
 and NEA-derived candidates already routed through PSI/Nagra, SUPCRT or MINES.
 Review each candidate's identity, additional restrictions, scientific
 conventions and calculation support. Preserve the earlier numerical reviews

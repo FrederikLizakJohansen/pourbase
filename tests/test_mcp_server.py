@@ -22,7 +22,7 @@ class ToolTests(unittest.TestCase):
         species = self.tools.get_species("Fe")
         json.dumps(species)
         hematite = next(item for item in species if item["record_id"] == "gfe-fe-fe2o3-q+0-solid-hematite")
-        self.assertIn("NBS", hematite["source"])
+        self.assertIn("Nuclear Energy Agency", hematite["source"])
         record = self.tools.get_record("gfe-fe-fe2o3-q+0-solid-hematite")
         json.dumps(record)
         self.assertTrue(record["reported"])

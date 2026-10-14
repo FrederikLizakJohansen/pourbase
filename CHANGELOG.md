@@ -4,6 +4,12 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Review all 103 solid rows of the retained iron/nickel/tin NEA selected tables.
+  Add 158 observations and 48 species, filling 115 properties and changing
+  42 selections under the unchanged policy. Preserve all earlier evidence;
+  keep distinct polymorphs, amorphous phases and complete hydrated formulas.
+  Unsupported chemistry and unresolved compositions remain explicitly held.
+
 - Apply written NEA-TDB permission under OECD data terms, preserve the evidence,
   and distribute OECD attribution with the required downstream acknowledgment.
   All 28 historical NEA requests already match stored observations; their reuse
@@ -60,8 +66,8 @@ Release candidate for collaborator review. Package version `1.0.0rc2`; dataset v
   fractions of dissolved species where no solid precipitates; `thermal_scale` and
   `--boltzmann-scale` remain as deprecated aliases.
 
-- 806 species and 2679 retained observations across 74 supported elemental systems, with
-  recommended Gibbs energies for 714.
+- 854 species and 2837 retained observations across 74 supported elemental systems, with
+  recommended Gibbs energies for 753.
 - One conditional magnesite Gibbs alternative uses the original 1965 solubility
   evaluation and openly licensed ion/gas/water anchors. The ideal CO2 reference
   correction is explicit; source complexing and pressure assumptions remain attached.
