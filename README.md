@@ -174,3 +174,18 @@ Report a wrong value, a missing species or a better source with the
 pourbase is released under GPL-3.0. Cite this release ([`CITATION.cff`](CITATION.cff)) and the
 sources of the values you use. [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) lists the terms of
 the data sources.
+
+## Acknowledgements
+
+We thank the OECD Nuclear Energy Agency Thermochemical Database Project for confirming the terms
+under which pourbase redistributes NEA-TDB selected values. Its selected data are used with
+acknowledgment of the OECD and the Nuclear Energy Agency:
+
+- Gamsjäger, H. et al. *Chemical Thermodynamics of Nickel*. OECD Nuclear Energy Agency, Chemical
+  Thermodynamics Series Volume 6 (2005).
+- Gamsjäger, H., Gajda, T., Sangster, J., Saxena, S. K. and Voigt, W. *Chemical Thermodynamics of
+  Tin*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 12 (2012).
+- Lemire, R. J. et al. *Chemical Thermodynamics of Iron, Part 1*. OECD Nuclear Energy Agency,
+  NEA No. 6355 (2013).
+
+Materials Project data are used under CC BY 4.0 and keep their IDs, versions and attribution.
