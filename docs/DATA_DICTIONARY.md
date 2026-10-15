@@ -20,14 +20,23 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 15 October 2026 checkpoint contains **969 species and 3,093 observations**
-across 74 supported systems, with **855/776/654 selected G/S/H properties**.
+The latest 15 October 2026 checkpoint contains **975 species and 3,109 observations**
+across 74 supported systems, with **860/781/660 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
 requirement. See [the source instructions](sources/nea-tdb-reuse.md) and
 [distributed notices](../THIRD_PARTY_NOTICES.md). Check source-specific
 additional restrictions; other sources retain their own permission status.
+
+NEA02g2 resolves six further zirconium holds with 16 observations and six
+species, preserving all earlier preferred values. Three neutral elemental
+references support fixed Te/graphite activity and an external N2 gas buffer.
+The `ligands` table holds these prescribed component chemical potentials;
+direct activity assignments describe their phase states. ZrC retains the
+source-reviewed thermal estimate based on ZrC0.96, and ZrTe3O8 has H only.
+Eleven of the original 27 zirconium holds are resolved; 16 remain. See
+[the elemental reference and reaction review](sources/nea-zirconium-element-reservoirs.md).
 
 NEA02g1 resolves five zirconium holds with nine observations and three species.
 Two hydrolysis Gibbs values use the existing water-subtracted component basis;

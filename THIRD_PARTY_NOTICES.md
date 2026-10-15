@@ -515,6 +515,30 @@ The [source crosswalk](docs/sources/nea-derived-crosswalk.md) documents the
 admission and remaining routes. The private permission correspondence and
 complete source publications are retained outside the distribution.
 
+## NEA02g2 zirconium compounds with elemental buffers
+
+OECD and the Nuclear Energy Agency are acknowledged for selected ZrTe1.843,
+ZrTe2, Zr5Te4, ZrTe3O8, ZrN and ZrC observations from Brown, Curti and
+Grambow, with Ekberg (2005), *Chemical Thermodynamics of Zirconium*,
+NEA volume 8, Table III-1 p. 52, sections V.5.3, V.6.1.1.1 and V.7.1.1.1.
+The source's fitted endmember and ZrC0.96 thermal approximation remain explicit.
+See [the source review](docs/sources/nea-zirconium-element-reservoirs.md).
+
+The clarified OECD data terms permit use, adaptation and redistribution,
+including commercially, subject to source-specific additional restrictions.
+Every sublicense of work using these data must include the same OECD
+acknowledgment requirement and require further sublicensees to pass it on.
+Source-data requirements apply alongside the package's GPL-3.0-only licence.
+
+NIST is acknowledged for the defined elemental formation-energy references
+Te(cr), N2(g) and graphite from Wagman et al. (1982), *NBS Tables with errata*,
+explicitly open non-SRD NIST Public Data Repository
+[M32124](https://doi.org/10.18434/M32124), logical records 788, 835 and 1639,
+under the [NIST open licence](https://www.nist.gov/open/license).
+The reference zeros retain their thermodynamic definition. Auxiliary absolute
+entropy tables and complete publications are outside this import; private
+correspondence stays outside the distribution.
+
 ## NEA02g1 zirconium hydrolysis, gas, selenite and zircon
 
 OECD and the Nuclear Energy Agency are acknowledged for selected values from

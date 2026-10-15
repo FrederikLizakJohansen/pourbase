@@ -317,6 +317,29 @@ historical checkpoint; its active reconciliation records five admissions.
 Two Cp-only rows stay with R18. Earlier Fe/Ni/Sn holds and other sources'
 permission states remain separate. Original request coverage stays116/131.
 
+## NEA02g2 elemental reference routes
+
+All six Te/N/C reference holds are resolved with **16 observations /six
+species /three elemental buffers**, filling 16 properties and preserving
+every earlier preferred value. Production contains **975 species /3,109
+observations /74 systems**, selected G/S/H **860/781/660**. Crystalline Te
+and graphite use unit activity; the nitrogen reference uses prescribed
+N2 fugacity. Direct component activities represent these external phases.
+
+ZrTe1.843 and Zr5Te4 retain their exact compositions. The neutral elemental
+reactions keep signed electron coefficients distinct from formal oxidation
+states. The stoichiometric ZrC endmember retains NEA's ZrC0.96 thermal
+approximation as a source-reviewed estimate. ZrTe3O8 has selected H only.
+All 74 default maps/masks and earlier preferences are preserved; 70 buffered
+scenarios and 140 closed-zirconium inventories pass. See [the reference,
+source and reaction review](nea-zirconium-element-reservoirs.md).
+
+Eleven of the original 27 zirconium holds are resolved. The **16 remaining**
+comprise four disputed source evaluations, reviewed next, and twelve
+mixed-metal records. The two Cp routes, earlier Fe/Ni/Sn holds, wider source
+reviews and other-source permission states remain separate. Request coverage
+stays116/131, including all28NEArequests.
+
 ## Further exploration
 
 The first expansion covers a useful aqueous-ion/hydrolysis subset. Continue

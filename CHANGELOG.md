@@ -4,6 +4,11 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Resolve six zirconium reference/model holds with 16 observations and six
+  species. Add explicitly buffered crystalline Te, N2 gas and graphite
+  references. Preserve full formulas, signed reaction coefficients, the
+  ZrC thermal estimate and the tellurite Gibbs gap. All earlier preferred
+  values and 74 default phase maps are preserved; 16 zirconium holds remain.
 - Resolve five zirconium source/model holds with nine NEA observations and
   three species. Select two hydrolysis Gibbs values in the existing water
   component basis, preserving source formulas, uncertainty intervals and all

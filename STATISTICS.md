@@ -6,26 +6,26 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 969 |
+| Species | 975 |
 | Supported elemental systems | 74 of 118 elements |
-| Recommended Gibbs energies | 855 (88 %) |
-| Recommended entropies | 776 (80 %) |
-| Recommended formation enthalpies | 654 (67 %) |
-| Reported values retained | 3093 |
-| Source records | 1704 (166 distinct citations) |
-| Phase records | 543 (324 resolved) |
-| Warnings | 1306 |
+| Recommended Gibbs energies | 860 (88 %) |
+| Recommended entropies | 781 (80 %) |
+| Recommended formation enthalpies | 660 (68 %) |
+| Reported values retained | 3109 |
+| Source records | 1707 (166 distinct citations) |
+| Phase records | 549 (330 resolved) |
+| Warnings | 1312 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
-| Ligands | 18 |
+| Ligands | 21 |
 
 Gibbs energies by evidence status:
 
 | Status | Species |
 |---|---|
-| `verified` | 555 |
-| `source_verified_estimate` | 226 |
-| `not_available` | 108 |
+| `verified` | 559 |
+| `source_verified_estimate` | 227 |
+| `not_available` | 109 |
 | `defined_reference_state` | 74 |
 | `terminal_evidence_gap` | 6 |
 
@@ -34,7 +34,7 @@ Species by phase:
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
 | aqueous | 529 | 464 | 416 | 295 |
-| solid | 400 | 356 | 322 | 322 |
+| solid | 406 | 361 | 327 | 328 |
 | gas | 35 | 32 | 35 | 32 |
 | liquid | 5 | 3 | 3 | 5 |
 
@@ -42,17 +42,17 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 969 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 969 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 3093 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1704 | Full citations, links, locators and access dates |
-| `phases` | 543 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 1306 | Scientific cautions attached to records |
+| `species` | 975 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 975 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 3109 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1707 | Full citations, links, locators and access dates |
+| `phases` | 549 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 1312 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
-| `ligands` | 18 | Free-ligand reference states for ligand-aware calculations |
+| `ligands` | 21 | Free-ligand reference states for ligand-aware calculations |
 | `metadata` | 11 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
@@ -160,4 +160,4 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Y | Yttrium (Y) | 11 | 8 | 3 | 0 | 0 | 11 | 9 | 9 | 24 |
 | Yb | Ytterbium (Yb) | 9 | 6 | 3 | 0 | 0 | 9 | 6 | 6 | 10 |
 | Zn | Zinc (Zn) | 22 | 10 | 12 | 0 | 0 | 21 | 21 | 18 | 47 |
-| Zr | Zirconium (Zr) | 75 | 26 | 31 | 17 | 1 | 60 | 52 | 59 | 90 |
+| Zr | Zirconium (Zr) | 81 | 26 | 37 | 17 | 1 | 65 | 57 | 65 | 96 |

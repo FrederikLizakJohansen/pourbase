@@ -13,20 +13,20 @@
     "source_permission_NEA_TDB_Zr_2005": "{\"check_source_specific_additional_restrictions\": true, \"downstream_acknowledgment_required\": true, \"email_sha256\": \"c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4\", \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"reviewed_on\": \"2026-10-14\", \"scope\": \"Zirconium volume8 selected/evaluated numerical data; excludes independent auxiliary tables and source holds.\", \"source_id\": \"NEA_OECD_20261014_Zr\", \"status\": \"available_under_OECD_data_terms\", \"terms_url\": \"https://www.oecd.org/en/about/terms-conditions.html\"}"
   },
   "totals": {
-    "species": 969,
+    "species": 975,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 3093,
-    "recommended_values": 2285,
-    "source_records": 1704,
+    "reported_thermochemistry": 3109,
+    "recommended_values": 2301,
+    "source_records": 1707,
     "distinct_citations": 166,
-    "warnings": 1306,
-    "phase_records": 543,
-    "resolved_phase_records": 324,
+    "warnings": 1312,
+    "phase_records": 549,
+    "resolved_phase_records": 330,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
-    "ligands": 18
+    "ligands": 21
   },
   "phases": [
     {
@@ -38,10 +38,10 @@
     },
     {
       "phase": "solid",
-      "species": 400,
-      "gibbs": 356,
-      "entropy": 322,
-      "enthalpy": 322
+      "species": 406,
+      "gibbs": 361,
+      "entropy": 327,
+      "enthalpy": 328
     },
     {
       "phase": "gas",
@@ -61,21 +61,21 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 855
+      "available": 860
     },
     {
       "property": "Entropy",
-      "available": 776
+      "available": 781
     },
     {
       "property": "Formation enthalpy",
-      "available": 654
+      "available": 660
     }
   ],
   "gibbs_status": {
-    "verified": 555,
-    "source_verified_estimate": 226,
-    "not_available": 108,
+    "verified": 559,
+    "source_verified_estimate": 227,
+    "not_available": 109,
     "defined_reference_state": 74,
     "terminal_evidence_gap": 6
   },
@@ -358,7 +358,7 @@
       "symbol": "Zr",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 75
+      "species": 81
     },
     {
       "atomic_number": 41,
@@ -1860,15 +1860,15 @@
     {
       "symbol": "Zr",
       "system": "Zirconium (Zr)",
-      "species": 75,
+      "species": 81,
       "aqueous": 26,
-      "solid": 31,
+      "solid": 37,
       "gas": 17,
       "liquid": 1,
-      "gibbs": 60,
-      "entropy": 52,
-      "enthalpy": 59,
-      "warnings": 90
+      "gibbs": 65,
+      "entropy": 57,
+      "enthalpy": 65,
+      "warnings": 96
     }
   ],
   "warning_types": [
@@ -2042,6 +2042,10 @@
     },
     {
       "warning_type": "usgs_sulfate_evaluation_interval_entropy",
+      "count": 6
+    },
+    {
+      "warning_type": "nea02g2_elemental_reservoir",
       "count": 6
     },
     {
@@ -2480,7 +2484,7 @@
   "phase_identity": [
     {
       "identity_status": "resolved",
-      "count": 314
+      "count": 320
     },
     {
       "identity_status": "aqueous_species_identified",
