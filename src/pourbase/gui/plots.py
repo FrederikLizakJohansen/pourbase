@@ -113,11 +113,17 @@ class _PathVertex(pg.TargetItem):
         self.index, self.owner = index, owner
 
     def mouseClickEvent(self, event) -> None:
+        if getattr(self.owner, "_pick", None) is not None:  # while picking, a click adds a point
+            event.ignore()
+            return
         if event.button() == Qt.LeftButton:
             event.accept()
             self.owner.select_vertex(self.index)
 
     def mouseDragEvent(self, event) -> None:
+        if getattr(self.owner, "_pick", None) is not None:
+            event.ignore()
+            return
         if event.isStart():
             self.owner.select_vertex(self.index)
         super().mouseDragEvent(event)
@@ -711,7 +717,7 @@ class DiagramView(pg.PlotWidget):
             return
         if event.button() != Qt.LeftButton or event.double():
             return
-        if event.isAccepted() is True:  # a path point took the click
+        if event.isAccepted() is True and getattr(self, "_pick", None) is None:  # a path point took the click
             return
         if getattr(self, "selected_vertex", None) is not None and getattr(self, "_pick", None) is None:
             self.select_vertex(None)
