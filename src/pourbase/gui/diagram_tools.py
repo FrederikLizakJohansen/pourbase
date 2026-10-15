@@ -357,7 +357,7 @@ def stable_ids(calculation) -> list[str]:
 
 
 class RegionPanel(QWidget):
-    """Where a species, or a kind of species, is stable with a chosen margin (Eq. 17)."""
+    """Where a species, or a kind of species, is stable with a chosen margin."""
 
     changed = Signal()
 

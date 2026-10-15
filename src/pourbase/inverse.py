@@ -4,7 +4,7 @@ A target is a set of species: one species, or a kind in the sense of Pourbaix's 
 diagrams. At each point the target holds with margin ``M`` when its lowest transformed Gibbs
 energy (Eq. 1) lies at least ``M`` below that of every species outside it,
 
-    min_{j ∉ T} G_j − min_{i ∈ T} G_i ≥ M,                                                 (17)
+    min_{j ∉ T} G_j − min_{i ∈ T} G_i ≥ M,
 
 so ``M = 0`` reproduces the stability region of Eq. 2. With ``k_sigma`` the margin is instead
 required to exceed ``k`` combined standard uncertainties of the two competing species (Eq. 12).
@@ -49,7 +49,7 @@ class StabilityRegion:
     target: str
     pH: np.ndarray
     eh_V: np.ndarray
-    margin_J_mol_metal: np.ndarray  # (eh, pH): Eq. 17; negative where the target is not stable
+    margin_J_mol_metal: np.ndarray  # (eh, pH): the margin; negative where the target is not stable
     satisfied: np.ndarray  # (eh, pH) boolean
     min_margin_J_mol: float
     k_sigma: float | None
@@ -104,13 +104,13 @@ def stability_region(calculation, target: str, min_margin_J_mol: float = 0.0, k_
 class WindowResult:
     symbol: str
     fraction: float | None  # share of the window where the criterion holds; None when not calculated
-    minimum_margin_J_mol_metal: float | None  # smallest Eq. 17 margin over the window
+    minimum_margin_J_mol_metal: float | None  # smallest margin over the window
     note: str = ""
 
 
 def screen_window(database, kind: str, pH: tuple[float, float], eh_V: tuple[float, float],
                   min_margin_J_mol: float = 0.0, points: int = 21, **scenario) -> dict[str, WindowResult]:
-    """For every element, the share of a pH–potential window where ``kind`` holds (Eq. 17).
+    """For every element, the share of a pH–potential window where ``kind`` holds.
 
     ``scenario`` takes :class:`~pourbase.scenario.Scenario` fields such as ``concentration``,
     ``ligands`` or ``temperature_K``; the diagrams are fixed-activity.
