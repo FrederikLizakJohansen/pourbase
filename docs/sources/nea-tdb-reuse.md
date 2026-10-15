@@ -293,6 +293,30 @@ tin changes1495/7371 points, all below the water-stability window. The source
 intervals retain their published interpretation. See [the source values,
 phase conventions and gas-selection example](nea-adjacent-phases.md).
 
+## NEA02g1 zirconium component reconciliation
+
+Five of the 27 zirconium holds are resolved: two water-normalized hydrolysis
+G values, the Zr(g) triplet, selected Zr(SeO3)2 H and zircon G/H/S. Nine
+observations and three species bring production to **969 species /3,093
+observations /74 systems**, selected G/S/H **855/776/654**. The existing policy
+changes two preferred G values and retains all alternatives. Two free-reference
+components come from the already reviewed open non-SRD NBS release.
+
+The source hydroxo formulas are preserved in locators. Legacy ZrO²⁺/ZrO2(aq)
+formulas specify water-subtracted components, with explicit warnings about
+physical zirconyl identity. The neutral silica component uses direct free
+H4SiO4 activity at unit water activity. Zr(g) requires explicit phase selection;
+default closed balance remains available. Source intervals retain their
+published interpretation, and independent H/S estimates remain distinct.
+See [the source values and scientific checks](nea-zirconium-hydrolysis.md).
+
+The **22 remaining zirconium holds** comprise six Te/N/C reference routes,
+four disputed source evaluations and twelve mixed-metal records. Continue
+with the six reference routes. The original 27-row inventory remains a
+historical checkpoint; its active reconciliation records five admissions.
+Two Cp-only rows stay with R18. Earlier Fe/Ni/Sn holds and other sources'
+permission states remain separate. Original request coverage stays116/131.
+
 ## Further exploration
 
 The first expansion covers a useful aqueous-ion/hydrolysis subset. Continue

@@ -20,14 +20,23 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 14 October 2026 checkpoint contains **966 species and 3,084 observations**
-across 74 supported systems, with **853/774/651 selected G/S/H properties**.
+The latest 15 October 2026 checkpoint contains **969 species and 3,093 observations**
+across 74 supported systems, with **855/776/654 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
 requirement. See [the source instructions](sources/nea-tdb-reuse.md) and
 [distributed notices](../THIRD_PARTY_NOTICES.md). Check source-specific
 additional restrictions; other sources retain their own permission status.
+
+NEA02g1 resolves five zirconium holds with nine observations and three species.
+Two hydrolysis Gibbs values use the existing water-subtracted component basis;
+the source hydroxo formulas and physical zirconyl caveat remain explicit.
+New open NBS free-selenite and neutral silica component references support
+Zr(SeO3)2 enthalpy and zircon G/H/S. Neutral silica uses direct free H4SiO4
+activity at unit water activity. Zr(g) uses explicit optional-gas selection.
+Every earlier observation is retained; 22 zirconium holds remain. See
+[the component and source review](sources/nea-zirconium-hydrolysis.md).
 
 NEA02f adds all nine selected G/H/S observations for Ni(g), Ni(l) and
 SnH4(g). The two new gases have `optional_gas_phase` annotations in `warnings`:

@@ -4,6 +4,12 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Resolve five zirconium source/model holds with nine NEA observations and
+  three species. Select two hydrolysis Gibbs values in the existing water
+  component basis, preserving source formulas, uncertainty intervals and all
+  alternatives. Add open NBS selenite and neutral silica references, zircon
+  G/H/S, zirconium selenite H and explicitly selected Zr(g). Keep the remaining
+  22 zirconium holds tracked separately.
 - Review all nine selected G/H/S cells for Ni(g), Ni(l) and SnH4(g).
   Add nine observations and three phase identities, preserving all earlier
   preferred values. Add explicit selection for the two new gas phases while

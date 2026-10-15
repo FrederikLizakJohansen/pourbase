@@ -515,6 +515,33 @@ The [source crosswalk](docs/sources/nea-derived-crosswalk.md) documents the
 admission and remaining routes. The private permission correspondence and
 complete source publications are retained outside the distribution.
 
+## NEA02g1 zirconium hydrolysis, gas, selenite and zircon
+
+OECD and the Nuclear Energy Agency are acknowledged for selected values from
+Brown, P. L., Curti, E. and Grambow, B., with Ekberg, C. (2005), *Chemical
+Thermodynamics of Zirconium*, NEA volume 8, Table III-1 and sections V.1,
+V.2.2, V.3.1.1, V.5.2.2 and V.7.2.1. Source formulas, water-component
+conversions, uncertainty conventions and exact locators accompany the values.
+See [the source review](docs/sources/nea-zirconium-hydrolysis.md).
+
+Under the NEA-TDB-OECD-2026-10-14 clarification and OECD data terms, these
+selected data may be used, adapted and redistributed, including commercially,
+subject to source-specific additional restrictions. Every sublicense of work
+using these data must include the same OECD acknowledgment requirement and
+require further sublicensees to pass it on. This requirement applies to
+these source data alongside the package's GPL-3.0-only licence.
+
+NIST is acknowledged for the independently sourced free SeO3²⁻ and H4SiO4
+reference values: Wagman et al. (1982), *NBS Tables with errata*, NIST Public
+Data Repository [M32124](https://doi.org/10.18434/M32124), logical records
+759 and 2941, under the [NIST open licence](https://www.nist.gov/open/license).
+This is the explicitly open non-SRD release. H4SiO4 is converted to a neutral
+SiO2 component using the project water reference. The convention follows
+Shock et al. (1997), p. 932, Eq. 50 and adjoining discussion,
+[DOI 10.1016/S0016-7037(96)00339-0](https://doi.org/10.1016/S0016-7037(96)00339-0).
+Complete publications and private correspondence retain their existing rights
+and stay outside the distribution.
+
 ## NEA02f nickel gas/liquid and stannane
 
 OECD and the Nuclear Energy Agency are acknowledged for selected Ni(g),
