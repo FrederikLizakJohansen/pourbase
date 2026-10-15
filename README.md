@@ -183,6 +183,8 @@ acknowledgment of the OECD and the Nuclear Energy Agency:
 
 - Gamsjäger, H. et al. *Chemical Thermodynamics of Nickel*. OECD Nuclear Energy Agency, Chemical
   Thermodynamics Series Volume 6 (2005).
+- Brown, P. L., Curti, E. and Grambow, B., with Ekberg, C. *Chemical Thermodynamics of Zirconium*.
+  OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 8 (2005).
 - Gamsjäger, H., Gajda, T., Sangster, J., Saxena, S. K. and Voigt, W. *Chemical Thermodynamics of
   Tin*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 12 (2012).
 - Lemire, R. J. et al. *Chemical Thermodynamics of Iron, Part 1*. OECD Nuclear Energy Agency,
