@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 16 October 2026 checkpoint contains **1,011 species and 3,219 observations**
-across 74 supported systems, with **888/805/689 selected G/S/H properties**.
+The latest 16 October 2026 checkpoint contains **1,025 species and 3,247 observations**
+across 74 supported systems, with **902/812/696 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -38,6 +38,16 @@ selection and fixed external fugacity; three polyselenide ions retain their
 full formula units and are excluded from closed mononuclear balances.
 Three crystals retain H only. The selected-table selenite entropy sign and
 its discussion discrepancy are documented in [the review](sources/nea-selenium.md).
+
+R11c adds 28 observations and 14 metal-bearing selenium species, two free
+references, and a documented selenite-reference update to its preferred NEA
+observation. Every earlier reported observation and preferred ID remains.
+Six observations retain Appendix E's unreviewed-auxiliary qualification; one
+FeSeO3+ formation G is a local estimate with explicit input IDs and unavailable
+total uncertainty. Its 296 K experimental ancestry follows NEA's stated
+standard-condition approximation. The prior NBS selenite observation and full
+reference pin remain available in the evidence/history metadata.
+See [the metal-selenium review](sources/nea-metal-selenium.md).
 
 NEA02g3b adds three original-study gas enthalpy observations to existing
 ZrO/ZrO2 records: two at 298.15 K and one at 0 K. The latter has an explicit

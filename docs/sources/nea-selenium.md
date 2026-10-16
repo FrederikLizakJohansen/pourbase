@@ -1,5 +1,10 @@
 # NEA selenium: R11a inventory and R11b core species
 
+R11c has since completed the 14 metal-bearing selenium routes with 28 further
+observations. Current totals are **1,025 species / 3,247 observations**.
+The core batch below remains its historical checkpoint. See
+[R11c's source decisions and reference update](nea-metal-selenium.md).
+
 The 16 October 2026 continuation adds **71 observations across 29 species**,
 including **22 new species**, from the original NEA selenium review. It fills
 **52 missing properties** and changes **19 existing preferred observations**
@@ -108,10 +113,11 @@ closed selenium inventories with their stated species exclusions.
   comparison links remain distinct from verified phase identity and ancestry.
 - [x] **R11b:** Review and add this finite core selenium batch through staging.
   Six of the 20 selenium reaction routes now have direct original-NEA coverage.
-- [ ] **R11c:** Review the remaining 14 metal-bearing selenium routes: two
+- [x] **R11c:** Review the remaining 14 metal-bearing selenium routes: two
   nickel selenocyanates; Ca/Mg/Mn/Ni aqueous selenates; FeSeO3+; Mg/Ni/Ca/Mn
   selenite hydrates; Ba selenate; and Ba/Sr selenites. Verify full formulas,
   source exceptions, free-ion references, molar basis and errata individually.
+  [Completed review](nea-metal-selenium.md).
 - [ ] Continue the carried 29 Zr reaction routes, eight independent PSI nickel
   routes, 57 other-source routes and unsupported-system decisions, resolving
   the applicable outstanding evidence or model needs.

@@ -6,25 +6,25 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 1011 |
+| Species | 1025 |
 | Supported elemental systems | 74 of 118 elements |
-| Recommended Gibbs energies | 888 (88 %) |
-| Recommended entropies | 805 (80 %) |
-| Recommended formation enthalpies | 689 (68 %) |
-| Reported values retained | 3219 |
-| Source records | 1718 (172 distinct citations) |
-| Phase records | 568 (349 resolved) |
-| Warnings | 1371 |
+| Recommended Gibbs energies | 902 (88 %) |
+| Recommended entropies | 812 (79 %) |
+| Recommended formation enthalpies | 696 (68 %) |
+| Reported values retained | 3247 |
+| Source records | 1721 (174 distinct citations) |
+| Phase records | 575 (356 resolved) |
+| Warnings | 1385 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
-| Ligands | 25 |
+| Ligands | 27 |
 
 Gibbs energies by evidence status:
 
 | Status | Species |
 |---|---|
-| `verified` | 576 |
-| `source_verified_estimate` | 238 |
+| `verified` | 585 |
+| `source_verified_estimate` | 243 |
 | `not_available` | 117 |
 | `defined_reference_state` | 74 |
 | `terminal_evidence_gap` | 6 |
@@ -33,8 +33,8 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| aqueous | 534 | 469 | 417 | 296 |
-| solid | 424 | 371 | 337 | 343 |
+| aqueous | 541 | 476 | 417 | 296 |
+| solid | 431 | 378 | 344 | 350 |
 | gas | 48 | 45 | 48 | 45 |
 | liquid | 5 | 3 | 3 | 5 |
 
@@ -42,19 +42,19 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 1011 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 1011 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 3219 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1718 | Full citations, links, locators and access dates |
-| `phases` | 568 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 1371 | Scientific cautions attached to records |
+| `species` | 1025 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 1025 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 3247 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1721 | Full citations, links, locators and access dates |
+| `phases` | 575 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 1385 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
-| `ligands` | 25 | Free-ligand reference states for ligand-aware calculations |
+| `ligands` | 27 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 11 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 15 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 18 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -93,12 +93,12 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | As | Arsenic (As) | 11 | 7 | 4 | 0 | 0 | 11 | 10 | 10 | 4 |
 | Au | Gold (Au) | 15 | 13 | 2 | 0 | 0 | 11 | 8 | 3 | 23 |
 | B | Boron (B) | 5 | 3 | 2 | 0 | 0 | 5 | 5 | 5 | 1 |
-| Ba | Barium (Ba) | 10 | 6 | 4 | 0 | 0 | 10 | 10 | 8 | 20 |
+| Ba | Barium (Ba) | 12 | 6 | 6 | 0 | 0 | 12 | 12 | 10 | 22 |
 | Be | Beryllium (Be) | 14 | 11 | 3 | 0 | 0 | 5 | 14 | 3 | 26 |
 | Bi | Bismuth (Bi) | 8 | 5 | 3 | 0 | 0 | 6 | 5 | 2 | 13 |
 | Br | Bromine (Br) | 7 | 6 | 0 | 0 | 1 | 7 | 7 | 7 | 0 |
 | C | Carbon (C) | 7 | 4 | 1 | 2 | 0 | 7 | 7 | 7 | 9 |
-| Ca | Calcium (Ca) | 22 | 9 | 13 | 0 | 0 | 22 | 22 | 20 | 50 |
+| Ca | Calcium (Ca) | 24 | 10 | 14 | 0 | 0 | 24 | 23 | 21 | 52 |
 | Cd | Cadmium (Cd) | 15 | 12 | 3 | 0 | 0 | 9 | 11 | 4 | 21 |
 | Ce | Cerium (Ce) | 13 | 7 | 6 | 0 | 0 | 12 | 9 | 10 | 14 |
 | Cl | Chlorine (Cl) | 9 | 8 | 0 | 1 | 0 | 9 | 9 | 9 | 1 |
@@ -110,7 +110,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Er | Erbium (Er) | 8 | 5 | 3 | 0 | 0 | 8 | 6 | 7 | 10 |
 | Eu | Europium (Eu) | 13 | 6 | 7 | 0 | 0 | 12 | 10 | 11 | 13 |
 | F | Fluorine (F) | 4 | 3 | 0 | 1 | 0 | 4 | 4 | 4 | 1 |
-| Fe | Iron (Fe) | 65 | 27 | 38 | 0 | 0 | 54 | 45 | 41 | 81 |
+| Fe | Iron (Fe) | 66 | 28 | 38 | 0 | 0 | 55 | 45 | 41 | 82 |
 | Ga | Gallium (Ga) | 9 | 6 | 3 | 0 | 0 | 7 | 8 | 2 | 17 |
 | Gd | Gadolinium (Gd) | 11 | 6 | 5 | 0 | 0 | 10 | 6 | 7 | 12 |
 | Ge | Germanium (Ge) | 4 | 1 | 3 | 0 | 0 | 4 | 3 | 3 | 2 |
@@ -124,14 +124,14 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | La | Lanthanum (La) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 8 | 13 |
 | Li | Lithium (Li) | 4 | 3 | 1 | 0 | 0 | 4 | 4 | 2 | 3 |
 | Lu | Lutetium (Lu) | 10 | 6 | 4 | 0 | 0 | 10 | 7 | 7 | 11 |
-| Mg | Magnesium (Mg) | 22 | 8 | 14 | 0 | 0 | 19 | 18 | 18 | 50 |
-| Mn | Manganese (Mn) | 21 | 10 | 11 | 0 | 0 | 18 | 20 | 15 | 31 |
+| Mg | Magnesium (Mg) | 24 | 9 | 15 | 0 | 0 | 21 | 19 | 19 | 52 |
+| Mn | Manganese (Mn) | 23 | 11 | 12 | 0 | 0 | 20 | 21 | 16 | 33 |
 | Mo | Molybdenum (Mo) | 5 | 1 | 4 | 0 | 0 | 5 | 5 | 3 | 2 |
 | N | Nitrogen (N) | 8 | 5 | 0 | 3 | 0 | 8 | 8 | 8 | 20 |
 | Na | Sodium (Na) | 17 | 10 | 7 | 0 | 0 | 16 | 15 | 13 | 37 |
 | Nb | Niobium (Nb) | 7 | 4 | 3 | 0 | 0 | 7 | 4 | 4 | 5 |
 | Nd | Neodymium (Nd) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 9 | 15 |
-| Ni | Nickel (Ni) | 52 | 22 | 28 | 1 | 1 | 47 | 39 | 40 | 54 |
+| Ni | Nickel (Ni) | 56 | 25 | 29 | 1 | 1 | 51 | 40 | 41 | 58 |
 | Os | Osmium (Os) | 7 | 2 | 4 | 1 | 0 | 7 | 5 | 5 | 8 |
 | P | Phosphorus (P) | 9 | 7 | 2 | 0 | 0 | 9 | 7 | 7 | 2 |
 | Pb | Lead (Pb) | 19 | 10 | 9 | 0 | 0 | 17 | 18 | 14 | 42 |
@@ -149,7 +149,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Si | Silicon (Si) | 5 | 3 | 2 | 0 | 0 | 5 | 4 | 4 | 9 |
 | Sm | Samarium (Sm) | 13 | 7 | 6 | 0 | 0 | 12 | 6 | 8 | 16 |
 | Sn | Tin (Sn) | 49 | 23 | 17 | 8 | 1 | 47 | 27 | 25 | 41 |
-| Sr | Strontium (Sr) | 10 | 6 | 4 | 0 | 0 | 10 | 10 | 8 | 19 |
+| Sr | Strontium (Sr) | 11 | 6 | 5 | 0 | 0 | 11 | 11 | 9 | 20 |
 | Ta | Tantalum (Ta) | 4 | 2 | 2 | 0 | 0 | 4 | 2 | 1 | 6 |
 | Tb | Terbium (Tb) | 11 | 6 | 5 | 0 | 0 | 10 | 7 | 8 | 13 |
 | Te | Tellurium (Te) | 4 | 2 | 2 | 0 | 0 | 4 | 3 | 3 | 2 |

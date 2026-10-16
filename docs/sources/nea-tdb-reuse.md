@@ -361,6 +361,16 @@ twelve mixed-metal records. See [the decisions and scientific checks](nea-zircon
 
 ## Further exploration
 
+R11c completes the 14 metal-bearing selenium routes with 28 observations.
+Distinguish the 21 selected formation observations, six qualified Appendix E
+evaluations and one local FeSeO3+ estimate. NEA-authored Appendix E evaluations
+retain their unreviewed-auxiliary status; importing them does not import the
+independent auxiliary table or make them TDB-selected. A local derivation
+records every input ID, conditions and unavailable total uncertainty.
+The free-selenite reference now matches the preferred NEA observation, with
+its earlier NBS pin and observation retained. See [the finite review and
+next checklist](nea-metal-selenium.md).
+
 R11a/R11b now reconcile the PSI/Nagra inventory and retain 71 selected core
 selenium observations from NEA volume 7 under the documented OECD terms.
 The volume-specific metadata records the existing permission evidence hashes,

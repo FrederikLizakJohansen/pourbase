@@ -27,6 +27,24 @@ rights and stay outside this import.
 
 ## OECD Nuclear Energy Agency Thermochemical Database (NEA-TDB)
 
+The R11c metal-selenium continuation acknowledges Olin et al. (2005),
+*Chemical Thermodynamics of Selenium*, volume 7, Table III-1 pp. 44/48/50,
+Table III-2 pp. 58–60 and Table E-1 pp. 641/644. Six Appendix E observations
+retain NEA's explicit unreviewed-auxiliary qualification and are recorded as
+estimates. One local FeSeO3+ formation-G estimate adapts the selected NEA7
+reaction using retained NEA7 selenite and Lemire et al. (2013), *Chemical
+Thermodynamics of Iron, Part 1*, volume 13a, Fe3+ data. OECD and NEA are
+acknowledged for all these inputs. Independent auxiliary tables, source
+publications and private correspondence remain external.
+
+The written clarification and OECD data terms cover these NEA-authored
+evaluations and their adaptation, subject to additional restrictions checks.
+Every sublicense of work using these data must carry the same OECD
+acknowledgment requirement and require further sublicensees to pass it on.
+The prior open NBS selenite observation and source attribution remain in the
+database when its free-reference pin changes to the preferred NEA value.
+See [the R11c source review](docs/sources/nea-metal-selenium.md).
+
 OECD and the Nuclear Energy Agency are acknowledged as the source of the NEA-TDB
 selected thermochemical data retained in pourbase. Cite the review associated
 with each observation, including its table and page. Written clarification
