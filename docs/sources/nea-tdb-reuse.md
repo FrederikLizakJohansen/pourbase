@@ -51,7 +51,7 @@ warrants it.
 2. Match the existing species by formula unit, charge, hydration, phase and
    conventions. Retain scientific gaps and identity holds until resolved.
    Add a complete species record only for a distinct supported identity.
-3. Record every eligible observation in schema 8 `reported_thermochemistry`.
+3. Record every eligible observation in `reported_thermochemistry`.
    Preserve alternatives; a permission change updates reuse metadata without
    duplicating numerical observations. Put the exact property/table/row
    location in `source_locator` and confirm that API reads retain it.
@@ -369,3 +369,17 @@ conventions and calculation support. Preserve the earlier numerical reviews
 and keep source permission, missing evidence and unsupported chemistry as
 separate tracker states. Record a finite candidate inventory for each batch;
 completion of this checkpoint does not complete the entire NEA catalogue.
+
+## NEA02g4 mixed-component checkpoint
+
+The twelve mixed-metal zirconium rows have been reviewed: 24 observations
+and 11 species are retained, adding 20 usable 298.15 K properties. Preserve
+actual source temperatures even when a generic table heading differs; keep
+incompatible-temperature evidence outside calculation selection until a
+justified conversion exists. Store independent buffered references separately
+in schema 9 `additional_components`, validate every reference's reuse basis
+and physical reaction balance, and expose source conditions through the API.
+All earlier preferred selections and private permission evidence are preserved.
+Two of the original 27 rows remain admission holds; three admitted observations
+have separate temperature calculation holds. The gas source-upgrade route
+remains open. See [the finite review](nea-zirconium-mixed-components.md).

@@ -96,6 +96,7 @@ class Tools:
             source = self.database.source(item.source_id)
             rows.append({"record_id": item.record_id, "species": item.species, "formula": item.formula_ascii,
                          "phase": item.phase, "charge": item.charge, "ligand_id": item.ligand_id,
+                         "ligand_ids": list(item.ligand_ids),
                          "gibbs_energy_kJ_mol": _kJ(item.gibbs_energy_J_mol),
                          "uncertainty_kJ_mol": _kJ(item.gibbs_uncertainty_J_mol),
                          "status": item.gibbs_status.value,

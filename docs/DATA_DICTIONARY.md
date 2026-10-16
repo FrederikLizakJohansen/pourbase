@@ -16,18 +16,34 @@ thermochemical quantities use one formula unit as the molar basis.
 | `warnings` | Readable cautions for estimates, absent recommended values, and phase-identity limitations |
 | `materials_project_matches` | Accepted links between an experimental solid phase and a Materials Project structure |
 | `materials_project_energies` | Published method-specific Materials Project energy records and calculation provenance |
-| `ligands` | Free-ligand reference states available to ligand-aware calculations |
+| `ligands` | Free-ligand and buffered-component reference states |
+| `additional_components` | Further independent buffered references per species, beyond the first reference in `species` (schema 9) |
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 16 October 2026 checkpoint contains **978 species and 3,118 observations**
-across 74 supported systems, with **863/784/663 selected G/S/H properties**.
+The latest 16 October 2026 checkpoint contains **989 species and 3,142 observations**
+across 74 supported systems, with **869/790/671 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
 requirement. See [the source instructions](sources/nea-tdb-reuse.md) and
 [distributed notices](../THIRD_PARTY_NOTICES.md). Check source-specific
 additional restrictions; other sources retain their own permission status.
+
+NEA02g4 retains 24 observations and 11 mixed-metal zirconium species, adding
+20 usable 298.15 K properties. Schema 9 represents separate secondary-cation
+and silica/phosphate reservoirs in `additional_components`, alongside the
+first reference in `species`. Runtime `components` includes both once; every
+required activity must be supplied. Closed balances conserve the primary Zr
+inventory, with secondary components externally buffered. Three observations
+retain their actual 323.15 K temperature and are excluded from 298.15 K
+selection. `ReportedValue.temperature_K` and `.pressure_bar` expose source
+conditions. One same-evaluation NASICON alternative is retained with a
+reasoned preference for the internally consistent selected-table value.
+Twenty-five original zirconium holds are admitted; ZrH and an inconsistent
+calcium formula remain admission holds. The three temperature calculation
+holds and gas source-upgrade route remain separate. Schema 7/8 files remain
+readable. See [the source and component review](sources/nea-zirconium-mixed-components.md).
 
 NEA02g3 reviews four disputed rows and adds nine observations and three
 species, preserving earlier preferred values. ZrO(g)/ZrO2(g) retain qualified

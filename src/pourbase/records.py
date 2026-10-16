@@ -45,6 +45,8 @@ class ReportedValue:
     uncertainty: float | None
     source: SourceReference | None
     supersedes_value_id: str | None
+    temperature_K: float | None = None
+    pressure_bar: float | None = None
 
 
 @dataclass(frozen=True, slots=True)

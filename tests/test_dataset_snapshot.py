@@ -19,7 +19,7 @@ import pourbase as pb
 
 TABLES = {
     "metadata", "species", "sources", "phases", "warnings",
-    "materials_project_matches", "materials_project_energies", "ligands",
+    "materials_project_matches", "materials_project_energies", "ligands", "additional_components",
     "reported_thermochemistry", "computational_fallbacks", "element_coverage",
 }
 
@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 978), ("reported_thermochemistry", 3118),
-                                 ("sources", 1708), ("warnings", 1315),
+            for table, count in (("species", 989), ("reported_thermochemistry", 3142),
+                                 ("sources", 1713), ("warnings", 1326), ("additional_components", 11),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1090,7 +1090,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         exclusion = next(e for e in self.database.policy.exclusions
                          if e.record_id == "r07-mg-basic-carbonate-four-mg-trihydrate")
         self.assertIn("incorrect", exclusion.reason)
-        self.assertEqual(len(self.database.policy.exclusions), 3)
+        self.assertEqual(len(self.database.policy.exclusions), 6)
 
     def test_magnesite_1965_solubility_estimate_uses_correct_gas_reference(self) -> None:
         record = self.database.species_records(("r07-mg-magnesite",))[0]
@@ -1911,12 +1911,12 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 863, "absolute_entropy": 784, "enthalpy_of_formation": 663})
+                         {"gibbs_energy_of_formation": 869, "absolute_entropy": 790, "enthalpy_of_formation": 671})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "a93777ecfa631cda",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "f2973709a2e603e9",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:
         database = pb.ThermodynamicDatabase.bundled()
         self.assertFalse(database._stores_recommendations)
-        self.assertEqual(database.metadata["schema_version"], "8")
+        self.assertEqual(database.metadata["schema_version"], "9")

@@ -118,40 +118,43 @@ def _reaction(left: ThermodynamicSpecies, right: ThermodynamicSpecies) -> str:
     )
     left_water, right_water = max(oxygen_delta, 0.0), max(-oxygen_delta, 0.0)
     left_proton, right_proton = max(hydrogen_delta, 0.0), max(-hydrogen_delta, 0.0)
-    left_ligand_per_metal = left.ligand_count * left_scale
-    right_ligand_per_metal = right.ligand_count * right_scale
-    ligand_delta = right_ligand_per_metal - left_ligand_per_metal
-    left_ligand, right_ligand = max(ligand_delta, 0.0), max(-ligand_delta, 0.0)
-    ligand_charge = right.ligand_charge if right.ligand_count else left.ligand_charge
-    left_charge = left.charge * left_scale + left_proton + left_ligand * ligand_charge
-    right_charge = right.charge * right_scale + right_proton + right_ligand * ligand_charge
+    amounts: dict[str, float] = {}
+    charges: dict[str, float] = {}
+    for species, scale in ((left, -left_scale), (right, right_scale)):
+        for component in species.components:
+            key = component.ligand_id
+            if key in charges and charges[key] != component.charge:
+                raise ValueError(f"Inconsistent charge for buffered component {key}")
+            amounts[key] = amounts.get(key, 0.0) + scale * component.count
+            charges[key] = component.charge
+    left_ligands = tuple((max(value, 0.0), key) for key, value in sorted(amounts.items()))
+    right_ligands = tuple((max(-value, 0.0), key) for key, value in sorted(amounts.items()))
+    left_charge = (left.charge * left_scale + left_proton
+                   + sum(amount * charges[key] for amount, key in left_ligands))
+    right_charge = (right.charge * right_scale + right_proton
+                    + sum(amount * charges[key] for amount, key in right_ligands))
     left_electron, right_electron = (
         max(left_charge - right_charge, 0.0),
         max(right_charge - left_charge, 0.0),
     )
-    ligand_name = right.ligand_id or left.ligand_id or "L"
-
     def side(
         scale: float,
         species: ThermodynamicSpecies,
         water: float,
         proton: float,
-        ligand: float,
+        ligands: tuple[tuple[float, str], ...],
         electron: float,
     ) -> str:
         terms = [f"{_coefficient(scale)}{species.species}"]
-        for amount, name in (
-            (water, "H2O"), (proton, "H+"), (ligand, ligand_name),
-            (electron, "e-"),
-        ):
+        for amount, name in ((water, "H2O"), (proton, "H+"), *ligands, (electron, "e-")):
             if not math.isclose(amount, 0.0, abs_tol=1e-10):
                 terms.append(f"{_coefficient(amount)}{name}")
         return " + ".join(terms)
 
     return (
-        side(left_scale, left, left_water, left_proton, left_ligand, left_electron)
+        side(left_scale, left, left_water, left_proton, left_ligands, left_electron)
         + " ⇌ "
-        + side(right_scale, right, right_water, right_proton, right_ligand, right_electron)
+        + side(right_scale, right, right_water, right_proton, right_ligands, right_electron)
     )
 
 

@@ -604,3 +604,25 @@ restrictions. Every sublicense of work using these data must include the
 same OECD acknowledgment requirement and require further sublicensees to
 pass it on. Complete publications and private correspondence retain their
 existing rights and stay outside the distributed package.
+
+## NEA02g4 mixed-metal zirconium observations and free-cation references
+
+OECD and the Nuclear Energy Agency are acknowledged for selected/evaluated
+values from Brown, Curti and Grambow, with Ekberg (2005), *Chemical
+Thermodynamics of Zirconium*, volume 8, Table III-1 p. 53, sections V.7.2.2,
+V.7.2.3, V.7.2.5 and V.7.2.7, and Table V-39 p. 224. Both NASICON phosphate
+Gibbs representations retain their own locators; source temperatures and
+scientific qualifications remain explicit. See [the review](docs/sources/nea-zirconium-mixed-components.md).
+
+The written NEA-TDB clarification and OECD data terms permit use, adaptation
+and redistribution, including commercially, subject to source-specific
+additional restrictions. Every sublicense of work using these data must
+include the same OECD acknowledgment requirement and require further
+sublicensees to pass it on. Source-data requirements apply alongside the
+package's GPL-3.0-only licence. Private correspondence and complete source
+publications retain their existing rights and stay outside the distribution.
+
+NIST is acknowledged for the Ca²⁺, Sr²⁺, Na⁺ and Cs⁺ free-ion references from
+Wagman et al. (1982), *NBS Tables with errata*, explicitly open non-SRD Public
+Data Repository [M32124](https://doi.org/10.18434/M32124), CSV logical records
+9196, 9635, 10732 and 13936, under the [NIST open licence](https://www.nist.gov/open/license).

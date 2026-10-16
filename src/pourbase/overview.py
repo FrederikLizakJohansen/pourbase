@@ -70,7 +70,7 @@ class Category(str, Enum):
             return cls.DISSOLVED_OR_GAS
         if species.phase == "liquid":
             return cls.ELEMENTAL_LIQUID
-        if species.ligand_count:
+        if not species.is_ligand_free:
             return cls.OTHER_SOLID
         if species.core_oxygen_count and not species.core_hydrogen_count:
             return cls.SOLID_OXIDE

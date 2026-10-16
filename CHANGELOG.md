@@ -4,6 +4,12 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Retain 24 NEA observations and 11 mixed-metal zirconium species, adding
+  20 usable 298.15 K properties. Schema 9 and independent buffered components
+  support conditional secondary-metal activities. Preserve three 323.15 K
+  observations outside 298.15 K selection and both NASICON Gibbs alternatives.
+  Keep the calcium formula and ZrH admission holds separate from temperature
+  and gas-source follow-ups. All earlier preferred selections are preserved.
 - Review four disputed zirconium rows and retain nine observations across
   three species. Keep two oxide-gas triplets as explicitly selected historical
   estimates with the later NEA critique. Reconcile the selected-table ZrS1.5

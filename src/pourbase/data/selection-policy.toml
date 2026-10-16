@@ -83,11 +83,35 @@ reason = "1 atm standard state of the 1984 evaluation; held until reconciled wit
 
 # Exceptions to the rule, each with its reason.
 
+[[exclusions]]
+record_id = "nea02g4-zr-na-catapleiite"
+property = "gibbs_energy_of_formation"
+source_id = "NEA_OECD_20261014_Zr"
+reason = "Source discussion and original study give this observation at 323.15 K; no justified conversion to the 298.15 K calculation reference is available"
+
+[[exclusions]]
+record_id = "nea02g4-zr-vlasovite"
+property = "gibbs_energy_of_formation"
+source_id = "NEA_OECD_20261014_Zr"
+reason = "Source discussion and original study give this observation at 323.15 K; no justified conversion to the 298.15 K calculation reference is available"
+
+[[exclusions]]
+record_id = "nea02g4-zr-elpidite"
+property = "gibbs_energy_of_formation"
+source_id = "NEA_OECD_20261014_Zr"
+reason = "Source discussion and original study give this observation at 323.15 K; no justified conversion to the 298.15 K calculation reference is available"
+
 [[overrides]]
 record_id = "gfe-al-alh3sio4-q+2-aqueous-aq"
 property = "gibbs_energy_of_formation"
 source_id = "Miron_R04_2017_gfe-al-alh3sio4-q+2-aqueous-aq_gf"
 reason = "variants of one evaluation in the same source; the curated variant is kept"
+
+[[overrides]]
+record_id = "nea02g4-zr-nasicon-phosphate"
+property = "gibbs_energy_of_formation"
+source_id = "NEA_OECD_20261014_Zr"
+reason = "The precise selected Table III-1 value reproduces the source H/S calculation; retain the discrepant Table V-39 value as a separate representation of the same evaluation"
 
 [[overrides]]
 record_id = "gfe-ca-cacl-q+1-aqueous-aq"

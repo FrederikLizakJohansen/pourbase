@@ -20,7 +20,8 @@ from .models import GibbsEnergyPolicy, PourbaixConditions, ThermodynamicSpecies
 FloatArray = npt.NDArray[np.float64]
 IntegerArray = npt.NDArray[np.int_]
 BooleanArray = npt.NDArray[np.bool_]
-PhaseKey = tuple[str, float, float, float]
+PhaseKey = (tuple[str, float, float, float]
+            | tuple[str, float, float, float, tuple[tuple[str, float], ...]])
 
 
 def _rounded(value: float) -> float:
@@ -128,6 +129,15 @@ class OfficialMaterialsProjectDiagram:
 
 def thermodynamic_species_equivalence_key(species: ThermodynamicSpecies) -> PhaseKey:
     """Create the composition/reaction key used for cross-dataset domain matching."""
+    if not species.is_ligand_free:
+        return (
+            species.phase,
+            _rounded(species.core_oxygen_count / species.metal_count),
+            _rounded(species.core_hydrogen_count / species.metal_count),
+            _rounded(species.charge / species.metal_count),
+            tuple(sorted((item.ligand_id, _rounded(item.count / species.metal_count))
+                         for item in species.components)),
+        )
     if species.phase in {"solid", "liquid"}:
         return (
             species.phase,

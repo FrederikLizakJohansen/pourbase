@@ -917,6 +917,7 @@ TABLES = (
     ("materials_project_energies", "Method-specific Materials Project energies with provenance"),
     ("element_coverage", "Status of every chemical element"),
     ("ligands", "Free-ligand reference states for ligand-aware calculations"),
+    ("additional_components", "Additional independent buffered references per species, beyond the first ligand"),
     ("metadata", "Dataset version, reference conditions, schema version and value policy"),
 )
 

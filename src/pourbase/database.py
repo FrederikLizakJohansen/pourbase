@@ -12,6 +12,7 @@ from pathlib import Path
 from .constants import FARADAY_C_MOL
 from .exceptions import DatabaseSchemaError, MetalSystemNotFoundError
 from .models import (
+    BufferedComponent,
     EvidenceStatus,
     ExclusionReason,
     GibbsEnergyPolicy,
@@ -181,6 +182,12 @@ class ThermodynamicDatabase:
             raise DatabaseSchemaError(
                 f"Database schema {version} is older than required schema {REQUIRED_SCHEMA_VERSION}"
             )
+        if version > 9:
+            raise DatabaseSchemaError(f"Database schema {version} requires a newer pourbase reader")
+        if version == 9 and not self._evidence_rows(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='additional_components'"
+        ):
+            raise DatabaseSchemaError("Schema 9 requires the additional_components table")
         required = {"reference_temperature_K", "reference_pressure_bar", "water_gibbs_energy_J_mol"}
         if missing := sorted(required - self.metadata.keys()):
             raise DatabaseSchemaError(f"Missing reference-state metadata: {', '.join(missing)}")
@@ -242,7 +249,28 @@ class ThermodynamicDatabase:
         result: dict[str, dict[str, list[str]]] = {}
         for row in self._rows("SELECT symbol, ligand_id, species FROM species WHERE ligand_id IS NOT NULL"):
             result.setdefault(row["symbol"], {}).setdefault(row["ligand_id"], []).append(row["species"])
+        for rows in self._additional_components.values():
+            for row in rows:
+                names = result.setdefault(row["symbol"], {}).setdefault(row["ligand_id"], [])
+                if row["species"] not in names:
+                    names.append(row["species"])
         return {symbol: {key: tuple(names) for key, names in items.items()} for symbol, items in result.items()}
+
+    @cached_property
+    def _additional_components(self) -> dict[str, tuple[sqlite3.Row, ...]]:
+        """Schema-9 components in addition to the legacy species ligand columns."""
+        if int(self.metadata["schema_version"]) < 9:
+            return {}
+        rows = self._rows(
+            """SELECT a.record_id, a.ligand_id, a.component_count, s.symbol, s.species,
+                      l.charge, l.gibbs_energy_J_mol
+               FROM additional_components a JOIN species s USING(record_id)
+               LEFT JOIN ligands l USING(ligand_id) ORDER BY a.record_id, a.ligand_id"""
+        )
+        result: dict[str, list[sqlite3.Row]] = {}
+        for row in rows:
+            result.setdefault(row["record_id"], []).append(row)
+        return {key: tuple(items) for key, items in result.items()}
 
     @cached_property
     def _sources(self) -> dict[str, sqlite3.Row]:
@@ -321,6 +349,7 @@ class ThermodynamicDatabase:
                         row["source_locator"] if "source_locator" in row.keys() else None,
                     ),
                     supersedes_value_id=row["supersedes_value_id"],
+                    temperature_K=row["temperature_K"], pressure_bar=row["pressure_bar"],
                 ))
             for values in reported.values():
                 values.sort(key=lambda item: (item.property, not item.selected_as_recommended, item.value_id))
@@ -501,10 +530,15 @@ class ThermodynamicDatabase:
             )
             gibbs = row["fallback_gibbs_energy_J_mol"] if fallback else row["gibbs_energy_J_mol"]
             ligand_count = float(row["ligand_count"] or 0.0)
+            additional = self._additional_components.get(row["record_id"], ())
             reason = None
             if ligand_count and row["ligand_id"] not in ligand_ids:
                 reason = ExclusionReason.LIGAND_NOT_SELECTED
+            elif any(item["ligand_id"] not in ligand_ids for item in additional):
+                reason = ExclusionReason.LIGAND_NOT_SELECTED
             elif ligand_count and row["ligand_gibbs_energy_J_mol"] is None:
+                reason = ExclusionReason.LIGAND_REFERENCE_UNAVAILABLE
+            elif any(item["gibbs_energy_J_mol"] is None for item in additional):
                 reason = ExclusionReason.LIGAND_REFERENCE_UNAVAILABLE
             elif row["phase"] == "gas" and row["optional_gas_phase"] and not include_optional_gases:
                 reason = ExclusionReason.GAS_NOT_SELECTED
@@ -535,6 +569,10 @@ class ThermodynamicDatabase:
                     float(row["gibbs_uncertainty_J_mol"])
                     if not fallback and row["gibbs_uncertainty_J_mol"] is not None else None
                 ),
+                additional_components=tuple(BufferedComponent(
+                    item["ligand_id"], float(item["component_count"]),
+                    float(item["charge"]), float(item["gibbs_energy_J_mol"]),
+                ) for item in additional),
             ))
         return MetalSystem(system=rows[0]["system"], symbol=symbol, species=tuple(included), excluded=tuple(excluded))
 

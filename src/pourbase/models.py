@@ -213,6 +213,24 @@ class LigandActivityModel:
 
 
 @dataclass(frozen=True, slots=True)
+class BufferedComponent:
+    """A stoichiometric amount of one independently buffered reference component."""
+
+    ligand_id: str
+    count: float
+    charge: float
+    gibbs_energy_J_mol: float
+
+    def __post_init__(self) -> None:
+        if not self.ligand_id or not self.ligand_id.strip():
+            raise ValueError("component ligand_id must not be empty")
+        if not math.isfinite(self.count) or self.count <= 0:
+            raise ValueError("component count must be positive and finite")
+        if not math.isfinite(self.charge) or not math.isfinite(self.gibbs_energy_J_mol):
+            raise ValueError("component charge and Gibbs energy must be finite")
+
+
+@dataclass(frozen=True, slots=True)
 class ThermodynamicSpecies:
     """One supported thermodynamic species used by the calculation engine."""
 
@@ -238,6 +256,7 @@ class ThermodynamicSpecies:
     electron_coefficient_per_metal: float | None = None
     gibbs_uncertainty_J_mol: float | None = None
     temperature_uncertainty_J_mol: float = 0.0  # added in quadrature away from 298.15 K; see temperature.py
+    additional_components: tuple[BufferedComponent, ...] = ()
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "gibbs_status", EvidenceStatus(self.gibbs_status))
@@ -283,6 +302,12 @@ class ThermodynamicSpecies:
             self.ligand_gibbs_energy_J_mol
         ):
             raise ValueError("ligand_gibbs_energy_J_mol must be finite when supplied")
+        object.__setattr__(self, "additional_components", tuple(self.additional_components))
+        if not all(isinstance(item, BufferedComponent) for item in self.additional_components):
+            raise TypeError("additional_components must contain BufferedComponent objects")
+        identifiers = self.ligand_ids
+        if len(identifiers) != len(set(identifiers)):
+            raise ValueError("buffered component IDs must be unique within a species")
         for name, value in (
             ("formal_metal_oxidation_state", self.formal_metal_oxidation_state),
             ("electron_coefficient_per_metal", self.electron_coefficient_per_metal),
@@ -305,7 +330,20 @@ class ThermodynamicSpecies:
 
     @property
     def is_ligand_free(self) -> bool:
-        return self.ligand_count == 0
+        return self.ligand_count == 0 and not self.additional_components
+
+    @property
+    def components(self) -> tuple[BufferedComponent, ...]:
+        """All buffered components, including the legacy single-ligand fields once."""
+        first = ()
+        if self.ligand_count:
+            first = (BufferedComponent(self.ligand_id, self.ligand_count, self.ligand_charge,
+                                       self.ligand_gibbs_energy_J_mol),)
+        return first + self.additional_components
+
+    @property
+    def ligand_ids(self) -> tuple[str, ...]:
+        return tuple(item.ligand_id for item in self.components)
 
     @property
     def metal_oxidation_state(self) -> float:
@@ -321,7 +359,7 @@ class ThermodynamicSpecies:
             return self.electron_coefficient_per_metal
         return (
             self.charge
-            - self.ligand_count * self.ligand_charge
+            - sum(item.count * item.charge for item in self.components)
             + 2 * self.core_oxygen_count
             - self.core_hydrogen_count
         ) / self.metal_count

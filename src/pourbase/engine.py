@@ -134,17 +134,16 @@ def standard_transformed_gibbs_J_mol_metal(
     baseline = (
         species.gibbs_energy_J_mol - species.core_oxygen_count * reference.water_gibbs_energy_J_mol
     ) / species.metal_count
-    if not species.is_ligand_free:
+    for component in species.components:
         ligands = conditions.ligand_activities
-        if ligands is None or species.ligand_id not in ligands.ligand_ids:
+        if ligands is None or component.ligand_id not in ligands.ligand_ids:
             raise UnsupportedConditionError(
-                f"Ligand species {species.record_id} requires an activity for {species.ligand_id}"
+                f"Species {species.record_id} requires an activity for {component.ligand_id}"
             )
-        assert species.ligand_gibbs_energy_J_mol is not None
-        ligand_potential = species.ligand_gibbs_energy_J_mol + rt_ln_10 * ligands.assignment_for(
-            species.ligand_id
+        ligand_potential = component.gibbs_energy_J_mol + rt_ln_10 * ligands.assignment_for(
+            component.ligand_id
         ).log10_activity(pH_grid)
-        baseline = baseline - species.ligand_count / species.metal_count * ligand_potential
+        baseline = baseline - component.count / species.metal_count * ligand_potential
     return (
         baseline
         - species.protons_per_metal * rt_ln_10 * pH_grid

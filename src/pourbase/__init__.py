@@ -36,6 +36,7 @@ from .materials_project import (
 )
 from .models import (
     AqueousActivityModel,
+    BufferedComponent,
     EvidenceStatus,
     ExclusionReason,
     GasFugacityModel,
@@ -82,6 +83,7 @@ def __getattr__(name: str) -> str:
 
 
 __all__ = [
+    "BufferedComponent",
     "ATOMIC_WEIGHT_G_MOL",
     "AqueousActivityModel",
     "BoltzmannSmoothedDiagram",
