@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 989), ("reported_thermochemistry", 3142),
-                                 ("sources", 1713), ("warnings", 1326), ("additional_components", 11),
+            for table, count in (("species", 989), ("reported_thermochemistry", 3145),
+                                 ("sources", 1715), ("warnings", 1328), ("additional_components", 11),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1090,7 +1090,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         exclusion = next(e for e in self.database.policy.exclusions
                          if e.record_id == "r07-mg-basic-carbonate-four-mg-trihydrate")
         self.assertIn("incorrect", exclusion.reason)
-        self.assertEqual(len(self.database.policy.exclusions), 6)
+        self.assertEqual(len(self.database.policy.exclusions), 7)
 
     def test_magnesite_1965_solubility_estimate_uses_correct_gas_reference(self) -> None:
         record = self.database.species_records(("r07-mg-magnesite",))[0]

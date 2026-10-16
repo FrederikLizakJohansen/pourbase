@@ -4,7 +4,7 @@ The 16 October 2026 NEA02g3 checkpoint reviews four held source rows.
 It admits **nine observations and three species**: two explicitly selected
 oxide gases as qualified historical estimates, and the selected-table
 ZrS1.5 evaluation. All earlier observations and preferred values are preserved.
-Production contains **978 species /3,118 observations /74 systems**, selected
+That checkpoint contained **978 species /3,118 observations /74 systems**, selected
 G/S/H **863/784/663**.
 
 This completes the finite four-row review with one admission still held:
@@ -124,3 +124,13 @@ retain their histories. Historical request coverage stays **116/131
 Sources: [NEA zirconium volume 8](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/chemical_thermodynamics_of_zirconium_volume_8.pdf),
 [NEA thorium volume 11](https://www.oecd.org/content/dam/oecd/en/publications/reports/2008/12/chemical-thermodynamics-of-thorium-volume-11_g1gh9fd7/9789264056688-en.pdf),
 [Larson and Schlechten (1964), original abstract](https://www.onemine.org/documents/extractive-metallurgy-division-a-thermodynamic-study-of-the-zirconium-sulfur-system-in-the-region-zrs1-49-to-zrs2-00).
+
+## Original-gas follow-up
+
+NEA02g3b retains two original1975formation-H alternatives at298.15K and one
+1974ZrO formation-H observation at0K. The latter is explicitly excluded from
+298.15Kselection. All historicalNEAobservations and preferred values remain
+unchanged. The [original-source review](nea-zirconium-gas-upgrade.md) records
+primaryabstract verification,individualnumerical-fact reuse,sourceconditions
+and remaining full-method/thermal/G/S work. This is a later checkpoint; the
+earlier counts and validation results above remain its historical record.

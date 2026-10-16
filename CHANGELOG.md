@@ -4,6 +4,11 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Retain three original-study zirconium oxide-gas enthalpy observations:
+  two at 298.15 K and one at 0 K with an explicit calculation exclusion.
+  Preserve all earlier values and preferences. Document primary-abstract
+  verification and individual numerical-fact reuse separately from NEA terms;
+  keep the complete thermal/G/S reassessment open.
 - Review the held NEA calcium-silicate formula and original-source targets.
   Show that the published Gibbs calculation uses the printed inconsistent
   stoichiometry; preserve the identity/molar-basis hold. Database counts and

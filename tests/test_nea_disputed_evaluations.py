@@ -23,10 +23,13 @@ class NEADisputedEvaluationTests(unittest.TestCase):
             self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value, enthalpy)
             self.assertEqual(record.thermochemistry.entropy_J_mol_K.value, entropy)
             self.assertTrue(all(r.status == "source_verified_estimate" for r in record.reported))
+            historical = [r for r in record.reported
+                          if r.source.source_id == "NEA_OECD_20261014_Zr"]
+            self.assertEqual(len(historical), 3)
             self.assertTrue(all("AppendixF printed781--782" in r.source.locator
                                 and "not a replacement" in r.source.locator
                                 and "further sublicensees" in r.source.locator
-                                for r in record.reported))
+                                for r in historical))
 
     def test_optional_oxide_gases_have_the_full_water_reaction_response(self):
         database = self.database
@@ -92,3 +95,56 @@ class NEADisputedEvaluationTests(unittest.TestCase):
                 self.database.load_system("Zr", include_optional_gases=True),
                 pb.PourbaixConditions(pH_points=5, eh_points=5),
                 pb.TotalMetalConcentration(1e-4))
+
+
+    def test_original_1975_enthalpies_are_preserved_as_alternatives(self):
+        import json
+
+        sid = "MuradHildenbrand1975_NEA02g3b_original"
+        for rid, value, width, preferred in (
+            ("nea02g3-zr-monoxide-gas", 83000, 12000, 56200),
+            ("nea02g3-zr-dioxide-gas", -298000, 30000, -289600),
+        ):
+            record = self.database.species_records((rid,))[0]
+            original = next(r for r in record.reported if r.source.source_id == sid)
+            self.assertEqual((original.property, original.value, original.uncertainty),
+                             ("enthalpy_of_formation", value, width))
+            self.assertEqual(original.temperature_K, 298.15)
+            self.assertIsNone(original.pressure_bar)
+            self.assertFalse(original.selected_as_recommended)
+            self.assertIn("confidence convention", original.source.locator)
+            self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value, preferred)
+            selection = self.database.selections[(rid, "enthalpy_of_formation")]
+            candidate = next(c for c in selection.candidates if c.source_id == sid)
+            self.assertEqual((candidate.family, candidate.evidence_class), ("estimates", "E"))
+        route = json.loads(self.database.metadata["source_reuse_" + sid])
+        self.assertEqual(route["status"], "available_individual_original_numerical_facts")
+        self.assertFalse(route["NEA_permission_applies"])
+
+    def test_zero_kelvin_observation_keeps_temperature_and_exclusion(self):
+        rid = "nea02g3-zr-monoxide-gas"
+        record = self.database.species_records((rid,))[0]
+        zero = next(r for r in record.reported if r.temperature_K == 0)
+        self.assertAlmostEqual(zero.value, 21.4 * 4184)
+        self.assertIsNone(zero.uncertainty)
+        self.assertIsNone(zero.pressure_bar)
+        self.assertFalse(zero.selected_as_recommended)
+        self.assertIn("1–2kcal/mol", zero.source.locator)
+        self.assertIn("2000–2800K", zero.source.locator)
+        candidates = self.database.selections[(rid, "enthalpy_of_formation")].candidates
+        self.assertNotIn(zero.value_id, {r.value_id for r in candidates})
+        exclusion = next(e for e in self.database.policy.exclusions
+                         if e.record_id == rid and e.source_id == zero.source.source_id)
+        self.assertIn("0 K", exclusion.reason)
+
+    def test_original_298K_enthalpy_can_be_selected_without_changing_G_or_S(self):
+        for rid, value in (("nea02g3-zr-monoxide-gas", 83000),
+                           ("nea02g3-zr-dioxide-gas", -298000)):
+            policy = self.database.policy.with_override(
+                rid, "enthalpy_of_formation", "MuradHildenbrand1975_NEA02g3b_original",
+                "Test an explicit original enthalpy preference")
+            custom = pb.with_policy(self.database, policy)
+            self.assertEqual(custom.selections[(rid, "enthalpy_of_formation")].chosen.value, value)
+            for prop in ("gibbs_energy_of_formation", "absolute_entropy"):
+                self.assertEqual(custom.selections[(rid, prop)].chosen.value_id,
+                                 self.database.selections[(rid, prop)].chosen.value_id)

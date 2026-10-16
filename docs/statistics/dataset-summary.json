@@ -10,17 +10,19 @@
     "value_policy": "Calculations use one documented recommended value per property. All retained reported values remain available in reported_thermochemistry. Optional MP 300 K SISSO fallbacks are stored separately and never replace experimental values.",
     "water_gibbs_energy_J_mol": "-237129.0",
     "source_permission_NEA_TDB": "{\"applicable_source_ids\": [\"NEA_TDB_Nickel_2005\", \"NEA_TDB_Nickel_2005_NiO\", \"NEA_TDB_Nickel_2005_beta_NiOOH\", \"NEA_TDB_Tin_2012\", \"OECD_NEA_2013_FeOH3_minus\", \"OECD_NEA_2013_selected_iron_data\", \"NEA_OECD_20261014_Fe\", \"NEA_OECD_20261014_Ni\", \"NEA_OECD_20261014_Sn\"], \"check_source_specific_additional_restrictions\": true, \"downstream_acknowledgment_required\": true, \"email_sha256\": \"c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4\", \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"recorded_on\": \"2026-10-14\", \"scope\": \"NEA-TDB selected/evaluated numerical data; other sources permission holds remain separate.\", \"status\": \"available_under_OECD_data_terms\", \"terms_url\": \"https://www.oecd.org/en/about/terms-conditions.html\"}",
-    "source_permission_NEA_TDB_Zr_2005": "{\"check_source_specific_additional_restrictions\": true, \"downstream_acknowledgment_required\": true, \"email_sha256\": \"c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4\", \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"reviewed_on\": \"2026-10-14\", \"scope\": \"Zirconium volume8 selected/evaluated numerical data; excludes independent auxiliary tables and source holds.\", \"source_id\": \"NEA_OECD_20261014_Zr\", \"status\": \"available_under_OECD_data_terms\", \"terms_url\": \"https://www.oecd.org/en/about/terms-conditions.html\"}"
+    "source_permission_NEA_TDB_Zr_2005": "{\"check_source_specific_additional_restrictions\": true, \"downstream_acknowledgment_required\": true, \"email_sha256\": \"c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4\", \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"reviewed_on\": \"2026-10-14\", \"scope\": \"Zirconium volume8 selected/evaluated numerical data; excludes independent auxiliary tables and source holds.\", \"source_id\": \"NEA_OECD_20261014_Zr\", \"status\": \"available_under_OECD_data_terms\", \"terms_url\": \"https://www.oecd.org/en/about/terms-conditions.html\"}",
+    "source_reuse_MuradHildenbrand1975_NEA02g3b_original": "{\"NEA_permission_applies\": false, \"basis_url\": \"https://www.copyright.gov/help/faq/faq-protect.html\", \"primary_deposit_sha256\": \"06b1286a808458462d3e389d9d62506bb2077f1d3f94b764465615b247ce5048\", \"publisher_permissions_url\": \"https://publishing.aip.org/resources/researchers/rights-and-permissions/permissions/\", \"reuse_basis\": \"Established pourbase individual-source policy; uncopyrightable individual facts with full citation. No open article licence or publisher permission asserted.\", \"reviewed_on\": \"2026-10-16\", \"scope\": \"Only independently transcribed numerical thermochemical facts from the original authors deposited abstract; excludes protected prose,figures,tables,bulk source databases and separately licensed auxiliary input tables.\", \"source_id\": \"MuradHildenbrand1975_NEA02g3b_original\", \"status\": \"available_individual_original_numerical_facts\"}",
+    "source_reuse_AckermannRauh1974_NEA02g3b_original": "{\"NEA_permission_applies\": false, \"basis_url\": \"https://www.copyright.gov/help/faq/faq-protect.html\", \"primary_deposit_sha256\": \"1be4c0b3f3e77e01b792c2683b7f0ac9991fc0120f6601f1060131d4f2465131\", \"publisher_permissions_url\": \"https://publishing.aip.org/resources/researchers/rights-and-permissions/permissions/\", \"reuse_basis\": \"Established pourbase individual-source policy; uncopyrightable individual facts with full citation. No open article licence or publisher permission asserted.\", \"reviewed_on\": \"2026-10-16\", \"scope\": \"Only independently transcribed numerical thermochemical facts from the original authors deposited abstract; excludes protected prose,figures,tables,bulk source databases and separately licensed auxiliary input tables.\", \"source_id\": \"AckermannRauh1974_NEA02g3b_original\", \"status\": \"available_individual_original_numerical_facts\"}"
   },
   "totals": {
     "species": 989,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 3142,
+    "reported_thermochemistry": 3145,
     "recommended_values": 2330,
-    "source_records": 1713,
-    "distinct_citations": 167,
-    "warnings": 1326,
+    "source_records": 1715,
+    "distinct_citations": 169,
+    "warnings": 1328,
     "phase_records": 561,
     "resolved_phase_records": 342,
     "mp_matches": 105,
@@ -1868,7 +1870,7 @@
       "gibbs": 74,
       "entropy": 66,
       "enthalpy": 76,
-      "warnings": 110
+      "warnings": 112
     }
   ],
   "warning_types": [
@@ -2166,6 +2168,10 @@
     },
     {
       "warning_type": "r07_nbs_ion_enthalpy_reference_basis",
+      "count": 2
+    },
+    {
+      "warning_type": "nea02g3b_original_gas_enthalpy",
       "count": 2
     },
     {

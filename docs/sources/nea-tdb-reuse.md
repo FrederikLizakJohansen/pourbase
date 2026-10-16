@@ -394,3 +394,16 @@ A later paper reporting a related formula provides an independent candidate;
 verify its numerical data and reuse basis before import. NEA02g4a documents
 [this calcium example](nea-calcium-silicate-formula.md); the existing NEA
 permission review is carried forward and the scientific hold remains explicit.
+
+## Independent original studies in a NEA follow-up
+
+NEA02g3b retains three original-study gas enthalpies with their own source
+citations and individual-numerical-fact reuse records. The original authors'
+publisher-deposited abstracts explicitly identify each value and temperature.
+Their articles and protected expression retain their own rights. Keep this
+route separate from the NEA grant, and retain actual nonreference temperatures
+with explicit exclusions when thermal conversion is unsupported. Full article
+methods can remain a follow-up when an admitted numerical result is explicitly
+verified in the primary abstract; identify that limited verification scope.
+A source-specific restriction or unclear reuse basis still requires a hold.
+See [the gas source review](nea-zirconium-gas-upgrade.md).

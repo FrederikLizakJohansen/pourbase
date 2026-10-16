@@ -370,3 +370,9 @@ record_id = "r07-mg-basic-carbonate-four-mg-trihydrate"
 property = "gibbs_energy_of_formation"
 source_id = "NBS_R07_Mg_mineral_9097_gibbs_energy_of_formation"
 reason = "Robie and Hemingway (1973), USGS Journal 1, pp. 544/546, identify the four-Mg hydromagnesite formula as incorrect and replace it with the five-Mg composition. No independent crystalline phase matching this older NBS formula has been verified. Keep the historical reported value; exclude it from calculations pending composition-specific phase evidence."
+
+[[exclusions]]
+record_id = "nea02g3-zr-monoxide-gas"
+property = "enthalpy_of_formation"
+source_id = "AckermannRauh1974_NEA02g3b_original"
+reason = "Original study reports this formation enthalpy at 0 K; retain it with its actual temperature as evidence. No justified thermal conversion to the 298.15 K calculation reference is supplied by the verified abstract."

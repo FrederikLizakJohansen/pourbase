@@ -626,3 +626,29 @@ NIST is acknowledged for the Ca²⁺, Sr²⁺, Na⁺ and Cs⁺ free-ion referenc
 Wagman et al. (1982), *NBS Tables with errata*, explicitly open non-SRD Public
 Data Repository [M32124](https://doi.org/10.18434/M32124), CSV logical records
 9196, 9635, 10732 and 13936, under the [NIST open licence](https://www.nist.gov/open/license).
+
+## Original zirconium oxide-gas enthalpies
+
+Murad, E. and Hildenbrand, D. L. (1975), *Thermochemical properties of gaseous
+ZrO and ZrO2*, Journal of Chemical Physics 63(3), 1133–1139,
+[DOI 10.1063/1.431439](https://doi.org/10.1063/1.431439), and Ackermann, R. J.
+and Rauh, E. G. (1974), *Thermodynamic properties of ZrO(g) and HfO(g); a
+critical examination of isomolecular oxygen-exchange reactions*, Journal of
+Chemical Physics 60(6), 2266–2271,
+[DOI 10.1063/1.1681357](https://doi.org/10.1063/1.1681357), are acknowledged
+for three individually cited formation-enthalpy facts verified in their
+original publisher-deposited abstracts. The 1974 value retains its 0 K condition
+and exclusion from 298.15 K selection. Source uncertainty and verification scope
+are recorded with each observation.
+
+These entries use the established individual numerical-facts route, with
+[U.S. Copyright Office factual-material guidance](https://www.copyright.gov/help/faq/faq-protect.html)
+and the separately reviewed [AIP permissions policy](https://publishing.aip.org/resources/researchers/rights-and-permissions/permissions/).
+The original articles and abstract prose retain their copyright. Distributed
+material consists of numerical facts, citations and pourbase provenance notes.
+No open article licence or blanket publisher permission is asserted; complete
+articles, protected text, figures and table arrangements remain outside the
+distribution. These independent original observations have their own reuse
+records; the earlier NEA evaluations continue under OECD terms with the same
+acknowledgment requirement carried into sublicenses and further sublicensees.
+See [the source review](docs/sources/nea-zirconium-gas-upgrade.md).
