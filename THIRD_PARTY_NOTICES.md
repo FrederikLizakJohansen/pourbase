@@ -675,3 +675,33 @@ acknowledgment requirement, including onward propagation by further
 sublicensees. No independent publisher permission is inferred for the
 unretrieved JACS 1958 or Turnbull 1964 articles. See
 [the review](docs/sources/nea-zirconium-hydride-assemblage.md).
+
+
+## Original sodium-zirconosilicate Gibbs observations
+
+Aja, S. U., Wood, S. A. and Williams-Jones, A. E. (1997; proceedings volume
+dated 1996), *The Solubility of Some Alkali-Bearing Zr Minerals in
+Hydrothermal Solutions*, MRS Proceedings 432, 69–74,
+[DOI 10.1557/PROC-432-69](https://doi.org/10.1557/PROC-432-69), is acknowledged
+for three individually cited formation-G facts and reported intervals at
+323.15 K, verified in the original publisher-deposited abstract.
+
+These observations use the established individual original numerical-facts
+route, with the [U.S. Copyright Office factual-material guidance](https://www.copyright.gov/help/faq/faq-protect.html)
+and the completed project reuse review carried forward. The distributed
+material contains independently transcribed numerical facts, citations and
+our provenance. The article and abstract expression retain their copyright;
+no open article licence or blanket publisher permission is asserted. Complete
+abstracts, article text, figures and source table arrangements remain external.
+
+Thoenen, T. and Curti, E. (2014), *The PSI/Nagra Chemical Thermodynamic
+Database 12/07: Data Selection for Zirconium*, PSI Technical Memorandum
+TM-44-14-04, section 8.2, p. 27
+([report](https://www.psi.ch/sites/default/files/import/les/DatabaseEN/TM-44-14-04.pdf)),
+is acknowledged for the cited experimental critique, paraphrased in our
+provenance. No numerical PSI database table is imported.
+
+These independent references are separate from NEA/OECD permission.
+Earlier NEA observations retain OECD/NEA attribution and the same
+acknowledgment requirement in sublicenses, including onward propagation by
+further sublicensees. See [the source review](docs/sources/nea-zirconium-temperature-review.md).

@@ -376,3 +376,21 @@ record_id = "nea02g3-zr-monoxide-gas"
 property = "enthalpy_of_formation"
 source_id = "AckermannRauh1974_NEA02g3b_original"
 reason = "Original study reports this formation enthalpy at 0 K; retain it with its actual temperature as evidence. No justified thermal conversion to the 298.15 K calculation reference is supplied by the verified abstract."
+
+[[exclusions]]
+record_id = "nea02g4-zr-na-catapleiite"
+property = "gibbs_energy_of_formation"
+source_id = "AjaWoodWilliamsJones1997_NEA02g4b_original"
+reason = "Original study explicitly reports this formation Gibbs energy at 323.15 K. Retain the reported value and interval as evidence; no verified phase-specific thermal conversion to the 298.15 K calculation reference is available."
+
+[[exclusions]]
+record_id = "nea02g4-zr-vlasovite"
+property = "gibbs_energy_of_formation"
+source_id = "AjaWoodWilliamsJones1997_NEA02g4b_original"
+reason = "Original study explicitly reports this formation Gibbs energy at 323.15 K. Retain the reported value and interval as evidence; no verified phase-specific thermal conversion to the 298.15 K calculation reference is available."
+
+[[exclusions]]
+record_id = "nea02g4-zr-elpidite"
+property = "gibbs_energy_of_formation"
+source_id = "AjaWoodWilliamsJones1997_NEA02g4b_original"
+reason = "Original study explicitly reports this formation Gibbs energy at 323.15 K. Retain the reported value and interval as evidence; no verified phase-specific thermal conversion to the 298.15 K calculation reference is available."

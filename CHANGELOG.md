@@ -4,6 +4,10 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Retain three original 323.15 K sodium-zirconosilicate Gibbs observations
+  alongside NEA evaluations, preserving the authors’ uncertainty intervals.
+  Add source-specific temperature exclusions and attributed experimental
+  qualifications; keep the 298.15 K thermal conversion open.
 - Verify original NBS zirconium hydride measurements and phase fractions.
   Preserve the bulk ZrH admission hold, record the NEA hydrogen-basis
   discrepancy, and retain all database values and preferences.

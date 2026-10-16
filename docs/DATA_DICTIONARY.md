@@ -21,7 +21,7 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 16 October 2026 checkpoint contains **989 species and 3,145 observations**
+The latest 16 October 2026 checkpoint contains **989 species and 3,148 observations**
 across 74 supported systems, with **869/790/671 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
@@ -1144,3 +1144,9 @@ The NEA02g3a original hydride review confirms that bulk ZrH quantities belong
 to a multiphase assemblage at 298.15 K. They remain in the external ledger
 until a validated representation is available. The existing epsilon-ZrH2
 record and all release counts are preserved. See [the source review](sources/nea-zirconium-hydride-assemblage.md).
+
+NEA02g4b adds three original 323.15 K sodium-zirconosilicate G observations
+alongside the three NEA evaluations. Original intervals and unspecified
+pressures are preserved. Six observations across three species remain
+excluded from 298.15 K selection; no thermal conversion or new preferred
+property is claimed. See [the review](sources/nea-zirconium-temperature-review.md).

@@ -114,3 +114,14 @@ the H/S-derived G by 5.61 kJ/mol. Original measured identity and molar basis
 remain unverified; all three observations stay held. Schema 9 already
 supports the required independent reservoirs. The remaining issue is
 scientific assignment. Database counts and preferred selections are unchanged.
+
+## Original-temperature follow-up
+
+The [NEA02g4b review](nea-zirconium-temperature-review.md) retains the three
+original Aja Gibbs observations and narrower intervals at 323.15 K. They
+share experimental ancestry with the NEA evaluations and carry separate
+source-specific exclusions. Three physical temperature holds now cover six
+observations. Missing verified thermal slopes keep 298.15 K conversion open;
+source pressure is unassigned where the original abstract is silent. The
+release now has 989 species and 3,148 observations, with earlier preferred
+values preserved. Historical counts above describe the original checkpoint.

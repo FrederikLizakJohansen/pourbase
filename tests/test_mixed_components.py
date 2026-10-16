@@ -62,8 +62,8 @@ class MixedComponentTests(unittest.TestCase):
     def test_source_temperature_is_retained_and_not_selected_at_298K(self):
         for suffix in ['na-catapleiite', 'vlasovite', 'elpidite']:
             record = self.database.species_records(('nea02g4-zr-' + suffix,))[0]
-            self.assertEqual(len(record.reported), 1)
-            row = record.reported[0]
+            self.assertEqual(len(record.reported), 2)
+            row = next(r for r in record.reported if r.source.source_id == 'NEA_OECD_20261014_Zr')
             self.assertEqual((row.temperature_K, row.pressure_bar), (323.15, 1))
             self.assertFalse(row.selected_as_recommended)
             self.assertIsNone(record.thermochemistry.gibbs_energy_J_mol.value)
@@ -134,3 +134,49 @@ class MixedComponentTests(unittest.TestCase):
                 'sodium-na', 'silica-sio2-component')).species
                 if x.record_id == 'nea02g4-zr-nasicon-silicate')
             self.assertEqual(len(phase.components), 2)
+
+
+    def test_original_50C_intervals_remain_separate_from_NEA_evaluation(self):
+        import json
+
+        source_id = 'AjaWoodWilliamsJones1997_NEA02g4b_original'
+        for suffix, original_g, width, nea_width in (
+            ('na-catapleiite', -4654200, 5600, 20000),
+            ('vlasovite', -5181000, 7300, 20000),
+            ('elpidite', -7391000, 11600, 30000),
+        ):
+            record = self.database.species_records(('nea02g4-zr-' + suffix,))[0]
+            original = next(r for r in record.reported if r.source.source_id == source_id)
+            nea = next(r for r in record.reported if r.source.source_id == 'NEA_OECD_20261014_Zr')
+            self.assertEqual((original.value, original.uncertainty), (original_g, width))
+            self.assertEqual(nea.uncertainty, nea_width)
+            self.assertEqual(original.temperature_K, 323.15)
+            self.assertIsNone(original.pressure_bar)
+            self.assertEqual(original.status, 'source_verified_estimate')
+            self.assertIn('Confidence convention', original.source.locator)
+            self.assertFalse(original.selected_as_recommended)
+            self.assertIsNone(record.thermochemistry.formation_enthalpy_J_mol.value)
+            self.assertIsNone(record.thermochemistry.entropy_J_mol_K.value)
+            warning = next(w for w in record.warnings
+                           if w.type == 'nea02g4b_original_temperature_evidence')
+            self.assertIn('unreversed', warning.message)
+            self.assertEqual(warning.source.source_id, 'ThoenenCurti2014_NEA02g4b_critique')
+        route = json.loads(self.database.metadata['source_reuse_' + source_id])
+        self.assertEqual(route['status'], 'available_individual_original_numerical_facts')
+        self.assertFalse(route['NEA_permission_applies'])
+
+    def test_original_temperature_exclusion_survives_explicit_source_preference(self):
+        from pourbase.temperature import at_temperature
+
+        for suffix in ['na-catapleiite', 'vlasovite', 'elpidite']:
+            rid = 'nea02g4-zr-' + suffix
+            policy = self.database.policy.with_override(
+                rid, 'gibbs_energy_of_formation',
+                'AjaWoodWilliamsJones1997_NEA02g4b_original',
+                'Exercise preference with original nonreference-temperature evidence')
+            custom = pb.with_policy(self.database, policy)
+            self.assertNotIn((rid, 'gibbs_energy_of_formation'), custom.selections)
+            for temperature in [298.15, 323.15]:
+                system = at_temperature(custom, temperature).load_system(
+                    'Zr', ligand_ids=('sodium-na', 'silica-sio2-component'))
+                self.assertNotIn(rid, {s.record_id for s in system.species})
