@@ -22,9 +22,9 @@ import csv
 import math
 import re
 from collections import Counter
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 from .database import ThermodynamicDatabase
 from .models import EvidenceStatus, MetalSystem, ThermodynamicSpecies
@@ -157,7 +157,13 @@ class UserSpeciesDatabase(ThermodynamicDatabase):
 
     def species_records(self, record_ids):
         """Evidence records of bundled and user species; a user species has its single supplied value."""
-        from .records import PropertyValue, ReportedValue, SourceReference, SpeciesRecord, Thermochemistry
+        from .records import (
+            PropertyValue,
+            ReportedValue,
+            SourceReference,
+            SpeciesRecord,
+            Thermochemistry,
+        )
 
         identifiers = list(record_ids)
         user = {item.record_id: item for item in self.user_species}

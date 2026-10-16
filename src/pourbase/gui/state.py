@@ -4,14 +4,16 @@ from __future__ import annotations
 
 import threading
 from collections import OrderedDict
+from collections.abc import Callable
 from dataclasses import asdict, dataclass, field, fields, replace
-from typing import Any, Callable
+from typing import Any
 
 from ..database import ThermodynamicDatabase
 from ..models import GibbsEnergyPolicy, LigandActivity
 from ..overview import PeriodicScreen, screen_periodic_table
 from ..scenario import Calculation, Mode, Scenario, calculate
 from ..sweeps import ConcentrationSweep, ConcentrationSweepEngine
+from ..temperature import at_temperature
 
 MODES = {Mode.FIXED_ACTIVITY.value: "Fixed activity", Mode.MASS_BALANCE.value: "Mass balance (closed total metal)"}
 CONCENTRATION_UNITS = {
@@ -232,8 +234,6 @@ class Session:
         self, scenario: Scenario, settings: SweepSettings, progress: Callable[[float], bool] | None = None
     ) -> ConcentrationSweep:
         def build() -> ConcentrationSweep:
-            from ..temperature import at_temperature
-
             return ConcentrationSweepEngine(at_temperature(self.database, scenario.temperature_K)).calculate(
                 scenario.symbol, scenario.conditions(), settings.log10_min, settings.log10_max,
                 settings.levels, allow_incomplete=scenario.allow_incomplete,

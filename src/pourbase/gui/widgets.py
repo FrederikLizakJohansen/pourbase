@@ -1,12 +1,12 @@
 """Small reusable widgets for the desktop GUI."""
 
 import math
-from typing import Optional
 
-from PySide6.QtCore import QCoreApplication, QEvent, QObject, Qt, Signal
+from PySide6.QtCore import QCoreApplication, QEvent, QObject, QPropertyAnimation, QSettings, Qt, QTimer, Signal
 from PySide6.QtWidgets import (
-    QAbstractScrollArea, QAbstractSlider, QAbstractSpinBox, QComboBox, QScrollBar,
-    QDoubleSpinBox, QHBoxLayout, QLabel, QSlider, QToolButton, QWidget,
+    QAbstractScrollArea, QAbstractSlider, QAbstractSpinBox, QComboBox, QDoubleSpinBox, QFrame, QGraphicsOpacityEffect,
+    QHBoxLayout, QLabel, QScrollBar, QSizePolicy, QSlider, QStyle, QStyleOptionSlider, QToolButton, QVBoxLayout,
+    QWidget,
 )
 
 
@@ -14,8 +14,6 @@ class JumpSlider(QSlider):
     """A slider whose handle jumps to the clicked point and can be dragged from there."""
 
     def mousePressEvent(self, event) -> None:
-        from PySide6.QtWidgets import QStyle, QStyleOptionSlider
-
         if event.button() == Qt.LeftButton:
             option = QStyleOptionSlider()
             self.initStyleOption(option)
@@ -46,8 +44,8 @@ class FloatSlider(QWidget):
     STEPS = 1000
 
     def __init__(self, label: str, minimum: float, maximum: float, value: float, decimals: int = 3,
-                 step: Optional[float] = None, log: bool = False, unit: str = "", label_width: int = 60,
-                 hard_maximum: Optional[float] = None, parent=None):
+                 step: float | None = None, log: bool = False, unit: str = "", label_width: int = 60,
+                 hard_maximum: float | None = None, parent=None):
         super().__init__(parent)
         self._minimum, self._maximum, self._log = minimum, maximum, log
         self._default_maximum = maximum
@@ -205,8 +203,6 @@ class LoadingOverlay(QObject):
 
     def __init__(self, target: QWidget, delay_ms: int = 300) -> None:
         super().__init__(target)
-        from PySide6.QtCore import QTimer
-
         self._waiting = False
         self._delay = QTimer(self, singleShot=True, interval=delay_ms)
         self._delay.timeout.connect(lambda: self.changed.emit(True))
@@ -259,9 +255,6 @@ def cross_fade(target: QWidget, duration_ms: int = 180) -> None:
     Call it just before ``target`` is redrawn: a snapshot of the old content lies on top and fades
     out over ``duration_ms``, then removes itself.
     """
-    from PySide6.QtCore import QPropertyAnimation
-    from PySide6.QtWidgets import QGraphicsOpacityEffect
-
     if not target.isVisible() or target.width() < 2 or target.height() < 2:
         return
     snapshot = QLabel(target)
@@ -288,9 +281,6 @@ class Section(QWidget):
 
     def __init__(self, title: str, key: str | None = None, expanded: bool = True, parent=None) -> None:
         super().__init__(parent)
-        from PySide6.QtCore import QSettings
-        from PySide6.QtWidgets import QFrame, QToolButton, QVBoxLayout
-
         self._settings = QSettings("pourbase", "pourbase") if key else None
         self._key = f"sections/{key}" if key else None
         if self._settings is not None and self._settings.contains(self._key):
@@ -301,8 +291,6 @@ class Section(QWidget):
         self.header.setChecked(expanded)
         self.header.setAutoRaise(True)
         self.header.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        from PySide6.QtWidgets import QSizePolicy
-
         self.header.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         font = self.header.font()
         font.setPointSizeF(font.pointSizeF() * 1.05)

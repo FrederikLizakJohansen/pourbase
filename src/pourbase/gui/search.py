@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import unicodedata
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QEvent, Qt
 from PySide6.QtWidgets import QDialog, QLabel, QLineEdit, QListWidget, QListWidgetItem, QVBoxLayout
 
 SCRIPTS = str.maketrans("₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻", "0123456789" "0123456789" "+-")
@@ -68,8 +68,6 @@ class SearchDialog(QDialog):
         self.field.installEventFilter(self)
 
     def eventFilter(self, watched, event) -> bool:
-        from PySide6.QtCore import QEvent
-
         if watched is self.field and event.type() == QEvent.KeyPress and event.key() in (Qt.Key_Up, Qt.Key_Down):
             row = self.results.currentRow() + (1 if event.key() == Qt.Key_Down else -1)
             self.results.setCurrentRow(max(0, min(row, self.results.count() - 1)))

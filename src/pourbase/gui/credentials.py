@@ -7,6 +7,7 @@ environment variable is used when nothing is stored.
 
 from __future__ import annotations
 
+import functools
 import os
 
 from PySide6.QtCore import QSettings
@@ -16,6 +17,7 @@ ACCOUNT = "materials-project-api-key"
 SETTINGS_KEY = "materials_project/api_key"
 
 
+@functools.cache
 def _keyring():
     try:
         import keyring

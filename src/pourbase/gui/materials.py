@@ -12,21 +12,19 @@ import json
 import re
 import threading
 import time
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from pathlib import Path
 from importlib.metadata import PackageNotFoundError, version
 from importlib.util import find_spec
-from typing import Any, Callable, Sequence
+from pathlib import Path
+from typing import Any
 
 import numpy as np
 
 from ..exceptions import CalculationCancelled, MaterialsProjectUnavailableError
 from ..materials_project import (
-    OfficialMaterialsProjectComparison,
-    OfficialMaterialsProjectDiagram,
-    apply_aqueous_activities,
-    evaluate_official_materials_project_entries,
-    thermodynamic_species_equivalence_key,
+    OfficialMaterialsProjectComparison, OfficialMaterialsProjectDiagram, apply_aqueous_activities,
+    evaluate_official_materials_project_entries, thermodynamic_species_equivalence_key,
 )
 from ..models import PourbaixConditions
 
@@ -132,7 +130,9 @@ def fetch_entries(symbol: str, api_key: str, filter_solids: bool, use_gibbs_300K
     """Download the official Pourbaix entries for one element (network access)."""
     try:
         import mp_api.client  # noqa: F401
-        from pymatgen.analysis.pourbaix_diagram import PourbaixDiagram as MPPourbaixDiagram
+        from pymatgen.analysis.pourbaix_diagram import (
+            PourbaixDiagram as MPPourbaixDiagram,
+        )
         mp_api_version = version("mp-api")
         pymatgen_version = version("pymatgen")
     except (ImportError, PackageNotFoundError) as error:

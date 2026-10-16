@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import math
-from typing import Callable
+from collections.abc import Callable
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import QHBoxLayout, QMenu, QSizePolicy, QToolButton, QWidget
 
 SUPERSCRIPT = str.maketrans("0123456789-+.", "⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺·")
@@ -28,6 +28,8 @@ class Chip(QToolButton):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setAutoRaise(True)
+        self._menu_labels: list | None = None
+        self._style: tuple | None = None
         self.setCursor(Qt.PointingHandCursor)
         self.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
         self._action: Callable[[], None] | None = None
@@ -42,7 +44,7 @@ class Chip(QToolButton):
             self.setToolTip(tooltip)
         self._action = action
         labels = tuple(label for label, _callback in menu or ())
-        if labels != getattr(self, "_menu_labels", None):  # menus and styles change rarely; rebuild only then
+        if labels != self._menu_labels:  # menus and styles change rarely; rebuild only then
             self._menu_labels = labels
             if menu:
                 popup = QMenu(self)
@@ -53,7 +55,7 @@ class Chip(QToolButton):
             else:
                 self.setMenu(None)
         self.setVisible(bool(text))
-        if (tone, dark) == getattr(self, "_style", None):
+        if (tone, dark) == self._style:
             return
         self._style = (tone, dark)
         colors = {
@@ -86,8 +88,6 @@ class ContextBar(QWidget):
         self.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Fixed)
 
     def minimumSizeHint(self):
-        from PySide6.QtCore import QSize
-
         return QSize(0, super().minimumSizeHint().height())
 
     def text(self) -> str:

@@ -137,23 +137,23 @@ def boltzmann_smooth(
     else:
         blended = np.array([item.is_aqueous for item in diagram.system.species])
         blend_here = blended[stable]
-    delta = np.where(blended[:, None, None], energy_stack - minimum[None, :, :], np.inf)
-    unnormalized = np.exp(-delta / width_J_mol)
-    partition = np.sum(unnormalized, axis=0, keepdims=True)
-    weights = unnormalized / partition
-    sharp = np.zeros_like(weights)
-    np.put_along_axis(sharp, stable[None, :, :], 1.0, axis=0)
-    weights = np.asarray(np.where(blend_here[None, :, :], weights, sharp), dtype=np.float64)
-    soft_minimum = np.asarray(
-        np.where(blend_here, minimum - width_J_mol * np.log(partition[0]), minimum), dtype=np.float64,
-    )
-    dominant_weight = np.asarray(np.max(weights, axis=0), dtype=np.float64)
-    log_weights = np.zeros_like(weights)
-    np.log(weights, out=log_weights, where=weights > 0)
-    mixing_entropy = np.asarray(
-        -GAS_CONSTANT_J_MOL_K * np.sum(weights * log_weights, axis=0),
-        dtype=np.float64,
-    )
+    # Only the blended species carry weight; exp, sum and log run over them alone.
+    unnormalized = energy_stack[blended] - minimum
+    unnormalized *= -1.0 / width_J_mol
+    np.exp(unnormalized, out=unnormalized)
+    partition = unnormalized.sum(axis=0)
+    unnormalized /= partition
+    weights = np.zeros(energy_stack.shape, dtype=np.float64)
+    weights[blended] = unnormalized
+    weights *= blend_here
+    rows, columns = np.nonzero(~blend_here)
+    weights[stable[rows, columns], rows, columns] = 1.0
+    soft_minimum = np.where(blend_here, minimum - width_J_mol * np.log(partition), minimum)
+    dominant_weight = weights.max(axis=0)
+    log_weights = np.zeros_like(unnormalized)
+    np.log(unnormalized, out=log_weights, where=unnormalized > 0)
+    log_weights *= unnormalized
+    mixing_entropy = np.where(blend_here, -GAS_CONSTANT_J_MOL_K * log_weights.sum(axis=0), 0.0)
     for array in (weights, soft_minimum, dominant_weight, mixing_entropy):
         array.setflags(write=False)
     return BoltzmannSmoothedDiagram(

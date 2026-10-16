@@ -6,6 +6,7 @@ Start it with ``pourbase-gui [element | session.pourbase.json | dataset.csv | da
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -103,8 +104,6 @@ def _register_with_desktop() -> None:
 
 
 def _install_desktop_entry() -> None:
-    import os
-
     data = Path(os.environ.get("XDG_DATA_HOME") or Path.home() / ".local" / "share")
     entry = (
         "[Desktop Entry]\n"

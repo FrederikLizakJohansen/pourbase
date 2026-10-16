@@ -87,10 +87,14 @@ def stability_uncertainty(
     energies = _energies(diagram)
     sigma, assumed = _sigma_per_metal(diagram, assumed_uncertainty_J_mol)
     stable = diagram.stable_species_index
+    # gap < k * sqrt(sigma_stable² + sigma_other²), compared in squares; every gap is non-negative
     gap = energies - energies.min(axis=0)
-    combined = np.sqrt(sigma[stable][np.newaxis] ** 2 + sigma[:, np.newaxis, np.newaxis] ** 2)
-    other = np.arange(len(sigma))[:, np.newaxis, np.newaxis] != stable[np.newaxis]
-    uncertain = np.any(other & (gap < confidence_sigma * combined), axis=0)
+    gap *= gap
+    variance = sigma**2
+    threshold = confidence_sigma**2 * (variance[stable][np.newaxis] + variance[:, np.newaxis, np.newaxis])
+    close = gap < threshold
+    np.put_along_axis(close, stable[np.newaxis], False, axis=0)  # the stable species itself
+    uncertain = close.any(axis=0)
     uncertain.setflags(write=False)
     return StabilityUncertainty(confidence_sigma, assumed_uncertainty_J_mol, uncertain, assumed)
 

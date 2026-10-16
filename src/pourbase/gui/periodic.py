@@ -3,21 +3,20 @@
 from __future__ import annotations
 
 import math
+import re
 
 import numpy as np
 from matplotlib import colormaps
-
 from PySide6.QtCore import QPointF, QRectF, Qt, Signal
-from PySide6.QtGui import (
-    QBrush, QColor, QFont, QFontMetricsF, QLinearGradient, QPainter, QPainterPath, QPen, QPixmap,
-)
+from PySide6.QtGui import QBrush, QColor, QFont, QFontMetricsF, QLinearGradient, QPainter, QPainterPath, QPen, QPixmap
 from PySide6.QtWidgets import (
-    QComboBox, QHBoxLayout, QLabel, QMenu, QSizePolicy, QToolButton, QToolTip, QVBoxLayout, QWidget,
+    QComboBox, QDoubleSpinBox, QHBoxLayout, QLabel, QMenu, QSizePolicy, QToolButton, QToolTip, QVBoxLayout, QWidget,
 )
 
+from ..inverse import KINDS
 from ..overview import Category, ElementResult, ElementStatus, PeriodicScreen
-from .formula import draw_formula, phase_label, pretty_formula
 from .figure_export import install_export_menu
+from .formula import draw_formula, phase_label, pretty_formula
 from .widgets import FloatSlider
 
 CATEGORY_COLORS = {
@@ -39,8 +38,6 @@ PROVISIONAL_LABEL = "Some species are left out for missing data"
 
 def formula_only(name: str) -> str:
     """The formula of a species name without a trailing qualifier: ``Y₂(CO₃)₃ (crystalline, NBS)`` → ``Y₂(CO₃)₃``."""
-    import re
-
     return re.sub(r"\s+\([^()]*\)$", "", name)
 
 
@@ -578,10 +575,6 @@ class OverviewPage(QWidget):
 
     def _window_controls(self) -> QWidget:
         """pH and potential limits, a criterion and a margin for the window search."""
-        from PySide6.QtWidgets import QDoubleSpinBox
-
-        from ..inverse import KINDS
-
         bar = QWidget()
         row = QHBoxLayout(bar)
         row.setContentsMargins(0, 0, 0, 0)

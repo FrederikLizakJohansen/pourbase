@@ -14,8 +14,8 @@ from ..materials_project import OfficialMaterialsProjectComparison, OfficialMate
 from ..models import PourbaixConditions
 from .credentials import clear_key, load_key, save_key, storage_description
 from .materials import (
-    FetchedEntries, MaterialsProjectSource, client_available, equivalence_matrix, fetch_entries,
-    matched_colors, warm_up,
+    FetchedEntries, MaterialsProjectSource, client_available, equivalence_matrix, fetch_entries, matched_colors,
+    warm_up,
 )
 from .plots import record_colors
 from .tasks import TaskRunner
@@ -50,12 +50,31 @@ class DftController(QObject):
         self.tasks = tasks
         self.settings = settings
         self.source = MaterialsProjectSource(cache_dir=cache_dir)
-        self.api_key, self.key_source = load_key(settings)
+        self._key: tuple[str, str] | None = None
         self.filter_solids = True
         self.gibbs_300K = False
         self.errors: dict[tuple, str] = {}
         self._sweeps: OrderedDict[Any, tuple] = OrderedDict()
         tasks.finished.connect(self._finished)
+
+    @property
+    def api_key(self) -> str:
+        return self._stored_key()[0]
+
+    @api_key.setter
+    def api_key(self, value: str) -> None:
+        self._key = (value, "session" if value else "")
+
+    @property
+    def key_source(self) -> str:
+        """Where the key came from: "keyring", "settings", "environment", "session" or ""."""
+        return self._stored_key()[1]
+
+    def _stored_key(self) -> tuple[str, str]:
+        # The keyring backend takes a noticeable time to load, so the key is read on first use.
+        if self._key is None:
+            self._key = load_key(self.settings)
+        return self._key
 
     def entry_key(self, symbol: str) -> tuple:
         return (symbol, self.filter_solids, self.gibbs_300K)
@@ -109,13 +128,14 @@ class DftController(QObject):
         self._sweeps.clear()
 
     def set_api_key(self, value: str, remember: bool) -> None:
+        previous = self.api_key
         if remember and value:
-            self.key_source = save_key(self.settings, value)
+            source = save_key(self.settings, value)
         else:
             clear_key(self.settings)
-            self.key_source = "session" if value else ""
-        if value != self.api_key:
-            self.api_key = value
+            source = "session" if value else ""
+        self._key = (value, source)
+        if value != previous:
             self.errors.clear()
         self.changed.emit()
 

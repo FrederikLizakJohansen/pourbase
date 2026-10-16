@@ -432,7 +432,7 @@ class WindowTests(WindowTestCase):
         self.open("Fe")
 
     def test_sliders_jump_to_the_click_and_reset_to_their_default(self) -> None:
-        from PySide6.QtCore import QPoint, QPointF, Qt
+        from PySide6.QtCore import QPointF, Qt
         from PySide6.QtGui import QMouseEvent
 
         window = self.window

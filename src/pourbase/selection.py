@@ -17,10 +17,11 @@ import hashlib
 import re
 import tomllib
 from collections import Counter, defaultdict
+from collections.abc import Iterable
 from dataclasses import dataclass, field, replace
 from importlib.resources import files
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 from .database import ThermodynamicDatabase
 from .models import EvidenceStatus, MetalSystem

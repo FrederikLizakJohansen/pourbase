@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import threading
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal
 
@@ -22,17 +23,23 @@ class _Task(QRunnable):
 
     def run(self) -> None:
         def progress(fraction: float) -> bool:
-            self.signals.progress.emit(self.kind, self.key, fraction)
+            self._emit(self.signals.progress, fraction)
             return not self.cancel.is_set()
 
         try:
             result = self.work(progress)
         except CalculationCancelled:
-            self.signals.finished.emit(self.kind, self.key, None, "")
+            self._emit(self.signals.finished, None, "")
         except Exception as error:
-            self.signals.finished.emit(self.kind, self.key, None, f"{type(error).__name__}: {error}")
+            self._emit(self.signals.finished, None, f"{type(error).__name__}: {error}")
         else:
-            self.signals.finished.emit(self.kind, self.key, result, "")
+            self._emit(self.signals.finished, result, "")
+
+    def _emit(self, signal: Any, *arguments: Any) -> None:
+        try:
+            signal.emit(self.kind, self.key, *arguments)
+        except RuntimeError:  # the application closed while the task ran
+            pass
 
 
 class TaskRunner(QObject):

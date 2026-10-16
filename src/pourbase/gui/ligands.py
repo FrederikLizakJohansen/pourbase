@@ -5,9 +5,7 @@ from __future__ import annotations
 import re
 
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import (
-    QCheckBox, QComboBox, QDoubleSpinBox, QGridLayout, QLabel, QVBoxLayout, QWidget,
-)
+from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QGridLayout, QLabel, QVBoxLayout, QWidget
 
 from ..models import LigandReference
 from .formula import pretty_formula, to_html

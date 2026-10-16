@@ -8,19 +8,11 @@ from typing import Any
 
 import numpy as np
 from PySide6.QtCore import Qt, QTimer, Signal
-from PySide6.QtWidgets import (
-    QComboBox,
-    QFormLayout,
-    QGridLayout,
-    QHBoxLayout,
-    QLabel,
-    QTextBrowser,
-    QWidget,
-)
+from PySide6.QtWidgets import QComboBox, QFormLayout, QGridLayout, QHBoxLayout, QLabel, QTextBrowser, QWidget
 
 from ..uncertainty import stability_margin
-from .pages import status_label
 from .formula import phase_label, to_html
+from .pages import status_label
 from .placeholder import StackedView
 from .plots import DiagramView, DisplayOptions, record_colors
 from .scales import to_scale

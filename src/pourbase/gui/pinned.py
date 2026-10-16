@@ -7,8 +7,10 @@ import copy
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QToolButton, QVBoxLayout, QWidget
 
+from ..citations import diagram_sources
 from .plots import DiagramView
 from .scales import to_scale
+from .sources_dialog import SourcesDialog
 
 
 class PinnedDiagram(QWidget):
@@ -25,6 +27,7 @@ class PinnedDiagram(QWidget):
         self.display = copy.deepcopy(display)
         self.display.overlay_symbol = ""
         self.display.legend = False  # domain labels name the species; a legend would cover a small window
+        self._probe: tuple[float | None, float | None] = (None, None)
         self.context = QLabel(context)
         self.context.setWordWrap(True)
         self.context.setStyleSheet("color: gray;")
@@ -38,8 +41,6 @@ class PinnedDiagram(QWidget):
         layout.addWidget(self.view, 1)
         footer = QHBoxLayout()
         footer.addWidget(self.readout, 1)
-        from ..citations import diagram_sources
-
         count = len(diagram_sources(calculation))
         self.sources = QToolButton()
         self.sources.setAutoRaise(True)
@@ -57,8 +58,6 @@ class PinnedDiagram(QWidget):
         self.resize(560, 480)
 
     def show_sources(self) -> None:
-        from .sources_dialog import SourcesDialog
-
         dialog = SourcesDialog(self.calculation, self.title, self)
         dialog.setAttribute(Qt.WA_DeleteOnClose)
         dialog.show()
@@ -70,10 +69,11 @@ class PinnedDiagram(QWidget):
     def set_dark(self, dark: bool) -> None:
         self.view.set_dark(dark)
         self._draw()
-        self.set_probe(*self._probe)
+        if self._probe[0] is not None:
+            self.set_probe(*self._probe)
 
     def _probe_text(self) -> str:
-        pH, eh_V = getattr(self, "_probe", (None, None))
+        pH, eh_V = self._probe
         if pH is None:
             return " "
         y = float(to_scale(eh_V, pH, self.display.potential_scale, self.calculation.diagram.conditions.temperature_K))

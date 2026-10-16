@@ -246,30 +246,7 @@ class MassBalanceEngine:
                 "Closed element mass balance with a gas phase is not implemented; "
                 "use fixed-activity mode with an explicit gas fugacity"
             )
-        unsupported_aqueous = tuple(
-            item
-            for item in system.species
-            if item.is_aqueous
-            and not math.isclose(item.metal_count, 1.0, rel_tol=0.0, abs_tol=1e-12)
-        )
-        if unsupported_aqueous:
-            system = MetalSystem(
-                system=system.system,
-                symbol=system.symbol,
-                species=tuple(
-                    item for item in system.species if item not in unsupported_aqueous
-                ),
-                excluded=system.excluded
-                + tuple(
-                    SpeciesExclusion(
-                        record_id=item.record_id,
-                        species=item.species,
-                        reason=ExclusionReason.POLYNUCLEAR_AQUEOUS,
-                        status=item.gibbs_status,
-                    )
-                    for item in unsupported_aqueous
-                ),
-            )
+        system = _without_polynuclear_aqueous(system)
         reference_state = self.database.reference_state
         validate_reference_conditions(conditions, reference_state)
         if not allow_incomplete:
@@ -315,64 +292,24 @@ class MassBalanceEngine:
             raise ValueError(
                 "activity-coefficient model returned a non-positive or non-finite value"
             )
-        log_activity_coefficient = np.log(aqueous_activity_coefficient)
-        scaled = (
-            -aqueous_energy / rt
-            - log_activity_coefficient[:, np.newaxis, np.newaxis]
+        aqueous_fraction, log_partition = _aqueous_partition(
+            aqueous_energy / rt, aqueous_activity_coefficient
         )
-        maximum_scaled = np.max(scaled, axis=0)
-        weights = np.exp(scaled - maximum_scaled[np.newaxis, :, :])
-        partition = np.sum(weights, axis=0)
-        aqueous_fraction = weights / partition[np.newaxis, :, :]
-        log_partition = maximum_scaled + np.log(partition)
 
         total = total_metal.total_metal_mol_L
         standard_concentration = total_metal.standard_concentration_mol_L
-        log_dimensionless_total = math.log(total_metal.dimensionless_total)
         aqueous_only_chemical_potential = rt * (
-            log_dimensionless_total - log_partition
+            math.log(total_metal.dimensionless_total) - log_partition
         )
 
-        grid_shape = pH_grid.shape
-        if solid_indices.size:
-            solid_energy = standard_energy[solid_indices]
-            local_solid_index = np.argmin(solid_energy, axis=0)
-            minimum_solid_energy = np.take_along_axis(
-                solid_energy,
-                local_solid_index[np.newaxis, :, :],
-                axis=0,
-            )[0]
-            stable_solid_index = solid_indices[local_solid_index]
-            log_saturation = minimum_solid_energy / rt + log_partition
-            precipitating = log_dimensionless_total > log_saturation + 1e-12
-            maximum_log_concentration = math.log(
-                np.finfo(np.float64).max
-            ) - math.log(standard_concentration)
-            saturation = standard_concentration * np.exp(
-                np.minimum(log_saturation, maximum_log_concentration)
-            )
-            saturation = np.where(
-                log_saturation > maximum_log_concentration,
-                np.inf,
-                saturation,
-            )
-            dissolved = np.where(precipitating, saturation, total)
-            precipitating_solid_index = np.where(
-                precipitating,
-                stable_solid_index,
-                -1,
-            )
-            chemical_potential = np.where(
-                precipitating,
-                minimum_solid_energy,
-                aqueous_only_chemical_potential,
-            )
-        else:
-            saturation = np.full(grid_shape, np.inf, dtype=np.float64)
-            dissolved = np.full(grid_shape, total, dtype=np.float64)
-            precipitating = np.zeros(grid_shape, dtype=np.bool_)
-            precipitating_solid_index = np.full(grid_shape, -1, dtype=np.int_)
-            chemical_potential = aqueous_only_chemical_potential
+        saturation, precipitating_solid_index, chemical_potential = _solid_saturation(
+            standard_energy, solid_indices, log_partition, total_metal, rt
+        )
+        precipitating = precipitating_solid_index >= 0
+        dissolved = np.where(precipitating, saturation, total)
+        chemical_potential = np.where(
+            precipitating, chemical_potential, aqueous_only_chemical_potential
+        )
 
         aqueous_concentration = aqueous_fraction * dissolved[np.newaxis, :, :]
         aqueous_activity = (
@@ -435,3 +372,84 @@ class MassBalanceEngine:
             oer_V=oer_V,
         )
 
+
+
+def _without_polynuclear_aqueous(system: MetalSystem) -> MetalSystem:
+    """The system with polynuclear aqueous species moved to its exclusions."""
+    polynuclear = tuple(
+        item
+        for item in system.species
+        if item.is_aqueous
+        and not math.isclose(item.metal_count, 1.0, rel_tol=0.0, abs_tol=1e-12)
+    )
+    if not polynuclear:
+        return system
+    return MetalSystem(
+        system=system.system,
+        symbol=system.symbol,
+        species=tuple(item for item in system.species if item not in polynuclear),
+        excluded=system.excluded
+        + tuple(
+            SpeciesExclusion(
+                record_id=item.record_id,
+                species=item.species,
+                reason=ExclusionReason.POLYNUCLEAR_AQUEOUS,
+                status=item.gibbs_status,
+            )
+            for item in polynuclear
+        ),
+    )
+
+
+def _aqueous_partition(
+    scaled_energy: FloatArray, activity_coefficient: FloatArray
+) -> tuple[FloatArray, FloatArray]:
+    """``(c_i / c_d, ln Z)`` of Eq. (6) from the energies ``G~_i / RT`` of the aqueous species.
+
+    The largest term is factored out of the sum, so the exponentials cannot overflow.
+    """
+    scaled = -scaled_energy - np.log(activity_coefficient)[:, np.newaxis, np.newaxis]
+    maximum_scaled = np.max(scaled, axis=0)
+    weights = np.exp(scaled - maximum_scaled[np.newaxis, :, :])
+    partition = np.sum(weights, axis=0)
+    return weights / partition[np.newaxis, :, :], maximum_scaled + np.log(partition)
+
+
+def _solid_saturation(
+    standard_energy: FloatArray,
+    solid_indices: IntegerArray,
+    log_partition: FloatArray,
+    total_metal: TotalMetalConcentration,
+    rt: float,
+) -> tuple[FloatArray, IntegerArray, FloatArray]:
+    """``(c_sat, precipitating solid or -1, mu at saturation)`` at every grid point, Eq. (7).
+
+    The solid with the lowest energy saturates the solution; it precipitates where c_T exceeds
+    its saturation concentration. Saturation concentrations beyond the float range are infinite.
+    """
+    grid_shape = log_partition.shape
+    if not solid_indices.size:
+        return (
+            np.full(grid_shape, np.inf, dtype=np.float64),
+            np.full(grid_shape, -1, dtype=np.int_),
+            np.full(grid_shape, np.nan, dtype=np.float64),
+        )
+    solid_energy = standard_energy[solid_indices]
+    local_solid_index = np.argmin(solid_energy, axis=0)
+    minimum_solid_energy = np.take_along_axis(
+        solid_energy, local_solid_index[np.newaxis, :, :], axis=0
+    )[0]
+    log_saturation = minimum_solid_energy / rt + log_partition
+    precipitating = math.log(total_metal.dimensionless_total) > log_saturation + 1e-12
+    standard_concentration = total_metal.standard_concentration_mol_L
+    maximum_log_concentration = math.log(np.finfo(np.float64).max) - math.log(
+        standard_concentration
+    )
+    saturation = np.where(
+        log_saturation > maximum_log_concentration,
+        np.inf,
+        standard_concentration
+        * np.exp(np.minimum(log_saturation, maximum_log_concentration)),
+    )
+    solid_index = np.where(precipitating, solid_indices[local_solid_index], -1)
+    return saturation, solid_index, minimum_solid_energy

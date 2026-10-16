@@ -2,20 +2,19 @@
 
 from __future__ import annotations
 
-from dataclasses import replace
-
 import html
+from dataclasses import replace
 from typing import Any
 
 import numpy as np
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
-    QAbstractItemView, QCheckBox, QHBoxLayout, QHeaderView, QLabel, QPushButton, QSplitter,
-    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
+    QAbstractItemView, QCheckBox, QHBoxLayout, QHeaderView, QLabel, QPushButton, QSplitter, QTableWidget,
+    QTableWidgetItem, QVBoxLayout, QWidget,
 )
 
 from .formula import formula_delegate
-from .materials import AGREEMENT, matched_colors, phase_views
+from .materials import AGREEMENT, matched_colors, phase_views, pretty_label
 from .plots import DiagramView, DisplayOptions, record_colors
 from .sweep import AGREEMENT_COLORS
 
@@ -124,8 +123,6 @@ class MaterialsProjectPage(QWidget):
         total = comparison.same_thermodynamic_species.size
         self.pairs.setRowCount(len(rows))
         for row, (species, phase, count) in enumerate(rows):
-            from .materials import pretty_label
-
             for column, value in enumerate((species, pretty_label(phase), f"{count / total:.1%}")):
                 self.pairs.setItem(row, column, QTableWidgetItem(value))
         details = (

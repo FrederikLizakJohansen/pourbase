@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import math
+from collections import OrderedDict
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
@@ -13,10 +15,13 @@ from PySide6.QtCore import QPointF, QRectF, Qt, Signal
 from PySide6.QtGui import QColor
 
 from ..boltzmann import boltzmann_smooth
-from .figure_export import install_export_menu
-from ..speciation import dissolved_blend_weights
+from ..export import diagram_figure
 from ..grid import phase_boundary_segments
+from ..paths import path_curve
+from ..plotting import plot_uncertainty
+from ..speciation import dissolved_blend_weights, plot_speciation_profile
 from ..uncertainty import stability_uncertainty
+from .figure_export import install_export_menu
 from .formula import phase_label, to_html
 from .scales import axis_label, from_scale, nernst_slope_V, resample, to_scale
 
@@ -141,6 +146,15 @@ class DiagramView(pg.PlotWidget):
         super().__init__(parent)
         self.setLabel("bottom", "pH")
         self.setLabel("left", "Eh (V vs SHE)")
+        self._grid: np.ndarray | None = None
+        self._figure_source: tuple | None = None  # (diagram, options) to redraw with matplotlib
+        self._legend_key: tuple | None = None
+        self._limits: tuple | None = None
+        self._path_state: tuple | None = None
+        self._pick: tuple | None = None  # (done, smooth) while path points are picked on the diagram
+        self.selected_vertex: int | None = None
+        self._label_items: dict[str, pg.TextItem] = {}  # kept per species and only moved on a redraw
+        self._analyses: OrderedDict[tuple, tuple] = OrderedDict()
         self.getPlotItem().setContentsMargins(4, 12, 14, 4)
         self.setMenuEnabled(False)
         self.showGrid(x=False, y=False)
@@ -187,12 +201,9 @@ class DiagramView(pg.PlotWidget):
 
     def matplotlib_figure(self):
         """The shown diagram redrawn with the package's Matplotlib functions, or None for a plain grid."""
-        source = getattr(self, "_figure_source", None)
+        source = self._figure_source
         if source is None:
             return None
-        from ..export import diagram_figure
-        from ..plotting import plot_uncertainty
-
         diagram, options = source
         figure = diagram_figure(diagram, labels=options.labels, legend=options.legend,
                                 boundaries=options.boundaries, water=options.water,
@@ -208,7 +219,7 @@ class DiagramView(pg.PlotWidget):
 
     def export_table(self):
         """Every grid point of the shown map: its coordinates and stable species."""
-        if getattr(self, "_grid", None) is None:
+        if self._grid is None:
             return None
         x_label, y_label = self._axes
         names = [item.species for item in self._species]
@@ -244,8 +255,8 @@ class DiagramView(pg.PlotWidget):
         rgb = None
         blended_in: list = []
         if options.boltzmann:
-            weights = (boltzmann_smooth(diagram, options.blend_width_kJ_mol * 1000).weights if fixed_activity
-                       else dissolved_blend_weights(diagram))
+            weights = (self._derived(boltzmann_smooth, diagram, options.blend_width_kJ_mol * 1000).weights
+                       if fixed_activity else self._derived(dissolved_blend_weights, diagram))
             stable_colors = colors or record_colors([item.record_id for item in diagram.stable_species])
             colors, blended_in = blend_colors(diagram.system.species, weights, stable_colors)
             table = np.array([colors[item.record_id].getRgbF()[:3] if item.record_id in colors else (0.8, 0.8, 0.8)
@@ -254,8 +265,8 @@ class DiagramView(pg.PlotWidget):
         hatch = None
         self.uncertainty = None
         if options.uncertainty and fixed_activity:
-            self.uncertainty = stability_uncertainty(
-                diagram, options.uncertainty_sigma, options.assumed_uncertainty_kJ_mol * 1000)
+            self.uncertainty = self._derived(stability_uncertainty, diagram, options.uncertainty_sigma,
+                                             options.assumed_uncertainty_kJ_mol * 1000)
             hatch = self.uncertainty.uncertain[rows, columns] & valid
         self.show_grid(
             diagram.stable_species_index[rows, columns], diagram.pH, axis, diagram.system.species,
@@ -277,6 +288,31 @@ class DiagramView(pg.PlotWidget):
             self.plating.setPos(QPointF(0.0, float(to_scale(plating_V, 0.0, scale, temperature))))
             self.plating.setPen(pg.mkPen("#2e9d4a", width=1.5, style=Qt.DashDotLine))
         self.probe.setVisible(True)
+
+    def _derived(self, analysis: Callable, diagram: Any, *arguments: Any) -> Any:
+        """``analysis(diagram, *arguments)``, kept for the last few diagrams so that toggling a display
+        option back on does not repeat the calculation."""
+        key = (analysis, id(diagram), arguments)
+        entry = self._analyses.get(key)
+        if entry is None or entry[0] is not diagram:
+            entry = (diagram, analysis(diagram, *arguments))
+            self._analyses[key] = entry
+            while len(self._analyses) > 8:
+                self._analyses.popitem(last=False)
+        else:
+            self._analyses.move_to_end(key)
+        return entry[1]
+
+    def _add_label(self, item) -> pg.TextItem:
+        """A domain label for a species, kept for later diagrams."""
+        label = pg.TextItem(
+            html=f'<span style="color:#000; font-size:{LABEL_PT}pt">{to_html(item.species, LABEL_PT)}</span>',
+            anchor=(0.5, 0.5), fill=pg.mkBrush(255, 255, 255, 185),
+        )
+        label.setZValue(5)
+        self.addItem(label)
+        self._label_items[item.record_id] = label
+        return label
 
     def show_grid(
         self,
@@ -308,12 +344,14 @@ class DiagramView(pg.PlotWidget):
         stable_indices = sorted(int(value) for value in np.unique(index[valid]))
         stable = [species[item] for item in stable_indices]
         colors = colors or record_colors([item.record_id for item in stable])
-        compact = np.zeros_like(index)
-        for display_index, species_index in enumerate(stable_indices):
-            compact[index == species_index] = display_index
         if rgb is None:
-            table = np.array([colors[item.record_id].getRgbF()[:3] for item in stable])
-            rgb = table[compact]
+            table = np.zeros((len(species), 3))
+            for species_index, item in zip(stable_indices, stable, strict=True):
+                table[species_index] = colors[item.record_id].getRgbF()[:3]
+            rgb = table[index]
+        lookup = np.full(len(species), -1)
+        lookup[stable_indices] = np.arange(len(stable_indices))
+        compact = np.where(valid, lookup[index], -1)  # position in ``stable``, or -1 outside the diagram
         rgba = np.empty((*index.shape, 4), dtype=np.ubyte)
         rgba[..., :3] = (np.clip(rgb, 0, 1) * 255).astype(np.ubyte)
         rgba[..., 3] = np.where(valid, 255, 0)
@@ -330,7 +368,6 @@ class DiagramView(pg.PlotWidget):
             overlay[hatch & ~stripes] = (0, 0, 0, 22)
             self.hatch.setImage(overlay, levels=(0, 255))
             self.hatch.setRect(QRectF(x0, y0, x1 - x0, y1 - y0))
-        compact = np.where(valid, compact, -1)
 
         if options.boundaries and len(stable) > 1:
             points = np.array(phase_boundary_segments(compact, x, y)).reshape(-1, 2)
@@ -341,7 +378,7 @@ class DiagramView(pg.PlotWidget):
             item.setVisible(False)
 
         # label items are kept per species and only moved, so redrawing does not rebuild them
-        cache = self.__dict__.setdefault("_label_items", {})
+        cache = self._label_items
         shown: set = set()
         if options.labels:
             x_grid, y_grid = np.meshgrid(x, y)
@@ -359,14 +396,7 @@ class DiagramView(pg.PlotWidget):
                 px, py = coordinates[int(np.argmin(distances))]
                 label = cache.get(item.record_id)
                 if label is None:
-                    label = pg.TextItem(
-                        html=f'<span style="color:#000; font-size:{LABEL_PT}pt">'
-                        f"{to_html(item.species, LABEL_PT)}</span>",
-                        anchor=(0.5, 0.5), fill=pg.mkBrush(255, 255, 255, 185),
-                    )
-                    label.setZValue(5)
-                    self.addItem(label)
-                    cache[item.record_id] = label
+                    label = self._add_label(item)
                 label.setPos(float(px), float(py))
                 label.setVisible(True)
                 shown.add(item.record_id)
@@ -374,15 +404,7 @@ class DiagramView(pg.PlotWidget):
             # prepare hidden labels for every species, so that a species appearing during a drag costs nothing
             for item in species:
                 if item.record_id not in cache:
-                    label = pg.TextItem(
-                        html=f'<span style="color:#000; font-size:{LABEL_PT}pt">'
-                        f"{to_html(item.species, LABEL_PT)}</span>",
-                        anchor=(0.5, 0.5), fill=pg.mkBrush(255, 255, 255, 185),
-                    )
-                    label.setZValue(5)
-                    label.setVisible(False)
-                    self.addItem(label)
-                    cache[item.record_id] = label
+                    self._add_label(item).setVisible(False)
         for record_id, label in cache.items():
             if record_id not in shown:
                 label.setVisible(False)
@@ -393,7 +415,7 @@ class DiagramView(pg.PlotWidget):
                       self.uncertainty.confidence_sigma if hatch is not None and self.uncertainty is not None else None,
                       self.dark)
         # while a slider moves the legend stays as it is; it is rebuilt once with the full result
-        rebuild = legend_key != getattr(self, "_legend_key", None) and not self.preview_mode
+        rebuild = legend_key != self._legend_key and not self.preview_mode
         if rebuild:
             self._legend_key = legend_key
         if rebuild:
@@ -418,7 +440,7 @@ class DiagramView(pg.PlotWidget):
         view = self.getPlotItem().vb
         limits = (x0, x1, y0, y1)
         # a coarse preview keeps the axes as they are; changing the limits would redraw them every step
-        if reset_range or (limits != getattr(self, "_limits", None) and not self.preview_mode):
+        if reset_range or (limits != self._limits and not self.preview_mode):
             self._limits = limits
             view.setLimits(xMin=None, xMax=None, yMin=None, yMax=None)
             if reset_range:
@@ -443,7 +465,7 @@ class DiagramView(pg.PlotWidget):
 
 
     def _species_text(self, x: float, y: float) -> str:
-        grid = getattr(self, "_grid", None)
+        grid = self._grid
         if grid is None:
             return ""
         if not (self._x[0] <= x <= self._x[-1] and self._y[0] <= y <= self._y[-1]):
@@ -509,7 +531,6 @@ class DiagramView(pg.PlotWidget):
             self.path_item.setZValue(5.5)
             self.addItem(self.path_item)
             self.vertex_items: list[_PathVertex] = []
-            self.selected_vertex: int | None = None
             self.setFocusPolicy(Qt.ClickFocus)
         self._path_state = (list(path[0]), path[1]) if path is not None and path[0] else None
         vertices = self._path_state[0] if self._path_state else []
@@ -540,8 +561,6 @@ class DiagramView(pg.PlotWidget):
         self._draw_path_line()
 
     def _draw_path_line(self) -> None:
-        from ..paths import path_curve
-
         vertices, smooth = self._path_state
         color = "#ffffff" if self.dark else "#111111"
         if len(vertices) < 2:
@@ -574,9 +593,9 @@ class DiagramView(pg.PlotWidget):
             self.pathEdited.emit(list(self._path_state[0]))
 
     def keyPressEvent(self, event) -> None:
-        index = getattr(self, "selected_vertex", None)
-        state = getattr(self, "_path_state", None)
-        if index is None or state is None or getattr(self, "_pick", None) is not None:
+        index = self.selected_vertex
+        state = self._path_state
+        if index is None or state is None or self._pick is not None:
             super().keyPressEvent(event)
             return
         key = event.key()
@@ -631,7 +650,7 @@ class DiagramView(pg.PlotWidget):
         self.viewport().setCursor(Qt.CrossCursor)
 
     def finish_pick(self) -> None:
-        pick = getattr(self, "_pick", None)
+        pick = self._pick
         if pick is None:
             return
         points = list(self._picked)
@@ -672,7 +691,7 @@ class DiagramView(pg.PlotWidget):
 
     def boundary_at(self, x: float, y: float, pixels: float = 5.0) -> tuple[Any, Any] | None:
         """The two species of the boundary within ``pixels`` of a point, nearest first, or None."""
-        grid = getattr(self, "_grid", None)
+        grid = self._grid
         if grid is None or len(self._x) < 2 or len(self._y) < 2:
             return None
         if not (self._x[0] <= x <= self._x[-1] and self._y[0] <= y <= self._y[-1]):
@@ -704,7 +723,7 @@ class DiagramView(pg.PlotWidget):
             return
         point = self.getPlotItem().vb.mapSceneToView(position)
         self.cursorMoved.emit(self._species_text(point.x(), point.y()))
-        if getattr(self, "_pick", None) is not None:
+        if self._pick is not None:
             if self._picked:  # the path runs on to the mouse until picking ends
                 self.show_path((self._picked + [(point.x(), self._she(point.x(), point.y()))], self._pick[1]()))
             return
@@ -712,17 +731,17 @@ class DiagramView(pg.PlotWidget):
         self.viewport().setCursor(Qt.PointingHandCursor if near else Qt.ArrowCursor)
 
     def _mouse_clicked(self, event) -> None:
-        if event.button() == Qt.LeftButton and event.double() and getattr(self, "_pick", None) is not None:
+        if event.button() == Qt.LeftButton and event.double() and self._pick is not None:
             self.finish_pick()  # the first click of the double-click has already added the last point
             return
         if event.button() != Qt.LeftButton or event.double():
             return
-        if event.isAccepted() is True and getattr(self, "_pick", None) is None:  # a path point took the click
+        if event.isAccepted() is True and self._pick is None:  # a path point took the click
             return
-        if getattr(self, "selected_vertex", None) is not None and getattr(self, "_pick", None) is None:
+        if self.selected_vertex is not None and self._pick is None:
             self.select_vertex(None)
         point = self.getPlotItem().vb.mapSceneToView(event.scenePos())
-        pick = getattr(self, "_pick", None)
+        pick = self._pick
         if pick is not None:  # collecting the points of a path
             self._picked.append((point.x(), self._she(point.x(), point.y())))
             self.show_path((self._picked, pick[1]()))
@@ -767,8 +786,6 @@ class SpeciationView(pg.PlotWidget):
         profile = getattr(self, "profile", None)
         if profile is None:
             return None
-        from ..speciation import plot_speciation_profile
-
         return plot_speciation_profile(profile).figure
 
     def export_table(self):
@@ -806,6 +823,7 @@ class PhaseStripView(pg.PlotWidget):
         super().__init__(parent)
         self.setMenuEnabled(False)
         install_export_menu(self, self.export_table, 'pourbase-phase-strip')
+        self._rows: tuple | None = None
         self.setMouseEnabled(x=False, y=False)
         self.hideButtons()
         self.setLabel("bottom", "pH")
@@ -820,7 +838,7 @@ class PhaseStripView(pg.PlotWidget):
 
     def export_table(self):
         """The stable species along pH for every row of the strip."""
-        shown = getattr(self, "_rows", None)
+        shown = self._rows
         if not shown:
             return None
         pH, rows = shown

@@ -3,24 +3,39 @@
 from __future__ import annotations
 
 import html
+import math
+import re
+from collections.abc import Callable
 from contextlib import closing
-from typing import Callable
 
+import numpy as np
+import pyqtgraph as pg
+from matplotlib import colormaps
 from PySide6.QtCore import QSortFilterProxyModel, Qt, Signal
-from PySide6.QtGui import QColor, QStandardItem, QStandardItemModel
+from PySide6.QtGui import QColor, QDesktopServices, QIcon, QPixmap, QStandardItem, QStandardItemModel
 from PySide6.QtWidgets import (
-    QAbstractItemView, QComboBox, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QPushButton, QSizePolicy, QSplitter,
-    QTableView, QTableWidget, QTableWidgetItem, QTextBrowser, QVBoxLayout, QWidget,
+    QAbstractItemView, QButtonGroup, QComboBox, QFrame, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QPushButton,
+    QRadioButton, QSizePolicy, QSplitter, QTableView, QTableWidget, QTableWidgetItem, QTabWidget, QTextBrowser,
+    QVBoxLayout, QWidget,
 )
 
 from ..database import ThermodynamicDatabase
+from ..grid import phase_boundary_segments
+from ..inverse import stability_region
+from ..measurements import assess_points
+from ..paths import phase_path
 from ..records import PropertyValue, SourceReference, SpeciesRecord
 from ..scenario import Calculation, Probe
-from ..uncertainty import StabilityMargin
+from ..sensitivity import point_outcomes
 from ..speciation import speciation_profile
+from ..uncertainty import StabilityMargin
+from .diagram_tools import PathPanel, PointsPanel, RegionPanel, reaction_html
+from .figure_export import install_export_menu
 from .formula import formula_delegate, phase_label, to_html
 from .placeholder import StackedView
-from .plots import DiagramView, DisplayOptions, PhaseStripView, SpeciationView, record_colors
+from .plots import (
+    LABEL_PT, DiagramView, DisplayOptions, PhaseStripView, SpeciationView, apply_plot_theme, record_colors,
+)
 from .scales import to_scale
 
 PUBLIC_TABLES = (
@@ -47,9 +62,7 @@ STATUS_LABELS = {
 }
 
 
-def _swatch(color) -> "QIcon":
-    from PySide6.QtGui import QIcon, QPixmap
-
+def _swatch(color) -> QIcon:
     pixmap = QPixmap(12, 12)
     pixmap.fill(color)
     return QIcon(pixmap)
@@ -71,8 +84,6 @@ def short_citation(citation: str | None, source_id: str) -> str:
     """``Robie (1995)`` from a full citation, or the source ID when there is none."""
     if not citation:
         return source_id
-    import re
-
     surname = re.split(r"[,;.(]", citation.strip())[0].split()[0] if citation.strip() else source_id
     years = re.findall(r"\b(1[89]\d\d|20\d\d)\b", citation)
     return f"{surname} ({years[0]})" if years else surname
@@ -113,8 +124,6 @@ class DiagramPage(StackedView):
         if url.scheme() == "pourbase":
             self.speciesRequested.emit()
         else:
-            from PySide6.QtGui import QDesktopServices
-
             QDesktopServices.openUrl(url)
 
     def __init__(self, parent=None) -> None:
@@ -125,10 +134,6 @@ class DiagramPage(StackedView):
         probe = QTextBrowser()
         probe.setOpenLinks(False)
         probe.anchorClicked.connect(self._open_link)
-        from PySide6.QtWidgets import QTabWidget
-
-        from .diagram_tools import PathPanel, PointsPanel, RegionPanel
-
         self.path_panel = PathPanel()
         self.points_panel = PointsPanel()
         self.tools = QTabWidget()
@@ -152,6 +157,7 @@ class DiagramPage(StackedView):
         super().__init__(body, parent)
         self.diagram, self.cursor, self.probe = diagram, cursor, probe
         self.dark = False
+        self._cursor_dark: bool | None = None
         self.display = DisplayOptions()
         self.diagram.cursorMoved.connect(self._show_cursor)
         self.cursor.hide()
@@ -175,7 +181,7 @@ class DiagramPage(StackedView):
         if not text:
             self.cursor.hide()
             return
-        if getattr(self, "_cursor_dark", None) != self.dark:  # restyling is slow; only on a theme change
+        if self._cursor_dark != self.dark:  # restyling is slow; only on a theme change
             self._cursor_dark = self.dark
             background = "rgba(30, 32, 36, 210)" if self.dark else "rgba(255, 255, 255, 210)"
             self.cursor.setStyleSheet(f"background: {background}; padding: 1px 6px; border-radius: 3px;")
@@ -189,9 +195,6 @@ class DiagramPage(StackedView):
 
     def update_tools(self) -> None:
         """The path and the measured points for the current calculation, on the diagram and in their panels."""
-        from ..measurements import assess_points
-        from ..paths import phase_path
-
         calculation = self.calculation
         if calculation is None:
             return
@@ -205,8 +208,6 @@ class DiagramPage(StackedView):
             stable = [item.record_id for item in diagram.stable_species]
             self.path_panel.show_result(phase_path(calculation, *path[0], smooth=path[1]), stable,
                                         calculation.database)
-        from ..inverse import stability_region
-
         self.region_panel.set_species(diagram.system.species)
         target, margin, sigma = self.region_panel.options()
         if self.tools.currentWidget() is self.region_panel and target:  # shaded while its panel is open
@@ -224,8 +225,6 @@ class DiagramPage(StackedView):
 
     def show_boundary(self, first: str, second: str, position) -> None:
         """A popup with the reaction, equation and sources of the boundary between two species."""
-        from PySide6.QtWidgets import QFrame
-
         self.hide_boundary()
         calculation = self.calculation
         if calculation is None or not first:
@@ -245,8 +244,6 @@ class DiagramPage(StackedView):
                 sources.append(html.escape(short_citation(citation, source_id)))
             kind = {"nernst": "Redox boundary (Eq. 3)", "acid_base": "Acid–base boundary (Eq. 4)",
                     "numerical": "Numerical boundary", "degenerate": "No pH or potential dependence"}
-            from .diagram_tools import reaction_html
-
             reaction = reaction_html(equation.reaction, calculation.database)
             body = (f"{reaction}<br>{html.escape(equation.equation).replace('-', '−')}<br>"
                     f"<span style='color:gray'>{kind.get(equation.kind, equation.kind)} · "
@@ -326,7 +323,6 @@ class DiagramPage(StackedView):
             summary = f'<div style="margin-top:4px">{text}.</div>'
 
         gibbs = record.thermochemistry.gibbs_energy_J_mol if record else PropertyValue(None, None, None, None)
-        import math
 
         extrapolation = species.temperature_uncertainty_J_mol
         if extrapolation:
@@ -724,11 +720,6 @@ class SensitivityPage(StackedView):
     sourcesChanged = Signal()
 
     def __init__(self, parent=None) -> None:
-        import pyqtgraph as pg
-        from PySide6.QtWidgets import QButtonGroup, QRadioButton
-
-        from .figure_export import install_export_menu
-
         body = QWidget()
         layout = QVBoxLayout(body)
         controls = QHBoxLayout()
@@ -777,8 +768,6 @@ class SensitivityPage(StackedView):
         self.plot.scene().sigMouseClicked.connect(self._clicked)
         self.plot.scene().sigMouseMoved.connect(self._hovered)
         install_export_menu(self.plot, self.export_table, "pourbase-sensitivity")
-        from .plots import apply_plot_theme
-
         apply_plot_theme(self.plot, False)
         self.table = _table(["Species", "Spread (kJ/mol)", "Diagram changed when replaced alone", "Values (kJ/mol)",
                              "Sources"])
@@ -789,16 +778,12 @@ class SensitivityPage(StackedView):
         super().__init__(body, parent)
 
     def set_dark(self, dark: bool) -> None:
-        from .plots import apply_plot_theme
-
         apply_plot_theme(self.plot, dark)
 
     def critical_only(self) -> bool:
         return self.critical.isChecked()
 
     def _grid_point(self, scene_position):
-        import numpy as np
-
         if self.result is None or not self.plot.sceneBoundingRect().contains(scene_position):
             return None
         point = self.plot.getPlotItem().vb.mapSceneToView(scene_position)
@@ -818,8 +803,6 @@ class SensitivityPage(StackedView):
                              f"{self.result.changed_fraction[row, column]:.0%} of selections")
 
     def _clicked(self, event) -> None:
-        from ..sensitivity import point_outcomes
-
         if event.button() != Qt.LeftButton or self.selections is None:
             return
         cell = self._grid_point(event.scenePos())
@@ -841,12 +824,6 @@ class SensitivityPage(StackedView):
                 break
 
     def show_result(self, result, diagram, selections=None) -> None:
-        import numpy as np
-        import pyqtgraph as pg
-        from matplotlib import colormaps
-
-        from ..grid import phase_boundary_segments
-
         self.result = result
         self.diagram = diagram
         self.selections = selections
@@ -892,11 +869,6 @@ class SensitivityPage(StackedView):
         self.show_view()
 
     def _place_labels(self, diagram) -> None:
-        import numpy as np
-        import pyqtgraph as pg
-
-        from .plots import LABEL_PT
-
         index = diagram.stable_species_index
         x_grid, y_grid = np.meshgrid(diagram.pH, diagram.eh_V)
         scale_x, scale_y = max(float(np.ptp(diagram.pH)), 1e-9), max(float(np.ptp(diagram.eh_V)), 1e-9)

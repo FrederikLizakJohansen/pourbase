@@ -10,15 +10,15 @@ import numpy as np
 from PySide6.QtCore import QPointF, QRectF, Qt, Signal
 from PySide6.QtGui import QColor, QFont, QImage, QPainter, QPen, QPolygonF, QTransform
 from PySide6.QtWidgets import (
-    QButtonGroup, QDoubleSpinBox, QHBoxLayout, QLabel, QPushButton, QSlider, QSpinBox, QSplitter, QVBoxLayout,
-    QWidget,
+    QButtonGroup, QDoubleSpinBox, QHBoxLayout, QLabel, QPushButton, QSpinBox, QSplitter, QVBoxLayout, QWidget,
 )
 
-from .figure_export import install_export_menu
-from .widgets import JumpSlider
-from .plots import DiagramView, DisplayOptions, record_colors
 from ..sweeps import MAX_SWEEP_POINTS
+from .figure_export import install_export_menu
+from .materials import AGREEMENT
+from .plots import DiagramView, DisplayOptions, record_colors
 from .state import MAX_GRID_POINTS, SweepSettings
+from .widgets import JumpSlider
 
 SLICES_SHOWN = 24  # evenly spaced slices drawn in the 3D view, plus the selected one
 AXES = {
@@ -505,8 +505,6 @@ class SweepPage(QWidget):
     def set_materials_project(self, index: np.ndarray, phases: tuple, colors: dict[str, QColor],
                               same: np.ndarray, note: str) -> None:
         """Add MP stable phases on the sweep grid and the agreement between both sources."""
-        from .materials import AGREEMENT
-
         experimental = self.volumes["experimental"]
         values = experimental.values
         self.volumes["materials_project"] = SweepVolume(

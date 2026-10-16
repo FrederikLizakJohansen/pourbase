@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
-    QCheckBox, QComboBox, QDoubleSpinBox, QFormLayout, QGroupBox, QLabel, QPushButton,
-    QScrollArea, QSpinBox, QStyle, QTabWidget, QVBoxLayout, QWidget,
+    QCheckBox, QComboBox, QDoubleSpinBox, QFormLayout, QLabel, QPushButton, QScrollArea, QSpinBox, QStyle, QTabWidget,
+    QVBoxLayout, QWidget,
 )
 
 from ..conversions import express_concentration
-from ..water import WATER_PRESETS, WaterPreset
 from ..database import ThermodynamicDatabase
+from ..water import PKA, WATER_PRESETS, WaterPreset
 from .ligands import LigandPanel
 from .plots import DisplayOptions
 from .scales import REFERENCE_ELECTRODES_V
@@ -69,8 +69,6 @@ class SettingsPanel(QTabWidget):
 
     def reveal(self, widget: QWidget) -> None:
         """Show ``widget``: its tab, its section opened, scrolled into view and focused."""
-        from .widgets import Section
-
         for index, area in enumerate(self._areas):
             if area.widget().isAncestorOf(widget):
                 self.setCurrentIndex(index)
@@ -487,8 +485,6 @@ class SettingsPanel(QTabWidget):
 
 
 def _preset_settings(preset: WaterPreset) -> dict[str, LigandSetting]:
-    from ..water import PKA
-
     return {ligand_id: LigandSetting(enabled=True, mode="total", total_unbound_mol_L=value,
                                      use_pKa=ligand_id in PKA, acid_pKa=PKA.get(ligand_id, 7.0))
             for ligand_id, value in preset.concentrations_mol_L}

@@ -8,9 +8,11 @@ text for labels, legends and tables, and directly with QPainter for painted widg
 from __future__ import annotations
 
 import html
+import re
 
 from PySide6.QtCore import QPointF, QRectF, Qt
-from PySide6.QtGui import QFont, QFontMetricsF, QPainter
+from PySide6.QtGui import QFont, QFontMetricsF, QPainter, QPalette
+from PySide6.QtWidgets import QStyle, QStyledItemDelegate
 
 SUPERSCRIPTS = dict(zip("⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾", "0123456789+−=()"))
 SUBSCRIPTS = dict(zip("₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎", "0123456789+−=()"))
@@ -46,8 +48,6 @@ def pretty_formula(text: str) -> str:
 
     Names that already use Unicode subscripts or superscripts are returned unchanged.
     """
-    import re
-
     if any(character in text for character in "₀₁₂₃₄₅₆₇₈₉⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻"):
         return text
     return re.sub(r"(?<=[A-Za-z)])(\d+)", lambda match: match.group(1).translate(SUBSCRIPT_DIGITS), text)
@@ -125,9 +125,6 @@ def _script_font(font: QFont) -> QFont:
 
 def formula_delegate(parent=None):
     """Item delegate that draws a table cell's text as a formula with scaled scripts."""
-    from PySide6.QtGui import QPalette
-    from PySide6.QtWidgets import QStyle, QStyledItemDelegate
-
     class FormulaDelegate(QStyledItemDelegate):
         def paint(self, painter, option, index) -> None:
             text = index.data() or ""

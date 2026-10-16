@@ -4,12 +4,13 @@ from __future__ import annotations
 
 import csv
 import io
+from collections.abc import Callable, Sequence
 from pathlib import Path
-from typing import Callable, Sequence
 
-from PySide6.QtCore import QEvent, QMarginsF, QObject, QRect, QSize, QSizeF, Qt
-from PySide6.QtGui import QImage, QPageLayout, QPageSize, QPainter, QPdfWriter
-from PySide6.QtWidgets import QAbstractScrollArea, QFileDialog, QMenu, QMessageBox, QWidget
+from PySide6.QtCore import QEvent, QMarginsF, QObject, QPoint, QRect, QRectF, QSize, QSizeF, Qt
+from PySide6.QtGui import QGuiApplication, QImage, QPageLayout, QPageSize, QPainter, QPdfWriter
+from PySide6.QtSvg import QSvgGenerator
+from PySide6.QtWidgets import QAbstractScrollArea, QFileDialog, QGraphicsView, QMenu, QMessageBox, QWidget
 
 Table = tuple[Sequence[str], Sequence[Sequence[object]]]
 DataSource = Callable[[], "Table | None"]
@@ -18,15 +19,10 @@ FORMATS = {"png": "PNG image", "pdf": "PDF document", "svg": "SVG drawing"}
 
 def _paint(widget: QWidget, painter: QPainter, width: float, height: float) -> None:
     """Paint all of ``widget`` into ``width`` x ``height`` logical units of the painter's device."""
-    from PySide6.QtCore import QRectF
-    from PySide6.QtWidgets import QGraphicsView
-
     if isinstance(widget, QGraphicsView):
         # a graphics view maps its viewport onto the target rectangle; give it the whole figure
         widget.render(painter, QRectF(0, 0, width, height), widget.viewport().rect())
     else:
-        from PySide6.QtCore import QPoint
-
         widget.render(painter, QPoint(0, 0))
 
 
@@ -65,8 +61,6 @@ def render_svg(widget: QWidget, path: str | Path) -> None:
     periodic table, are written directly as vector graphics. Other plots, such as a sweep slice,
     embed the figure at twice the screen resolution.
     """
-    from PySide6.QtWidgets import QGraphicsView
-
     redraw = getattr(widget, "matplotlib_figure", None)
     figure = redraw() if callable(redraw) else None
     if figure is not None:
@@ -91,8 +85,6 @@ def render_svg(widget: QWidget, path: str | Path) -> None:
             f'<image width="{width}" height="{height}" xlink:href="data:image/png;base64,{encoded}"/>\n</svg>\n',
             encoding="utf-8")
         return
-    from PySide6.QtSvg import QSvgGenerator
-
     generator = QSvgGenerator()
     generator.setFileName(str(path))
     generator.setSize(widget.size())
@@ -168,8 +160,6 @@ class _ContextMenu(QObject):
             QMessageBox.warning(self.widget, "Export figure", str(error))
 
     def copy_code(self) -> None:
-        from PySide6.QtGui import QGuiApplication
-
         QGuiApplication.clipboard().setText(self.widget.python_code())
 
     def save_code(self, path: str | None = None) -> None:

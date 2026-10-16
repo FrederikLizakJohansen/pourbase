@@ -9,14 +9,15 @@ from pathlib import Path
 import numpy as np
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
-    QAbstractItemView, QComboBox, QFileDialog, QGridLayout, QHBoxLayout, QHeaderView, QLabel, QMessageBox,
-    QPushButton, QSlider, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
+    QAbstractItemView, QComboBox, QDoubleSpinBox, QFileDialog, QFormLayout, QFrame, QHBoxLayout, QHeaderView, QLabel,
+    QMessageBox, QPushButton, QSlider, QTableWidget, QTableWidgetItem, QTextBrowser, QVBoxLayout, QWidget,
 )
 
+from ..inverse import KINDS
 from ..measurements import MeasuredPoint, PointAssessment
 from ..paths import PhasePath
 from .formula import formula_delegate, to_html
-from .plots import PhaseStripView, record_colors
+from .plots import PhaseStripView, apply_plot_theme, record_colors
 from .scales import REFERENCE_ELECTRODES_V, from_scale
 
 ELECTRODE_ALIASES = {"she": "SHE", "nhe": "SHE", "rhe": "RHE", "sce": "SCE (sat. KCl)", "hg/hgo": "Hg/HgO (1 M KOH)"}
@@ -90,8 +91,6 @@ class PathPanel(QWidget):
         self.along.setRange(0, 1000)
         self.along.setToolTip("Move the probe along the path")
         self.along.valueChanged.connect(self._along_moved)
-        from PySide6.QtWidgets import QFrame, QTextBrowser
-
         self.crossings = QTextBrowser()
         self.crossings.setFrameShape(QFrame.NoFrame)
         self.crossings.setOpenLinks(False)
@@ -116,8 +115,6 @@ class PathPanel(QWidget):
         self._probe = (pH, eh_V)
 
     def set_dark(self, dark: bool) -> None:
-        from .plots import apply_plot_theme
-
         apply_plot_theme(self.strip, dark)
         self.dark = dark
 
@@ -363,10 +360,6 @@ class RegionPanel(QWidget):
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        from PySide6.QtWidgets import QDoubleSpinBox, QFormLayout
-
-        from ..inverse import KINDS
-
         self.kinds = KINDS
         self.target = QComboBox()
         self.target.currentIndexChanged.connect(lambda _index: self.changed.emit())
