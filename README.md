@@ -1,8 +1,6 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/logo-wordmark-dark.svg">
-    <img src="docs/logo-wordmark.svg" alt="pourbase" width="330">
-  </picture>
+  <img src="docs/logo-wordmark.svg#gh-light-mode-only" alt="pourbase" width="330">
+  <img src="docs/logo-wordmark-dark.svg#gh-dark-mode-only" alt="pourbase" width="330">
 </p>
 
 pourbase is a source-linked database of experimental standard thermochemistry and a Python package
