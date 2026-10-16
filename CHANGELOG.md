@@ -4,6 +4,11 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Review four disputed zirconium rows and retain nine observations across
+  three species. Keep two oxide-gas triplets as explicitly selected historical
+  estimates with the later NEA critique. Reconcile the selected-table ZrS1.5
+  estimate and structural notation; preserve the bulk ZrH model hold.
+  All earlier preferred values and default phase maps remain unchanged.
 - Resolve six zirconium reference/model holds with 16 observations and six
   species. Add explicitly buffered crystalline Te, N2 gas and graphite
   references. Preserve full formulas, signed reaction coefficients, the

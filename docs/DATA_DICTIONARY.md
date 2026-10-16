@@ -20,14 +20,22 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 15 October 2026 checkpoint contains **975 species and 3,109 observations**
-across 74 supported systems, with **860/781/660 selected G/S/H properties**.
+The latest 16 October 2026 checkpoint contains **978 species and 3,118 observations**
+across 74 supported systems, with **863/784/663 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
 requirement. See [the source instructions](sources/nea-tdb-reuse.md) and
 [distributed notices](../THIRD_PARTY_NOTICES.md). Check source-specific
 additional restrictions; other sources retain their own permission status.
+
+NEA02g3 reviews four disputed rows and adds nine observations and three
+species, preserving earlier preferred values. ZrO(g)/ZrO2(g) retain qualified
+historical estimates with the later NEA critique and explicit optional-gas
+scope. ZrS1.5 follows the mutually consistent selected tables; conflicting
+discussion values stay in the external ledger. ZrH remains a bulk-model hold.
+Fourteen original rows are admitted and 13 remain held; gas reassessment is
+a separate source-upgrade follow-up. See [the source review](sources/nea-zirconium-disputed-evaluations.md).
 
 NEA02g2 resolves six further zirconium holds with 16 observations and six
 species, preserving all earlier preferred values. Three neutral elemental

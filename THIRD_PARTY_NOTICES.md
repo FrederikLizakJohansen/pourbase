@@ -515,6 +515,27 @@ The [source crosswalk](docs/sources/nea-derived-crosswalk.md) documents the
 admission and remaining routes. The private permission correspondence and
 complete source publications are retained outside the distribution.
 
+## NEA02g3 qualified zirconium gas and sulfide estimates
+
+OECD and the Nuclear Energy Agency are acknowledged for the selected
+ZrO(g), ZrO2(g) and ZrS1.5 observations from Brown, Curti and Grambow,
+with Ekberg (2005), *Chemical Thermodynamics of Zirconium*, NEA volume 8,
+Table III-1 pp. 48/51 and sections V.3.3/V.5.1.1. The historical gas estimates
+retain the scientific critique in Rand, Fuger, Grenthe, Neck and Rai (2008),
+*Chemical Thermodynamics of Thorium*, NEA volume 11, Appendix F pp. 781–782.
+The later review has its own bibliographic source record. Independent copied
+JANAF/Glushko comparison data are outside this import. The sulfide record
+documents the source's selected-table/discussion discrepancy. See
+[the source review](docs/sources/nea-zirconium-disputed-evaluations.md).
+
+The written NEA-TDB clarification and OECD data terms permit use, adaptation
+and redistribution, including commercially, subject to source-specific
+additional restrictions. Every sublicense of work using these data must
+include the same OECD acknowledgment requirement and require further
+sublicensees to pass it on. Source-data requirements apply alongside the
+package's GPL-3.0-only licence. Complete source publications and private
+correspondence retain their existing rights and stay outside the distribution.
+
 ## NEA02g2 zirconium compounds with elemental buffers
 
 OECD and the Nuclear Energy Agency are acknowledged for selected ZrTe1.843,

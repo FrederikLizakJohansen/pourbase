@@ -340,6 +340,25 @@ mixed-metal records. The two Cp routes, earlier Fe/Ni/Sn holds, wider source
 reviews and other-source permission states remain separate. Request coverage
 stays116/131, including all28NEArequests.
 
+## NEA02g3 disputed-evaluation review
+
+The four-row review admits **nine observations /three species**. ZrO(g) and
+ZrO2(g) retain their historical NEA estimates with the later thorium review's
+criticism and explicit optional-gas scope. This preserves qualified evidence;
+it does not resolve the scientific disagreement or import copied comparison
+tables. ZrS1.5 follows the two consistent selected tables, with conflicting
+discussion values recorded externally. The source identifies Zr3S4 as its
+structure type at 1100 K; the stored formula stays ZrS1.5. The bulk ZrH
+correlation remains held for an appropriate assemblage/phase model.
+
+Production is **978 species /3,118 observations /74 systems**, selected
+G/S/H **863/784/663**. All earlier preferred values and 74 default maps/masks
+are preserved; 140 gas-free zirconium inventories pass. Fourteen of the
+original 27 rows are admitted; **13 admission holds remain**: ZrH and twelve
+mixed-metal records. The finite review is complete with the hydride and
+gas source-upgrade follow-ups explicitly retained. Continue with NEA02g4's
+twelve mixed-metal records. See [the decisions and scientific checks](nea-zirconium-disputed-evaluations.md).
+
 ## Further exploration
 
 The first expansion covers a useful aqueous-ion/hydrolysis subset. Continue
