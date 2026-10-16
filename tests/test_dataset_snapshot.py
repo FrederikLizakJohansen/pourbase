@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 989), ("reported_thermochemistry", 3148),
-                                 ("sources", 1717), ("warnings", 1331), ("additional_components", 11),
+            for table, count in (("species", 1011), ("reported_thermochemistry", 3219),
+                                 ("sources", 1718), ("warnings", 1371), ("additional_components", 11),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1862,7 +1862,9 @@ class DatasetSnapshotTests(unittest.TestCase):
     def test_periodic_screen(self) -> None:
         screen = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                           allow_incomplete=False)
-        self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 74, 57))
+        self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 74, 56))
+        # The three newly retained H-only Se crystals make its Gibbs inventory incomplete.
+        self.assertIs(screen.element("Se").status, pb.ElementStatus.INCOMPLETE)
         default = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE")
         self.assertEqual(sum(item.stable is not None for item in default.elements), 74)
         self.assertIs(screen.element("Fe").status, pb.ElementStatus.INCOMPLETE)
@@ -1875,7 +1877,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                          ("TiO₂", pb.Category.SOLID_OXIDE, "rutile"))
         fallback = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                             energy_policy="experimental_then_mp", allow_incomplete=False)
-        self.assertEqual(fallback.calculated_count, 60)
+        self.assertEqual(fallback.calculated_count, 59)
         platinum = self.database.load_system("Pt", energy_policy="experimental_then_mp")
         self.assertEqual({item.formula_ascii for item in platinum.species
                           if item.gibbs_status is pb.EvidenceStatus.MATERIALS_PROJECT_FALLBACK}, {"PtO", "PtO2"})
@@ -1911,9 +1913,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 869, "absolute_entropy": 790, "enthalpy_of_formation": 671})
+                         {"gibbs_energy_of_formation": 888, "absolute_entropy": 805, "enthalpy_of_formation": 689})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "f2973709a2e603e9",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "e724c7e0c4a6aefb",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

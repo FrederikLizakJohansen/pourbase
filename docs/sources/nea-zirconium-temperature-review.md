@@ -110,3 +110,20 @@ constraints, consistent aqueous references, pressure conventions and
 uncertainty propagation. No justified 298.15 K conversion was found in this
 review. The two original admission holds, gas reassessment and other sources'
 permission holds remain separately tracked.
+
+## Original-source retrieval follow-up, 16 October 2026
+
+The publisher landing page for Aja, Wood and Williams-Jones (1992),
+*On estimating the thermodynamic properties of silicate minerals*,
+[DOI 10.1127/ejm/4/6/1251](https://doi.org/10.1127/ejm/4/6/1251),
+provides an original one-page preview. It describes polyhedral estimates and
+their limitations, and contains no mineral-specific numerical thermal table.
+The complete 1992 tables and 1995/1997 experimental methods remain retrieval
+targets. A bibliographic lead to a multi-temperature conference abstract
+supplies no verified measurements for conversion.
+
+The preview and retrieval record are preserved in the external R11 checkpoint;
+no source prose or page image is distributed. No observation is added from
+this preview. All six stored 323.15 K observations retain their three physical
+298 K conversion holds. The bounded search checkpoint is complete; NEA02g4b1
+remains open. R11 continues independently with [the selenium batch](nea-selenium.md).

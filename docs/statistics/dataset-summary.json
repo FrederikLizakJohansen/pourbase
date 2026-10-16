@@ -13,19 +13,20 @@
     "source_permission_NEA_TDB_Zr_2005": "{\"check_source_specific_additional_restrictions\": true, \"downstream_acknowledgment_required\": true, \"email_sha256\": \"c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4\", \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"reviewed_on\": \"2026-10-14\", \"scope\": \"Zirconium volume8 selected/evaluated numerical data; excludes independent auxiliary tables and source holds.\", \"source_id\": \"NEA_OECD_20261014_Zr\", \"status\": \"available_under_OECD_data_terms\", \"terms_url\": \"https://www.oecd.org/en/about/terms-conditions.html\"}",
     "source_reuse_MuradHildenbrand1975_NEA02g3b_original": "{\"NEA_permission_applies\": false, \"basis_url\": \"https://www.copyright.gov/help/faq/faq-protect.html\", \"primary_deposit_sha256\": \"06b1286a808458462d3e389d9d62506bb2077f1d3f94b764465615b247ce5048\", \"publisher_permissions_url\": \"https://publishing.aip.org/resources/researchers/rights-and-permissions/permissions/\", \"reuse_basis\": \"Established pourbase individual-source policy; uncopyrightable individual facts with full citation. No open article licence or publisher permission asserted.\", \"reviewed_on\": \"2026-10-16\", \"scope\": \"Only independently transcribed numerical thermochemical facts from the original authors deposited abstract; excludes protected prose,figures,tables,bulk source databases and separately licensed auxiliary input tables.\", \"source_id\": \"MuradHildenbrand1975_NEA02g3b_original\", \"status\": \"available_individual_original_numerical_facts\"}",
     "source_reuse_AckermannRauh1974_NEA02g3b_original": "{\"NEA_permission_applies\": false, \"basis_url\": \"https://www.copyright.gov/help/faq/faq-protect.html\", \"primary_deposit_sha256\": \"1be4c0b3f3e77e01b792c2683b7f0ac9991fc0120f6601f1060131d4f2465131\", \"publisher_permissions_url\": \"https://publishing.aip.org/resources/researchers/rights-and-permissions/permissions/\", \"reuse_basis\": \"Established pourbase individual-source policy; uncopyrightable individual facts with full citation. No open article licence or publisher permission asserted.\", \"reviewed_on\": \"2026-10-16\", \"scope\": \"Only independently transcribed numerical thermochemical facts from the original authors deposited abstract; excludes protected prose,figures,tables,bulk source databases and separately licensed auxiliary input tables.\", \"source_id\": \"AckermannRauh1974_NEA02g3b_original\", \"status\": \"available_individual_original_numerical_facts\"}",
-    "source_reuse_AjaWoodWilliamsJones1997_NEA02g4b_original": "{\"NEA_permission_applies\": false, \"basis_url\": \"https://www.copyright.gov/help/faq/faq-protect.html\", \"primary_deposit_sha256\": \"a17e195ac2bac73f4948b34974a9d57f83786857ec15ba935d5ff522972e33ff\", \"reuse_basis\": \"Established project individual-source facts route; article not asserted openly licensed.\", \"reviewed_on\": \"2026-10-16\", \"scope\": \"Three individually transcribed original 50 \\u00b0C G facts and stated widths; source pressure unspecified. Excludes protected expression and bulk compilations.\", \"source_id\": \"AjaWoodWilliamsJones1997_NEA02g4b_original\", \"status\": \"available_individual_original_numerical_facts\"}"
+    "source_reuse_AjaWoodWilliamsJones1997_NEA02g4b_original": "{\"NEA_permission_applies\": false, \"basis_url\": \"https://www.copyright.gov/help/faq/faq-protect.html\", \"primary_deposit_sha256\": \"a17e195ac2bac73f4948b34974a9d57f83786857ec15ba935d5ff522972e33ff\", \"reuse_basis\": \"Established project individual-source facts route; article not asserted openly licensed.\", \"reviewed_on\": \"2026-10-16\", \"scope\": \"Three individually transcribed original 50 \\u00b0C G facts and stated widths; source pressure unspecified. Excludes protected expression and bulk compilations.\", \"source_id\": \"AjaWoodWilliamsJones1997_NEA02g4b_original\", \"status\": \"available_individual_original_numerical_facts\"}",
+    "source_permission_NEA_TDB_Se_2005": "{\"additional_restrictions_check\": \"NEA selected numerical evaluations covered by written clarification; no additional restriction identified for admitted cells. Third-party credited figures and independent auxiliary tables excluded.\", \"check_source_specific_additional_restrictions\": true, \"downstream_acknowledgment_required\": true, \"email_sha256\": \"c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4\", \"errata_sha256\": \"a6e5366b3f24ff4a14438bdc270eb2d0b83cb8ced16e18f2bbe9facb4bb9cc17\", \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"reviewed_on\": \"2026-10-16\", \"scope\": \"Volume7 NEA selected/evaluated Se/H/O numerical G/H/S, TableIII-1 pp40--42; excludes auxiliary tables and protected expression.\", \"source_id\": \"NEA_OECD_20261016_Se\", \"source_pdf_sha256\": \"2179ecdc4d5b16029d67c26f792a72fd055570da16c97e43cd24be68797989e3\", \"status\": \"available_under_OECD_data_terms\", \"terms_snapshot_sha256\": \"09a2df1a8d6aeb782b9e4db61a008859459ef8bc351d5db726bbac1a5ce39911\", \"terms_url\": \"https://www.oecd.org/en/about/terms-conditions.html\", \"thread_sha256\": \"eb69c8661d760b6b4941f53a359446dbb66ddc4f748da5f52f1b955addbe6b4d\"}"
   },
   "totals": {
-    "species": 989,
+    "species": 1011,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 3148,
-    "recommended_values": 2330,
-    "source_records": 1717,
-    "distinct_citations": 171,
-    "warnings": 1331,
-    "phase_records": 561,
-    "resolved_phase_records": 342,
+    "reported_thermochemistry": 3219,
+    "recommended_values": 2382,
+    "source_records": 1718,
+    "distinct_citations": 172,
+    "warnings": 1371,
+    "phase_records": 568,
+    "resolved_phase_records": 349,
     "mp_matches": 105,
     "mp_energy_rows": 299,
     "computational_fallbacks": 6,
@@ -34,24 +35,24 @@
   "phases": [
     {
       "phase": "aqueous",
-      "species": 529,
-      "gibbs": 464,
-      "entropy": 416,
-      "enthalpy": 295
+      "species": 534,
+      "gibbs": 469,
+      "entropy": 417,
+      "enthalpy": 296
     },
     {
       "phase": "solid",
-      "species": 418,
-      "gibbs": 368,
-      "entropy": 334,
-      "enthalpy": 337
+      "species": 424,
+      "gibbs": 371,
+      "entropy": 337,
+      "enthalpy": 343
     },
     {
       "phase": "gas",
-      "species": 37,
-      "gibbs": 34,
-      "entropy": 37,
-      "enthalpy": 34
+      "species": 48,
+      "gibbs": 45,
+      "entropy": 48,
+      "enthalpy": 45
     },
     {
       "phase": "liquid",
@@ -64,21 +65,21 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 869
+      "available": 888
     },
     {
       "property": "Entropy",
-      "available": 790
+      "available": 805
     },
     {
       "property": "Formation enthalpy",
-      "available": 671
+      "available": 689
     }
   ],
   "gibbs_status": {
-    "verified": 563,
-    "source_verified_estimate": 232,
-    "not_available": 114,
+    "verified": 576,
+    "source_verified_estimate": 238,
+    "not_available": 117,
     "defined_reference_state": 74,
     "terminal_evidence_gap": 6
   },
@@ -319,7 +320,7 @@
       "symbol": "Se",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 7
+      "species": 29
     },
     {
       "atomic_number": 35,
@@ -1655,15 +1656,15 @@
     {
       "symbol": "Se",
       "system": "Selenium (Se)",
-      "species": 7,
-      "aqueous": 6,
-      "solid": 1,
-      "gas": 0,
+      "species": 29,
+      "aqueous": 11,
+      "solid": 7,
+      "gas": 11,
       "liquid": 0,
-      "gibbs": 7,
-      "entropy": 7,
-      "enthalpy": 7,
-      "warnings": 0
+      "gibbs": 26,
+      "entropy": 22,
+      "enthalpy": 25,
+      "warnings": 40
     },
     {
       "symbol": "Si",
@@ -1936,6 +1937,10 @@
       "count": 29
     },
     {
+      "warning_type": "r11_selenium_source_scope",
+      "count": 29
+    },
+    {
       "warning_type": "miron_model_evidence_and_consistency",
       "count": 28
     },
@@ -1957,6 +1962,10 @@
     },
     {
       "warning_type": "usgs_source_uncertainty_interval",
+      "count": 16
+    },
+    {
+      "warning_type": "optional_gas_phase",
       "count": 16
     },
     {
@@ -2073,10 +2082,6 @@
     },
     {
       "warning_type": "ree_fluoride_mixed_evaluations",
-      "count": 5
-    },
-    {
-      "warning_type": "optional_gas_phase",
       "count": 5
     },
     {
@@ -2507,7 +2512,7 @@
   "phase_identity": [
     {
       "identity_status": "resolved",
-      "count": 332
+      "count": 339
     },
     {
       "identity_status": "aqueous_species_identified",

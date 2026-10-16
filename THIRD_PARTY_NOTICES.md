@@ -4,6 +4,27 @@ pourbase combines individual thermochemical values traced to scientific sources 
 Materials Project records. The GPL-3.0 license covers the code and the compilation. Source-specific
 terms and scientific citation obligations remain in force.
 
+## NEA selenium selected observations
+
+OECD and the Nuclear Energy Agency are acknowledged for selected numerical
+data from Olin, Å., Noläng, B., Osadchii, E. G., Öhman, L.-O. and Rosén, E.
+(2005), *Chemical Thermodynamics of Selenium*, Chemical Thermodynamics
+Series, volume 7, Table III-1 pp. 40–42
+([official publication](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/chemical_thermodynamics_of_selenium_volume_7.pdf),
+accessed 16 October 2026). The official November 2005 errata were checked;
+source conventions, estimates and the selenite entropy discrepancy accompany
+the observations. See [the source review](docs/sources/nea-selenium.md).
+
+The written NEA-TDB clarification and
+[OECD data terms](https://www.oecd.org/en/about/terms-conditions.html) permit
+use, adaptation and redistribution, including commercially, subject to
+source-specific additional restrictions. Every sublicense of work using
+these data must include the same OECD acknowledgment requirement and require
+further sublicensees to pass it on. These requirements accompany the
+package's GPL-3.0-only licence. Complete publications, third-party figures,
+independent auxiliary tables and private correspondence retain their existing
+rights and stay outside this import.
+
 ## OECD Nuclear Energy Agency Thermochemical Database (NEA-TDB)
 
 OECD and the Nuclear Energy Agency are acknowledged as the source of the NEA-TDB

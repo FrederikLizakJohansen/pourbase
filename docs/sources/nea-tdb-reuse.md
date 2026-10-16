@@ -361,6 +361,15 @@ twelve mixed-metal records. See [the decisions and scientific checks](nea-zircon
 
 ## Further exploration
 
+R11a/R11b now reconcile the PSI/Nagra inventory and retain 71 selected core
+selenium observations from NEA volume 7 under the documented OECD terms.
+The volume-specific metadata records the existing permission evidence hashes,
+source restrictions check and official errata. A selected-table/discussion
+entropy discrepancy is explicitly qualified; independent auxiliary tables
+remain outside this batch. Continue with R11c's 14 metal-bearing selenium
+routes and carry forward the earlier source decisions. See [the finite
+inventory and remaining checklist](nea-selenium.md).
+
 The first expansion covers a useful aqueous-ion/hydrolysis subset. Continue
 with the recorded solid-phase identity/model holds, ligand complexes, other NEA reviews,
 and NEA-derived candidates already routed through PSI/Nagra, SUPCRT or MINES.
