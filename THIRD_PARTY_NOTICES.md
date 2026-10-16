@@ -652,3 +652,26 @@ distribution. These independent original observations have their own reuse
 records; the earlier NEA evaluations continue under OECD terms with the same
 acknowledgment requirement carried into sublicenses and further sublicensees.
 See [the source review](docs/sources/nea-zirconium-gas-upgrade.md).
+
+
+## Zirconium hydride source review
+
+Douglas, T. B. and Victor, A. C. (1958), *Heat Content of Zirconium and of
+Five Compositions of Zirconium Hydride from 0° to 900°C*, Journal of Research
+of the NBS 61, 13–23, [DOI 10.6028/jres.061.002](https://doi.org/10.6028/jres.061.002),
+and Douglas, T. B. (1963), *High-Temperature Thermodynamic Functions for
+Zirconium and Unsaturated Zirconium Hydrides*, Journal of Research of the
+NBS 67A, 403–426, [DOI 10.6028/jres.067A.043](https://doi.org/10.6028/jres.067A.043),
+are acknowledged for the original bulk-sample and assemblage review.
+The [article-specific notice](https://pmc.ncbi.nlm.nih.gov/articles/PMC5319804/)
+states that the Journal of Research papers are public domain in the United
+States; third-party illustrations may retain separate rights. No source
+figure is reproduced. [NIST's terms](https://www.nist.gov/open/license)
+were recorded separately from any NIST SRD licensing route.
+
+This checkpoint adds no observations to the release database. The held
+NEA bulk values retain the existing OECD/NEA acknowledgment and downstream
+acknowledgment requirement, including onward propagation by further
+sublicensees. No independent publisher permission is inferred for the
+unretrieved JACS 1958 or Turnbull 1964 articles. See
+[the review](docs/sources/nea-zirconium-hydride-assemblage.md).

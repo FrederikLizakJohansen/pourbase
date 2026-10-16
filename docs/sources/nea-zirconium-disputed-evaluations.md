@@ -134,3 +134,13 @@ unchanged. The [original-source review](nea-zirconium-gas-upgrade.md) records
 primaryabstract verification,individualnumerical-fact reuse,sourceconditions
 and remaining full-method/thermal/G/S work. This is a later checkpoint; the
 earlier counts and validation results above remain its historical record.
+
+## Original hydride follow-up
+
+The [original-source and assemblage review](nea-zirconium-hydride-assemblage.md)
+recovers the 1958 NBS measurements and 1963 NBS evaluation. Their phase
+labels and lever-rule treatment confirm the bulk identity of the held ZrH
+correlation. All three held values remain external; admission needs a
+validated assemblage or solution model. The review also records an internal
+NEA per-H2 unit/basis discrepancy. Release counts and preferred values stay
+unchanged.

@@ -1139,3 +1139,8 @@ calibration, exact later refit, uncertainty and native pressure/reference models
 remain follow-ups. All 21 reviewed native association representations retain
 explicit holds. This checkpoint adds zero observations and preserves the
 800-species, 2,654-observation database, selected properties and paper numbers.
+
+The NEA02g3a original hydride review confirms that bulk ZrH quantities belong
+to a multiphase assemblage at 298.15 K. They remain in the external ledger
+until a validated representation is available. The existing epsilon-ZrH2
+record and all release counts are preserved. See [the source review](sources/nea-zirconium-hydride-assemblage.md).

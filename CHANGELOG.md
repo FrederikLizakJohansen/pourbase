@@ -4,6 +4,9 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Verify original NBS zirconium hydride measurements and phase fractions.
+  Preserve the bulk ZrH admission hold, record the NEA hydrogen-basis
+  discrepancy, and retain all database values and preferences.
 - Retain three original-study zirconium oxide-gas enthalpy observations:
   two at 298.15 K and one at 0 K with an explicit calculation exclusion.
   Preserve all earlier values and preferences. Document primary-abstract
