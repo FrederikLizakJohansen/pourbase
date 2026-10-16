@@ -104,3 +104,13 @@ calcium formula above. The three admitted 323.15 K observations have separate
 298.15 K calculation holds. The historical oxide-gas source upgrade remains
 open. Earlier source permission holds, heat-capacity routes and wider
 exploration tasks retain their independent status.
+
+## Calcium formula follow-up
+
+The [targeted source and arithmetic review](nea-calcium-silicate-formula.md)
+shows that the published G reproduces the printed, charge-inconsistent
+formula within 0.4 J/mol rounding. A hypothetical Si3-to-Si4 edit shifts
+the H/S-derived G by 5.61 kJ/mol. Original measured identity and molar basis
+remain unverified; all three observations stay held. Schema 9 already
+supports the required independent reservoirs. The remaining issue is
+scientific assignment. Database counts and preferred selections are unchanged.

@@ -45,6 +45,12 @@ calcium formula remain admission holds. The three temperature calculation
 holds and gas source-upgrade route remain separate. Schema 7/8 files remain
 readable. See [the source and component review](sources/nea-zirconium-mixed-components.md).
 
+The NEA02g4a calcium follow-up keeps the formula/molar-basis hold. The
+published G reconstructs the printed stoichiometry within rounding; changing
+Si3 to Si4 changes the derived value by 5.61 kJ/mol. The original article
+pages remain necessary for a corrected assignment. Counts and selected values
+are unchanged. See [the source review](sources/nea-calcium-silicate-formula.md).
+
 NEA02g3 reviews four disputed rows and adds nine observations and three
 species, preserving earlier preferred values. ZrO(g)/ZrO2(g) retain qualified
 historical estimates with the later NEA critique and explicit optional-gas

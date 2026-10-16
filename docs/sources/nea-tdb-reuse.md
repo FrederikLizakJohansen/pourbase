@@ -383,3 +383,14 @@ All earlier preferred selections and private permission evidence are preserved.
 Two of the original 27 rows remain admission holds; three admitted observations
 have separate temperature calculation holds. The gas source-upgrade route
 remains open. See [the finite review](nea-zirconium-mixed-components.md).
+
+## Formula corrections and derived values
+
+When an inconsistent formula accompanies an internally derived value, check
+the original identity, amount basis and the derivation together. A chemically
+balanced formula edit may change G reconstructed from H/S. Retain hypothetical
+recalculations as external diagnostics until the source assignment is justified.
+A later paper reporting a related formula provides an independent candidate;
+verify its numerical data and reuse basis before import. NEA02g4a documents
+[this calcium example](nea-calcium-silicate-formula.md); the existing NEA
+permission review is carried forward and the scientific hold remains explicit.

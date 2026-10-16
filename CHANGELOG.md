@@ -4,6 +4,10 @@
 
 Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
 
+- Review the held NEA calcium-silicate formula and original-source targets.
+  Show that the published Gibbs calculation uses the printed inconsistent
+  stoichiometry; preserve the identity/molar-basis hold. Database counts and
+  preferred values are unchanged.
 - Retain 24 NEA observations and 11 mixed-metal zirconium species, adding
   20 usable 298.15 K properties. Schema 9 and independent buffered components
   support conditional secondary-metal activities. Preserve three 323.15 K
