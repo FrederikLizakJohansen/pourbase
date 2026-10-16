@@ -140,9 +140,9 @@ their own model. Concurrent GUI implementation is untouched.
   and one documented local estimate through validated staging.
 - [x] Add two free references and preserve the old selenite reference/evidence.
 - [x] Check all previous selections, default maps and buffered calculations.
-- [ ] **R11d:** Review eight independent PSI nickel routes: six ammonia
-  complexes and two hydrosulfide complexes. Verify original ancestry and
-  reusable anchors; retain eligible alternatives to existing observations.
+- [x] **R11d:** Review eight independent PSI nickel routes; retain two
+  hydrosulfide formation-G estimates with verified inputs and keep six
+  ammonia routes on original-source holds. See [the review](psi-nickel-hydrosulfides.md).
 - [ ] Continue the carried Zr, other-original-source and unsupported-system
   routes. Wider R11 remains open.
 

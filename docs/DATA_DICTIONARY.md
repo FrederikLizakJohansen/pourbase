@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 16 October 2026 checkpoint contains **1,025 species and 3,247 observations**
-across 74 supported systems, with **902/812/696 selected G/S/H properties**.
+The latest 16 October 2026 checkpoint contains **1,026 species and 3,249 observations**
+across 74 supported systems, with **903/812/696 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1169,3 +1169,12 @@ alongside the three NEA evaluations. Original intervals and unspecified
 pressures are preserved. Six observations across three species remain
 excluded from 298.15 K selection; no thermal conversion or new preferred
 property is claimed. See [the review](sources/nea-zirconium-temperature-review.md).
+
+R11d adds two local nickel hydrosulfide formation-G estimates from original
+PSI evaluations with retained NEA/NBS ion anchors. NiHS+ keeps its preferred
+NEA observation; Ni(HS)2(aq) fills one missing property.
+`source_reuse_R11d_PSI_hydrosulfide` records the individual-numerical-fact
+route, independently open NBS input and carried NEA input terms.
+`R11d_nickel_hydrosulfide_derivations` retains reaction constants, stated
+widths, full input IDs, standard-state assumptions and the HS-/S2- conversion.
+See [the source review](sources/psi-nickel-hydrosulfides.md).

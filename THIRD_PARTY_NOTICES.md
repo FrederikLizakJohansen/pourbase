@@ -129,6 +129,25 @@ The same OECD acknowledgment requirement must be included in sublicenses and
 passed on by further sublicensees. Runtime ligand reference evaluations remain
 explicit; they can give reaction constants different from the NEA auxiliary set.
 
+## PSI nickel hydrosulfide evaluations
+
+The R11d nickel hydrosulfide continuation cites Hummel, W. and Thoenen, T.
+(2014), *Data Selection for Nickel*, PSI TM-44-14-05, pp. 11/13 and
+Table 5.5 p. 30, [official report](https://www.psi.ch/en/media/47948/download)
+(accessed 16 October 2026). Two individual original PSI regression results
+support local formation-G estimates; the established numerical-fact route
+covers this isolated use. Complete reports and PSI database files retain
+their own rights and remain outside the distribution.
+
+The local estimates use retained Gamsjäger et al. (2005), NEA volume 6,
+Ni2+ and openly released NBS HS- inputs. OECD, NEA and NIST are acknowledged.
+The HS- formation G independently matches NIST open non-SRD PDR M32124,
+CSV logical record 584, under the NIST open licence, without warranty.
+The NEA input retains its OECD terms: every sublicense of work using these
+data must include the same OECD acknowledgment requirement and require
+further sublicensees to pass it on. PSI's original evaluations have their
+own numerical-fact basis. See [the source review](docs/sources/psi-nickel-hydrosulfides.md).
+
 ## NIST and NBS
 
 Most NBS values come from the NIST Public Data Repository dataset *The NBS Tables of Chemical

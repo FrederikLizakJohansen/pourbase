@@ -17,17 +17,19 @@
     "source_permission_NEA_TDB_Se_2005": "{\"additional_restrictions_check\": \"NEA selected numerical evaluations covered by written clarification; no additional restriction identified for admitted cells. Third-party credited figures and independent auxiliary tables excluded.\", \"check_source_specific_additional_restrictions\": true, \"downstream_acknowledgment_required\": true, \"email_sha256\": \"c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4\", \"errata_sha256\": \"a6e5366b3f24ff4a14438bdc270eb2d0b83cb8ced16e18f2bbe9facb4bb9cc17\", \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"reviewed_on\": \"2026-10-16\", \"scope\": \"Volume7 NEA selected/evaluated Se/H/O numerical G/H/S, TableIII-1 pp40--42; excludes auxiliary tables and protected expression.\", \"source_id\": \"NEA_OECD_20261016_Se\", \"source_pdf_sha256\": \"2179ecdc4d5b16029d67c26f792a72fd055570da16c97e43cd24be68797989e3\", \"status\": \"available_under_OECD_data_terms\", \"terms_snapshot_sha256\": \"09a2df1a8d6aeb782b9e4db61a008859459ef8bc351d5db726bbac1a5ce39911\", \"terms_url\": \"https://www.oecd.org/en/about/terms-conditions.html\", \"thread_sha256\": \"eb69c8661d760b6b4941f53a359446dbb66ddc4f748da5f52f1b955addbe6b4d\"}",
     "source_permission_NEA_TDB_Se_R11c": "{\"additional_restrictions_check\": \"NEA selected numerical evaluations covered by written clarification; no additional restriction identified for admitted cells. Third-party credited figures and independent auxiliary tables excluded.\", \"check_source_specific_additional_restrictions\": true, \"core_permission_record\": \"source_permission_NEA_TDB_Se_2005\", \"downstream_acknowledgment_required\": true, \"email_sha256\": \"c41a49b246e2db3eb4b4693a14f8ddfe1d85394be7772ce3c3af54a9abfad6d4\", \"errata_sha256\": \"a6e5366b3f24ff4a14438bdc270eb2d0b83cb8ced16e18f2bbe9facb4bb9cc17\", \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"reviewed_on\": \"2026-10-16\", \"scope\": \"R11c original NEA selected metal-selenium properties and qualified NEA-authored AppendixE1 evaluations, plus selected free SeCN G. Excludes independently copied auxiliary tables and source expression.\", \"source_id\": \"NEA_OECD_20261016_Se\", \"source_ids\": [\"NEA_OECD_20261016_Se_metal\", \"NEA_OECD_20261016_Se_appendix_E\"], \"source_pdf_sha256\": \"2179ecdc4d5b16029d67c26f792a72fd055570da16c97e43cd24be68797989e3\", \"source_specific_review\": \"Selected numerical evaluations covered by carried OECD clarification. AppendixE1 is NEA-authored evaluated data in this publication, with scientific auxiliary-data limitations and no identified additional reuse restriction; do not label it TDB-selected.\", \"status\": \"available_under_OECD_data_terms\", \"terms_snapshot_sha256\": \"09a2df1a8d6aeb782b9e4db61a008859459ef8bc351d5db726bbac1a5ce39911\", \"terms_url\": \"https://www.oecd.org/en/about/terms-conditions.html\", \"thread_sha256\": \"eb69c8661d760b6b4941f53a359446dbb66ddc4f748da5f52f1b955addbe6b4d\"}",
     "R11c_selenium_reference_history": "{\"current_selenite_observation_id\": \"gfe-se-seo3-q-2-aqueous-aq:gibbs_energy_of_formation:r11-se-selected\", \"current_selenite_pin\": {\"charge\": -2.0, \"formula_ascii\": \"SeO3\", \"gibbs_energy_J_mol\": -362392.0, \"gibbs_status\": \"verified\", \"ligand_id\": \"selenite-seo3\", \"name\": \"Selenite (SeO3\\u00b2\\u207b)\", \"source_citation\": \"Olin, \\u00c5., Nol\\u00e4ng, B., Osadchii, E. G., \\u00d6hman, L.-O. and Ros\\u00e9n, E. (2005). Chemical Thermodynamics of Selenium. OECD Nuclear Energy Agency, Chemical Thermodynamics Series, Volume 7. Selected critical evaluations.\", \"source_id\": \"NEA_OECD_20261016_Se\", \"source_url\": \"https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/chemical_thermodynamics_of_selenium_volume_7.pdf\"}, \"new_selenocyanate_reference\": {\"locator\": \"TableIII-1 p44/PDF85, SeCN(-), formationG column;136.051 +/-3.800kJ/mol times1000;298.15K/1bar/infinite dilution. Free reference stored in ligands; no separate primary-Se/C/N species created.\", \"source_id\": \"NEA_OECD_20261016_Se_metal\", \"total_source_interval_J_mol\": 3800.0, \"uncertainty_storage\": \"ligands schema has no interval column; preserve source interval here and in import ledger.\", \"value_J_mol\": 136051.0}, \"prior_selenite_observation_ids\": [\"gfe-se-seo3-q-2-aqueous-aq:gf:preferred\"], \"prior_selenite_pin\": {\"charge\": -2.0, \"formula_ascii\": \"SeO3\", \"gibbs_energy_J_mol\": -369800.0, \"gibbs_status\": \"verified\", \"ligand_id\": \"selenite-seo3\", \"name\": \"Selenite (SeO3\\u00b2\\u207b)\", \"source_citation\": \"Wagman, D. D. et al.(1982), The NBS Tables of Chemical Thermodynamic Properties, digitized with errata, explicitly open non-SRD NIST Public Data Repository M32124, DOI10.18434/M32124. NIST acknowledged.\", \"source_id\": \"NEA02g1_NBS_PDR_selenite-seo3\", \"source_url\": \"https://doi.org/10.18434/M32124\"}, \"scope\": \"Prescribed free-ion activities; no automatic total Se, protonation or Se inventory. Existing unrelated ligand references remain unchanged.\", \"selenate_observation_id\": \"gfe-se-seo4-q-2-aqueous-aq:gibbs_energy_of_formation:r11-se-selected\"}",
-    "source_reuse_R11c_FeSeO3_derived": "{\"equation\": \"Gf(FeSeO3+)=Gf(Fe3+)+Gf(SeO3(2-))+reaction_G\", \"inputs\": [{\"interval_J_mol\": 650.0, \"role\": \"Fe3+\", \"source_id\": \"NEA_OECD_20261014_Fe\", \"value_J_mol\": -16226.0, \"value_id\": \"gfe-fe-fe-q+3-aqueous-aq:gibbs_energy_of_formation:nea-20261014-selected\"}, {\"interval_J_mol\": 1756.0, \"role\": \"SeO3(2-)\", \"source_id\": \"NEA_OECD_20261016_Se\", \"value_J_mol\": -362392.0, \"value_id\": \"gfe-se-seo3-q-2-aqueous-aq:gibbs_energy_of_formation:r11-se-selected\"}, {\"interval_J_mol\": 628.0, \"role\": \"reaction\", \"source\": \"Olin etal2005 TableIII-2 p59/PDF100; reaction logK11.150 +/-0.110\", \"value_J_mol\": -63645.0}], \"new_thermal_values\": false, \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"pressure_bar\": 1.0, \"property\": \"gibbs_energy_of_formation\", \"reuse\": \"Local adaptation of retained NEA7 selected reaction and NEA13a/NEA7 ion evaluations; same OECD attribution and downstream acknowledgment obligations.\", \"source_id\": \"pourbase_R11c_FeSeO3_derived_G\", \"source_temperature_qualification\": \"NEA p330 selects296K experiments as valid at standard conditions. This local estimate follows that published approximation; it does not establish a thermal conversion.\", \"temperature_K\": 298.15, \"total_uncertainty\": null, \"uncertainty_reason\": \"Shared ancestry and covariance unknown; do not infer independent quadrature or convert source95%-type widths to sigma.\", \"value_J_mol\": -442263.0}"
+    "source_reuse_R11c_FeSeO3_derived": "{\"equation\": \"Gf(FeSeO3+)=Gf(Fe3+)+Gf(SeO3(2-))+reaction_G\", \"inputs\": [{\"interval_J_mol\": 650.0, \"role\": \"Fe3+\", \"source_id\": \"NEA_OECD_20261014_Fe\", \"value_J_mol\": -16226.0, \"value_id\": \"gfe-fe-fe-q+3-aqueous-aq:gibbs_energy_of_formation:nea-20261014-selected\"}, {\"interval_J_mol\": 1756.0, \"role\": \"SeO3(2-)\", \"source_id\": \"NEA_OECD_20261016_Se\", \"value_J_mol\": -362392.0, \"value_id\": \"gfe-se-seo3-q-2-aqueous-aq:gibbs_energy_of_formation:r11-se-selected\"}, {\"interval_J_mol\": 628.0, \"role\": \"reaction\", \"source\": \"Olin etal2005 TableIII-2 p59/PDF100; reaction logK11.150 +/-0.110\", \"value_J_mol\": -63645.0}], \"new_thermal_values\": false, \"permission_id\": \"NEA-TDB-OECD-2026-10-14\", \"pressure_bar\": 1.0, \"property\": \"gibbs_energy_of_formation\", \"reuse\": \"Local adaptation of retained NEA7 selected reaction and NEA13a/NEA7 ion evaluations; same OECD attribution and downstream acknowledgment obligations.\", \"source_id\": \"pourbase_R11c_FeSeO3_derived_G\", \"source_temperature_qualification\": \"NEA p330 selects296K experiments as valid at standard conditions. This local estimate follows that published approximation; it does not establish a thermal conversion.\", \"temperature_K\": 298.15, \"total_uncertainty\": null, \"uncertainty_reason\": \"Shared ancestry and covariance unknown; do not infer independent quadrature or convert source95%-type widths to sigma.\", \"value_J_mol\": -442263.0}",
+    "source_reuse_R11d_PSI_hydrosulfide": "{\"NBS_HS_logical_record\": 584, \"NBS_csv_sha256\": \"cb8a8b8b94a287e6e8c82eed8bad2cf9b611d574d1cfd95c8528d318dfef4b44\", \"NBS_input_terms\": \"Retained HS- formation G independently matches explicitly open NIST non-SRD PDR M32124, logical CSV record584, zero-based column8, ao state,12.08kJ/mol*1000. NIST acknowledged, without warranty, https://www.nist.gov/open/license\", \"NEA_input_terms\": \"Retained NEA6 Ni2+ formation G used in local derivation: OECD and NEA acknowledged; OECD data terms and written NEA clarification carried forward. Every sublicense of work using these data must include the same OECD acknowledgment requirement and require further sublicensees to pass it on. Source-specific restrictions remain applicable. THIRD_PARTY_NOTICES.md.\", \"NEA_permission_evidence\": \"Carried NEA-TDB-OECD-2026-10-14 review; independent PSI results remain on their own individual-fact route.\", \"additional_restrictions_check\": \"Official report and PSI imprint reviewed on 2026-10-16; no source-specific restriction on the two isolated numerical research results identified. No blanket PSI database redistribution permission inferred. Institutional research-integrity material does not grant a data licence.\", \"as_of\": \"2026-10-16\", \"basis\": \"Established individual-original-numerical-facts route; two original PSI-authored regression results and local arithmetic, with source attribution. Not an open licence for the report, a bulk PSI database import, or a NEA grant for PSI data.\", \"scope\": \"Two original evaluated log10 cumulative hydrosulfide constants, their reported widths and scientific conditions; no source prose, table structure, original measurement tables, figures, code or thermodynamic database files distributed.\", \"source_id\": \"PSI_Hummel_Thoenen_2014_Ni_hydrosulfide\", \"source_pdf_sha256\": \"0517483b829b4364b559491eca928c826189674ebbe644a64991fa4ffb344599\", \"source_url\": \"https://www.psi.ch/en/media/47948/download\", \"supporting_urls\": [\"https://www.psi.ch/en/imprint\", \"https://www.copyright.gov/help/faq/faq-protect.html\"]}",
+    "R11d_nickel_hydrosulfide_derivations": "[{\"HS_input\": {\"NBS_logical_record\": 584, \"interval_J_mol\": null, \"source_id\": \"NIST_NBS_1982_Table_14:S_gfe-s-hs-q-1-aqueous-aq\", \"value_J_mol\": 12080.0, \"value_id\": \"gfe-s-hs-q-1-aqueous-aq:gf:preferred\"}, \"Ni2_input\": {\"interval_J_mol\": 771.0, \"source_id\": \"NEA_OECD_20261014_Ni\", \"value_J_mol\": -45773.0, \"value_id\": \"gfe-ni-ni-q+2-aqueous-aq:gibbs_energy_of_formation:nea-20261014-selected\"}, \"R_J_mol_K\": 8.31446261815324, \"charge\": 1, \"equation\": \"Gf(complex)=Gf(Ni2+)+n*Gf(HS-)-R*T*ln(10)*log10(beta_n)\", \"formula\": \"NiHS\", \"log10_beta\": 5.5, \"pressure_bar\": 1.0, \"pressure_qualification\": \"Local standard-state 1bar pressure-flat approximation for PSI equilibrium constants; source evaluation states298.15K/I=0, no independently measured pressure correction inferred.\", \"reaction\": \"Ni2+ + 1HS- = NiHS\", \"record_id\": \"nea02c-ni-nihs-q+1-aqueous\", \"runtime_reference\": {\"G_HS_J_mol\": 12080.0, \"G_S2_J_mol\": 85800.0, \"HS_dissociation_pKa\": 12.915185226523654, \"activity_relation\": \"log10 a(S2-)=log10 a(HS-)+pH-pKa(HS-). S2- is externally fixed; HS- is implicit through retained reference energies. No closed sulfur inventory or automatic total-sulfide speciation.\", \"core_H\": 1, \"ligand_count\": 1, \"ligand_id\": \"sulfide-s\", \"metal_electrons\": 2, \"preferred_NiHS_source_difference\": \"Existing NEA formation-G stays preferred under unchanged policy; its reconstructed log-beta with these retained anchors differs from original PSI5.5.\"}, \"source\": \"PSI_Hummel_Thoenen_2014_Ni_hydrosulfide\", \"source_interval_convention\": \"Stated source width; confidence convention not established. No conversion to standard deviation.\", \"source_log10_beta_interval\": 0.2, \"source_page\": 11, \"source_table\": \"Table5.5 p30 corroborates original section5.5.1.2 evaluation\", \"stoichiometric_HS\": 1, \"temperature_K\": 298.15, \"thermal_scope\": \"G-only local estimate at298.15K. No H/S/Cp or temperature-independent logK model is inferred from native PSI parametrization.\", \"total_uncertainty\": null, \"uncertainty_reason\": \"HS input interval unavailable; source width confidence/covariance not established. Preserve log-beta width without fabricating a total formation-G uncertainty.\", \"value_J_mol\": -65087.05226394392}, {\"HS_input\": {\"NBS_logical_record\": 584, \"interval_J_mol\": null, \"source_id\": \"NIST_NBS_1982_Table_14:S_gfe-s-hs-q-1-aqueous-aq\", \"value_J_mol\": 12080.0, \"value_id\": \"gfe-s-hs-q-1-aqueous-aq:gf:preferred\"}, \"Ni2_input\": {\"interval_J_mol\": 771.0, \"source_id\": \"NEA_OECD_20261014_Ni\", \"value_J_mol\": -45773.0, \"value_id\": \"gfe-ni-ni-q+2-aqueous-aq:gibbs_energy_of_formation:nea-20261014-selected\"}, \"R_J_mol_K\": 8.31446261815324, \"charge\": 0, \"equation\": \"Gf(complex)=Gf(Ni2+)+n*Gf(HS-)-R*T*ln(10)*log10(beta_n)\", \"formula\": \"Ni(HS)2\", \"log10_beta\": 11.1, \"pressure_bar\": 1.0, \"pressure_qualification\": \"Local standard-state 1bar pressure-flat approximation for PSI equilibrium constants; source evaluation states298.15K/I=0, no independently measured pressure correction inferred.\", \"reaction\": \"Ni2+ + 2HS- = Ni(HS)2\", \"record_id\": \"r11d-ni-ni-hs-2-aqueous\", \"runtime_reference\": {\"G_HS_J_mol\": 12080.0, \"G_S2_J_mol\": 85800.0, \"HS_dissociation_pKa\": 12.915185226523654, \"activity_relation\": \"log10 a(S2-)=log10 a(HS-)+pH-pKa(HS-). S2- is externally fixed; HS- is implicit through retained reference energies. No closed sulfur inventory or automatic total-sulfide speciation.\", \"core_H\": 2, \"ligand_count\": 2, \"ligand_id\": \"sulfide-s\", \"metal_electrons\": 2, \"preferred_NiHS_source_difference\": null}, \"source\": \"PSI_Hummel_Thoenen_2014_Ni_hydrosulfide\", \"source_interval_convention\": \"Stated source width; confidence convention not established. No conversion to standard deviation.\", \"source_log10_beta_interval\": 0.1, \"source_page\": 13, \"source_table\": \"Table5.5 p30 corroborates original section5.5.1.2 evaluation\", \"stoichiometric_HS\": 2, \"temperature_K\": 298.15, \"thermal_scope\": \"G-only local estimate at298.15K. No H/S/Cp or temperature-independent logK model is inferred from native PSI parametrization.\", \"total_uncertainty\": null, \"uncertainty_reason\": \"HS input interval unavailable; source width confidence/covariance not established. Preserve log-beta width without fabricating a total formation-G uncertainty.\", \"value_J_mol\": -84971.90547814136}]"
   },
   "totals": {
-    "species": 1025,
+    "species": 1026,
     "supported_systems": 74,
     "all_elements_documented": 118,
-    "reported_thermochemistry": 3247,
-    "recommended_values": 2410,
-    "source_records": 1721,
-    "distinct_citations": 174,
-    "warnings": 1385,
+    "reported_thermochemistry": 3249,
+    "recommended_values": 2411,
+    "source_records": 1723,
+    "distinct_citations": 176,
+    "warnings": 1387,
     "phase_records": 575,
     "resolved_phase_records": 356,
     "mp_matches": 105,
@@ -38,8 +40,8 @@
   "phases": [
     {
       "phase": "aqueous",
-      "species": 541,
-      "gibbs": 476,
+      "species": 542,
+      "gibbs": 477,
       "entropy": 417,
       "enthalpy": 296
     },
@@ -68,7 +70,7 @@
   "properties": [
     {
       "property": "Gibbs energy",
-      "available": 902
+      "available": 903
     },
     {
       "property": "Entropy",
@@ -81,7 +83,7 @@
   ],
   "gibbs_status": {
     "verified": 585,
-    "source_verified_estimate": 243,
+    "source_verified_estimate": 244,
     "not_available": 117,
     "defined_reference_state": 74,
     "terminal_evidence_gap": 6
@@ -281,7 +283,7 @@
       "symbol": "Ni",
       "coverage_status": "supported",
       "reason": "Single-element thermodynamic species are included in this release.",
-      "species": 56
+      "species": 57
     },
     {
       "atomic_number": 29,
@@ -1477,15 +1479,15 @@
     {
       "symbol": "Ni",
       "system": "Nickel (Ni)",
-      "species": 56,
-      "aqueous": 25,
+      "species": 57,
+      "aqueous": 26,
       "solid": 29,
       "gas": 1,
       "liquid": 1,
-      "gibbs": 51,
+      "gibbs": 52,
       "entropy": 40,
       "enthalpy": 41,
-      "warnings": 58
+      "warnings": 60
     },
     {
       "symbol": "Os",
@@ -2165,6 +2167,10 @@
     },
     {
       "warning_type": "shock_r06_original_entropy_conflict",
+      "count": 2
+    },
+    {
+      "warning_type": "r11d_PSI_hydrosulfide_scope",
       "count": 2
     },
     {

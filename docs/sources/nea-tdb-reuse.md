@@ -416,6 +416,15 @@ permission review is carried forward and the scientific hold remains explicit.
 
 ## Independent original studies in a NEA follow-up
 
+R11d retains two local nickel hydrosulfide formation-G estimates from
+original PSI-authored regression results, with retained NEA6 Ni2+ and
+explicitly open NBS HS- anchors. The PSI results use the established
+individual-original-numerical-fact route; the NEA input carries its own
+OECD acknowledgment and downstream propagation requirements. Keep those
+reuse bases distinct in the derivation record. The six Bjerrum ammonia
+routes remain outside the database until their original numerical evidence
+and reuse review are complete. See [the R11d review](psi-nickel-hydrosulfides.md).
+
 NEA02g3b retains three original-study gas enthalpies with their own source
 citations and individual-numerical-fact reuse records. The original authors'
 publisher-deposited abstracts explicitly identify each value and temperature.
