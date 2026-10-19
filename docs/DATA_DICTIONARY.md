@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 19 October 2026 checkpoint contains **1,030 species and 3,267 observations**
-across 74 supported systems, with **907/816/700 selected G/S/H properties**.
+The latest 19 October 2026 checkpoint contains **1,036 species and 3,275 observations**
+across 74 supported systems, with **913/816/700 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1194,3 +1194,13 @@ formulas, native water normalization, original reaction widths and local inputs.
 `source_reuse_R11f_tin_original_results` records the separate isolated-original-
 numerical-facts basis and carried NEA input obligations. The burtite article is
 CC BY-NC-ND; publication expression stays external. See [tin source routes](sources/tin-original-routes.md).
+
+R11g adds eight local palladium G observations on six new aqueous species, with
+two historical hydrolysis alternatives retained. `R11g_palladium_derivations`
+records original steps, native water normalization, open NBS anchors and local
+medium approximations. `source_reuse_R11g_original_palladium` records the limited
+original-facts route and separate chloride/solid holds. One neutral free-ammonia
+reference matches the existing preferred open NBS NH3 observation. Two justified
+policy overrides select substantive 2023 hydrolysis revisions while preserving
+their 2002 alternatives; the policy now has 46 overrides and 10 exclusions.
+See [palladium source routes](sources/palladium-original-routes.md).

@@ -453,3 +453,11 @@ use separately documented individual-original-numerical-facts decisions; the
 NEA permission does not cover those publications. The burtite article is
 CC BY-NC-ND, with only its three isolated original property results admitted
 under the factual-results route. See [tin source routes](tin-original-routes.md).
+
+R11g adds separately reviewed original palladium reaction facts and local
+estimates with open NBS reference inputs. The original Nagra and Rasmussen /
+Jørgensen publications retain their own rights under the documented limited
+numerical-facts route. The inherited JAEA mixed-chloride selections remain held.
+The NEA permission and its downstream acknowledgment requirement continue for
+NEA material elsewhere in the database. See
+[palladium source routes](palladium-original-routes.md).

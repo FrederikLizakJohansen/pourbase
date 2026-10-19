@@ -823,3 +823,35 @@ reference inputs under https://www.nist.gov/open/license, without warranty.
 Separate publication/source rights remain applicable. The full evidence and
 scientific scope appear in docs/sources/tin-original-routes.md and database
 metadata; private correspondence and complete source publications remain external.
+
+## R11g original palladium hydrolysis and ammine results
+
+Hummel et al. (2002), Nagra NTB02-16, pp. 244–245,
+https://media.nagra.ch/uploads/2022/08/e_ntb02-016.pdf, and Hummel and Thoenen
+(2023), Nagra NTB21-03, pp. 755/757,
+https://media.nagra.ch/uploads/2023/05/NTB-21-03.pdf: four isolated original
+hydrolysis-model results support attributed local G estimates, retaining both
+historical and revised variants. Nagra's publication copyright and reproduction
+rights remain applicable. Complete reports, expression, figures, table layouts
+and bulk source databases stay external.
+
+Rasmussen, L. and Jørgensen, Chr. K. (1968), *Palladium(II) Complexes. I.
+Spectra and Formation Constants of Ammonia and Ethylenediamine Complexes*,
+Acta Chemica Scandinavica 22, 2313–2323,
+https://doi.org/10.3891/acta.chem.scand.22-2313: four isolated original
+stepwise formation constants support local ammine G estimates. The archive
+retains Acta Chemica Scandinavica copyright; publication expression remains
+external. Numerical use follows the established individual-original-facts route,
+with source media and original approximate step widths preserved. No blanket
+open publication licence or JAEA data grant is asserted. Supporting factual-data
+guidance: https://creativecommons.org/faq/ and
+https://www.copyright.gov/help/faq/faq-protect.html.
+
+NIST is acknowledged for the explicitly open non-SRD NBS digitization,
+PDR M32124, https://doi.org/10.18434/M32124, under
+https://www.nist.gov/open/license, without warranty. Retained Pd2+, NH3(aq)
+and liquid-water anchors support these estimates; the new neutral NH3 reservoir
+matches the already selected open NBS observation. Existing OECD credit and
+the same acknowledgment requirement for further sublicensees continue to apply
+to NEA-derived material elsewhere in this distribution. See
+`docs/sources/palladium-original-routes.md` for source-specific scope and holds.

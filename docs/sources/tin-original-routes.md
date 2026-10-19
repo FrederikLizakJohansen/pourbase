@@ -16,8 +16,8 @@ remain. Three preferred properties become available for the new phase.
 | SnS | Scientific hold: native label conceals an inadequately characterized precipitate; no assignment to crystalline herzenbergite. |
 
 The finite seven-route review is complete. The wider R11 queue remains open,
-with 40 other-original-source reaction routes. Seven palladium routes form the
-next bounded source review. The six ammonia source holds, two R11e nickel
+with 33 other-original-source reaction routes after the completed
+[palladium review](palladium-original-routes.md). Six europium routes are next. The six ammonia source holds, two R11e nickel
 holds, 28 prior solid holds and earlier zirconium thermal/scientific follow-ups
 retain their individual histories.
 

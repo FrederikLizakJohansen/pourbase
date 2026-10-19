@@ -394,3 +394,15 @@ record_id = "nea02g4-zr-elpidite"
 property = "gibbs_energy_of_formation"
 source_id = "AjaWoodWilliamsJones1997_NEA02g4b_original"
 reason = "Original study explicitly reports this formation Gibbs energy at 323.15 K. Retain the reported value and interval as evidence; no verified phase-specific thermal conversion to the 298.15 K calculation reference is available."
+
+[[overrides]]
+record_id = "r11g-pd-pd-oh-2-aqueous"
+property = "gibbs_energy_of_formation"
+source_id = "R11g_local_hydrolysis_2023"
+reason = "Nagra NTB21-03 (2023), pp755/757/758, substantively revises the 2002 fit using Pd metal as the controlling phase and an explicit hydrogen-fugacity model. Prefer the revised qualified estimate while retaining the original aqueous alternative. The same-author original-publication tie-break otherwise mistakes this revision for a repeat."
+
+[[overrides]]
+record_id = "r11g-pd-pd-oh-3-q-1-aqueous"
+property = "gibbs_energy_of_formation"
+source_id = "R11g_local_hydrolysis_2023"
+reason = "Nagra NTB21-03 (2023), pp755/757/758, substantively revises the 2002 fit using Pd metal as the controlling phase and an explicit hydrogen-fugacity model. Prefer the revised qualified estimate while retaining the original aqueous alternative. The same-author original-publication tie-break otherwise mistakes this revision for a repeat."
