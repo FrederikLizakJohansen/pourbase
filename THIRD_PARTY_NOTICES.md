@@ -901,3 +901,24 @@ was identified on these NEA-authored evaluations. Source-specific rights remain
 applicable. Private permission correspondence and complete publications stay
 external. See `docs/sources/iron-hydrolysis-carbonate-routes.md` for the model,
 phase, uncertainty and native-source holds.
+
+## MP17a corrected NBS cobalt Gibbs energy
+
+NIST is acknowledged for the corrected HCoO2− aqueous formation Gibbs energy
+in the explicitly open non-SRD NBS digitization, DOI 10.18434/M32124,
+https://doi.org/10.18434/M32124. Source file
+`NBS_Tables_with_ErratumValues.csv`, logical record 5482, column 9, gives
+−345.5 kJ/mol with an asterisk indicating the 1989 erratum correction.
+Reed (2020), section 3, p. 2, explains that marker:
+https://nvlpubs.nist.gov/nistpubs/jres/125/jres.125.007.pdf.
+
+Reuse follows https://www.nist.gov/open/license and the NIST non-SRD data
+acknowledgment and warranty qualifications reproduced above. Conversion on
+19 October 2026 multiplies kJ/mol by 1000; the stored value is −345500 J/mol.
+The source provides no numerical uncertainty. The older Shock et al. (1997)
+G and entropy observations remain available. Historical corrected NBS values
+and the Brookins/Latimer hafnium source hold are documented separately in
+`docs/sources/mp-cobalt-hafnium-check.md`. No new Brookins, Latimer or NIST
+SRD observation is imported in this batch. Existing OECD attribution and
+the same acknowledgment requirement for further sublicensees remain in force
+for the NEA-derived material elsewhere in the distribution.

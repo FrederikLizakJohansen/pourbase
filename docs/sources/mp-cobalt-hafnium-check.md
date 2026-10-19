@@ -1,11 +1,12 @@
 # Materials Project cobalt and hafnium source check
 
-Checked 19 October 2026 against pourbase revision `b052de2`. This is a database
-source review. Production observations, selections, statistics and manuscript
-remain unchanged. A corrected cobalt candidate is validated in an external
-copy; the proposed hafnium upgrade retains a source/reuse hold.
+MP17 checked the sources on 19 October 2026 against revision `b052de2`.
+MP17a applies the validated corrected cobalt observation on the same date,
+preserving every earlier observation. The proposed hafnium upgrade retains its
+source/reuse hold. The original manuscript text and paper follow-up list remain
+with their authors; generated dataset counts are refreshed for this admission.
 
-| Species | Current preferred G, kJ/mol | Source-check outcome |
+| Species | Preferred G before MP17a, kJ/mol | Source-check outcome |
 | --- | ---: | --- |
 | HCoO2−(aq) | −348.9456, Shock et al. (1997), class E | Original TN270 value found; later official correction gives **−345.5**, eligible as class B. |
 | Hf4+(aq) | −554.7984, Shock et al. (1997), class E | Brookins page found; inherited Latimer calculation remains held under the project's source criteria. |
@@ -49,9 +50,9 @@ Technical Note has its separate [NIST Technical Series reuse basis](https://www.
 No new observation is copied from an NIST SRD product, and no blanket licence
 for Materials Project's upstream compilation is inferred.
 
-In the staged copy, the unchanged policy classifies the corrected observation
-as **NBS Tables, class B**. It becomes the preferred cobalt G while retaining
-the Shock observation. Its difference from the current value is +3.4456 kJ/mol.
+In the applied database, the unchanged policy classifies the corrected observation
+as **NBS Tables, class B**. It is the preferred cobalt G while retaining
+the Shock observation. Its difference from the earlier Shock value is +3.4456 kJ/mol.
 The old value near −407.5 should remain documented as historical, corrected
 source evidence. It should not become the preferred cobalt value.
 
@@ -89,7 +90,7 @@ contains gaseous Hf4+ enthalpy data, providing no aqueous Hf4+ G alternative.
 - [x] Validate the complete cobalt candidate in a database copy, retaining all earlier rows.
 - [x] Verify the actual source-family classifications and record the hafnium hold.
 
-Staging changes one preferred G and no coverage counts. On an 81 × 91 grid,
+MP17a changes one preferred G and no coverage counts. On an 81 × 91 grid,
 59 of 7371 cobalt phase points and 112 uncertainty-mask points change.
 The other 73 default systems, including hafnium, retain their maps and masks.
 Two supported ideal/Davies primary-cobalt balances conserve metal. Integrity,
@@ -97,6 +98,27 @@ foreign keys, unchanged policy and repeated-import checks pass.
 
 The reviewed package, source hashes, images, decisions and validation are in
 `pourbase-work/reaktoro-dataset-review/mp17-cobalt-hafnium-source-check/`.
-The running tracker keeps application of the corrected cobalt candidate and
-hafnium original-source retrieval as separate follow-ups. R11j's seven silicate
-routes and every completed source review remain carried forward.
+The running tracker records the corrected cobalt admission separately from
+hafnium original-source retrieval. R11j's seven silicate routes and every
+completed source review remain carried forward.
+
+## MP17a admission and thermal scope
+
+The database now retains 3286 observations across 1038 species. One G alternative
+is added; no species or newly available property is added. The selected G/S/H
+counts remain 915/816/700. The policy remains `b2ad235bba62` with 46 overrides
+and 10 exclusions; the recommendation fingerprint becomes `63d0abf8e2e5654b`.
+The old Shock G remains eligible and is not marked superseded by this separate
+evaluation. The absence of a numerical interval remains explicit.
+
+HCoO2- has one Co, two core O, one core H, charge -1, two electrons and three
+protons per formula unit. The corresponding hydrolysis reaction is
+`Co2+ + 2H2O = HCoO2- + 3H+`. No new formation H or standard S is inferred.
+The existing constant formation-entropy approximation uses the retained Shock
+entropy through its mixed-source fallback. Its slope is unchanged; G shifts
+by +3445.6 J/mol at 323.15 and 373.15 K as well as at the reference temperature.
+The checked thermal cobalt maps change 69 and 79 of 7371 points, respectively;
+those changes belong to the updated G. Shared source ancestry and covariance
+remain unknown. Package notices retain NIST attribution and the open-release
+warranty qualifications; the OECD downstream acknowledgment for other data
+remains applicable.

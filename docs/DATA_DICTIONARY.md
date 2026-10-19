@@ -21,7 +21,7 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 19 October 2026 checkpoint contains **1,038 species and 3,285 observations**
+The latest 19 October 2026 checkpoint contains **1,038 species and 3,286 observations**
 across 74 supported systems, with **915/816/700 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
@@ -1222,3 +1222,11 @@ qualifies these suggestions as outside its normal selected set. Metadata
 phase scope, exact inputs, shared model ancestry and separate native-route holds.
 The unchanged policy chooses three H/H/S alternatives; existing G overrides remain.
 See [iron source routes](sources/iron-hydrolysis-carbonate-routes.md).
+
+MP17a adds the corrected open NBS HCoO2- Gibbs observation, -345500 J/mol,
+from logical CSV record 5482, column 9. The source asterisk marks the 1989
+erratum correction. The unchanged policy selects this class-B value and retains
+the Shock1997 G/S observations; coverage counts remain unchanged. Metadata
+`source_reuse_MP17_cobalt_check` preserves the exact cell, open licence,
+correction trail, historical values and the separate hafnium source hold.
+See [cobalt and hafnium source review](sources/mp-cobalt-hafnium-check.md).
