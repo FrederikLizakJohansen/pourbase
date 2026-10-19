@@ -21,7 +21,7 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 19 October 2026 checkpoint contains **1,038 species and 3,281 observations**
+The latest 19 October 2026 checkpoint contains **1,038 species and 3,285 observations**
 across 74 supported systems, with **915/816/700 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
@@ -1213,3 +1213,12 @@ source intervals and native/full water transformations;
 `source_reuse_R11h_original_europium` records reuse scope and precise
 amorphous-source/simple-carbonate-hydration holds. See
 [europium source routes](sources/europium-original-routes.md).
+
+R11i retains four nominal ferrihydrite model alternatives from NEA2013: two
+adjusted formation enthalpies, six-line entropy, and local six-line formation G
+from calculated solubility. All are `source_verified_estimate`; NEA explicitly
+qualifies these suggestions as outside its normal selected set. Metadata
+`source_reuse_R11i_iron` and `R11i_ferrihydrite_derivations` preserve OECD terms,
+phase scope, exact inputs, shared model ancestry and separate native-route holds.
+The unchanged policy chooses three H/H/S alternatives; existing G overrides remain.
+See [iron source routes](sources/iron-hydrolysis-carbonate-routes.md).

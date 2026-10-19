@@ -468,3 +468,11 @@ limited original-numerical-facts route. Open NBS and the existing Miron silicate
 reference supply the local inputs. Amorphous original-source verification and
 simple-carbonate hydration remain precise holds; the older strong silicate
 model stays external. See [europium source routes](europium-original-routes.md).
+
+R11i extends the carried iron-volume review to qualified nominal ferrihydrite
+model suggestions on pp. 227–228, plus its own selected Fe3+ and evaluated OH−
+auxiliary anchors on pp. 44/55. Four model alternatives retain OECD attribution
+and the same downstream acknowledgment requirement. Their source-specific
+review identifies no additional restriction on these NEA-authored evaluations.
+They retain `source_verified_estimate` and the distinction from normally selected
+NEA data. See [iron hydrolysis and carbonate routes](iron-hydrolysis-carbonate-routes.md).

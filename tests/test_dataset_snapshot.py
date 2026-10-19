@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1038), ("reported_thermochemistry", 3281),
-                                 ("sources", 1743), ("warnings", 1407), ("additional_components", 11),
+            for table, count in (("species", 1038), ("reported_thermochemistry", 3285),
+                                 ("sources", 1745), ("warnings", 1409), ("additional_components", 11),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1354,10 +1354,15 @@ class DatasetSnapshotTests(unittest.TestCase):
             self.assertEqual(len(original), 5)
             self.assertEqual({r.value for r in original if r.property == "gibbs_energy_of_formation"}, energies)
             self.assertEqual({r.value for r in original if r.property == "absolute_entropy"}, entropies)
-            self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value, enthalpy)
-            self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.uncertainty, 2000.0)
-            self.assertIsNone(record.thermochemistry.entropy_J_mol_K.uncertainty)
-            self.assertEqual(record.thermochemistry.entropy_J_mol_K.value, 122.2)
+            self.assertEqual({r.value for r in original if r.property == "enthalpy_of_formation"}, {enthalpy})
+            # NEA's nominal model adjustment is retained alongside the original calorimetry.
+            self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value, enthalpy + 400)
+            self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.uncertainty,
+                             2100.0 if phase == "2-line" else 2000.0)
+            self.assertEqual(record.thermochemistry.entropy_J_mol_K.uncertainty,
+                             None if phase == "2-line" else 10.0)
+            self.assertEqual(record.thermochemistry.entropy_J_mol_K.value,
+                             122.2 if phase == "2-line" else 130.0)
             self.assertEqual(sum(r.selected_as_recommended for r in record.reported), 3)
             self.assertIsNone(record.phase_identity.spacegroup_number)
             self.assertTrue(any(w.type == "ferrihydrite_bounds_and_preference" for w in record.warnings))
@@ -1915,7 +1920,7 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         self.assertEqual(Counter(key[1] for key in selections),
                          {"gibbs_energy_of_formation": 915, "absolute_entropy": 816, "enthalpy_of_formation": 700})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "c002ce744f9753dc",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "ca912050364630b2",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

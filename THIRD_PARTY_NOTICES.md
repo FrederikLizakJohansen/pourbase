@@ -880,3 +880,24 @@ sublicensees continue for NEA-derived material elsewhere; they do not license
 Nagra publications. Original amorphous-source, unknown carbonate hydration and
 superseded strong-silicate-model issues remain separately documented in
 `docs/sources/europium-original-routes.md` and database reuse metadata.
+
+## R11i NEA nominal ferrihydrite models
+
+Lemire, R. J. et al. (2013), *Chemical Thermodynamics of Iron, Part 1*,
+OECD Nuclear Energy Agency, NEA No. 6355, pp. 227–228; selected Fe3+
+reference p. 44 and evaluated auxiliary OH− reference p. 55:
+https://www.oecd-nea.org/upload/docs/application/pdf/2019-12/6355-vol13a-iron.pdf.
+OECD and NEA are acknowledged for two adjusted nominal ferrihydrite enthalpies,
+a six-line entropy estimate and the calculated solubility used in an attributed
+local formation-G adaptation. These are qualified model suggestions, outside
+the normal NEA selected set; original calorimetric alternatives remain.
+
+Reuse follows the OECD data terms and written clarification
+NEA-TDB-OECD-2026-10-14, subject to applicable source-specific restrictions:
+https://www.oecd.org/en/about/terms-conditions.html. Every sublicense of work
+using these data must include the same OECD acknowledgment requirement and
+require further sublicensees to do the same. No separate additional restriction
+was identified on these NEA-authored evaluations. Source-specific rights remain
+applicable. Private permission correspondence and complete publications stay
+external. See `docs/sources/iron-hydrolysis-carbonate-routes.md` for the model,
+phase, uncertainty and native-source holds.
