@@ -73,7 +73,7 @@ def coarse_preview(scenario: Scenario) -> Scenario:
     Previews bypass the session's result cache.
     """
     return replace(scenario, pH_points=max(scenario.pH_points // 4, 41),
-                   eh_points=max(scenario.eh_points // 4, 41))
+                   U_points=max(scenario.U_points // 4, 41))
 
 
 class MainWindow(QMainWindow):
@@ -171,7 +171,7 @@ class MainWindow(QMainWindow):
         self.sensitivity_page = SensitivityPage()
         self.fixed_page = FixedPotentialPage()
         self.fixed_page.changed.connect(lambda: self.refresh_view())
-        self.fixed_page.potentialChanged.connect(lambda eh: self.set_probe(self.settings.probe_pH, eh))
+        self.fixed_page.potentialChanged.connect(lambda U: self.set_probe(self.settings.probe_pH, U))
         self.sensitivity_page.sourcesChanged.connect(lambda: self.refresh_view())
         self.compare_page = ComparePage(self.systems)
         self.compare_page.changed.connect(lambda: self.refresh_view())
@@ -314,9 +314,9 @@ class MainWindow(QMainWindow):
         settings.symbol = symbol
         settings.concentration = express_concentration(symbol, molar, settings.concentration_unit,
                                                        solution_density_kg_L=settings.solution_density_kg_L)
-        second = replace(settings.scenario(), pH_points=scenario.pH_points, eh_points=scenario.eh_points,
-                         pH_min=scenario.pH_min, pH_max=scenario.pH_max, eh_min_V=scenario.eh_min_V,
-                         eh_max_V=scenario.eh_max_V)
+        second = replace(settings.scenario(), pH_points=scenario.pH_points, U_points=scenario.U_points,
+                         pH_min=scenario.pH_min, pH_max=scenario.pH_max, U_min_V=scenario.U_min_V,
+                         U_max_V=scenario.U_max_V)
         cached = self.session.cached("calculation", second)
         if cached is not None:
             self._wanted.pop("overlay", None)
@@ -334,7 +334,7 @@ class MainWindow(QMainWindow):
         calculation = self.calculation
         if calculation is None:
             return
-        if calculation.diagram.stable_species_index.shape != (self.settings.eh_points, self.settings.pH_points):
+        if calculation.diagram.stable_species_index.shape != (self.settings.U_points, self.settings.pH_points):
             self._set_status("The diagram is still being calculated; pop it out when it is complete")
             return
         context = self.context_bar.text()
@@ -347,13 +347,13 @@ class MainWindow(QMainWindow):
         offset = 30 * (len(self.pinned) % 10)
         window.move(self.geometry().topLeft() + QPoint(80 + offset, 80 + offset))
         self.pinned.append(window)
-        window.set_probe(self.settings.probe_pH, self.settings.probe_eh_V)
+        window.set_probe(self.settings.probe_pH, self.settings.probe_U_V)
         window.show()
         self._set_status(f"Popped out {title}; probes in all diagrams move together")
 
-    def _pinned_probe_moved(self, pH: float, eh_V: float) -> None:
-        self.set_probe(pH, eh_V)
-        self.diagram_page.diagram.set_probe(pH, eh_V)
+    def _pinned_probe_moved(self, pH: float, U_V: float) -> None:
+        self.set_probe(pH, U_V)
+        self.diagram_page.diagram.set_probe(pH, U_V)
 
     def _forget_pinned(self, window) -> None:
         if window in self.pinned:
@@ -535,7 +535,7 @@ class MainWindow(QMainWindow):
             view.preview_mode = True
         try:
             page.show_calculations(self.calculation, right, self.display, False,
-                                   (self.settings.probe_pH, self.settings.probe_eh_V))
+                                   (self.settings.probe_pH, self.settings.probe_U_V))
         finally:
             for view in page.views:
                 view.preview_mode = False
@@ -644,10 +644,10 @@ class MainWindow(QMainWindow):
         self._set_status(f"!{name}: no diagram for the current settings")
         self.refresh_view()
 
-    def set_probe(self, pH: float, eh_V: float) -> None:
-        self.panel.set_probe(pH, eh_V)
+    def set_probe(self, pH: float, U_V: float) -> None:
+        self.panel.set_probe(pH, U_V)
         for window in self.pinned:  # every popped-out diagram aims at the same point
-            window.set_probe(pH, eh_V)
+            window.set_probe(pH, U_V)
         self._update_probe()
         current = self.views.currentWidget()
         if current is self.fixed_page:
@@ -655,30 +655,30 @@ class MainWindow(QMainWindow):
         if current is self.speciation_page:
             self._show_speciation()
         elif current is self.dft_stack and self.comparison is not None:
-            self.dft_page.set_probe(pH, eh_V)
+            self.dft_page.set_probe(pH, U_V)
 
     def _update_probe(self) -> None:
         if self._previewing:
-            self.diagram_page.diagram.set_probe(self.settings.probe_pH, self.settings.probe_eh_V)
+            self.diagram_page.diagram.set_probe(self.settings.probe_pH, self.settings.probe_U_V)
             return
         if self.calculation is None:
             return
         settings = self.settings
         try:
-            probe = self.calculation.probe(settings.probe_pH, settings.probe_eh_V)
+            probe = self.calculation.probe(settings.probe_pH, settings.probe_U_V)
         except ValueError as error:
             self.diagram_page.probe.setHtml(html.escape(str(error)))
             return
         dft_phase = None
         if self.comparison is not None and self._compared_scenario == self._comparison_scenario():
             try:
-                dft_phase = pretty_label(self.comparison.materials_project.phase_at(probe.pH, probe.eh_V).label)
+                dft_phase = pretty_label(self.comparison.materials_project.phase_at(probe.pH, probe.U_V).label)
             except ValueError:
                 pass
         margin = None
         if not self.calculation.is_mass_balance:
             try:
-                margin = stability_margin(self.calculation.diagram, probe.pH, probe.eh_V,
+                margin = stability_margin(self.calculation.diagram, probe.pH, probe.U_V,
                                           self.display.assumed_uncertainty_kJ_mol * 1000)
             except ValueError:
                 margin = None
@@ -698,7 +698,7 @@ class MainWindow(QMainWindow):
         settings = self.settings
         settings.symbol = symbol
         if screen is not None:
-            settings.probe_pH, settings.probe_eh_V = screen.pH, screen.potential_V_vs_SHE
+            settings.probe_pH, settings.probe_U_V = screen.pH, screen.potential_V_vs_SHE
         self.panel.set_settings(settings)
         self._history_timer.start()
         self.pages.setCurrentIndex(1)
@@ -760,7 +760,7 @@ class MainWindow(QMainWindow):
             return
         window = overview.window()
         scenario = self._shared_conditions()
-        if not (window["pH"][0] < window["pH"][1] and window["eh_V"][0] < window["eh_V"][1]):
+        if not (window["pH"][0] < window["pH"][1] and window["U_V"][0] < window["U_V"][1]):
             overview.canvas.show_window(None, "")
             self._set_status("The window needs a lower and a higher pH and potential")
             return
@@ -829,7 +829,7 @@ class MainWindow(QMainWindow):
                 text += f" · {settings.temperature_C:g} °C"
                 tip += (" Gibbs energies are extrapolated from 25 °C with constant enthalpies and entropies of "
                         "formation; uncertainties include the neglected heat capacity.")
-            preview = calculation.diagram.stable_species_index.shape != (settings.eh_points, settings.pH_points)
+            preview = calculation.diagram.stable_species_index.shape != (settings.U_points, settings.pH_points)
             chips["model"].configure(text + (" · preview" if preview else ""),
                                      tip + (" A coarse preview is shown while a slider moves." if preview else "")
                                      + " Click to change the model or concentration.",
@@ -885,7 +885,7 @@ class MainWindow(QMainWindow):
         if display.uncertainty:
             extras.append((f"hatching within {display.uncertainty_sigma:g}σ", panel.uncertainty))
         if display.potential_scale != "SHE":
-            extras.append((f"E vs {display.potential_scale.split(' (')[0]}", panel.potential_scale))
+            extras.append((f"U vs {display.potential_scale.split(' (')[0]}", panel.potential_scale))
         view_text = ", ".join(text for text, _control in extras)
         control = extras[0][1] if extras else None
         chips["view"].configure(view_text[:1].upper() + view_text[1:],
@@ -942,21 +942,21 @@ class MainWindow(QMainWindow):
         calculation = self.calculation
         if calculation is None:
             return
-        eh_V = self.settings.probe_eh_V
-        page.set_potential(eh_V)
+        U_V = self.settings.probe_U_V
+        page.set_potential(U_V)
         symbol = self.settings.symbol
         names = {item.ligand_id: item.name for item in self.database.available_ligands()}
         page.set_ligands([(ligand_id, names.get(ligand_id, ligand_id))
                           for ligand_id in self.database.ligand_species.get(symbol, {})])
         mode = page.mode()
-        key = (id(calculation), mode, round(eh_V, 6), page.ligand.currentData())
+        key = (id(calculation), mode, round(U_V, 6), page.ligand.currentData())
         if self._fixed_key == key:
             return
         log10_metal = calculation.concentration.log10_standard_activity
         name = self.system_name(symbol)
         try:
             if mode == "solubility":
-                page.show_solubility(solubility(calculation, eh_V), log10_metal, calculation.is_mass_balance)
+                page.show_solubility(solubility(calculation, U_V), log10_metal, calculation.is_mass_balance)
             else:
                 ligand_id = page.ligand.currentData()
                 if ligand_id is None:
@@ -964,7 +964,7 @@ class MainWindow(QMainWindow):
                                       "Ligand predominance needs complexes or solids of this element with a ligand.")
                     self._fixed_key = key
                     return
-                page.show_predominance(ligand_predominance(calculation, ligand_id, eh_V),
+                page.show_predominance(ligand_predominance(calculation, ligand_id, U_V),
                                        page.ligand.currentText(), log10_metal)
         except ValueError as error:
             page.show_message(f"No {mode} diagram for {name}", html.escape(str(error)))
@@ -979,7 +979,7 @@ class MainWindow(QMainWindow):
                               "Switch to fixed activity to see where the choice between published values changes "
                               "the stable species.", ("Switch to fixed activity", lambda: self._set_mode(Mode.FIXED_ACTIVITY)))
             return
-        if calculation is None or calculation.diagram.stable_species_index.shape != (self.settings.eh_points,
+        if calculation is None or calculation.diagram.stable_species_index.shape != (self.settings.U_points,
                                                                                     self.settings.pH_points):
             return  # wait for the full grid
         database = self.session.database
@@ -1039,7 +1039,7 @@ class MainWindow(QMainWindow):
             page.show_message("No diagram", "Speciation appears once the diagram is calculated.")
             return
         diagram = calculation.diagram
-        row = int(np.abs(diagram.eh_V - self.settings.probe_eh_V).argmin())
+        row = int(np.abs(diagram.U_V - self.settings.probe_U_V).argmin())
         colors = record_colors([item.record_id for item in diagram.stable_species])
         rows = [("Experimental", diagram.stable_species_index[row], diagram.system.species, colors)]
         symbol = self.settings.symbol
@@ -1061,7 +1061,7 @@ class MainWindow(QMainWindow):
         else:
             note = "Compare with the official Materials Project DFT diagram."
             action = ("Show DFT comparison", lambda: (self.dft.entries(symbol), self._show_speciation()))
-        page.show_calculation(calculation, self.settings.probe_eh_V, rows, note, action)
+        page.show_calculation(calculation, self.settings.probe_U_V, rows, note, action)
 
 
     def request_sweep(self) -> None:
@@ -1079,7 +1079,7 @@ class MainWindow(QMainWindow):
             return
         self._sweep_message = (
             f"{sweep_settings.levels} fixed-activity diagrams on a {sweep_settings.pH_points} × "
-            f"{sweep_settings.eh_points} grid, from log₁₀ a = {sweep_settings.log10_min:g} to "
+            f"{sweep_settings.U_points} grid, from log₁₀ a = {sweep_settings.log10_min:g} to "
             f"{sweep_settings.log10_max:g}."
         )
         self.sweep_stack.show_message("Calculating the concentration sweep…", self._sweep_message, glyph="…")
@@ -1090,7 +1090,7 @@ class MainWindow(QMainWindow):
         level = calculation.concentration.log10_standard_activity if calculation else -6.0
         self._shown_sweep = key
         self.sweep_page.clear_materials_project()
-        self.sweep_page.set_sweep(sweep, self.display, level, (self.settings.probe_pH, self.settings.probe_eh_V))
+        self.sweep_page.set_sweep(sweep, self.display, level, (self.settings.probe_pH, self.settings.probe_U_V))
         self.sweep_stack.show_view()
         note = " Mass-balance settings do not apply; each slice is a fixed-activity diagram." if (
             self.settings.mode == Mode.MASS_BALANCE.value) else ""
@@ -1159,7 +1159,7 @@ class MainWindow(QMainWindow):
             del self._wanted[kind]
             if kind == "calculate":
                 coarse = (self.calculation is not None and self.calculation.diagram.stable_species_index.shape
-                          != (self.settings.eh_points, self.settings.pH_points))
+                          != (self.settings.U_points, self.settings.pH_points))
                 if self.views_loading.isVisible() or coarse:  # fade after a wait or over a coarse picture
                     cross_fade(self.views.currentWidget())
                 self.views_loading.stop()
@@ -1252,7 +1252,7 @@ class MainWindow(QMainWindow):
         first = self.dft_stack.currentWidget() is not self.dft_page
         self.dft_stack.show_view()
         self.dft_page.show_comparison(self.comparison, self.display, notes, reset_range=first or reset_range)
-        self.dft_page.set_probe(self.settings.probe_pH, self.settings.probe_eh_V)
+        self.dft_page.set_probe(self.settings.probe_pH, self.settings.probe_U_V)
         self._set_status(f"{self.systems[symbol]}: {self.comparison.equivalent_domain_fraction:.1%} of the grid "
                          f"agrees with Materials Project {entries.database_version}")
 
@@ -1291,7 +1291,7 @@ class MainWindow(QMainWindow):
         if same and not reset_range and self._compare_shown:
             return
         page.show_calculations(self.calculation, right, self.display, reset_range or not self._compare_shown,
-                               (self.settings.probe_pH, self.settings.probe_eh_V))
+                               (self.settings.probe_pH, self.settings.probe_U_V))
         self._compare_shown = True
 
     def save_session(self) -> None:
@@ -1588,7 +1588,7 @@ class MainWindow(QMainWindow):
         """Code for the speciation profile at the probe potential (mass-balance mode)."""
         return "\n".join((
             self._code_for(self.settings, plot=False),
-            f"profile = pb.speciation_profile(calculation.diagram, {self.settings.probe_eh_V!r})",
+            f"profile = pb.speciation_profile(calculation.diagram, {self.settings.probe_U_V!r})",
             "pb.plot_speciation_profile(profile)",
         ))
 

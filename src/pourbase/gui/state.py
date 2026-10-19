@@ -63,12 +63,12 @@ class Settings:
     temperature_C: float = 25.0
     pH_min: float = 0.0
     pH_max: float = 14.0
-    eh_min_V: float = -1.5
-    eh_max_V: float = 1.5
+    U_min_V: float = -1.5
+    U_max_V: float = 1.5
     pH_points: int = 281
-    eh_points: int = 301
+    U_points: int = 301
     probe_pH: float = 7.0
-    probe_eh_V: float = 0.0
+    probe_U_V: float = 0.0
     ligands: dict[str, LigandSetting] = field(default_factory=dict)
     use_ligands: bool = True
 
@@ -88,8 +88,8 @@ class Settings:
             concentration_unit=self.concentration_unit, solution_density_kg_L=self.solution_density_kg_L,
             davies_ionic_strength_mol_L=self.ionic_strength_mol_L if mass_balance and self.davies else None,
             log10_gas_fugacity=self.log10_gas_fugacity, ligands=self.ligand_activities(),
-            pH_min=self.pH_min, pH_max=self.pH_max, eh_min_V=self.eh_min_V, eh_max_V=self.eh_max_V,
-            pH_points=self.pH_points, eh_points=self.eh_points,
+            pH_min=self.pH_min, pH_max=self.pH_max, U_min_V=self.U_min_V, U_max_V=self.U_max_V,
+            pH_points=self.pH_points, U_points=self.U_points,
             allow_incomplete=self.allow_incomplete, energy_policy=self.energy_policy,
             temperature_K=round(self.temperature_C + 273.15, 6),
         )
@@ -184,19 +184,19 @@ def python_code(settings: Settings, display, *, dataset_path: str | None = None,
 
 @dataclass(frozen=True)
 class SweepSettings:
-    """Sweep range and the number of slices along each axis of the (log a, pH, Eh) volume."""
+    """Sweep range and the number of slices along each axis of the (log a, pH, U) volume."""
 
     log10_min: float = -10.0
     log10_max: float = 0.0
     levels: int = 21
     pH_points: int = 141
-    eh_points: int = 151
+    U_points: int = 151
 
     def scenario(self, settings: Settings) -> Scenario:
         """The fixed-activity scenario swept: the diagram settings on the sweep grid."""
         return replace(
             settings.scenario(), mode=Mode.FIXED_ACTIVITY, davies_ionic_strength_mol_L=None,
-            pH_points=self.pH_points, eh_points=self.eh_points,
+            pH_points=self.pH_points, U_points=self.U_points,
         )
 
 

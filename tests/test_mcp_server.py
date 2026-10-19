@@ -62,7 +62,7 @@ class ServerTests(unittest.TestCase):
             async with stdio_client(parameters) as (read, write), ClientSession(read, write) as client:
                 await client.initialize()
                 names = [tool.name for tool in (await client.list_tools()).tools]
-                probe = await client.call_tool("probe_point", {"symbol": "Fe", "pH": 7.0, "eh_V": 0.0})
+                probe = await client.call_tool("probe_point", {"symbol": "Fe", "pH": 7.0, "U_V": 0.0})
                 image = await client.call_tool("render_diagram", {"symbol": "Cu"})
                 return names, probe.content[0].text, image.content[0].type
 

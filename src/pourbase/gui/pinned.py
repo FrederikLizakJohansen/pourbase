@@ -16,7 +16,7 @@ from .sources_dialog import SourcesDialog
 class PinnedDiagram(QWidget):
     """One calculated diagram in its own window. It keeps its result while the main window changes."""
 
-    probeMoved = Signal(float, float)  # pH and Eh against the SHE
+    probeMoved = Signal(float, float)  # pH and U against the SHE
 
     def __init__(self, calculation, display, title: str, context: str, dark: bool, parent=None) -> None:
         super().__init__(parent, Qt.Window)
@@ -73,14 +73,14 @@ class PinnedDiagram(QWidget):
             self.set_probe(*self._probe)
 
     def _probe_text(self) -> str:
-        pH, eh_V = self._probe
+        pH, U_V = self._probe
         if pH is None:
             return " "
-        y = float(to_scale(eh_V, pH, self.display.potential_scale, self.calculation.diagram.conditions.temperature_K))
-        return self.view._species_text(pH, y) or f"pH {pH:.2f}, Eh {eh_V:+.3f} V: outside this diagram"
+        y = float(to_scale(U_V, pH, self.display.potential_scale, self.calculation.diagram.conditions.temperature_K))
+        return self.view._species_text(pH, y) or f"pH {pH:.2f}, U {U_V:+.3f} V: outside this diagram"
 
-    def set_probe(self, pH: float, eh_V: float) -> None:
+    def set_probe(self, pH: float, U_V: float) -> None:
         """Move the probe without emitting ``probeMoved``."""
-        self._probe = (pH, eh_V)
-        self.view.set_probe(pH, eh_V)
+        self._probe = (pH, U_V)
+        self.view.set_probe(pH, U_V)
         self.readout.setText(self._probe_text())

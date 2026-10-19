@@ -104,13 +104,13 @@ class MaterialsProjectPage(QWidget):
         colors = matched_colors(experimental.system.species, official, experimental_colors, record_colors)
         views = self.views
         views["materials_project"].show_grid(
-            official.stable_phase_index, official.pH, official.eh_V, phases, display,
+            official.stable_phase_index, official.pH, official.U_V, phases, display,
             colors=colors, reset_range=reset_range,
         )
         views["materials_project"].set_water(official.pH, official.her_V, official.oer_V, display.water)
         agreement_colors = {item.record_id: AGREEMENT_COLORS[item.record_id] for item in AGREEMENT}
         views["agreement"].show_grid(
-            np.where(comparison.same_thermodynamic_species, 0, 1), experimental.pH, experimental.eh_V,
+            np.where(comparison.same_thermodynamic_species, 0, 1), experimental.pH, experimental.U_V,
             AGREEMENT, replace(display, labels=False, legend=True),
             colors=agreement_colors, reset_range=reset_range,
         )
@@ -140,7 +140,7 @@ class MaterialsProjectPage(QWidget):
             details += "<br><i>" + " ".join(html.escape(note) for note in notes) + "</i>"
         self.summary.setText(details)
 
-    def set_probe(self, pH: float, eh_V: float) -> None:
+    def set_probe(self, pH: float, U_V: float) -> None:
         for view in self.views.values():
             view.probe.setVisible(True)
-            view.set_probe(pH, eh_V)
+            view.set_probe(pH, U_V)

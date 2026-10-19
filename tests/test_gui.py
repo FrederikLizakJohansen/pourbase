@@ -36,7 +36,7 @@ class StateTests(unittest.TestCase):
         self.assertTrue(Settings().allow_incomplete)
 
     def test_python_code_reproduces_the_diagram(self) -> None:
-        settings = Settings(symbol="Ag", concentration=10.0, concentration_unit="ppm", pH_points=41, eh_points=43)
+        settings = Settings(symbol="Ag", concentration=10.0, concentration_unit="ppm", pH_points=41, U_points=43)
         settings.ligands["chloride-cl"] = LigandSetting(enabled=True, mode="total", use_pKa=True)
         namespace: dict = {}
         exec(settings.python_code().replace("pb.plot_diagram(calculation.diagram)", ""), namespace)
@@ -45,9 +45,9 @@ class StateTests(unittest.TestCase):
 
     def test_session_caches_calculations_and_sweeps(self) -> None:
         session = Session()
-        scenario = Settings(pH_points=21, eh_points=21).scenario()
+        scenario = Settings(pH_points=21, U_points=21).scenario()
         self.assertIs(session.calculate(scenario), session.calculate(scenario))
-        sweep_settings = SweepSettings(levels=4, pH_points=21, eh_points=21)
+        sweep_settings = SweepSettings(levels=4, pH_points=21, U_points=21)
         sweep = session.sweep(sweep_settings.scenario(Settings()), sweep_settings)
         self.assertIs(session.cached("sweep", (sweep_settings.scenario(Settings()), sweep_settings)), sweep)
 
@@ -62,12 +62,12 @@ class ScaleAndSessionTests(unittest.TestCase):
         for scale in REFERENCE_ELECTRODES_V:
             self.assertAlmostEqual(float(from_scale(to_scale(0.3, 9.0, scale), 9.0, scale)), 0.3)
         self.assertAlmostEqual(float(to_scale(0.0, 0.0, "SCE (sat. KCl)")), -0.241)
-        pH, eh = np.linspace(0, 14, 15), np.linspace(-1, 1, 201)
-        axis, rows, valid = resample(pH, eh, "RHE")
+        pH, U = np.linspace(0, 14, 15), np.linspace(-1, 1, 201)
+        axis, rows, valid = resample(pH, U, "RHE")
         self.assertTrue(valid[:, 0].all())
         self.assertFalse(valid[:, -1].all())
         column = 7
-        self.assertAlmostEqual(eh[rows[150, column]], float(from_scale(axis[150], pH[column], "RHE")), delta=0.006)
+        self.assertAlmostEqual(U[rows[150, column]], float(from_scale(axis[150], pH[column], "RHE")), delta=0.006)
 
     @unittest.skipIf(QApplication is None, "PySide6 is not installed")
     def test_session_round_trip_and_rejects_other_files(self) -> None:
@@ -151,7 +151,7 @@ class WindowTests(WindowTestCase):
         # The probe is placed and reported against the SHE whatever the axis shows
         window.set_probe(7.0, 0.1)
         view._probe_moved()
-        self.assertAlmostEqual(window.settings.probe_eh_V, 0.1, places=6)
+        self.assertAlmostEqual(window.settings.probe_U_V, 0.1, places=6)
         text = window.diagram_page.probe.toPlainText()
         self.assertIn("Next lowest is", text)
         self.assertIn("V vs RHE", text)
@@ -457,7 +457,7 @@ class WindowTests(WindowTestCase):
         window.open_element("Mn")
         self.assertEqual(window.pages.currentIndex(), 1)
         self.assertIs(window.diagram_page.currentWidget(), window.diagram_page.placeholder)
-        full = (window.settings.eh_points, window.settings.pH_points)
+        full = (window.settings.U_points, window.settings.pH_points)
         self.wait(lambda: window.calculation is not None and window.calculation.diagram.system.symbol == "Mn"
                   and window.calculation.diagram.stable_species_index.shape == full)
         self.assertEqual(window.calculation.diagram.stable_species_index.shape, full)
@@ -504,7 +504,7 @@ class WindowTests(WindowTestCase):
         species.activate()
         self.wait(lambda: window.settings.symbol == "Cu" and window.calculation.diagram.system.symbol == "Cu"
                   and window.calculation.diagram.stable_species_index.shape
-                  == (window.settings.eh_points, window.settings.pH_points))
+                  == (window.settings.U_points, window.settings.pH_points))
         table = window.species_page.table
         self.assertEqual(table.item(table.currentRow(), 1).text(), "cuprite")
         self.open("Fe")
@@ -517,7 +517,7 @@ class WindowTests(WindowTestCase):
         page = window.sweep_page
         sweep = page.sweep
         self.assertEqual(len(sweep.diagrams), page.slice_counts["level"].value())
-        for axis, count in (("pH", sweep.pH.size), ("eh", sweep.eh_V.size)):
+        for axis, count in (("pH", sweep.pH.size), ("U", sweep.U_V.size)):
             page.set_axis(axis)
             self.assertEqual(page.slider.maximum(), count - 1)
             page.slider.setValue(10)

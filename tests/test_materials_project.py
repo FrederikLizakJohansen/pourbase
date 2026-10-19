@@ -14,7 +14,7 @@ from pourbase.models import AqueousActivityModel, PourbaixConditions
 
 def conditions(level: float) -> PourbaixConditions:
     return PourbaixConditions(
-        pH_points=57, eh_points=61,
+        pH_points=57, U_points=61,
         aqueous_activities=AqueousActivityModel(default_log10_activity=level),
     )
 

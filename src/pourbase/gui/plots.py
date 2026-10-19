@@ -140,12 +140,12 @@ class DiagramView(pg.PlotWidget):
     cursorMoved = Signal(str)
     probeMoved = Signal(float, float)
     boundaryClicked = Signal(str, str, QPointF)  # the two record IDs and the screen position
-    pathEdited = Signal(list)  # the path points, (pH, Eh vs SHE), after a drag or an arrow-key move
+    pathEdited = Signal(list)  # the path points, (pH, U vs SHE), after a drag or an arrow-key move
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setLabel("bottom", "pH")
-        self.setLabel("left", "Eh (V vs SHE)")
+        self.setLabel("left", "U (V vs SHE)")
         self._grid: np.ndarray | None = None
         self._figure_source: tuple | None = None  # (diagram, options) to redraw with matplotlib
         self._legend_key: tuple | None = None
@@ -241,7 +241,7 @@ class DiagramView(pg.PlotWidget):
         reset_range: bool = False,
         colors: dict[str, QColor] | None = None,
     ) -> None:
-        """Draw a pH-Eh diagram; ``colors`` keeps species colors fixed across several diagrams.
+        """Draw a pH-U diagram; ``colors`` keeps species colors fixed across several diagrams.
 
         The diagram is drawn on ``options.potential_scale``; fixed-activity diagrams can hatch
         the points where another species lies within the chosen number of uncertainties.
@@ -249,7 +249,7 @@ class DiagramView(pg.PlotWidget):
         self.diagram = diagram
         scale = options.potential_scale
         temperature = diagram.conditions.temperature_K
-        axis, rows, valid = resample(diagram.pH, diagram.eh_V, scale, temperature)
+        axis, rows, valid = resample(diagram.pH, diagram.U_V, scale, temperature)
         columns = np.arange(diagram.pH.size)[np.newaxis, :]
         fixed_activity = getattr(diagram, "transformed_gibbs_J_mol_metal", None) is not None
         rgb = None
@@ -271,7 +271,7 @@ class DiagramView(pg.PlotWidget):
         self.show_grid(
             diagram.stable_species_index[rows, columns], diagram.pH, axis, diagram.system.species,
             options, colors=colors, reset_range=reset_range, rgb=rgb,
-            axes=("pH", axis_label(scale) if scale != "SHE" else "Eh (V vs SHE)"),
+            axes=("pH", axis_label(scale) if scale != "SHE" else "U (V vs SHE)"),
             valid=valid, hatch=hatch, scale=scale, blended_in=blended_in,
         )
         self._figure_source = (diagram, options)
@@ -324,7 +324,7 @@ class DiagramView(pg.PlotWidget):
         colors: dict[str, QColor] | None = None,
         reset_range: bool = False,
         rgb: np.ndarray | None = None,
-        axes: tuple[str, str] = ("pH", "Eh (V vs SHE)"),
+        axes: tuple[str, str] = ("pH", "U (V vs SHE)"),
         valid: np.ndarray | None = None,
         hatch: np.ndarray | None = None,
         scale: str = "SHE",
@@ -449,16 +449,16 @@ class DiagramView(pg.PlotWidget):
             view.setLimits(xMin=x0, xMax=x1, yMin=y0, yMax=y1)
 
     def set_water(self, pH: np.ndarray, her_V: np.ndarray, oer_V: np.ndarray, visible: bool) -> None:
-        """Water-stability lines for a grid drawn with pH on the x axis and Eh on the y axis."""
+        """Water-stability lines for a grid drawn with pH on the x axis and U on the y axis."""
         pen = pg.mkPen("#dfe1e5" if self.dark else "#000000", width=1.2, style=Qt.DashLine)
         self.her.setData(pH, her_V, pen=pen)
         self.oer.setData(pH, oer_V, pen=pen)
         self.her.setVisible(visible)
         self.oer.setVisible(visible)
 
-    def set_probe(self, pH: float, eh_V: float) -> None:
+    def set_probe(self, pH: float, U_V: float) -> None:
         """Place the probe at a potential against the SHE."""
-        self.probe.setPos(QPointF(pH, float(to_scale(eh_V, pH, self.scale))))
+        self.probe.setPos(QPointF(pH, float(to_scale(U_V, pH, self.scale))))
 
     def _she(self, pH: float, potential: float) -> float:
         return float(from_scale(potential, pH, self.scale))
@@ -497,15 +497,15 @@ class DiagramView(pg.PlotWidget):
         scale, temperature = options.potential_scale, diagram.conditions.temperature_K
         color = "#e8a33d" if self.dark else "#8a2be2"
         index = diagram.stable_species_index
-        points = np.array(phase_boundary_segments(index, diagram.pH, diagram.eh_V)).reshape(-1, 2)
+        points = np.array(phase_boundary_segments(index, diagram.pH, diagram.U_V)).reshape(-1, 2)
         if len(points):
             y = to_scale(points[:, 1], points[:, 0], scale, temperature)
             self.overlay_lines.setData(points[:, 0], y, pen=pg.mkPen(color, width=1.6, style=Qt.DashLine))
         else:
             self.overlay_lines.setData([], [])
-        x_grid, y_grid = np.meshgrid(diagram.pH, diagram.eh_V)
+        x_grid, y_grid = np.meshgrid(diagram.pH, diagram.U_V)
         scale_x = max(float(np.ptp(diagram.pH)), 1e-9)
-        scale_y = max(float(np.ptp(diagram.eh_V)), 1e-9)
+        scale_y = max(float(np.ptp(diagram.U_V)), 1e-9)
         for position, item in enumerate(diagram.system.species):
             mask = index == position
             if not mask.any():
@@ -520,12 +520,12 @@ class DiagramView(pg.PlotWidget):
             self.addItem(label)
             self.overlay_labels.append(label)
 
-    def _she_to_view(self, pH, eh_V):
+    def _she_to_view(self, pH, U_V):
         temperature = self.diagram.conditions.temperature_K if self.diagram is not None else 298.15
-        return to_scale(eh_V, pH, self.scale, temperature)
+        return to_scale(U_V, pH, self.scale, temperature)
 
     def show_path(self, path: tuple[list[tuple[float, float]], bool] | None) -> None:
-        """Draw a path ``(points, smooth)`` of ``(pH, Eh vs SHE)`` points with draggable handles, or remove it."""
+        """Draw a path ``(points, smooth)`` of ``(pH, U vs SHE)`` points with draggable handles, or remove it."""
         if not hasattr(self, "path_item"):
             self.path_item = pg.PlotDataItem()
             self.path_item.setZValue(5.5)
@@ -535,9 +535,9 @@ class DiagramView(pg.PlotWidget):
         self._path_state = (list(path[0]), path[1]) if path is not None and path[0] else None
         vertices = self._path_state[0] if self._path_state else []
         if len(vertices) == len(self.vertex_items):  # move the handles that exist; rebuilding them is slower
-            for item, (pH, eh) in zip(self.vertex_items, vertices):
+            for item, (pH, U) in zip(self.vertex_items, vertices):
                 item.blockSignals(True)
-                item.setPos(pH, float(self._she_to_view(pH, eh)))
+                item.setPos(pH, float(self._she_to_view(pH, U)))
                 item.blockSignals(False)
             vertices = []
         else:
@@ -550,8 +550,8 @@ class DiagramView(pg.PlotWidget):
             return
         if self.selected_vertex is not None and self.selected_vertex >= len(self._path_state[0]):
             self.selected_vertex = None
-        for index, (pH, eh) in enumerate(vertices):
-            item = _PathVertex(index, self, pos=(pH, float(self._she_to_view(pH, eh))))
+        for index, (pH, U) in enumerate(vertices):
+            item = _PathVertex(index, self, pos=(pH, float(self._she_to_view(pH, U))))
             item.setZValue(5.7)
             item.sigPositionChanged.connect(lambda item=item: self._vertex_moved(item, finished=False))
             item.sigPositionChangeFinished.connect(lambda item=item: self._vertex_moved(item, finished=True))
@@ -566,8 +566,8 @@ class DiagramView(pg.PlotWidget):
         if len(vertices) < 2:
             self.path_item.setData([], [])
             return
-        _position, pH, eh = path_curve(vertices, smooth, 300)
-        self.path_item.setData(pH, np.asarray(self._she_to_view(pH, eh)),
+        _position, pH, U = path_curve(vertices, smooth, 300)
+        self.path_item.setData(pH, np.asarray(self._she_to_view(pH, U)),
                                pen=pg.mkPen(color, width=2, style=Qt.DashLine))
 
     def _style_vertices(self) -> None:
@@ -613,12 +613,12 @@ class DiagramView(pg.PlotWidget):
         if key not in steps:
             super().keyPressEvent(event)
             return
-        pH, eh = vertices[index]
-        vertices[index] = (round(pH + steps[key][0] * factor, 4), round(eh + steps[key][1] * factor, 5))
+        pH, U = vertices[index]
+        vertices[index] = (round(pH + steps[key][0] * factor, 4), round(U + steps[key][1] * factor, 5))
         self.pathEdited.emit(list(vertices))
 
     def show_points(self, points: list[tuple[str, float, float, bool]]) -> None:
-        """Mark measured points, each ``(label, pH, Eh vs SHE, flagged)``; flagged points are drawn hollow."""
+        """Mark measured points, each ``(label, pH, U vs SHE, flagged)``; flagged points are drawn hollow."""
         if not hasattr(self, "points_item"):
             self.points_item = pg.ScatterPlotItem(size=9)
             self.points_item.setZValue(5.6)
@@ -629,8 +629,8 @@ class DiagramView(pg.PlotWidget):
         self.point_labels = []
         color = "#ffffff" if self.dark else "#111111"
         spots = []
-        for label, pH, eh, flagged in points:
-            y = float(self._she_to_view(pH, eh))
+        for label, pH, U, flagged in points:
+            y = float(self._she_to_view(pH, U))
             spots.append({"pos": (pH, y), "symbol": "s", "pen": pg.mkPen(color, width=1.5),
                           "brush": None if flagged else pg.mkBrush(color)})
             text = pg.TextItem(html=f'<span style="color:{color}; font-size:{LABEL_PT}pt">{label}</span>',
@@ -642,7 +642,7 @@ class DiagramView(pg.PlotWidget):
         self.points_item.setData(spots)
 
     def pick_points(self, done, smooth=lambda: False) -> None:
-        """Collect clicks as ``(pH, Eh vs SHE)`` points until :meth:`finish_pick` or a double-click, then pass
+        """Collect clicks as ``(pH, U vs SHE)`` points until :meth:`finish_pick` or a double-click, then pass
         them to ``done``. While picking, the path runs on to the mouse."""
         self._picked: list[tuple[float, float]] = []
         self._pick = (done, smooth)
@@ -676,7 +676,7 @@ class DiagramView(pg.PlotWidget):
             self.region_outline.setData([], [])
             return
         temperature = self.diagram.conditions.temperature_K
-        axis, rows, valid = resample(region.pH, region.eh_V, self.scale, temperature)
+        axis, rows, valid = resample(region.pH, region.U_V, self.scale, temperature)
         columns = np.arange(region.pH.size)[np.newaxis, :]
         inside = region.satisfied[rows, columns] & valid
         overlay = np.zeros((*inside.shape, 4), dtype=np.ubyte)
@@ -762,7 +762,7 @@ class DiagramView(pg.PlotWidget):
 
 
 class SpeciationView(pg.PlotWidget):
-    """Metal fraction of every species along pH at one Eh."""
+    """Metal fraction of every species along pH at one U."""
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -805,7 +805,7 @@ class SpeciationView(pg.PlotWidget):
         if profile is None:
             self.setTitle("Speciation is available in mass-balance mode", color=self.text_color)
             return
-        self.setTitle(f"Eh = {profile.eh_V:+.3f} V vs SHE", color=self.text_color)
+        self.setTitle(f"U = {profile.U_V:+.3f} V vs SHE", color=self.text_color)
         colors = record_colors([item.record_id for item in profile.species])
         for species, fraction in zip(profile.species, profile.metal_fraction):
             if float(fraction.max()) < 1e-3:

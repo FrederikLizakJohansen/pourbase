@@ -200,7 +200,7 @@ class DiagramPage(StackedView):
             return
         diagram = calculation.diagram
         self.path_panel.window_limits = ((float(diagram.pH[0]), float(diagram.pH[-1])),
-                                         (float(diagram.eh_V[0]), float(diagram.eh_V[-1])))
+                                         (float(diagram.U_V[0]), float(diagram.U_V[-1])))
         path = self.path_panel.path()
         if getattr(self.diagram, "_pick", None) is None:  # while picking, the diagram draws the path itself
             self.diagram.show_path(path)
@@ -220,7 +220,7 @@ class DiagramPage(StackedView):
             self.diagram.show_region(None)
         assessments = assess_points(calculation, self.points_panel.points)
         self.points_panel.show_assessments(assessments)
-        self.diagram.show_points([(item.point.label, item.point.pH, item.point.eh_V, item.within_uncertainty)
+        self.diagram.show_points([(item.point.label, item.point.pH, item.point.U_V, item.within_uncertainty)
                                   for item in assessments if item.inside])
 
     def show_boundary(self, first: str, second: str, position) -> None:
@@ -286,8 +286,8 @@ class DiagramPage(StackedView):
     def show_probe(self, probe: Probe, record: SpeciesRecord | None, dft_phase: str | None,
                    margin: StabilityMargin | None = None) -> None:
         """The species at the probe: what it is, how firmly it holds, where its value comes from."""
-        self.diagram.set_probe(probe.pH, probe.eh_V)
-        self.path_panel.set_probe(probe.pH, probe.eh_V)
+        self.diagram.set_probe(probe.pH, probe.U_V)
+        self.path_panel.set_probe(probe.pH, probe.U_V)
         species = probe.species
         muted = "#8c8f94" if self.dark else "#6a6f76"
         warn = "#d19a2a" if self.dark else "#9a6400"
@@ -300,11 +300,11 @@ class DiagramPage(StackedView):
             return f'<div style="{size}margin-top:1px">{text}</div>'
 
         scale = self.display.potential_scale
-        scaled = (f", {float(to_scale(probe.eh_V, probe.pH, scale)):+.3f} V vs {html.escape(scale)}"
+        scaled = (f", {float(to_scale(probe.U_V, probe.pH, scale)):+.3f} V vs {html.escape(scale)}"
                   if scale != "SHE" else "")
         header = (f'<div style="font-size:13pt">{to_html(species.species, 13)}'
                   f'&nbsp;<span style="color:{muted}; font-size:10pt">{html.escape(phase_label(species))}</span></div>'
-                  f'<div style="color:{muted}">Stable at pH {probe.pH:.2f}, Eh {probe.eh_V:+.3f} V vs SHE{scaled}</div>')
+                  f'<div style="color:{muted}">Stable at pH {probe.pH:.2f}, U {probe.U_V:+.3f} V vs SHE{scaled}</div>')
 
         summary = ""
         if margin is not None and margin.runner_up is not None and margin.margin_J_mol_metal is not None:
@@ -359,8 +359,8 @@ class DiagramPage(StackedView):
                 return (f'<span style="color:{muted}">{change} by {amount}:</span> '
                         f"{to_html(boundary.species.species)}")
             boundaries = (caption("Nearby boundaries")
-                          + line(neighbour(margin.higher_potential, "E up", "V", 3))
-                          + line(neighbour(margin.lower_potential, "E down", "V", 3))
+                          + line(neighbour(margin.higher_potential, "U up", "V", 3))
+                          + line(neighbour(margin.lower_potential, "U down", "V", 3))
                           + line(neighbour(margin.higher_pH, "pH up", "", 2))
                           + line(neighbour(margin.lower_pH, "pH down", "", 2)))
             columns.append(f'<td valign="top" style="padding-left:18px">{boundaries}</td>')
@@ -620,10 +620,10 @@ class SpeciationPage(StackedView):
         self._action: Callable[[], None] | None = None
         button.clicked.connect(lambda: self._action and self._action())
 
-    def show_calculation(self, calculation: Calculation, eh_V: float, rows: list, note: str,
+    def show_calculation(self, calculation: Calculation, U_V: float, rows: list, note: str,
                          action: tuple[str, Callable[[], None]] | None) -> None:
         diagram = calculation.diagram
-        self.profile.show_profile(speciation_profile(diagram, eh_V))
+        self.profile.show_profile(speciation_profile(diagram, U_V))
         self.strip.show_rows(diagram.pH, rows)
         self.note.setText(note)
         self.button.setVisible(action is not None)
@@ -752,7 +752,7 @@ class SensitivityPage(StackedView):
         self.plot = pg.PlotWidget()
         self.plot.setMenuEnabled(False)
         self.plot.setLabel("bottom", "pH")
-        self.plot.setLabel("left", "Eh (V vs SHE)")
+        self.plot.setLabel("left", "U (V vs SHE)")
         self.plot.getPlotItem().layout.setContentsMargins(4, 12, 14, 4)  # room for the edge tick labels
         self.image = pg.ImageItem(axisOrder="row-major")
         self.plot.addItem(self.image)
@@ -787,10 +787,10 @@ class SensitivityPage(StackedView):
         if self.result is None or not self.plot.sceneBoundingRect().contains(scene_position):
             return None
         point = self.plot.getPlotItem().vb.mapSceneToView(scene_position)
-        pH, eh = self.result.pH, self.result.eh_V
-        if not (pH[0] <= point.x() <= pH[-1] and eh[0] <= point.y() <= eh[-1]):
+        pH, U = self.result.pH, self.result.U_V
+        if not (pH[0] <= point.x() <= pH[-1] and U[0] <= point.y() <= U[-1]):
             return None
-        return int(np.abs(eh - point.y()).argmin()), int(np.abs(pH - point.x()).argmin())
+        return int(np.abs(U - point.y()).argmin()), int(np.abs(pH - point.x()).argmin())
 
     def _hovered(self, position) -> None:
         cell = self._grid_point(position)
@@ -809,13 +809,13 @@ class SensitivityPage(StackedView):
         if cell is None:
             return
         row, column = cell
-        pH, eh = float(self.result.pH[column]), float(self.result.eh_V[row])
-        self.marker.setData([pH], [eh])
+        pH, U = float(self.result.pH[column]), float(self.result.U_V[row])
+        self.marker.setData([pH], [U])
         current = self.diagram.system.species[int(self.diagram.stable_species_index[row, column])].species
         outcomes = point_outcomes(self.diagram, self.selections, row, column, samples=self.result.samples or 1,
                                   classes={"A", "B", "C"} if self.critical_only() else None)
         shares = ", ".join(f"{to_html(name)} {share:.0%}" for name, share in outcomes.items())
-        self.point_info.setText(f"pH {pH:.2f}, Eh {eh:+.3f} V: {to_html(current)} is stable in the current "
+        self.point_info.setText(f"pH {pH:.2f}, U {U:+.3f} V: {to_html(current)} is stable in the current "
                                 f"diagram. Stable across the selections: {shares}.")
         for index in range(self.table.rowCount()):
             item = self.table.item(index, 0)
@@ -833,9 +833,9 @@ class SensitivityPage(StackedView):
         lut = (colormaps["magma_r"](np.linspace(0, 1, 256))[:, :3] * 255).astype(np.uint8)
         lut[0] = (245, 245, 245)
         self.image.setImage(result.changed_fraction, lut=lut, levels=(0, 1), autoLevels=False)
-        x0, x1, y0, y1 = result.pH[0], result.pH[-1], result.eh_V[0], result.eh_V[-1]
+        x0, x1, y0, y1 = result.pH[0], result.pH[-1], result.U_V[0], result.U_V[-1]
         self.image.setRect(pg.QtCore.QRectF(x0, y0, x1 - x0, y1 - y0))
-        points = [point for segment in phase_boundary_segments(diagram.stable_species_index, diagram.pH, diagram.eh_V)
+        points = [point for segment in phase_boundary_segments(diagram.stable_species_index, diagram.pH, diagram.U_V)
                   for point in segment]
         array = np.asarray(points) if points else np.zeros((0, 2))
         self.lines.setData(array[:, 0], array[:, 1]) if len(array) else self.lines.setData([], [])
@@ -870,8 +870,8 @@ class SensitivityPage(StackedView):
 
     def _place_labels(self, diagram) -> None:
         index = diagram.stable_species_index
-        x_grid, y_grid = np.meshgrid(diagram.pH, diagram.eh_V)
-        scale_x, scale_y = max(float(np.ptp(diagram.pH)), 1e-9), max(float(np.ptp(diagram.eh_V)), 1e-9)
+        x_grid, y_grid = np.meshgrid(diagram.pH, diagram.U_V)
+        scale_x, scale_y = max(float(np.ptp(diagram.pH)), 1e-9), max(float(np.ptp(diagram.U_V)), 1e-9)
         shown = set()
         for position, item in enumerate(diagram.system.species):
             mask = index == position
@@ -898,6 +898,6 @@ class SensitivityPage(StackedView):
         result = self.result
         if result is None:
             return None
-        rows = [(f"{pH:.6g}", f"{eh:.6g}", f"{result.changed_fraction[row, column]:.4f}")
-                for row, eh in enumerate(result.eh_V) for column, pH in enumerate(result.pH)]
+        rows = [(f"{pH:.6g}", f"{U:.6g}", f"{result.changed_fraction[row, column]:.4f}")
+                for row, U in enumerate(result.U_V) for column, pH in enumerate(result.pH)]
         return ("pH", "Eh_V_vs_SHE", "share of selections with another stable species"), rows

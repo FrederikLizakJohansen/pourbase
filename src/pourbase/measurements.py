@@ -14,7 +14,7 @@ from .uncertainty import DEFAULT_ASSUMED_UNCERTAINTY_J_MOL, stability_margin
 class MeasuredPoint:
     label: str
     pH: float
-    eh_V: float  # V vs SHE
+    U_V: float  # V vs SHE
 
 
 @dataclass(frozen=True)
@@ -39,17 +39,17 @@ def assess_points(calculation, points, assumed_uncertainty_J_mol: float = DEFAUL
     diagram = calculation.diagram
     results = []
     for point in points:
-        inside = bool(diagram.pH[0] <= point.pH <= diagram.pH[-1] and diagram.eh_V[0] <= point.eh_V <= diagram.eh_V[-1])
+        inside = bool(diagram.pH[0] <= point.pH <= diagram.pH[-1] and diagram.U_V[0] <= point.U_V <= diagram.U_V[-1])
         if not inside:
             results.append(PointAssessment(point, False, None))
             continue
         if calculation.is_mass_balance:
-            row = int(np.abs(diagram.eh_V - point.eh_V).argmin())
+            row = int(np.abs(diagram.U_V - point.U_V).argmin())
             column = int(np.abs(diagram.pH - point.pH).argmin())
             species = diagram.system.species[int(diagram.stable_species_index[row, column])]
             results.append(PointAssessment(point, True, species))
             continue
-        margin = stability_margin(diagram, point.pH, point.eh_V, assumed_uncertainty_J_mol)
+        margin = stability_margin(diagram, point.pH, point.U_V, assumed_uncertainty_J_mol)
         results.append(PointAssessment(point, True, margin.species, margin.runner_up, margin.margin_J_mol_metal,
                                        margin.margin_uncertainty_J_mol_metal))
     return tuple(results)

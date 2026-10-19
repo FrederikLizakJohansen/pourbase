@@ -38,7 +38,7 @@ class PathPanel(QWidget):
     changed = Signal()
     pickRequested = Signal()
     pickFinished = Signal()
-    probeRequested = Signal(float, float)  # pH and Eh against the SHE
+    probeRequested = Signal(float, float)  # pH and U against the SHE
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -46,7 +46,7 @@ class PathPanel(QWidget):
         self.database = None
         self.vertices: list[tuple[float, float]] = []
         self.table = QTableWidget(0, 2)
-        self.table.setHorizontalHeaderLabels(["pH", "Eh (V vs SHE)"])
+        self.table.setHorizontalHeaderLabels(["pH", "U (V vs SHE)"])
         self.table.horizontalHeader().setHighlightSections(False)
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table.verticalHeader().setDefaultSectionSize(22)
@@ -65,9 +65,9 @@ class PathPanel(QWidget):
         self.add.clicked.connect(self._add_point)
         self.remove = QPushButton("Remove point")
         self.remove.clicked.connect(self._remove_point)
-        self.sweep_eh = QPushButton("Potential sweep at the probe pH")
-        self.sweep_pH = QPushButton("pH sweep at the probe Eh")
-        self.sweep_eh.clicked.connect(lambda: self._from_probe("eh"))
+        self.sweep_U = QPushButton("Potential sweep at the probe pH")
+        self.sweep_pH = QPushButton("pH sweep at the probe U")
+        self.sweep_U.clicked.connect(lambda: self._from_probe("U"))
         self.sweep_pH.clicked.connect(lambda: self._from_probe("pH"))
         self.clear = QPushButton("Clear")
         self.clear.clicked.connect(lambda: self.set_vertices([]))
@@ -75,7 +75,7 @@ class PathPanel(QWidget):
         edit.addWidget(self.add)
         edit.addWidget(self.remove)
         sweeps = QHBoxLayout()
-        sweeps.addWidget(self.sweep_eh)
+        sweeps.addWidget(self.sweep_U)
         sweeps.addWidget(self.sweep_pH)
         controls = QVBoxLayout()
         controls.addWidget(self.pick)
@@ -111,8 +111,8 @@ class PathPanel(QWidget):
         self._probe = (7.0, 0.0)
         self.set_vertices([])
 
-    def set_probe(self, pH: float, eh_V: float) -> None:
-        self._probe = (pH, eh_V)
+    def set_probe(self, pH: float, U_V: float) -> None:
+        self._probe = (pH, U_V)
 
     def set_dark(self, dark: bool) -> None:
         apply_plot_theme(self.strip, dark)
@@ -129,9 +129,9 @@ class PathPanel(QWidget):
         self.vertices = [(float(x), float(y)) for x, y in vertices]
         self.table.blockSignals(True)
         self.table.setRowCount(len(self.vertices))
-        for row, (pH, eh) in enumerate(self.vertices):
+        for row, (pH, U) in enumerate(self.vertices):
             self.table.setItem(row, 0, QTableWidgetItem(f"{pH:.2f}"))
-            self.table.setItem(row, 1, QTableWidgetItem(f"{eh:.3f}"))
+            self.table.setItem(row, 1, QTableWidgetItem(f"{U:.3f}"))
         self.table.blockSignals(False)
         self.remove.setEnabled(bool(self.vertices))
         if len(self.vertices) < 2:
@@ -175,19 +175,19 @@ class PathPanel(QWidget):
         self.set_vertices(vertices)
 
     def _from_probe(self, axis: str) -> None:
-        pH, eh_V = self._probe
+        pH, U_V = self._probe
         window = getattr(self, "window_limits", ((0.0, 14.0), (-1.5, 1.5)))
-        if axis == "eh":
+        if axis == "U":
             self.set_vertices([(pH, window[1][0]), (pH, window[1][1])])
         else:
-            self.set_vertices([(window[0][0], eh_V), (window[0][1], eh_V)])
+            self.set_vertices([(window[0][0], U_V), (window[0][1], U_V)])
 
     def _along_moved(self, value: int) -> None:
         if self.result is None:
             return
         index = int(round(value / 1000 * (self.result.fraction.size - 1)))
         self._render_crossings(index)
-        self.probeRequested.emit(float(self.result.pH[index]), float(self.result.eh_V[index]))
+        self.probeRequested.emit(float(self.result.pH[index]), float(self.result.U_V[index]))
 
     def _render_crossings(self, index: int | None = None) -> None:
         """The crossings, with the species at the slider and the crossing nearest to it highlighted."""
@@ -199,7 +199,7 @@ class PathPanel(QWidget):
         if index is not None:
             here = result.species[int(result.stable_species_index[index])]
             self.here.setText(f"At {result.fraction[index]:.0%} · pH {result.pH[index]:.2f}, "
-                              f"Eh {result.eh_V[index]:+.3f} V: {to_html(here.species)} is stable")
+                              f"U {result.U_V[index]:+.3f} V: {to_html(here.species)} is stable")
         if not result.crossings:
             first = result.species[int(result.stable_species_index[0])]
             lines.append(f"{to_html(first.species)} is stable along the whole path.")
@@ -214,7 +214,7 @@ class PathPanel(QWidget):
             boundary = crossing.boundary
             reaction = reaction_html(boundary.reaction, database) if boundary and database else ""
             equation = html.escape(boundary.equation.replace("-", "−")) if boundary else ""
-            text = (f"{crossing.fraction:.0%} · pH {crossing.pH:.2f}, Eh {crossing.eh_V:+.3f} V: "
+            text = (f"{crossing.fraction:.0%} · pH {crossing.pH:.2f}, U {crossing.U_V:+.3f} V: "
                     f"{to_html(crossing.before.species)} → {to_html(crossing.after.species)}"
                     + (f"<br><span style='color:gray'>{reaction} · {equation}</span>" if boundary else ""))
             if number == nearest:
@@ -263,7 +263,7 @@ def read_points(path: str) -> list[MeasuredPoint]:
     return points
 
 
-POINT_COLUMNS = ["Label", "pH", "Eh (V vs SHE)", "Predicted", "Runner-up", "Margin (kJ/mol)", "Note"]
+POINT_COLUMNS = ["Label", "pH", "U (V vs SHE)", "Predicted", "Runner-up", "Margin (kJ/mol)", "Note"]
 
 
 class PointsPanel(QWidget):
@@ -333,7 +333,7 @@ class PointsPanel(QWidget):
                 note = "Runner-up within the uncertainty of the data"
             else:
                 note = ""
-            values = (point.label, f"{point.pH:.2f}", f"{point.eh_V:+.3f}",
+            values = (point.label, f"{point.pH:.2f}", f"{point.U_V:+.3f}",
                       item.species.species if item.species else "", item.runner_up.species if item.runner_up else "",
                       f"{margin / 1000:.2f}" + (f" ± {item.margin_uncertainty_J_mol_metal / 1000:.2f}"
                                                 if item.margin_uncertainty_J_mol_metal is not None else "")
@@ -345,7 +345,7 @@ class PointsPanel(QWidget):
     def _row_clicked(self, row: int, _column: int) -> None:
         if 0 <= row < len(self.assessments):
             point = self.assessments[row].point
-            self.probeRequested.emit(point.pH, point.eh_V)
+            self.probeRequested.emit(point.pH, point.U_V)
 
 
 def stable_ids(calculation) -> list[str]:
@@ -421,9 +421,9 @@ class RegionPanel(QWidget):
         if region.fraction == 0:
             text = f"{to_html(name)} is stable nowhere in the diagram with this margin."
         else:
-            pH_range, eh_range = region.pH_range, region.eh_range
+            pH_range, U_range = region.pH_range, region.U_range
             text = (f"{to_html(name)} holds on {region.fraction:.1%} of the diagram, within pH {pH_range[0]:.2f} to "
-                    f"{pH_range[1]:.2f} and Eh {eh_range[0]:+.3f} to {eh_range[1]:+.3f} V vs SHE.")
+                    f"{pH_range[1]:.2f} and U {U_range[0]:+.3f} to {U_range[1]:+.3f} V vs SHE.")
             finite = region.margin_J_mol_metal[region.satisfied & np.isfinite(region.margin_J_mol_metal)]
             if finite.size:
                 text += f" Its largest margin there is {finite.max() / 1000:.1f} kJ/mol metal."

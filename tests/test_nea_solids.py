@@ -103,7 +103,7 @@ class NEASolidTests(unittest.TestCase):
                           metal_count=233, core_oxygen_count=250,
                           gibbs_energy_J_mol=250 * wustite.gibbs_energy_J_mol,
                           gibbs_uncertainty_J_mol=250 * wustite.gibbs_uncertainty_J_mol)
-        conditions = pb.PourbaixConditions(pH_points=7, eh_points=9)
+        conditions = pb.PourbaixConditions(pH_points=7, U_points=9)
         systems = [replace(system, species=(ion, solid), excluded=()) for solid in (wustite, integer)]
         diagrams = [pb.PourbaixEngine(self.database).calculate_system(s, conditions) for s in systems]
         np.testing.assert_allclose(diagrams[0].transformed_gibbs_J_mol_metal,

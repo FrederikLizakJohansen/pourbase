@@ -70,7 +70,7 @@ import pourbase as pb
 calculation = pb.calculate(pb.Scenario("Fe", concentration=10, concentration_unit="ppm"))
 pb.plot_diagram(calculation.diagram)
 
-probe = calculation.probe(pH=7, eh_V=0)
+probe = calculation.probe(pH=7, U_V=0)
 print(probe.species.species)
 for boundary in calculation.boundaries:
     print(boundary.reaction, boundary.equation, boundary.source_ids)

@@ -103,7 +103,7 @@ class PSINickelFollowupTests(unittest.TestCase):
             self.assertNotIn(rid, ids)
 
     def test_closed_nickel_balance_with_all_three_new_species(self):
-        cfg = pb.PourbaixConditions(pH_points=7, eh_points=9,
+        cfg = pb.PourbaixConditions(pH_points=7, U_points=9,
             ligand_activities=pb.LigandActivityModel(tuple(
                 pb.LigandActivity(ligand, log10_free_activity=-6) for ligand in
                 ("arsenate-aso4", "carbonate-co3", "silicate-h3sio4"))))

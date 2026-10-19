@@ -1,6 +1,6 @@
-"""pH/Eh grids, water-stability lines and phase boundaries shared by the engines.
+"""pH/U grids, water-stability lines and phase boundaries shared by the engines.
 
-A diagram is evaluated at the centres of a regular pH x E grid. Each grid value is the centre of
+A diagram is evaluated at the centres of a regular pH x U grid. Each grid value is the centre of
 a rectangular cell, and :func:`phase_boundary_segments` draws a line segment along every cell
 edge that separates two different stable species. The drawn lines therefore follow the exact
 boundaries of Eqs. 3 and 4 to within half a grid step; the equations themselves come from
@@ -29,10 +29,10 @@ def readonly(array: npt.ArrayLike, dtype: npt.DTypeLike = None) -> np.ndarray:
 
 
 def grid_axes(conditions) -> tuple[FloatArray, FloatArray]:
-    """The pH and Eh axes of a calculation."""
+    """The pH and U axes of a calculation."""
     return (
         readonly(np.linspace(conditions.pH_min, conditions.pH_max, conditions.pH_points)),
-        readonly(np.linspace(conditions.eh_min_V, conditions.eh_max_V, conditions.eh_points)),
+        readonly(np.linspace(conditions.U_min_V, conditions.U_max_V, conditions.U_points)),
     )
 
 

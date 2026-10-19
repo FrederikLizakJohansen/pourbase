@@ -59,10 +59,10 @@ IntegerArray = npt.NDArray[np.int_]
 
 @dataclass(frozen=True, slots=True)
 class MassBalancedState:
-    """Equilibrium inventory at one numerical pH/Eh grid point."""
+    """Equilibrium inventory at one numerical pH/U grid point."""
 
     pH: float
-    eh_V: float
+    U_V: float
     dominant_species: ThermodynamicSpecies
     precipitating_solid: ThermodynamicSpecies | None
     total_metal_mol_L: float
@@ -83,7 +83,7 @@ class MassBalancedPourbaixDiagram:
     total_metal: TotalMetalConcentration
     activity_coefficient_model: ActivityCoefficientModel
     pH: FloatArray
-    eh_V: FloatArray
+    U_V: FloatArray
     dominant_species_index: IntegerArray
     precipitating_solid_index: IntegerArray
     aqueous_species_indices: IntegerArray
@@ -98,7 +98,7 @@ class MassBalancedPourbaixDiagram:
     oer_V: FloatArray
 
     def __post_init__(self) -> None:
-        shape = (self.eh_V.size, self.pH.size)
+        shape = (self.U_V.size, self.pH.size)
         for name in (
             "dominant_species_index", "precipitating_solid_index", "dissolved_metal_mol_L",
             "saturation_dissolved_metal_mol_L", "precipitated_metal_fraction",
@@ -132,24 +132,24 @@ class MassBalancedPourbaixDiagram:
             self.system.species[int(index)] for index in self.aqueous_species_indices
         )
 
-    def species_at(self, pH: float, eh_V: float) -> ThermodynamicSpecies:
+    def species_at(self, pH: float, U_V: float) -> ThermodynamicSpecies:
         """Return the dominant species nearest to a requested coordinate."""
         pH_index = nearest_index(self.pH, pH, "pH")
-        eh_index = nearest_index(self.eh_V, eh_V, "eh_V")
-        index = int(self.dominant_species_index[eh_index, pH_index])
+        U_index = nearest_index(self.U_V, U_V, "U_V")
+        index = int(self.dominant_species_index[U_index, pH_index])
         return self.system.species[index]
 
-    def state_at(self, pH: float, eh_V: float) -> MassBalancedState:
+    def state_at(self, pH: float, U_V: float) -> MassBalancedState:
         """Return the complete equilibrium inventory nearest to one coordinate."""
         pH_index = nearest_index(self.pH, pH, "pH")
-        eh_index = nearest_index(self.eh_V, eh_V, "eh_V")
-        dominant_index = int(self.dominant_species_index[eh_index, pH_index])
-        solid_index = int(self.precipitating_solid_index[eh_index, pH_index])
-        dissolved = float(self.dissolved_metal_mol_L[eh_index, pH_index])
+        U_index = nearest_index(self.U_V, U_V, "U_V")
+        dominant_index = int(self.dominant_species_index[U_index, pH_index])
+        solid_index = int(self.precipitating_solid_index[U_index, pH_index])
+        dissolved = float(self.dissolved_metal_mol_L[U_index, pH_index])
         total = self.total_metal.total_metal_mol_L
         return MassBalancedState(
             pH=float(self.pH[pH_index]),
-            eh_V=float(self.eh_V[eh_index]),
+            U_V=float(self.U_V[U_index]),
             dominant_species=self.system.species[dominant_index],
             precipitating_solid=(
                 self.system.species[solid_index] if solid_index >= 0 else None
@@ -158,12 +158,12 @@ class MassBalancedPourbaixDiagram:
             dissolved_metal_mol_L=dissolved,
             precipitated_metal_mol_L=max(total - dissolved, 0.0),
             precipitated_fraction=float(
-                self.precipitated_metal_fraction[eh_index, pH_index]
+                self.precipitated_metal_fraction[U_index, pH_index]
             ),
             aqueous_concentrations_mol_L=tuple(
                 (
                     species,
-                    float(self.aqueous_concentration_mol_L[index, eh_index, pH_index]),
+                    float(self.aqueous_concentration_mol_L[index, U_index, pH_index]),
                 )
                 for index, species in enumerate(self.aqueous_species)
             ),
@@ -174,7 +174,7 @@ class MassBalancedPourbaixDiagram:
             aqueous_activities=tuple(
                 (
                     species,
-                    float(self.aqueous_activity[index, eh_index, pH_index]),
+                    float(self.aqueous_activity[index, U_index, pH_index]),
                 )
                 for index, species in enumerate(self.aqueous_species)
             ),
@@ -184,7 +184,7 @@ class MassBalancedPourbaixDiagram:
 class MassBalanceEngine:
     """Solve aqueous speciation and solid precipitation at fixed total metal.
 
-    Protons and electrons remain open reservoirs controlled by pH and Eh. Water and
+    Protons and electrons remain open reservoirs controlled by pH and U. Water and
     solids have unit activity. The selected metal is conserved across dissolved
     species and precipitated solid. A pluggable model supplies aqueous coefficients.
     """
@@ -269,10 +269,10 @@ class MassBalanceEngine:
             raise UnsupportedConditionError(
                 f"{system.symbol} has no supported aqueous species for a mass balance"
             )
-        pH, eh_V = grid_axes(conditions)
-        pH_grid, eh_grid = np.meshgrid(pH, eh_V)
+        pH, U_V = grid_axes(conditions)
+        pH_grid, U_grid = np.meshgrid(pH, U_V)
         standard_energy = np.stack([
-            standard_transformed_gibbs_J_mol_metal(species, reference_state, conditions, pH_grid, eh_grid)
+            standard_transformed_gibbs_J_mol_metal(species, reference_state, conditions, pH_grid, U_grid)
             for species in system.species
         ])
         rt = GAS_CONSTANT_J_MOL_K * conditions.temperature_K
@@ -347,7 +347,7 @@ class MassBalanceEngine:
             total_metal=total_metal,
             activity_coefficient_model=self.activity_coefficient_model,
             pH=pH,
-            eh_V=eh_V,
+            U_V=U_V,
             dominant_species_index=np.asarray(dominant_index, dtype=np.int_),
             precipitating_solid_index=np.asarray(
                 precipitating_solid_index, dtype=np.int_

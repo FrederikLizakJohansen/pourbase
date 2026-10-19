@@ -95,8 +95,8 @@ class UndoBoundaryOverlayTests(WindowTestCase):
         self.assertEqual(len(window.pinned), 2)
         self.assertNotEqual(window.pinned[0].windowTitle(), window.pinned[1].windowTitle())
         window.pinned[1].probeMoved.emit(10.0, -0.5)
-        self.assertEqual((window.settings.probe_pH, window.settings.probe_eh_V), (10.0, -0.5))
-        self.assertTrue(window.pinned[0].readout.text().startswith("pH 10.00, Eh -0.500"))
+        self.assertEqual((window.settings.probe_pH, window.settings.probe_U_V), (10.0, -0.5))
+        self.assertTrue(window.pinned[0].readout.text().startswith("pH 10.00, U -0.500"))
         self.assertTrue(window.pinned[0].sources.text().endswith("sources"))
         window.close_pinned()
         self.wait(lambda: not window.pinned, timeout=2)
@@ -114,7 +114,7 @@ class UndoBoundaryOverlayTests(WindowTestCase):
         self.assertEqual(window.settings.probe_pH, 8.1)
         self.assertTrue(window.settings.ligands["chloride-cl"].enabled)
         page = window.diagram_page
-        page.path_panel._from_probe("eh")
+        page.path_panel._from_probe("U")
         self.assertIn("CuCl", page.path_panel.crossings.toPlainText())
         self.assertNotIn("chloride-cl", page.path_panel.crossings.toPlainText())
         view = page.diagram

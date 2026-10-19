@@ -1,9 +1,9 @@
 """Adjacent phase reactions and activity-conditioned boundary equations.
 
 Two species i and j are in equilibrium where G~_i = G~_j (Eq. 1). Writing
-b_i = G~_i(pH = 0, E = 0) for the pH- and potential-independent part, the boundary is
+b_i = G~_i(pH = 0, U = 0) for the pH- and potential-independent part, the boundary is
 
-    E = (b_j - b_i) / ((e_j - e_i) F) - (h_j - h_i) / (e_j - e_i) * (RT ln 10 / F) pH   (3)
+    U = (b_j - b_i) / ((e_j - e_i) F) - (h_j - h_i) / (e_j - e_i) * (RT ln 10 / F) pH   (3)
 
 when the electron coefficients differ, and the vertical line
 
@@ -38,8 +38,8 @@ class BoundaryEquation:
     right_species: str
     reaction: str
     kind: str
-    eh_intercept_V: float | None
-    eh_slope_V_per_pH: float | None
+    U_intercept_V: float | None
+    U_slope_V_per_pH: float | None
     vertical_pH: float | None
     equation: str
     source_ids: tuple[str, ...]
@@ -52,8 +52,8 @@ class BoundaryEquation:
             "right_species": self.right_species,
             "reaction": self.reaction,
             "kind": self.kind,
-            "eh_intercept_V": self.eh_intercept_V,
-            "eh_slope_V_per_pH": self.eh_slope_V_per_pH,
+            "U_intercept_V": self.U_intercept_V,
+            "U_slope_V_per_pH": self.U_slope_V_per_pH,
             "vertical_pH": self.vertical_pH,
             "equation": self.equation,
             "source_ids": list(self.source_ids),
@@ -167,19 +167,19 @@ def _one_boundary(
     engine = PourbaixEngine(database)
     reference = database.reference_state
 
-    def difference(pH: float, eh: float) -> float:
+    def difference(pH: float, U: float) -> float:
         return float(
             engine.transformed_gibbs_J_mol_metal(
-                left, reference, diagram.conditions, pH, eh
+                left, reference, diagram.conditions, pH, U
             )
             - engine.transformed_gibbs_J_mol_metal(
-                right, reference, diagram.conditions, pH, eh
+                right, reference, diagram.conditions, pH, U
             )
         )
 
     intercept = difference(0.0, 0.0)
     pH_coefficient = difference(1.0, 0.0) - intercept
-    eh_coefficient = difference(0.0, 1.0) - intercept
+    U_coefficient = difference(0.0, 1.0) - intercept
     linear_check = difference(2.0, 0.0) - intercept - 2.0 * pH_coefficient
     sources = tuple(sorted({left.source_id, right.source_id}))
     reaction = _reaction(left, right)
@@ -190,14 +190,14 @@ def _one_boundary(
             "Numerical boundary; pH-dependent ligand protonation makes it non-linear",
             sources,
         )
-    if not math.isclose(eh_coefficient, 0.0, abs_tol=1e-10):
-        eh_intercept = -intercept / eh_coefficient
-        slope = -pH_coefficient / eh_coefficient
-        equation = (f"Eh = {eh_intercept:+.4f} V vs SHE" if abs(slope) < 5e-7
-                    else f"Eh = {eh_intercept:+.4f} {slope:+.4f}·pH V vs SHE")
+    if not math.isclose(U_coefficient, 0.0, abs_tol=1e-10):
+        U_intercept = -intercept / U_coefficient
+        slope = -pH_coefficient / U_coefficient
+        equation = (f"U = {U_intercept:+.4f} V vs SHE" if abs(slope) < 5e-7
+                    else f"U = {U_intercept:+.4f} {slope:+.4f}·pH V vs SHE")
         return BoundaryEquation(
             left.record_id, right.record_id, left.species, right.species,
-            reaction, "nernst", eh_intercept, slope, None, equation, sources,
+            reaction, "nernst", U_intercept, slope, None, equation, sources,
         )
     if not math.isclose(pH_coefficient, 0.0, abs_tol=1e-10):
         pH = -intercept / pH_coefficient
@@ -208,7 +208,7 @@ def _one_boundary(
     return BoundaryEquation(
         left.record_id, right.record_id, left.species, right.species,
         reaction, "degenerate", None, None, None,
-        "No pH or Eh dependence under these conditions", sources,
+        "No pH or U dependence under these conditions", sources,
     )
 
 

@@ -28,7 +28,7 @@ class NEAZirconiumTests(unittest.TestCase):
             item, self.database.reference_state, conditions, 7, .2)
         self.assertAlmostEqual(float(actual), expected, places=7)
         result = pb.MassBalanceEngine(self.database).calculate(
-            "Zr", pb.PourbaixConditions(pH_points=5, eh_points=5),
+            "Zr", pb.PourbaixConditions(pH_points=5, U_points=5),
             pb.TotalMetalConcentration(1e-4))
         self.assertTrue(any(x.record_id == item.record_id and
                             x.reason is pb.ExclusionReason.POLYNUCLEAR_AQUEOUS

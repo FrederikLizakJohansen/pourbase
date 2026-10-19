@@ -1,6 +1,6 @@
 """The stable species along a path through pH and potential, and the boundaries it crosses.
 
-A path through points ``(pH, E)`` describes, for example, a potential sweep at fixed pH, an acid
+A path through points ``(pH, U)`` describes, for example, a potential sweep at fixed pH, an acid
 or base titration at fixed potential, or both changing together. It joins its points with
 straight segments, or with a smooth Catmull-Rom curve through all of them. For fixed-activity
 diagrams the stable species follows from Eq. 2 at every sampled point and each crossing is
@@ -22,7 +22,7 @@ from .models import ThermodynamicSpecies
 class Crossing:
     fraction: float  # position along the path, 0 at the start and 1 at the end
     pH: float
-    eh_V: float
+    U_V: float
     before: ThermodynamicSpecies
     after: ThermodynamicSpecies
     boundary: BoundaryEquation | None
@@ -32,21 +32,21 @@ class Crossing:
 class PhasePath:
     fraction: np.ndarray
     pH: np.ndarray
-    eh_V: np.ndarray
+    U_V: np.ndarray
     species: tuple[ThermodynamicSpecies, ...]
     stable_species_index: np.ndarray
     crossings: tuple[Crossing, ...]
 
 
 def path_curve(vertices, smooth: bool = False, points: int = 401) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """``(position, pH, Eh)`` sampled along a path through ``vertices``; ``position`` runs from 0 to 1.
+    """``(position, pH, U)`` sampled along a path through ``vertices``; ``position`` runs from 0 to 1.
 
     Each segment receives samples in proportion to its length, with pH and potential scaled by
     14 pH units and 3 V. ``smooth`` joins the points with a Catmull-Rom curve.
     """
     vertices = np.asarray(vertices, dtype=np.float64)
     if vertices.ndim != 2 or vertices.shape[1] != 2 or len(vertices) < 2:
-        raise ValueError("a path needs at least two (pH, Eh) points")
+        raise ValueError("a path needs at least two (pH, U) points")
     if points < 2:
         raise ValueError("a path needs at least two samples")
     scaled = vertices / np.array([14.0, 3.0])
@@ -70,28 +70,28 @@ def path_curve(vertices, smooth: bool = False, points: int = 401) -> tuple[np.nd
 
 
 def phase_path(calculation, *vertices: tuple[float, float], smooth: bool = False, points: int = 401) -> PhasePath:
-    """Stable species along the path through ``vertices``, each ``(pH, Eh in V vs SHE)``."""
+    """Stable species along the path through ``vertices``, each ``(pH, U in V vs SHE)``."""
     diagram = calculation.diagram
     species = diagram.system.species
     vertices = tuple(vertices)
-    fraction, pH, eh = path_curve(vertices, smooth, points)
+    fraction, pH, U = path_curve(vertices, smooth, points)
     energies = getattr(diagram, "transformed_gibbs_J_mol_metal", None)
     exact = energies is not None and not calculation.is_mass_balance
     reference = calculation.database.reference_state
 
-    def stable_at(pH_values, eh_values):
+    def stable_at(pH_values, U_values):
         if exact:
             stack = np.stack([transformed_gibbs_J_mol_metal(item, reference, diagram.conditions,
-                                                            pH_values, eh_values) for item in species])
+                                                            pH_values, U_values) for item in species])
             return np.argmin(stack, axis=0)
         columns = np.abs(diagram.pH[None, :] - np.atleast_1d(pH_values)[:, None]).argmin(axis=1)
-        rows = np.abs(diagram.eh_V[None, :] - np.atleast_1d(eh_values)[:, None]).argmin(axis=1)
+        rows = np.abs(diagram.U_V[None, :] - np.atleast_1d(U_values)[:, None]).argmin(axis=1)
         return diagram.stable_species_index[rows, columns]
 
     def at(position: float) -> tuple[float, float]:  # between samples the path is taken as straight
-        return float(np.interp(position, fraction, pH)), float(np.interp(position, fraction, eh))
+        return float(np.interp(position, fraction, pH)), float(np.interp(position, fraction, U))
 
-    stable = np.asarray(stable_at(pH, eh))
+    stable = np.asarray(stable_at(pH, U))
     boundaries = {frozenset((item.left_record_id, item.right_record_id)): item for item in calculation.boundaries}
     crossings = []
     for index in np.nonzero(stable[1:] != stable[:-1])[0]:
@@ -108,4 +108,4 @@ def phase_path(calculation, *vertices: tuple[float, float], smooth: bool = False
         before, after = species[int(stable[index])], species[int(stable[index + 1])]
         crossings.append(Crossing(float(position), x, y, before, after,
                                   boundaries.get(frozenset((before.record_id, after.record_id)))))
-    return PhasePath(fraction, pH, eh, species, stable, tuple(crossings))
+    return PhasePath(fraction, pH, U, species, stable, tuple(crossings))

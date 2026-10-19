@@ -84,6 +84,6 @@ class NEAAdjacentPhaseTests(unittest.TestCase):
             with self.subTest(symbol=symbol):
                 self.assertFalse(any(s.is_gas for s in self.database.load_system(symbol).species))
                 result = pb.MassBalanceEngine(self.database).calculate(
-                    symbol, pb.PourbaixConditions(pH_points=5, eh_points=5),
+                    symbol, pb.PourbaixConditions(pH_points=5, U_points=5),
                     pb.TotalMetalConcentration(1e-4))
                 self.assertEqual(result.dominant_species_index.shape, (5, 5))

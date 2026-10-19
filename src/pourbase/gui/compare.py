@@ -90,7 +90,7 @@ class ComparePage(StackedView):
 
     def show_calculations(self, left: Any, right: Any, display: DisplayOptions, reset_range: bool,
                           point: tuple[float, float] = (7.0, 0.0)) -> None:
-        """Draw both diagrams; ``point`` (pH, Eh vs SHE) places the shared probe the first time."""
+        """Draw both diagrams; ``point`` (pH, U vs SHE) places the shared probe the first time."""
         self.calculations, self.display = (left, right), display
         stable = [item.record_id for item in (*left.stable_species, *right.stable_species)]
         colors = record_colors(stable)
@@ -104,17 +104,17 @@ class ComparePage(StackedView):
         self.set_point(*(self.point or point))
         self.show_view()
 
-    def set_point(self, pH: float, eh_V: float) -> None:
+    def set_point(self, pH: float, U_V: float) -> None:
         """Place the probe of both diagrams at one point and compare the species there."""
         if self.calculations is None:
             return
-        self.point = (pH, eh_V)
+        self.point = (pH, U_V)
         for view in self.views:
-            view.set_probe(pH, eh_V)
+            view.set_probe(pH, U_V)
         columns, stable = [], []
         for calculation in self.calculations:
             try:
-                probe = calculation.probe(pH, eh_V)
+                probe = calculation.probe(pH, U_V)
             except ValueError as error:
                 columns.append(f"<td>{html.escape(str(error))}</td>")
                 stable.append(None)
@@ -122,7 +122,7 @@ class ComparePage(StackedView):
             stable.append(probe.species.record_id)
             columns.append(f'<td valign="top" width="50%">{self._column(calculation, probe)}</td>')
         scale = self.display.potential_scale
-        scaled = f" ({float(to_scale(eh_V, pH, scale)):+.3f} V vs {html.escape(scale)})" if scale != "SHE" else ""
+        scaled = f" ({float(to_scale(U_V, pH, scale)):+.3f} V vs {html.escape(scale)})" if scale != "SHE" else ""
         if None in stable:
             verdict = ""
         elif stable[0] == stable[1]:
@@ -130,7 +130,7 @@ class ComparePage(StackedView):
         else:
             verdict = " — different species"
         self.details.setHtml(
-            f"At pH {pH:.2f}, Eh {eh_V:+.3f} V vs SHE{scaled}{verdict}"
+            f"At pH {pH:.2f}, U {U_V:+.3f} V vs SHE{scaled}{verdict}"
             f'<table width="100%" cellspacing="0" cellpadding="2"><tr>{"".join(columns)}</tr></table>'
         )
 
@@ -144,7 +144,7 @@ class ComparePage(StackedView):
                          f"precipitated {probe.precipitated_fraction:.1%}")
         else:
             try:
-                margin = stability_margin(calculation.diagram, probe.pH, probe.eh_V,
+                margin = stability_margin(calculation.diagram, probe.pH, probe.U_V,
                                           self.display.assumed_uncertainty_kJ_mol * 1000)
             except ValueError:
                 margin = None

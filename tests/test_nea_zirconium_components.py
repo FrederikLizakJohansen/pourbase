@@ -96,7 +96,7 @@ class NEAZirconiumComponentTests(unittest.TestCase):
         self.assertIs(excluded.reason, pb.ExclusionReason.GAS_NOT_SELECTED)
         selected = self.database.load_system("Zr", include_optional_gases=True)
         gas = next(s for s in selected.species if s.record_id == "nea02g1-zr-gas")
-        conditions = pb.PourbaixConditions(pH_points=5, eh_points=5,
+        conditions = pb.PourbaixConditions(pH_points=5, U_points=5,
             gas_fugacities=pb.GasFugacityModel(overrides={gas.record_id: -3}))
         self.assertAlmostEqual(float(transformed_gibbs_J_mol_metal(
             gas, self.database.reference_state, conditions, 7, 0)),

@@ -25,7 +25,7 @@ FloatArray = npt.NDArray[np.float64]
 
 @dataclass(frozen=True, slots=True)
 class ConcentrationSweep:
-    """A common pH/Eh grid evaluated at several default aqueous activities."""
+    """A common pH/U grid evaluated at several default aqueous activities."""
 
     log10_activities: FloatArray
     diagrams: tuple[PourbaixDiagram, ...]
@@ -39,7 +39,7 @@ class ConcentrationSweep:
         for diagram in self.diagrams[1:]:
             if diagram.system.symbol != first.system.symbol:
                 raise ValueError("all sweep diagrams must use the same element")
-            if not np.array_equal(diagram.pH, first.pH) or not np.array_equal(diagram.eh_V, first.eh_V):
+            if not np.array_equal(diagram.pH, first.pH) or not np.array_equal(diagram.U_V, first.U_V):
                 raise ValueError("all sweep diagrams must use the same grid")
 
     @property
@@ -51,8 +51,8 @@ class ConcentrationSweep:
         return self.diagrams[0].pH
 
     @property
-    def eh_V(self) -> FloatArray:
-        return self.diagrams[0].eh_V
+    def U_V(self) -> FloatArray:
+        return self.diagrams[0].U_V
 
     @property
     def stable_species(self) -> tuple[ThermodynamicSpecies, ...]:
@@ -116,7 +116,7 @@ class ConcentrationSweepEngine:
 def _compact_volume(sweep: ConcentrationSweep) -> tuple[np.ndarray, tuple[ThermodynamicSpecies, ...]]:
     species = sweep.stable_species
     by_record = {item.record_id: index for index, item in enumerate(species)}
-    volume = np.empty((len(sweep.diagrams), sweep.eh_V.size, sweep.pH.size), dtype=np.intp)
+    volume = np.empty((len(sweep.diagrams), sweep.U_V.size, sweep.pH.size), dtype=np.intp)
     for level_index, diagram in enumerate(sweep.diagrams):
         for system_index, item in enumerate(diagram.system.species):
             if item.record_id in by_record:
@@ -128,7 +128,7 @@ def plot_concentration_sweep(
     sweep: ConcentrationSweep,
     *,
     probe_pH: float = 7.0,
-    probe_eh_V: float = 0.0,
+    probe_U_V: float = 0.0,
     show_water: bool = True,
 ) -> tuple[Any, Any]:
     """Plot stacked 3D boundaries and two orthogonal concentration projections."""
@@ -140,15 +140,15 @@ def plot_concentration_sweep(
         raise ImportError("Plotting requires Matplotlib") from error
     if not sweep.pH[0] <= probe_pH <= sweep.pH[-1]:
         raise ValueError("probe_pH lies outside the sweep")
-    if not sweep.eh_V[0] <= probe_eh_V <= sweep.eh_V[-1]:
-        raise ValueError("probe_eh_V lies outside the sweep")
+    if not sweep.U_V[0] <= probe_U_V <= sweep.U_V[-1]:
+        raise ValueError("probe_U_V lies outside the sweep")
     volume, species = _compact_volume(sweep)
     colors = species_colors(tuple(item.record_id for item in species))
     cmap = ListedColormap([colors[item.record_id] for item in species])
     figure = plt.figure(figsize=(17, 5.5), constrained_layout=True)
     axis_3d = figure.add_subplot(1, 3, 1, projection="3d")
     for level, compact, diagram in zip(sweep.log10_activities, volume, sweep.diagrams):
-        for segment in phase_boundary_segments(compact, sweep.pH, sweep.eh_V):
+        for segment in phase_boundary_segments(compact, sweep.pH, sweep.U_V):
             axis_3d.plot(
                 [segment[0][0], segment[1][0]],
                 [float(level), float(level)],
@@ -160,27 +160,27 @@ def plot_concentration_sweep(
                          "--", color="gray", linewidth=0.5)
             axis_3d.plot(sweep.pH, np.full(sweep.pH.shape, level), diagram.oer_V,
                          "--", color="gray", linewidth=0.5)
-    axis_3d.set(xlabel="pH", ylabel="log10 aqueous activity", zlabel="Eh (V vs SHE)",
+    axis_3d.set(xlabel="pH", ylabel="log10 aqueous activity", zlabel="U (V vs SHE)",
                 title="Stacked phase boundaries")
 
-    eh_index = int(np.abs(sweep.eh_V - probe_eh_V).argmin())
+    U_index = int(np.abs(sweep.U_V - probe_U_V).argmin())
     pH_index = int(np.abs(sweep.pH - probe_pH).argmin())
     axis_ph = figure.add_subplot(1, 3, 2)
     axis_ph.pcolormesh(
-        sweep.pH, sweep.log10_activities, volume[:, eh_index, :],
+        sweep.pH, sweep.log10_activities, volume[:, U_index, :],
         cmap=cmap, vmin=-0.5, vmax=len(species) - 0.5, shading="nearest",
     )
     axis_ph.set(xlabel="pH", ylabel="log10 aqueous activity",
-                title=f"pH–activity at Eh = {sweep.eh_V[eh_index]:g} V")
-    axis_eh = figure.add_subplot(1, 3, 3)
-    axis_eh.pcolormesh(
-        sweep.log10_activities, sweep.eh_V, volume[:, :, pH_index].T,
+                title=f"pH–activity at U = {sweep.U_V[U_index]:g} V")
+    axis_U = figure.add_subplot(1, 3, 3)
+    axis_U.pcolormesh(
+        sweep.log10_activities, sweep.U_V, volume[:, :, pH_index].T,
         cmap=cmap, vmin=-0.5, vmax=len(species) - 0.5, shading="nearest",
     )
-    axis_eh.set(xlabel="log10 aqueous activity", ylabel="Eh (V vs SHE)",
-                title=f"Eh–activity at pH = {sweep.pH[pH_index]:g}")
+    axis_U.set(xlabel="log10 aqueous activity", ylabel="U (V vs SHE)",
+                title=f"U–activity at pH = {sweep.pH[pH_index]:g}")
     figure.legend(
         handles=[Patch(facecolor=colors[item.record_id], label=item.species) for item in species],
         loc="outside lower center", ncol=min(6, len(species)), fontsize=7,
     )
-    return figure, (axis_3d, axis_ph, axis_eh)
+    return figure, (axis_3d, axis_ph, axis_U)

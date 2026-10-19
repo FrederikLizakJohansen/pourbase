@@ -93,7 +93,7 @@ class PalladiumSourceRoutesTests(unittest.TestCase):
             self.assertAlmostEqual(energies[1] - energies[0], -2 * n * RTL)
 
     def test_dilute_closed_pd_balance_preserves_thermal_and_crystalline_gap_scope(self):
-        cfg = pb.PourbaixConditions(pH_points=7, eh_points=9,
+        cfg = pb.PourbaixConditions(pH_points=7, U_points=9,
             ligand_activities=pb.LigandActivityModel((
                 pb.LigandActivity('ammonia-nh3', log10_free_activity=-5),
                 pb.LigandActivity('chloride-cl', log10_free_activity=-3))))

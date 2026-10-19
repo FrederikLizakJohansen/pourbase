@@ -87,13 +87,13 @@ class NEADisputedEvaluationTests(unittest.TestCase):
         system = self.database.load_system("Zr")
         self.assertFalse(any(s.is_gas for s in system.species))
         result = pb.MassBalanceEngine(self.database).calculate(
-            "Zr", pb.PourbaixConditions(pH_points=5, eh_points=5),
+            "Zr", pb.PourbaixConditions(pH_points=5, U_points=5),
             pb.TotalMetalConcentration(1e-4))
         self.assertEqual(result.dominant_species_index.shape, (5, 5))
         with self.assertRaises(pb.UnsupportedConditionError):
             pb.MassBalanceEngine(self.database).calculate_system(
                 self.database.load_system("Zr", include_optional_gases=True),
-                pb.PourbaixConditions(pH_points=5, eh_points=5),
+                pb.PourbaixConditions(pH_points=5, U_points=5),
                 pb.TotalMetalConcentration(1e-4))
 
 

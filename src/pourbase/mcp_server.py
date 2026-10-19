@@ -126,20 +126,20 @@ class Tools:
 
     def _scenario(self, symbol: str, mode: str, concentration: float, concentration_unit: str,
                   ligands: list[dict[str, Any]] | None, ionic_strength_mol_L: float | None,
-                  pH_min: float, pH_max: float, eh_min_V: float, eh_max_V: float,
+                  pH_min: float, pH_max: float, U_min_V: float, U_max_V: float,
                   allow_incomplete: bool) -> Scenario:
         return Scenario(
             symbol, mode=Mode(mode), concentration=concentration, concentration_unit=concentration_unit,
             davies_ionic_strength_mol_L=ionic_strength_mol_L,
             ligands=tuple(LigandActivity(**item) for item in (ligands or ())),
-            pH_min=pH_min, pH_max=pH_max, eh_min_V=eh_min_V, eh_max_V=eh_max_V,
+            pH_min=pH_min, pH_max=pH_max, U_min_V=U_min_V, U_max_V=U_max_V,
             allow_incomplete=allow_incomplete,
         )
 
     def calculate_diagram(self, symbol: str, mode: str = "fixed_activity", concentration: float = -6.0,
                           concentration_unit: str = "log10_molar", ligands: list[dict[str, Any]] | None = None,
                           ionic_strength_mol_L: float | None = None, pH_min: float = 0.0, pH_max: float = 14.0,
-                          eh_min_V: float = -1.5, eh_max_V: float = 1.5,
+                          U_min_V: float = -1.5, U_max_V: float = 1.5,
                           allow_incomplete: bool = True) -> dict[str, Any]:
         """Stable species with their share of the diagram, boundary equations, and excluded species.
 
@@ -148,7 +148,7 @@ class Tools:
         {"ligand_id", and "log10_free_activity" or "total_unbound_mol_L" with optional "acid_pKa"}.
         """
         calculation = calculate(self._scenario(symbol, mode, concentration, concentration_unit, ligands,
-                                               ionic_strength_mol_L, pH_min, pH_max, eh_min_V, eh_max_V,
+                                               ionic_strength_mol_L, pH_min, pH_max, U_min_V, U_max_V,
                                                allow_incomplete), self.database)
         result = calculation.as_dict()
         diagram = calculation.diagram
@@ -161,7 +161,7 @@ class Tools:
             result["share_within_1_sigma_of_another_species"] = round(float(hatched.mean()), 4)
         return _plain(result)
 
-    def probe_point(self, symbol: str, pH: float, eh_V: float, mode: str = "fixed_activity",
+    def probe_point(self, symbol: str, pH: float, U_V: float, mode: str = "fixed_activity",
                     concentration: float = -6.0, concentration_unit: str = "log10_molar",
                     ligands: list[dict[str, Any]] | None = None, ionic_strength_mol_L: float | None = None,
                     allow_incomplete: bool = True) -> dict[str, Any]:
@@ -169,17 +169,17 @@ class Tools:
         calculation = calculate(self._scenario(symbol, mode, concentration, concentration_unit, ligands,
                                                ionic_strength_mol_L, 0.0, 14.0, -1.5, 1.5, allow_incomplete),
                                 self.database)
-        probe = calculation.probe(pH, eh_V)
+        probe = calculation.probe(pH, U_V)
         source = self.database.source(probe.species.source_id)
         result: dict[str, Any] = {
-            "pH": pH, "eh_V": eh_V, "record_id": probe.species.record_id, "species": probe.species.species,
+            "pH": pH, "U_V": U_V, "record_id": probe.species.record_id, "species": probe.species.species,
             "phase": probe.species.phase, "gibbs_energy_kJ_mol": _kJ(probe.species.gibbs_energy_J_mol),
             "status": _plain(probe.species.gibbs_status), "source": source.citation if source else None,
             "dissolved_metal_mol_L": probe.dissolved_metal_mol_L,
             "precipitated_fraction": probe.precipitated_fraction, "speciation": _plain(probe.speciation),
         }
         if not calculation.is_mass_balance:
-            margin = stability_margin(calculation.diagram, pH, eh_V)
+            margin = stability_margin(calculation.diagram, pH, U_V)
             result.update({
                 "runner_up": margin.runner_up.species if margin.runner_up else None,
                 "margin_kJ_mol_metal": _kJ(margin.margin_J_mol_metal),

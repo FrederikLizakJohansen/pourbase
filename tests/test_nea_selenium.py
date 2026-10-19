@@ -58,7 +58,7 @@ class NEASeleniumTests(unittest.TestCase):
                       pb.DaviesActivityCoefficientModel(0.01)):
             result = pb.MassBalanceEngine(
                 self.database, activity_coefficient_model=model).calculate(
-                    "Se", pb.PourbaixConditions(pH_points=7, eh_points=9),
+                    "Se", pb.PourbaixConditions(pH_points=7, U_points=9),
                     pb.TotalMetalConcentration(1e-4))
             excluded = {s.record_id for s in result.system.excluded
                         if s.reason is pb.ExclusionReason.POLYNUCLEAR_AQUEOUS}

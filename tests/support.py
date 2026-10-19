@@ -27,7 +27,7 @@ class FakeMPEntry:
         self.normalization_factor = 1.0 / amounts["Fe"]
         self.normalized_energy, self.npH, self.nPhi = energy, npH, nPhi
 
-    def normalized_energy_at_conditions(self, pH, eh_V):
+    def normalized_energy_at_conditions(self, pH, U_V):
         return self.normalized_energy + self.npH * self.normalization_factor * 0.0591 * pH + (
-            self.nPhi * self.normalization_factor * eh_V
+            self.nPhi * self.normalization_factor * U_V
         )

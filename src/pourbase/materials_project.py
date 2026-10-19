@@ -93,7 +93,7 @@ class OfficialMaterialsProjectDiagram:
     conditions: PourbaixConditions
     phases: tuple[OfficialMaterialsProjectPhase, ...]
     pH: FloatArray
-    eh_V: FloatArray
+    U_V: FloatArray
     stable_phase_index: IntegerArray
     minimum_energy_eV_metal: FloatArray
     her_V: FloatArray
@@ -105,7 +105,7 @@ class OfficialMaterialsProjectDiagram:
     use_gibbs_300K: bool
 
     def __post_init__(self) -> None:
-        expected = (self.eh_V.size, self.pH.size)
+        expected = (self.U_V.size, self.pH.size)
         if self.stable_phase_index.shape != expected:
             raise ValueError("MP phase grid has the wrong shape")
         if self.minimum_energy_eV_metal.shape != expected:
@@ -118,14 +118,14 @@ class OfficialMaterialsProjectDiagram:
         indices = sorted(int(value) for value in np.unique(self.stable_phase_index))
         return tuple(self.phases[index] for index in indices)
 
-    def phase_at(self, pH: float, eh_V: float) -> OfficialMaterialsProjectPhase:
+    def phase_at(self, pH: float, U_V: float) -> OfficialMaterialsProjectPhase:
         if not self.pH[0] <= pH <= self.pH[-1]:
             raise ValueError("pH lies outside the diagram")
-        if not self.eh_V[0] <= eh_V <= self.eh_V[-1]:
-            raise ValueError("Eh lies outside the diagram")
+        if not self.U_V[0] <= U_V <= self.U_V[-1]:
+            raise ValueError("U lies outside the diagram")
         pH_index = int(np.abs(self.pH - pH).argmin())
-        eh_index = int(np.abs(self.eh_V - eh_V).argmin())
-        return self.phases[int(self.stable_phase_index[eh_index, pH_index])]
+        U_index = int(np.abs(self.U_V - U_V).argmin())
+        return self.phases[int(self.stable_phase_index[U_index, pH_index])]
 
 
 def thermodynamic_species_equivalence_key(species: ThermodynamicSpecies) -> PhaseKey:
@@ -180,9 +180,9 @@ class OfficialMaterialsProjectComparison:
 
     @property
     def water_window_equivalent_domain_fraction(self) -> float:
-        _, eh_grid = np.meshgrid(self.experimental.pH, self.experimental.eh_V)
-        inside = (eh_grid >= self.experimental.her_V[np.newaxis, :]) & (
-            eh_grid <= self.experimental.oer_V[np.newaxis, :]
+        _, U_grid = np.meshgrid(self.experimental.pH, self.experimental.U_V)
+        inside = (U_grid >= self.experimental.her_V[np.newaxis, :]) & (
+            U_grid <= self.experimental.oer_V[np.newaxis, :]
         )
         return float(np.mean(self.same_thermodynamic_species[inside]))
 
@@ -264,10 +264,10 @@ def evaluate_official_materials_project_entries(
                 if phase_type == "aqueous" else None
             ),
         ))
-    pH, eh_V = grid_axes(conditions)
-    pH_grid, eh_grid = np.meshgrid(pH, eh_V)
+    pH, U_V = grid_axes(conditions)
+    pH_grid, U_grid = np.meshgrid(pH, U_V)
     energy_stack = np.stack([
-        np.asarray(entry.normalized_energy_at_conditions(pH_grid, eh_grid), dtype=np.float64)
+        np.asarray(entry.normalized_energy_at_conditions(pH_grid, U_grid), dtype=np.float64)
         for entry in ordered_entries
     ])
     stable_index = np.argmin(energy_stack, axis=0)
@@ -277,7 +277,7 @@ def evaluate_official_materials_project_entries(
     her_V, oer_V = water_lines(pH, conditions.temperature_K)
     return OfficialMaterialsProjectDiagram(
         symbol=symbol, conditions=conditions, phases=tuple(phases),
-        pH=readonly(pH, np.float64), eh_V=readonly(eh_V, np.float64),
+        pH=readonly(pH, np.float64), U_V=readonly(U_V, np.float64),
         stable_phase_index=readonly(stable_index, np.int_),
         minimum_energy_eV_metal=readonly(minimum_energy, np.float64),
         her_V=readonly(her_V, np.float64), oer_V=readonly(oer_V, np.float64),

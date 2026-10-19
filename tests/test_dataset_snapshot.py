@@ -74,7 +74,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual(complex_.ligand_gibbs_energy_J_mol, -103960)
         self.assertEqual(complex_.gibbs_energy_J_mol, -358192.24)
         conditions = pb.PourbaixConditions(
-            pH_points=9, eh_points=7,
+            pH_points=9, U_points=7,
             ligand_activities=pb.LigandActivityModel((
                 pb.LigandActivity("bromide-br", log10_free_activity=-3),)))
         diagram = pb.PourbaixEngine(self.database).calculate("Na", conditions, allow_incomplete=True)
@@ -205,7 +205,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                 (thallium.record_id,)).fetchone()
         self.assertEqual((charge, oxidation), (2, 3))
         conditions = pb.PourbaixConditions(
-            pH_points=9, eh_points=7,
+            pH_points=9, U_points=7,
             ligand_activities=pb.LigandActivityModel((
                 pb.LigandActivity("chloride-cl", log10_free_activity=-3),)))
         diagram = pb.PourbaixEngine(self.database).calculate("Be", conditions, allow_incomplete=True)
@@ -240,7 +240,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         default = self.database.load_system("Ca")
         self.assertNotIn(apatite.record_id, {s.record_id for s in default.species})
         conditions = pb.PourbaixConditions(
-            pH_points=11, eh_points=9,
+            pH_points=11, U_points=9,
             ligand_activities=pb.LigandActivityModel((
                 pb.LigandActivity("phosphate-po4", log10_free_activity=-3),)))
         diagram = pb.PourbaixEngine(self.database).calculate("Ca", conditions, allow_incomplete=True)
@@ -536,7 +536,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                          - solid.gibbs_energy_J_mol) / thermal)
         for ls in (-2, 0, 2):
             conditions = pb.PourbaixConditions(
-                pH_points=3, eh_points=3,
+                pH_points=3, U_points=3,
                 ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                     "chloride-cl", log10_free_activity=ls
                 ),)),
@@ -555,8 +555,8 @@ class DatasetSnapshotTests(unittest.TestCase):
             for offset, winner in ((-0.01, metal), (0.01, solid)):
                 diagram = pb.PourbaixEngine(self.database).calculate_system(
                     replace(system, species=(metal, solid), excluded=()),
-                    replace(conditions, eh_min_V=boundary + offset - 0.001,
-                            eh_max_V=boundary + offset + 0.001),
+                    replace(conditions, U_min_V=boundary + offset - 0.001,
+                            U_max_V=boundary + offset + 0.001),
                 )
                 self.assertEqual({diagram.system.species[int(i)].record_id
                                   for i in diagram.stable_species_index.flat}, {winner.record_id})
@@ -607,7 +607,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         ksp = math.exp(-(ion.gibbs_energy_J_mol + 85800 - solid.gibbs_energy_J_mol) / thermal)
         for ls in (-18, -12, -6):
             conditions = pb.PourbaixConditions(
-                pH_points=3, eh_points=3,
+                pH_points=3, U_points=3,
                 ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                     "sulfide-s", log10_free_activity=ls
                 ),)),
@@ -627,8 +627,8 @@ class DatasetSnapshotTests(unittest.TestCase):
             for offset, winner in ((-0.01, metal), (0.01, solid)):
                 diagram = pb.PourbaixEngine(self.database).calculate_system(
                     replace(system, species=(metal, solid), excluded=()),
-                    replace(conditions, eh_min_V=boundary + offset - 0.001,
-                            eh_max_V=boundary + offset + 0.001),
+                    replace(conditions, U_min_V=boundary + offset - 0.001,
+                            U_max_V=boundary + offset + 0.001),
                 )
                 self.assertEqual({diagram.system.species[int(i)].record_id
                                   for i in diagram.stable_species_index.flat}, {winner.record_id})
@@ -701,7 +701,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         restricted = replace(system, species=(ion, solid), excluded=())
         for lf in (-6, -3, -1):
             conditions = pb.PourbaixConditions(
-                pH_points=3, eh_points=3,
+                pH_points=3, U_points=3,
                 ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                     "fluoride-f", log10_free_activity=lf
                 ),)),
@@ -717,7 +717,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         lf_boundary = (-19.28 + 6) / 3
         for offset, winner in ((-0.01, ion), (0.01, solid)):
             conditions = pb.PourbaixConditions(
-                pH_points=3, eh_points=3,
+                pH_points=3, U_points=3,
                 aqueous_activities=pb.AqueousActivityModel(default_log10_activity=-6),
                 ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                     "fluoride-f", log10_free_activity=lf_boundary + offset
@@ -771,7 +771,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         for offset, winner in ((-0.01, ion), (0.01, solid)):
             conditions = pb.PourbaixConditions(
                 pH_min=boundary + offset - 0.001, pH_max=boundary + offset + 0.001,
-                pH_points=3, eh_points=3,
+                pH_points=3, U_points=3,
                 aqueous_activities=pb.AqueousActivityModel(default_log10_activity=-6),
             )
             diagram = pb.PourbaixEngine(self.database).calculate_system(restricted, conditions)
@@ -820,7 +820,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         ksp = math.exp(-(2 * ion.gibbs_energy_J_mol + 85800 - solid.gibbs_energy_J_mol) / thermal)
         for log_activity in (-18, -12, -6):
             conditions = pb.PourbaixConditions(
-                pH_points=3, eh_points=3,
+                pH_points=3, U_points=3,
                 ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                     "sulfide-s", log10_free_activity=log_activity
                 ),)),
@@ -831,8 +831,8 @@ class DatasetSnapshotTests(unittest.TestCase):
             for offset, winner in ((-0.01, metal), (0.01, solid)):
                 diagram = pb.PourbaixEngine(self.database).calculate_system(
                     replace(system, species=(metal, solid), excluded=()),
-                    replace(conditions, eh_min_V=boundary + offset - 0.001,
-                            eh_max_V=boundary + offset + 0.001),
+                    replace(conditions, U_min_V=boundary + offset - 0.001,
+                            U_max_V=boundary + offset + 0.001),
                 )
                 self.assertEqual({diagram.system.species[int(i)].record_id
                                   for i in diagram.stable_species_index.flat}, {winner.record_id})
@@ -892,7 +892,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         restricted = replace(system, species=(ion, solid), excluded=())
         for offset, winner in ((-0.1, ion), (0.1, solid)):
             conditions = pb.PourbaixConditions(
-                pH_points=3, eh_points=3,
+                pH_points=3, U_points=3,
                 aqueous_activities=pb.AqueousActivityModel(default_log10_activity=0),
                 ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                     "carbonate-co3", log10_free_activity=boundary + offset
@@ -936,7 +936,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                        - solid.ligand_gibbs_energy_J_mol) / factor
             for offset, winner in ((-0.1, ion), (0.1, solid)):
                 conditions = pb.PourbaixConditions(
-                    pH_points=3, eh_points=3,
+                    pH_points=3, U_points=3,
                     aqueous_activities=pb.AqueousActivityModel(default_log10_activity=0),
                     ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                         "carbonate-co3", log10_free_activity=log_ksp + offset
@@ -947,7 +947,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                                   for i in diagram.stable_species_index.flat}, {winner.record_id})
             # Ksp / a_CO3 fixes the saturation concentration at 1e-5 M.
             conditions = pb.PourbaixConditions(
-                pH_points=3, eh_points=3,
+                pH_points=3, U_points=3,
                 ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                     "carbonate-co3", log10_free_activity=log_ksp + 5
                 ),)),
@@ -993,7 +993,7 @@ class DatasetSnapshotTests(unittest.TestCase):
             log_k = -reaction_g / factor
             log_carbonate = (log_k + 5 * metal - 8 * protons) / carbonate
             conditions = pb.PourbaixConditions(
-                pH_min=8, pH_max=8.01, pH_points=2, eh_points=2,
+                pH_min=8, pH_max=8.01, pH_points=2, U_points=2,
                 ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                     "carbonate-co3", log10_free_activity=log_carbonate,
                 ),)),
@@ -1233,7 +1233,7 @@ class DatasetSnapshotTests(unittest.TestCase):
             self.assertEqual((bicarbonate.core_oxygen_count, bicarbonate.core_hydrogen_count,
                               bicarbonate.ligand_count), (0, 1, 1))
             conditions = pb.PourbaixConditions(
-                pH_points=3, eh_points=3,
+                pH_points=3, U_points=3,
                 ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                     "carbonate-co3", log10_free_activity=log_carbonate,
                 ),)),
@@ -1334,7 +1334,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         restricted = replace(full, species=tuple(complexes), excluded=())
         for offset, winner in ((-0.1, mono), (0.1, bis)):
             conditions = pb.PourbaixConditions(
-                pH_points=3, eh_points=3,
+                pH_points=3, U_points=3,
                 ligand_activities=pb.LigandActivityModel((pb.LigandActivity(
                     "fluoride-f", log10_free_activity=crossover + offset
                 ),)),
@@ -1632,7 +1632,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         fluoride = next(r for r in enabled.species if r.formula_ascii == "LaF")
         self.assertEqual((fluoride.charge, fluoride.ligand_count, fluoride.electrons_per_metal), (2, 1, 3))
         self.assertEqual(fluoride.ligand_gibbs_energy_J_mol, -278790)
-        conditions = pb.PourbaixConditions(pH_points=5, eh_points=5,
+        conditions = pb.PourbaixConditions(pH_points=5, U_points=5,
             ligand_activities=pb.LigandActivityModel((
                 pb.LigandActivity("fluoride-f", log10_free_activity=-3),
             )))

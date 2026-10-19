@@ -500,7 +500,7 @@ class OverviewPage(QWidget):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.pH = FloatSlider("pH", -2.0, 16.0, 7.0, decimals=2, step=0.25, label_width=24)
-        self.potential = FloatSlider("E", -2.5, 2.5, 0.0, decimals=3, step=0.05, unit="V", label_width=14)
+        self.potential = FloatSlider("U", -2.5, 2.5, 0.0, decimals=3, step=0.05, unit="V", label_width=14)
         self.reference = QComboBox()
         self.reference.addItems(["vs SHE", "vs RHE"])
         self.temperature = FloatSlider("T", 0.0, 100.0, 25.0, decimals=1, step=5.0, unit="°C", label_width=14)
@@ -591,7 +591,7 @@ class OverviewPage(QWidget):
             return box
 
         self.window_pH = (spin(-2, 16, 2.0, 2, 0.5), spin(-2, 16, 4.0, 2, 0.5))
-        self.window_eh = (spin(-2.5, 2.5, 0.8, 3, 0.05, " V"), spin(-2.5, 2.5, 1.2, 3, 0.05, " V"))
+        self.window_U = (spin(-2.5, 2.5, 0.8, 3, 0.05, " V"), spin(-2.5, 2.5, 1.2, 3, 0.05, " V"))
         self.window_kind = QComboBox()
         for key, label in KINDS.items():
             self.window_kind.addItem(label, key)
@@ -600,7 +600,7 @@ class OverviewPage(QWidget):
         self.window_margin = spin(0.0, 100.0, 0.0, 1, 1.0, " kJ/mol")
         self.window_margin.setToolTip("The criterion holds where its species lie at least this far below all others")
         for widget in (QLabel("Window: pH"), self.window_pH[0], QLabel("to"), self.window_pH[1],
-                       QLabel("  E vs SHE"), self.window_eh[0], QLabel("to"), self.window_eh[1],
+                       QLabel("  U vs SHE"), self.window_U[0], QLabel("to"), self.window_U[1],
                        QLabel("  Criterion"), self.window_kind, QLabel("  Margin at least"), self.window_margin):
             row.addWidget(widget)
         row.addStretch(1)
@@ -609,7 +609,7 @@ class OverviewPage(QWidget):
     def window(self) -> dict:
         return {"kind": self.window_kind.currentData(),
                 "pH": (self.window_pH[0].value(), self.window_pH[1].value()),
-                "eh_V": (self.window_eh[0].value(), self.window_eh[1].value()),
+                "U_V": (self.window_U[0].value(), self.window_U[1].value()),
                 "min_margin_J_mol": self.window_margin.value() * 1000}
 
     def _color_mode_changed(self) -> None:

@@ -578,10 +578,10 @@ class PourbaixConditions:
     pressure_bar: float = 1.0
     pH_min: float = 0.0
     pH_max: float = 14.0
-    eh_min_V: float = -1.5
-    eh_max_V: float = 1.5
+    U_min_V: float = -1.5
+    U_max_V: float = 1.5
     pH_points: int = 281
-    eh_points: int = 301
+    U_points: int = 301
     aqueous_activities: AqueousActivityModel = field(default_factory=AqueousActivityModel)
     gas_fugacities: GasFugacityModel = field(default_factory=GasFugacityModel)
     ligand_activities: LigandActivityModel | None = None
@@ -597,16 +597,16 @@ class PourbaixConditions:
             self.ligand_activities, LigandActivityModel
         ):
             raise TypeError("ligand_activities must be a LigandActivityModel")
-        for name in ("temperature_K", "pressure_bar", "pH_min", "pH_max", "eh_min_V", "eh_max_V"):
+        for name in ("temperature_K", "pressure_bar", "pH_min", "pH_max", "U_min_V", "U_max_V"):
             if not math.isfinite(getattr(self, name)):
                 raise ValueError(f"{name} must be finite")
         if self.temperature_K <= 0 or self.pressure_bar <= 0:
             raise ValueError("temperature and pressure must be positive")
         if self.pH_min >= self.pH_max:
             raise ValueError("pH_min must be smaller than pH_max")
-        if self.eh_min_V >= self.eh_max_V:
-            raise ValueError("eh_min_V must be smaller than eh_max_V")
-        if self.pH_points < 2 or self.eh_points < 2:
+        if self.U_min_V >= self.U_max_V:
+            raise ValueError("U_min_V must be smaller than U_max_V")
+        if self.pH_points < 2 or self.U_points < 2:
             raise ValueError("each grid axis must contain at least two points")
 
     def as_dict(self) -> dict[str, object]:
@@ -615,7 +615,7 @@ class PourbaixConditions:
             "temperature_K": self.temperature_K,
             "pressure_bar": self.pressure_bar,
             "pH_range": [self.pH_min, self.pH_max, self.pH_points],
-            "eh_V_range": [self.eh_min_V, self.eh_max_V, self.eh_points],
+            "U_V_range": [self.U_min_V, self.U_max_V, self.U_points],
             "aqueous_activity_model": self.aqueous_activities.as_dict(),
             "gas_fugacity_model": self.gas_fugacities.as_dict(),
             "ligand_activity_model": (

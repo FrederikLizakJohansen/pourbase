@@ -35,14 +35,14 @@ class FixedPotentialPage(StackedView):
             group.addButton(button)
             controls.addWidget(button)
         controls.addSpacing(16)
-        controls.addWidget(QLabel("Eh (V vs SHE)"))
-        self.eh = QDoubleSpinBox()
-        self.eh.setRange(-4.0, 4.0)
-        self.eh.setDecimals(3)
-        self.eh.setSingleStep(0.05)
-        self.eh.setKeyboardTracking(False)
-        self.eh.setToolTip("The potential of the probe; moving the probe in the diagram changes it too")
-        controls.addWidget(self.eh)
+        controls.addWidget(QLabel("U (V vs SHE)"))
+        self.U = QDoubleSpinBox()
+        self.U.setRange(-4.0, 4.0)
+        self.U.setDecimals(3)
+        self.U.setSingleStep(0.05)
+        self.U.setKeyboardTracking(False)
+        self.U.setToolTip("The potential of the probe; moving the probe in the diagram changes it too")
+        controls.addWidget(self.U)
         self.ligand_label = QLabel("Ligand")
         self.ligand = QComboBox()
         controls.addSpacing(16)
@@ -65,7 +65,7 @@ class FixedPotentialPage(StackedView):
         layout.addWidget(self.plot, 1)
         layout.addWidget(self.grid, 1)
         super().__init__(body, parent)
-        self.eh.valueChanged.connect(self.potentialChanged)
+        self.U.valueChanged.connect(self.potentialChanged)
         self.ligand.currentIndexChanged.connect(lambda _index: self.changed.emit())
         for button in (self.solubility_button, self.predominance_button):
             button.toggled.connect(lambda checked: checked and self._mode_changed())
@@ -91,10 +91,10 @@ class FixedPotentialPage(StackedView):
         apply_plot_theme(self.plot, dark)
         self.grid.set_dark(dark)
 
-    def set_potential(self, eh_V: float) -> None:
-        self.eh.blockSignals(True)
-        self.eh.setValue(eh_V)
-        self.eh.blockSignals(False)
+    def set_potential(self, U_V: float) -> None:
+        self.U.blockSignals(True)
+        self.U.setValue(U_V)
+        self.U.blockSignals(False)
 
     def set_ligands(self, ligands: list[tuple[str, str]]) -> None:
         """``(ligand ID, name)`` of the ligands that form species with this element."""
@@ -146,7 +146,7 @@ class FixedPotentialPage(StackedView):
         model = ("In the mass-balance model this is where the solid precipitates." if mass_balance
                  else "In a fixed-activity diagram the solid is stable wherever the line lies below the total.")
         self.summary.setText(
-            f"Dissolved metal in equilibrium with the most stable solid at {result.eh_V:+.3f} V vs SHE, with ideal "
+            f"Dissolved metal in equilibrium with the most stable solid at {result.U_V:+.3f} V vs SHE, with ideal "
             f"activities (Eqs. 6 and 7). The shaded region lies above saturation. The dashed red line is the metal "
             f"concentration of the system, 10<sup>{log10_metal:.2f}</sup> mol/L. {model}")
         self.show_view()
@@ -157,7 +157,7 @@ class FixedPotentialPage(StackedView):
                             DisplayOptions(legend=False), reset_range=True,
                             axes=("pH", f"log₁₀ a({ligand_name})"))
         self.summary.setText(
-            f"Stable species over pH and the free activity of {ligand_name} at {result.eh_V:+.3f} V vs SHE, for "
+            f"Stable species over pH and the free activity of {ligand_name} at {result.U_V:+.3f} V vs SHE, for "
             f"a fixed metal activity of 10<sup>{log10_metal:.2f}</sup> and the other ligands as set in the System "
             "tab.")
         self.show_view()

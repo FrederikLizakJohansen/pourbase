@@ -615,9 +615,9 @@ def plot_calculation_showcase() -> None:
         pH_min=metadata["pH_range"][0],
         pH_max=metadata["pH_range"][1],
         pH_points=metadata["pH_range"][2],
-        eh_min_V=metadata["eh_V_range"][0],
-        eh_max_V=metadata["eh_V_range"][1],
-        eh_points=metadata["eh_V_range"][2],
+        U_min_V=metadata["U_V_range"][0],
+        U_max_V=metadata["U_V_range"][1],
+        U_points=metadata["U_V_range"][2],
         aqueous_activities=AqueousActivityModel(metadata["log10_aqueous_activity"]),
     )
     experimental = PourbaixEngine(database).calculate("Fe", conditions, allow_incomplete=True)
@@ -642,12 +642,12 @@ def plot_calculation_showcase() -> None:
         )
         for row in cached_rows
     )
-    pH_grid, eh_grid = np.meshgrid(experimental.pH, experimental.eh_V)
+    pH_grid, U_grid = np.meshgrid(experimental.pH, experimental.U_V)
     energy_stack = np.stack(
         [
             phase.baseline_energy_eV_metal
             - 0.0591 * phase.protons_per_metal * pH_grid
-            - phase.electrons_per_metal * eh_grid
+            - phase.electrons_per_metal * U_grid
             for phase in phases
         ]
     )
@@ -668,7 +668,7 @@ def plot_calculation_showcase() -> None:
         conditions=conditions,
         phases=phases,
         pH=experimental.pH,
-        eh_V=experimental.eh_V,
+        U_V=experimental.U_V,
         stable_phase_index=stable_phase_index,
         minimum_energy_eV_metal=minimum_energy,
         her_V=experimental.her_V,

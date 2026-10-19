@@ -44,8 +44,8 @@ class SpeciesSensitivity:
 @dataclass(frozen=True)
 class SelectionSensitivity:
     pH: np.ndarray
-    eh_V: np.ndarray
-    changed_fraction: np.ndarray  # (eh, pH): share of selections with another stable species
+    U_V: np.ndarray
+    changed_fraction: np.ndarray  # (U, pH): share of selections with another stable species
     samples: int
     species: tuple[SpeciesSensitivity, ...]
 
@@ -116,7 +116,7 @@ def selection_sensitivity(
                 break
         changed /= samples
     entries.sort(key=lambda entry: -entry.changed_fraction_alone)
-    return SelectionSensitivity(diagram.pH, diagram.eh_V, changed, samples if indices else 0, tuple(entries))
+    return SelectionSensitivity(diagram.pH, diagram.U_V, changed, samples if indices else 0, tuple(entries))
 
 
 def point_outcomes(

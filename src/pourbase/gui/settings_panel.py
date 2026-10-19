@@ -210,8 +210,8 @@ class SettingsPanel(QTabWidget):
         for name, label, low, high, step in (
             ("pH_min", "pH minimum", -4.0, 18.0, 0.5),
             ("pH_max", "pH maximum", -4.0, 18.0, 0.5),
-            ("eh_min_V", "Eh minimum (V)", -4.0, 4.0, 0.1),
-            ("eh_max_V", "Eh maximum (V)", -4.0, 4.0, 0.1),
+            ("U_min_V", "U minimum (V)", -4.0, 4.0, 0.1),
+            ("U_max_V", "U maximum (V)", -4.0, 4.0, 0.1),
         ):
             spin = QDoubleSpinBox()
             spin.setRange(low, high)
@@ -222,7 +222,7 @@ class SettingsPanel(QTabWidget):
             self.axes[name] = spin
             form.addRow(label, spin)
         self.points: dict[str, QSpinBox] = {}
-        for name, label in (("pH_points", "pH points"), ("eh_points", "Eh points")):
+        for name, label in (("pH_points", "pH points"), ("U_points", "U points")):
             spin = QSpinBox()
             spin.setRange(11, MAX_GRID_POINTS)
             spin.setSingleStep(20)
@@ -255,15 +255,15 @@ class SettingsPanel(QTabWidget):
         form = QFormLayout(box.body)
         self.probe_pH = QDoubleSpinBox()
         self.probe_pH.setRange(-4.0, 18.0)
-        self.probe_eh = QDoubleSpinBox()
-        self.probe_eh.setRange(-4.0, 4.0)
-        self.probe_eh.setDecimals(3)
-        self.probe_eh.setSingleStep(0.05)
-        for spin in (self.probe_pH, self.probe_eh):
+        self.probe_U = QDoubleSpinBox()
+        self.probe_U.setRange(-4.0, 4.0)
+        self.probe_U.setDecimals(3)
+        self.probe_U.setSingleStep(0.05)
+        for spin in (self.probe_pH, self.probe_U):
             spin.setKeyboardTracking(False)
             spin.valueChanged.connect(lambda _value: self._probe_edited())
         form.addRow("pH", self.probe_pH)
-        form.addRow("Eh (V vs SHE)", self.probe_eh)
+        form.addRow("U (V vs SHE)", self.probe_U)
         hint = QLabel("Click or drag in the diagram to move the probe.")
         hint.setWordWrap(True)
         form.addRow(hint)
@@ -372,7 +372,7 @@ class SettingsPanel(QTabWidget):
         for name, spin in {**self.axes, **self.points}.items():
             spin.setValue(getattr(settings, name))
         self.probe_pH.setValue(settings.probe_pH)
-        self.probe_eh.setValue(settings.probe_eh_V)
+        self.probe_U.setValue(settings.probe_U_V)
         self.ligands.set_settings(settings.ligands)
         self.ligands.set_system(settings.symbol, self.database.ligand_species.get(settings.symbol, {}))
         self.ligands_section.set_expanded(bool(self.database.ligand_species.get(settings.symbol)), store=False)
@@ -380,11 +380,11 @@ class SettingsPanel(QTabWidget):
         self._updating = False
         self._update_enabled()
 
-    def set_probe(self, pH: float, eh_V: float) -> None:
-        self.settings.probe_pH, self.settings.probe_eh_V = pH, eh_V
+    def set_probe(self, pH: float, U_V: float) -> None:
+        self.settings.probe_pH, self.settings.probe_U_V = pH, U_V
         self._updating = True
         self.probe_pH.setValue(pH)
-        self.probe_eh.setValue(eh_V)
+        self.probe_U.setValue(U_V)
         self._updating = False
 
     def set_concentration_note(self, molar: float, log10_activity: float) -> None:
@@ -480,8 +480,8 @@ class SettingsPanel(QTabWidget):
 
     def _probe_edited(self) -> None:
         if not self._updating:
-            self.settings.probe_pH, self.settings.probe_eh_V = self.probe_pH.value(), self.probe_eh.value()
-            self.probeChanged.emit(self.settings.probe_pH, self.settings.probe_eh_V)
+            self.settings.probe_pH, self.settings.probe_U_V = self.probe_pH.value(), self.probe_U.value()
+            self.probeChanged.emit(self.settings.probe_pH, self.settings.probe_U_V)
 
 
 def _preset_settings(preset: WaterPreset) -> dict[str, LigandSetting]:

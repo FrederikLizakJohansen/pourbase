@@ -77,7 +77,7 @@ class NEAElementalReservoirTests(unittest.TestCase):
         refs = {r.ligand_id: r for r in database.available_ligands()}
         for lid in ("elemental-te-cr", "nitrogen-n2-gas", "carbon-graphite"):
             self.assertEqual((refs[lid].charge, refs[lid].gibbs_energy_J_mol), (0, 0))
-        conditions = pb.PourbaixConditions(pH_points=7, eh_points=9,
+        conditions = pb.PourbaixConditions(pH_points=7, U_points=9,
             ligand_activities=pb.LigandActivityModel((
                 pb.LigandActivity("elemental-te-cr", log10_free_activity=0),
                 pb.LigandActivity("nitrogen-n2-gas", log10_free_activity=-6),

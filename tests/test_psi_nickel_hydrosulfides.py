@@ -69,7 +69,7 @@ class PSINickelHydrosulfideTests(unittest.TestCase):
                     "Ni", ligand_ids=("sulfide-s",)).species})
 
     def test_closed_balance_conserves_nickel_with_hydrosulfide_complex_present(self):
-        cfg = pb.PourbaixConditions(pH_min=7, pH_max=14, pH_points=7, eh_points=9,
+        cfg = pb.PourbaixConditions(pH_min=7, pH_max=14, pH_points=7, U_points=9,
             ligand_activities=pb.LigandActivityModel((
                 pb.LigandActivity("sulfide-s", log10_free_activity=-8),)))
         system = self.database.load_system("Ni", ligand_ids=("sulfide-s",))

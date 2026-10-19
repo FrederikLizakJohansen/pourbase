@@ -113,10 +113,10 @@ def crosscheck(diagram: Any, water_gibbs_energy_J_mol: float, aligned: bool = Tr
     slope = GAS_CONSTANT_J_MOL_K * temperature * LN_10 / FARADAY_C_MOL
     entries, skipped = pymatgen_entries(diagram)
     included = [index for index, item in enumerate(diagram.system.species) if item.record_id not in skipped]
-    pH, eh = np.meshgrid(diagram.pH, diagram.eh_V)
+    pH, U = np.meshgrid(diagram.pH, diagram.U_V)
     with _pymatgen_constants(water_gibbs_energy_J_mol / FARADAY_C_MOL if aligned else None,
                              slope if aligned else None):
-        theirs = np.stack([entry.normalized_energy_at_conditions(pH, eh) for entry in entries])
+        theirs = np.stack([entry.normalized_energy_at_conditions(pH, U) for entry in entries])
     ours = energies[included] / FARADAY_C_MOL
     our_stable = np.argmin(ours, axis=0)
     their_stable = np.argmin(theirs, axis=0)

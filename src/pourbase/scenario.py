@@ -60,10 +60,10 @@ class Scenario:
     ligands: tuple[LigandActivity, ...] = ()
     pH_min: float = 0.0
     pH_max: float = 14.0
-    eh_min_V: float = -1.5
-    eh_max_V: float = 1.5
+    U_min_V: float = -1.5
+    U_max_V: float = 1.5
     pH_points: int = 281
-    eh_points: int = 301
+    U_points: int = 301
     allow_incomplete: bool = True
     energy_policy: GibbsEnergyPolicy = GibbsEnergyPolicy.EXPERIMENTAL_ONLY
     activity_overrides: tuple[tuple[str, float], ...] = ()
@@ -90,8 +90,8 @@ class Scenario:
         if log10_activity is None:
             log10_activity = self.concentration_conversion.log10_standard_activity
         return PourbaixConditions(
-            pH_min=self.pH_min, pH_max=self.pH_max, eh_min_V=self.eh_min_V, eh_max_V=self.eh_max_V,
-            pH_points=self.pH_points, eh_points=self.eh_points, temperature_K=self.temperature_K,
+            pH_min=self.pH_min, pH_max=self.pH_max, U_min_V=self.U_min_V, U_max_V=self.U_max_V,
+            pH_points=self.pH_points, U_points=self.U_points, temperature_K=self.temperature_K,
             aqueous_activities=AqueousActivityModel(log10_activity, dict(self.activity_overrides)),
             gas_fugacities=GasFugacityModel(self.log10_gas_fugacity),
             ligand_activities=LigandActivityModel(self.ligands) if self.ligands else None,
@@ -103,7 +103,7 @@ class Probe:
     """The result at one grid point."""
 
     pH: float
-    eh_V: float
+    U_V: float
     species: ThermodynamicSpecies
     dissolved_metal_mol_L: float | None = None
     precipitated_fraction: float | None = None
@@ -147,14 +147,14 @@ class Calculation:
     def plating(self) -> tuple[PlatingPotential, ...]:
         return () if self.is_mass_balance else plating_potentials(self.diagram, self.database)
 
-    def probe(self, pH: float, eh_V: float) -> Probe:
-        species = self.diagram.species_at(pH, eh_V)
+    def probe(self, pH: float, U_V: float) -> Probe:
+        species = self.diagram.species_at(pH, U_V)
         if not self.is_mass_balance:
-            return Probe(pH, eh_V, species)
-        state = self.diagram.state_at(pH, eh_V)
+            return Probe(pH, U_V, species)
+        state = self.diagram.state_at(pH, U_V)
         return Probe(
-            pH, eh_V, species, state.dissolved_metal_mol_L, state.precipitated_fraction,
-            speciation_at(self.diagram, pH, eh_V),
+            pH, U_V, species, state.dissolved_metal_mol_L, state.precipitated_fraction,
+            speciation_at(self.diagram, pH, U_V),
         )
 
     def as_dict(self) -> dict[str, Any]:

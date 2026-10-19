@@ -17,11 +17,11 @@ from .plotting import plot_boltzmann_diagram, plot_diagram, plot_mass_balance_su
 
 def grid_csv(diagram: Any) -> str:
     """Every grid point with its stable species, and the metal inventory for a mass balance."""
-    pH, eh = np.meshgrid(diagram.pH, diagram.eh_V)
+    pH, U = np.meshgrid(diagram.pH, diagram.U_V)
     index = diagram.stable_species_index.ravel()
     species = diagram.system.species
     columns = [
-        pH.ravel(), eh.ravel(),
+        pH.ravel(), U.ravel(),
         np.array([item.record_id for item in species])[index],
         np.array([item.species for item in species])[index],
         np.array([item.phase for item in species])[index],

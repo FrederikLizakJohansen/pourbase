@@ -24,18 +24,18 @@ SLICES_SHOWN = 24  # evenly spaced slices drawn in the 3D view, plus the selecte
 AXES = {
     "level": ("log₁₀ a", "log₁₀ activity"),
     "pH": ("pH", "pH"),
-    "eh": ("Eh", "Eh (V vs SHE)"),
+    "U": ("U", "U (V vs SHE)"),
 }
 
 
 class SweepVolume:
-    """Stable species indices on the (log a, Eh, pH) grid of a sweep, sliceable along each axis."""
+    """Stable species indices on the (log a, U, pH) grid of a sweep, sliceable along each axis."""
 
     def __init__(
-        self, levels: np.ndarray, pH: np.ndarray, eh_V: np.ndarray, index: np.ndarray,
+        self, levels: np.ndarray, pH: np.ndarray, U_V: np.ndarray, index: np.ndarray,
         species: tuple, colors: dict[str, QColor], her_V: np.ndarray, oer_V: np.ndarray,
     ) -> None:
-        self.index = index  # (log a, Eh, pH)
+        self.index = index  # (log a, U, pH)
         self.species = species
         self.colors = colors
         self.her_V, self.oer_V = her_V, oer_V
@@ -45,7 +45,7 @@ class SweepVolume:
             self.table[position] = (color.red(), color.green(), color.blue(), 255)
         self.values = {
             "level": np.asarray(levels, dtype=float),
-            "eh": np.asarray(eh_V, dtype=float),
+            "U": np.asarray(U_V, dtype=float),
             "pH": np.asarray(pH, dtype=float),
         }
         # Repeat the coarse activity axis so that images and boundaries stay crisp
@@ -56,7 +56,7 @@ class SweepVolume:
     def from_sweep(cls, sweep: Any, colors: dict[str, QColor]) -> SweepVolume:
         first = sweep.diagrams[0]
         return cls(
-            sweep.log10_activities, sweep.pH, sweep.eh_V,
+            sweep.log10_activities, sweep.pH, sweep.U_V,
             np.stack([diagram.stable_species_index for diagram in sweep.diagrams]),
             first.system.species, colors, first.her_V, first.oer_V,
         )
@@ -73,10 +73,10 @@ class SweepVolume:
     def plane(self, axis: str, position: int) -> tuple[np.ndarray, np.ndarray, np.ndarray, tuple[str, str]]:
         """2D grid for a slice with rows ascending in y: ``(index, x values, y values, axis labels)``."""
         if axis == "level":
-            return self.index[position], self.values["pH"], self.values["eh"], (AXES["pH"][1], AXES["eh"][1])
+            return self.index[position], self.values["pH"], self.values["U"], (AXES["pH"][1], AXES["U"][1])
         if axis == "pH":
-            return (self.index[:, :, position].T, self.values["level"], self.values["eh"],
-                    (AXES["level"][1], AXES["eh"][1]))
+            return (self.index[:, :, position].T, self.values["level"], self.values["U"],
+                    (AXES["level"][1], AXES["U"][1]))
         return (self.index[:, position, :], self.values["pH"], self.values["level"],
                 (AXES["pH"][1], AXES["level"][1]))
 
@@ -96,7 +96,7 @@ class SweepVolume:
             grid = self.plane(axis, position)[0][::-1]
             if axis == "pH":
                 grid = np.repeat(grid, self.repeat, axis=1)
-            elif axis == "eh":
+            elif axis == "U":
                 grid = np.repeat(grid, self.repeat, axis=0)
             rgba = self.table[grid].copy()
             edge = np.zeros(grid.shape, dtype=bool)
@@ -160,7 +160,7 @@ class SweepView3D(QWidget):
 
 
     def _project(self, x: float, y: float, z: float) -> tuple[QPointF, float]:
-        """Map normalized (pH, level, Eh) in [-0.5, 0.5] to screen coordinates and view depth."""
+        """Map normalized (pH, level, U) in [-0.5, 0.5] to screen coordinates and view depth."""
         ca, sa = math.cos(self.azimuth), math.sin(self.azimuth)
         ce, se = math.cos(self.elevation), math.sin(self.elevation)
         depth_scale, height_scale = 1.25, 0.85
@@ -281,11 +281,11 @@ class SweepView3D(QWidget):
             return self._project(*coordinates)[0]
 
         values = self.volume.values
-        pH, eh, levels = values["pH"], values["eh"], values["level"]
+        pH, U, levels = values["pH"], values["U"], values["level"]
         axes = (
             (0, [(value, f"{value:g}") for value in np.linspace(pH[0], pH[-1], 5)], pH[0], pH[-1], "pH"),
-            (2, [(value, f"{value:+.1f}") for value in np.linspace(eh[0], eh[-1], 5)], eh[0], eh[-1],
-             "Eh (V vs SHE)"),
+            (2, [(value, f"{value:+.1f}") for value in np.linspace(U[0], U[-1], 5)], U[0], U[-1],
+             "U (V vs SHE)"),
             (1, [(value, f"{value:g}") for value in levels[:: max(len(levels) // 5, 1)]],
              levels[0], levels[-1], "log₁₀ a"),
         )
@@ -377,7 +377,7 @@ class SweepPage(QWidget):
         for axis, maximum, value, tip in (
             ("level", MAX_SWEEP_POINTS, 21, "activity levels: slices and resolution along log₁₀ a"),
             ("pH", MAX_GRID_POINTS, 141, "pH grid points: slices and resolution along pH"),
-            ("eh", MAX_GRID_POINTS, 151, "Eh grid points: slices and resolution along Eh"),
+            ("U", MAX_GRID_POINTS, 151, "U grid points: slices and resolution along U"),
         ):
             spin = QSpinBox()
             spin.setRange(2, maximum)
@@ -450,7 +450,7 @@ class SweepPage(QWidget):
         self.volumes: dict[str, SweepVolume] = {}
         self.source = "experimental"
         self.axis = "level"
-        self.positions = {"level": 0, "pH": 0, "eh": 0}
+        self.positions = {"level": 0, "pH": 0, "U": 0}
         self.display = DisplayOptions()
         self.mp_note = ""
         self.axis_group.buttonClicked.connect(lambda button: self.set_axis(button.property("key")))
@@ -476,27 +476,27 @@ class SweepPage(QWidget):
         """Show saved sweep settings in the controls."""
         self.minimum.setValue(settings.log10_min)
         self.maximum.setValue(settings.log10_max)
-        for axis, value in (("level", settings.levels), ("pH", settings.pH_points), ("eh", settings.eh_points)):
+        for axis, value in (("level", settings.levels), ("pH", settings.pH_points), ("U", settings.U_points)):
             self.slice_counts[axis].setValue(value)
 
     def settings(self):
         return SweepSettings(
             self.minimum.value(), self.maximum.value(), self.slice_counts["level"].value(),
-            self.slice_counts["pH"].value(), self.slice_counts["eh"].value(),
+            self.slice_counts["pH"].value(), self.slice_counts["U"].value(),
         )
 
     def set_sweep(
         self, sweep: Any, display: DisplayOptions, initial_level: float,
         probe: tuple[float, float] = (7.0, 0.0),
     ) -> None:
-        """Show a new sweep; slices start at the current activity and the probe pH and Eh."""
+        """Show a new sweep; slices start at the current activity and the probe pH and U."""
         self._sweep = sweep
         self.display = replace(display, boltzmann=False, plating=False)
         stable = {species.record_id for diagram in sweep.diagrams for species in diagram.stable_species}
         colors = record_colors(sorted(stable))
         self.volumes = {"experimental": SweepVolume.from_sweep(sweep, colors)}
         experimental = self.volumes["experimental"]
-        for axis, target in (("level", initial_level), ("pH", probe[0]), ("eh", probe[1])):
+        for axis, target in (("level", initial_level), ("pH", probe[0]), ("U", probe[1])):
             self.positions[axis] = int(np.abs(experimental.values[axis] - target).argmin())
         if self.source != "experimental":
             self.materialsProjectRequested.emit()
@@ -508,12 +508,12 @@ class SweepPage(QWidget):
         experimental = self.volumes["experimental"]
         values = experimental.values
         self.volumes["materials_project"] = SweepVolume(
-            values["level"], values["pH"], values["eh"], index, phases, colors,
+            values["level"], values["pH"], values["U"], index, phases, colors,
             experimental.her_V, experimental.oer_V,
         )
         agreement_colors = {item.record_id: AGREEMENT_COLORS[item.record_id] for item in AGREEMENT}
         self.volumes["agreement"] = SweepVolume(
-            values["level"], values["pH"], values["eh"], np.where(same, 0, 1).astype(np.int16),
+            values["level"], values["pH"], values["U"], np.where(same, 0, 1).astype(np.int16),
             AGREEMENT, agreement_colors, experimental.her_V, experimental.oer_V,
         )
         self.mp_note = note
@@ -565,7 +565,7 @@ class SweepPage(QWidget):
         )
         if axis == "level":
             self.view2d.set_water(volume.values["pH"], volume.her_V, volume.oer_V, display.water)
-        unit = {"level": "", "pH": "", "eh": " V"}[axis]
+        unit = {"level": "", "pH": "", "U": " V"}[axis]
         text = f"{AXES[axis][0]} = {volume.value(axis, index):.2f}{unit}"
         if self.source == "agreement":
             share = float(np.mean(grid == 0))
@@ -585,7 +585,7 @@ class SweepPage(QWidget):
         self.view2d.set_dark(dark)
 
     def keyPressEvent(self, event) -> None:
-        keys = {Qt.Key_1: "level", Qt.Key_2: "pH", Qt.Key_3: "eh"}
+        keys = {Qt.Key_1: "level", Qt.Key_2: "pH", Qt.Key_3: "U"}
         if event.key() in keys:
             self.set_axis(keys[event.key()])
         elif event.key() in (Qt.Key_Left, Qt.Key_Down):

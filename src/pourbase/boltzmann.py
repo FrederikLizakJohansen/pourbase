@@ -59,7 +59,7 @@ class BoltzmannSmoothedDiagram:
     def __post_init__(self) -> None:
         if not math.isfinite(self.width_J_mol) or self.width_J_mol <= 0:
             raise ValueError("width_J_mol must be positive and finite")
-        grid_shape = (self.diagram.eh_V.size, self.diagram.pH.size)
+        grid_shape = (self.diagram.U_V.size, self.diagram.pH.size)
         if self.weights.shape != (len(self.diagram.system.species), *grid_shape):
             raise ValueError("weights shape does not match the source diagram")
         for name, value in (
@@ -90,10 +90,10 @@ class BoltzmannSmoothedDiagram:
         )
 
     def weights_at(
-        self, pH: float, eh_V: float
+        self, pH: float, U_V: float
     ) -> tuple[tuple[ThermodynamicSpecies, float], ...]:
         """Return species and descending weight at one grid point."""
-        row = nearest_index(self.diagram.eh_V, eh_V, "eh_V")
+        row = nearest_index(self.diagram.U_V, U_V, "U_V")
         column = nearest_index(self.diagram.pH, pH, "pH")
         pairs = tuple(
             (species, float(self.weights[index, row, column]))

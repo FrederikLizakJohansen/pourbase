@@ -9,12 +9,12 @@ satisfies
 
     G~_j - G~_s < k sqrt( (sigma_s / m_s)^2 + (sigma_j / m_j)^2 )                        (12)
 
-for the stable species s and a chosen confidence k. At fixed pH every G~ is linear in E with
+for the stable species s and a chosen confidence k. At fixed pH every G~ is linear in U with
 slope -e_i F (Eq. 1), so the stable species changes at the potential shift
 
-    Delta E_j = (G~_j - G~_s) / ((e_j - e_s) F)                                           (13)
+    Delta U_j = (G~_j - G~_s) / ((e_j - e_s) F)                                           (13)
 
-and the nearest boundary above (below) is the smallest positive (largest negative) Delta E_j.
+and the nearest boundary above (below) is the smallest positive (largest negative) Delta U_j.
 """
 
 from __future__ import annotations
@@ -117,7 +117,7 @@ class StabilityMargin:
     """
 
     pH: float
-    eh_V: float
+    U_V: float
     species: ThermodynamicSpecies
     runner_up: ThermodynamicSpecies | None
     margin_J_mol_metal: float | None
@@ -132,12 +132,12 @@ class StabilityMargin:
 def stability_margin(
     diagram: PourbaixDiagram,
     pH: float,
-    eh_V: float,
+    U_V: float,
     assumed_uncertainty_J_mol: float = DEFAULT_ASSUMED_UNCERTAINTY_J_MOL,
 ) -> StabilityMargin:
     """The runner-up species and the nearest boundaries at the grid point nearest to a coordinate."""
     energies = _energies(diagram)
-    row = nearest_index(diagram.eh_V, eh_V, "eh_V")
+    row = nearest_index(diagram.U_V, U_V, "U_V")
     column = nearest_index(diagram.pH, pH, "pH")
     species = diagram.system.species
     point = energies[:, row, column]
@@ -152,7 +152,7 @@ def stability_margin(
         margin = float(point[second] - point[stable])
         margin_sigma = float(np.hypot(sigma[stable], sigma[second]))
 
-    # At fixed pH every transformed energy is linear in Eh with slope -n F per mole of metal
+    # At fixed pH every transformed energy is linear in U with slope -n F per mole of metal
     higher = lower = None
     electrons = species[stable].electrons_per_metal
     for index, item in enumerate(species):
@@ -160,7 +160,7 @@ def stability_margin(
         if index == stable or slope == 0:
             continue
         shift = (point[index] - point[stable]) / slope
-        crossing = float(diagram.eh_V[row] + shift - eh_V)
+        crossing = float(diagram.U_V[row] + shift - U_V)
         if shift > 0 and (higher is None or crossing < higher.distance):
             higher = NeighbourBoundary(item, crossing)
         elif shift < 0 and (lower is None or crossing > lower.distance):
@@ -173,7 +173,7 @@ def stability_margin(
     lower_pH = NeighbourBoundary(species[int(line[left[-1]])], float(diagram.pH[left[-1]] - pH)) if left.size else None
 
     return StabilityMargin(
-        pH, eh_V, species[stable], runner_up, margin, margin_sigma,
+        pH, U_V, species[stable], runner_up, margin, margin_sigma,
         runner_up is not None and runner_up.record_id in assumed,
         higher, lower, higher_pH, lower_pH,
     )

@@ -111,7 +111,7 @@ class MixedComponentTests(unittest.TestCase):
             replace(phase, additional_components=('silica-sio2-component',))
 
     def test_closed_zirconium_inventory_with_open_secondary_buffers(self):
-        cfg = pb.PourbaixConditions(pH_points=7, eh_points=9,
+        cfg = pb.PourbaixConditions(pH_points=7, U_points=9,
             ligand_activities=pb.LigandActivityModel((
                 pb.LigandActivity('sodium-na', log10_free_activity=-3),
                 pb.LigandActivity('silica-sio2-component', log10_free_activity=-3))))

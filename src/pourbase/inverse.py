@@ -48,9 +48,9 @@ def target_members(species: tuple[ThermodynamicSpecies, ...], target: str) -> np
 class StabilityRegion:
     target: str
     pH: np.ndarray
-    eh_V: np.ndarray
-    margin_J_mol_metal: np.ndarray  # (eh, pH): the margin; negative where the target is not stable
-    satisfied: np.ndarray  # (eh, pH) boolean
+    U_V: np.ndarray
+    margin_J_mol_metal: np.ndarray  # (U, pH): the margin; negative where the target is not stable
+    satisfied: np.ndarray  # (U, pH) boolean
     min_margin_J_mol: float
     k_sigma: float | None
 
@@ -64,9 +64,9 @@ class StabilityRegion:
         return (float(self.pH[columns[0]]), float(self.pH[columns[-1]])) if columns.size else None
 
     @property
-    def eh_range(self) -> tuple[float, float] | None:
+    def U_range(self) -> tuple[float, float] | None:
         rows = np.nonzero(self.satisfied.any(axis=1))[0]
-        return (float(self.eh_V[rows[0]]), float(self.eh_V[rows[-1]])) if rows.size else None
+        return (float(self.U_V[rows[0]]), float(self.U_V[rows[-1]])) if rows.size else None
 
 
 def stability_region(calculation, target: str, min_margin_J_mol: float = 0.0, k_sigma: float | None = None,
@@ -81,10 +81,10 @@ def stability_region(calculation, target: str, min_margin_J_mol: float = 0.0, k_
     if energies is None or calculation.is_mass_balance:
         satisfied = members[diagram.stable_species_index]
         margin = np.where(satisfied, np.nan, -np.inf)
-        return StabilityRegion(target, diagram.pH, diagram.eh_V, margin, satisfied, 0.0, None)
+        return StabilityRegion(target, diagram.pH, diagram.U_V, margin, satisfied, 0.0, None)
     if members.all() or not members.any():
         satisfied = np.full(diagram.stable_species_index.shape, bool(members.all()))
-        return StabilityRegion(target, diagram.pH, diagram.eh_V, np.where(satisfied, np.inf, -np.inf), satisfied,
+        return StabilityRegion(target, diagram.pH, diagram.U_V, np.where(satisfied, np.inf, -np.inf), satisfied,
                                min_margin_J_mol, k_sigma)
     inside = np.where(members[:, None, None], energies, np.inf)
     outside = np.where(members[:, None, None], np.inf, energies)
@@ -97,7 +97,7 @@ def stability_region(calculation, target: str, min_margin_J_mol: float = 0.0, k_
                           for item in species])
         combined = np.hypot(sigma[inside.argmin(axis=0)], sigma[outside.argmin(axis=0)])
         satisfied = (margin > 0) & (margin >= k_sigma * combined)
-    return StabilityRegion(target, diagram.pH, diagram.eh_V, margin, satisfied, min_margin_J_mol, k_sigma)
+    return StabilityRegion(target, diagram.pH, diagram.U_V, margin, satisfied, min_margin_J_mol, k_sigma)
 
 
 @dataclass(frozen=True)
@@ -108,7 +108,7 @@ class WindowResult:
     note: str = ""
 
 
-def screen_window(database, kind: str, pH: tuple[float, float], eh_V: tuple[float, float],
+def screen_window(database, kind: str, pH: tuple[float, float], U_V: tuple[float, float],
                   min_margin_J_mol: float = 0.0, points: int = 21, **scenario) -> dict[str, WindowResult]:
     """For every element, the share of a pH–potential window where ``kind`` holds.
 
@@ -119,12 +119,12 @@ def screen_window(database, kind: str, pH: tuple[float, float], eh_V: tuple[floa
 
     if kind not in KINDS:
         raise ValueError(f"kind must be one of {', '.join(KINDS)}")
-    if not (pH[0] < pH[1] and eh_V[0] < eh_V[1]):
+    if not (pH[0] < pH[1] and U_V[0] < U_V[1]):
         raise ValueError("the window needs a lower and a higher pH and potential")
     results = {}
     for symbol, _name in database.available_systems():
-        base = Scenario(symbol, mode=Mode.FIXED_ACTIVITY, pH_min=pH[0], pH_max=pH[1], eh_min_V=eh_V[0],
-                        eh_max_V=eh_V[1], pH_points=points, eh_points=points)
+        base = Scenario(symbol, mode=Mode.FIXED_ACTIVITY, pH_min=pH[0], pH_max=pH[1], U_min_V=U_V[0],
+                        U_max_V=U_V[1], pH_points=points, U_points=points)
         try:
             calculation = calculate(replace(base, **scenario), database)
             region = stability_region(calculation, kind, min_margin_J_mol)

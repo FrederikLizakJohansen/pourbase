@@ -87,7 +87,7 @@ class TinSourceRoutesTests(unittest.TestCase):
 
     def test_gas_free_closed_tin_balance_and_distinct_precipitate_equilibrium(self):
         cfg = pb.PourbaixConditions(pH_min=13, pH_max=14, pH_points=3,
-            eh_min_V=.4, eh_max_V=.6, eh_points=3,
+            U_min_V=.4, U_max_V=.6, U_points=3,
             ligand_activities=pb.LigandActivityModel((
                 pb.LigandActivity('calcium-ca2', log10_free_activity=-1),)))
         system = self.db.load_system('Sn', ligand_ids=('calcium-ca2',))

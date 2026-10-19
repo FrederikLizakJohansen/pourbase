@@ -13,7 +13,7 @@ import pourbase as pb
 from pourbase.constants import GAS_CONSTANT_J_MOL_K, LN_10
 from pourbase.models import ReferenceState
 
-SMALL = dict(pH_points=21, eh_points=23)
+SMALL = dict(pH_points=21, U_points=23)
 
 
 class CalculationTests(unittest.TestCase):
@@ -94,9 +94,9 @@ class CalculationTests(unittest.TestCase):
         original = replace(hydrated, formula_ascii="HSiO3", core_oxygen_count=3.0,
                            core_hydrogen_count=1.0, gibbs_energy_J_mol=-1015175.0)
         conditions = pb.PourbaixConditions(**SMALL)
-        ph, eh = np.meshgrid(np.linspace(0, 14, 21), np.linspace(-1.5, 2, 23))
+        ph, U = np.meshgrid(np.linspace(0, 14, 21), np.linspace(-1.5, 2, 23))
         energies = [pb.PourbaixEngine.transformed_gibbs_J_mol_metal(
-            s, self.database.reference_state, conditions, ph, eh
+            s, self.database.reference_state, conditions, ph, U
         ) for s in (hydrated, original)]
         np.testing.assert_allclose(*energies, rtol=0, atol=1e-8)
 
@@ -128,13 +128,13 @@ class CalculationTests(unittest.TestCase):
                 )
 
     def test_boundary_equations_match_the_energies(self) -> None:
-        calculation = pb.calculate(pb.Scenario("Fe", pH_points=81, eh_points=81, allow_incomplete=True), self.database)
+        calculation = pb.calculate(pb.Scenario("Fe", pH_points=81, U_points=81, allow_incomplete=True), self.database)
         nernst = next(item for item in calculation.boundaries if item.kind == "nernst")
         species = {item.record_id: item for item in calculation.diagram.system.species}
-        eh = nernst.eh_intercept_V + nernst.eh_slope_V_per_pH * 5.0
+        U = nernst.U_intercept_V + nernst.U_slope_V_per_pH * 5.0
         energies = [
             float(pb.PourbaixEngine.transformed_gibbs_J_mol_metal(
-                species[record_id], self.database.reference_state, calculation.diagram.conditions, 5.0, eh
+                species[record_id], self.database.reference_state, calculation.diagram.conditions, 5.0, U
             ))
             for record_id in (nernst.left_record_id, nernst.right_record_id)
         ]
@@ -142,7 +142,7 @@ class CalculationTests(unittest.TestCase):
         self.assertTrue(all("e-" in item.reaction for item in calculation.plating))
 
     def test_boltzmann_weights_follow_the_energies(self) -> None:
-        diagram = pb.PourbaixEngine(self.database).calculate("Fe", pb.PourbaixConditions(pH_points=19, eh_points=21), allow_incomplete=True)
+        diagram = pb.PourbaixEngine(self.database).calculate("Fe", pb.PourbaixConditions(pH_points=19, U_points=21), allow_incomplete=True)
         smoothed = pb.boltzmann_smooth(diagram, blend_all_phases=True)
         np.testing.assert_allclose(smoothed.weights.sum(axis=0), 1.0, atol=1e-14)
         np.testing.assert_array_equal(np.argmax(smoothed.weights, axis=0), diagram.stable_species_index)
@@ -160,14 +160,14 @@ class CalculationTests(unittest.TestCase):
             places=12,
         )
         compact = pb.PourbaixEngine(self.database).calculate(
-            "Fe", pb.PourbaixConditions(pH_points=19, eh_points=21), store_energies=False, allow_incomplete=True
+            "Fe", pb.PourbaixConditions(pH_points=19, U_points=21), store_energies=False, allow_incomplete=True
         )
         np.testing.assert_array_equal(compact.stable_species_index, diagram.stable_species_index)
         with self.assertRaises(ValueError):
             pb.boltzmann_smooth(compact)
 
     def test_blend_at_rt_equals_aqueous_fractions_without_a_solid(self) -> None:
-        conditions = pb.PourbaixConditions(pH_points=29, eh_points=31)
+        conditions = pb.PourbaixConditions(pH_points=29, U_points=31)
         fixed = pb.PourbaixEngine(self.database).calculate("Fe", conditions, allow_incomplete=True)
         balance = pb.MassBalanceEngine(self.database).calculate(
             "Fe", conditions, pb.TotalMetalConcentration(1e-6), allow_incomplete=True)
@@ -235,7 +235,7 @@ class CalculationTests(unittest.TestCase):
         self.assertAlmostEqual(weight.molar_concentration, 12.0 / 55.845)
 
     def test_official_mp_evaluation_offline(self) -> None:
-        conditions = pb.PourbaixConditions(pH_points=15, eh_points=17)
+        conditions = pb.PourbaixConditions(pH_points=15, U_points=17)
         official = pb.evaluate_official_materials_project_entries(
             "Fe", conditions,
             [FakeMPEntry("mp-metal", "Fe(s)", "Solid", "Fe", {"Fe": 1}, 0, 0, 0),

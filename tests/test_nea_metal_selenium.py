@@ -112,7 +112,7 @@ class NEAMetalSeleniumTests(unittest.TestCase):
                              {s.record_id for s in self.database.load_system(symbol).species})
 
     def test_closed_balance_conserves_primary_metal_with_external_selenium(self):
-        conditions = pb.PourbaixConditions(pH_points=7, eh_points=9,
+        conditions = pb.PourbaixConditions(pH_points=7, U_points=9,
             ligand_activities=pb.LigandActivityModel(tuple(
                 pb.LigandActivity(ligand, log10_free_activity=-3)
                 for ligand in ("selenite-seo3", "selenate-seo4", "selenocyanate-secn"))))

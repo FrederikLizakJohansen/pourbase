@@ -17,9 +17,9 @@ FloatArray = npt.NDArray[np.float64]
 
 @dataclass(frozen=True, slots=True)
 class SpeciationProfile:
-    """Metal fractions along pH at one Eh, derived from curated Gibbs records."""
+    """Metal fractions along pH at one U, derived from curated Gibbs records."""
 
-    eh_V: float
+    U_V: float
     pH: FloatArray
     species: tuple[ThermodynamicSpecies, ...]
     metal_fraction: FloatArray
@@ -72,15 +72,15 @@ def dissolved_blend_weights(diagram: MassBalancedPourbaixDiagram) -> FloatArray:
     return weights
 
 
-def speciation_profile(diagram: MassBalancedPourbaixDiagram, eh_V: float) -> SpeciationProfile:
-    """Metal fractions along pH at the grid Eh nearest to ``eh_V``."""
-    row = nearest_index(diagram.eh_V, eh_V, "eh_V")
+def speciation_profile(diagram: MassBalancedPourbaixDiagram, U_V: float) -> SpeciationProfile:
+    """Metal fractions along pH at the grid U nearest to ``U_V``."""
+    row = nearest_index(diagram.U_V, U_V, "U_V")
     fractions = _metal_fractions(diagram, row, slice(None))
     active = fractions.max(axis=1) > 1e-12
     profile = fractions[active]
     profile.setflags(write=False)
     return SpeciationProfile(
-        eh_V=float(diagram.eh_V[row]),
+        U_V=float(diagram.U_V[row]),
         pH=diagram.pH,
         species=tuple(item for index, item in enumerate(diagram.system.species) if active[index]),
         metal_fraction=profile,
@@ -88,10 +88,10 @@ def speciation_profile(diagram: MassBalancedPourbaixDiagram, eh_V: float) -> Spe
 
 
 def speciation_at(
-    diagram: MassBalancedPourbaixDiagram, pH: float, eh_V: float
+    diagram: MassBalancedPourbaixDiagram, pH: float, U_V: float
 ) -> tuple[dict[str, object], ...]:
     """Sourced metal fractions at one point, largest first, including a precipitated solid."""
-    row = nearest_index(diagram.eh_V, eh_V, "eh_V")
+    row = nearest_index(diagram.U_V, U_V, "U_V")
     column = nearest_index(diagram.pH, pH, "pH")
     fractions = _metal_fractions(diagram, row, column)
     total = diagram.total_metal.total_metal_mol_L
@@ -114,7 +114,7 @@ def speciation_at(
 def plot_speciation_profile(
     profile: SpeciationProfile, *, ax: object | None = None, title: str | None = None
 ) -> object:
-    """Plot sourced species fractions along pH at a fixed Eh."""
+    """Plot sourced species fractions along pH at a fixed U."""
     try:
         import matplotlib.pyplot as plt
     except ImportError as error:
@@ -127,7 +127,7 @@ def plot_speciation_profile(
         xlabel="pH",
         ylabel="fraction of total metal",
         ylim=(0.0, 1.02),
-        title=title or f"Metal speciation at Eh = {profile.eh_V:g} V vs SHE",
+        title=title or f"Metal speciation at U = {profile.U_V:g} V vs SHE",
     )
     ax.legend(fontsize=7, loc="best")
     ax.grid(alpha=0.2)

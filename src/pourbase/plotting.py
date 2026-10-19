@@ -53,13 +53,13 @@ def plot_diagram(
         compact[diagram.stable_species_index == species_index] = display_index
     color_map = ListedColormap([colors[item.record_id] for item in stable_species])
     ax.pcolormesh(
-        diagram.pH, diagram.eh_V, compact, cmap=color_map, vmin=-0.5,
+        diagram.pH, diagram.U_V, compact, cmap=color_map, vmin=-0.5,
         vmax=len(stable_species) - 0.5, shading="nearest", rasterized=True,
     )
     if show_boundaries and len(stable_species) > 1:
         from matplotlib.collections import LineCollection
 
-        segments = phase_boundary_segments(compact, diagram.pH, diagram.eh_V)
+        segments = phase_boundary_segments(compact, diagram.pH, diagram.U_V)
         if len(segments):
             ax.add_collection(
                 LineCollection(
@@ -70,27 +70,27 @@ def plot_diagram(
         ax.plot(diagram.pH, diagram.her_V, "--", color="black", linewidth=1.0)
         ax.plot(diagram.pH, diagram.oer_V, "--", color="black", linewidth=1.0)
     if label_domains:
-        pH_grid, eh_grid = np.meshgrid(diagram.pH, diagram.eh_V)
+        pH_grid, U_grid = np.meshgrid(diagram.pH, diagram.U_V)
         for display_index, species in enumerate(stable_species):
             mask = compact == display_index
             target_pH = float(np.mean(pH_grid[mask]))
-            target_eh = float(np.mean(eh_grid[mask]))
+            target_U = float(np.mean(U_grid[mask]))
             locations = np.column_stack(np.nonzero(mask))
-            coordinates = np.column_stack((pH_grid[mask], eh_grid[mask]))
+            coordinates = np.column_stack((pH_grid[mask], U_grid[mask]))
             scale_pH = max(float(np.ptp(diagram.pH)), 1.0)
-            scale_eh = max(float(np.ptp(diagram.eh_V)), 1.0)
+            scale_U = max(float(np.ptp(diagram.U_V)), 1.0)
             distances = ((coordinates[:, 0] - target_pH) / scale_pH) ** 2 + (
-                (coordinates[:, 1] - target_eh) / scale_eh
+                (coordinates[:, 1] - target_U) / scale_U
             ) ** 2
             row, column = locations[int(np.argmin(distances))]
             ax.text(
-                diagram.pH[column], diagram.eh_V[row], species.species,
+                diagram.pH[column], diagram.U_V[row], species.species,
                 ha="center", va="center", fontsize=8,
                 bbox={"facecolor": "white", "alpha": 0.72, "edgecolor": "none", "pad": 1.5},
             )
-    ax.set(xlabel="pH", ylabel="Eh (V vs SHE)", title=title)
+    ax.set(xlabel="pH", ylabel="U (V vs SHE)", title=title)
     ax.set_xlim(float(diagram.pH[0]), float(diagram.pH[-1]))
-    ax.set_ylim(float(diagram.eh_V[0]), float(diagram.eh_V[-1]))
+    ax.set_ylim(float(diagram.U_V[0]), float(diagram.U_V[-1]))
     if show_legend:
         ax.legend(
             handles=[
@@ -118,9 +118,9 @@ def plot_uncertainty(
     from .uncertainty import stability_uncertainty
 
     uncertain = stability_uncertainty(diagram, confidence_sigma, assumed_uncertainty_kJ_mol * 1000).uncertain
-    ax.contourf(diagram.pH, diagram.eh_V, uncertain.astype(float), levels=[0.5, 1.5], colors="none",
+    ax.contourf(diagram.pH, diagram.U_V, uncertain.astype(float), levels=[0.5, 1.5], colors="none",
                 hatches=["////"], zorder=3)
-    ax.contour(diagram.pH, diagram.eh_V, uncertain.astype(float), levels=[0.5], colors=[color],
+    ax.contour(diagram.pH, diagram.U_V, uncertain.astype(float), levels=[0.5], colors=[color],
                linewidths=0.6, zorder=3)
     return ax
 
@@ -161,7 +161,7 @@ def plot_boltzmann_diagram(
         origin="lower",
         extent=(
             float(diagram.pH[0]), float(diagram.pH[-1]),
-            float(diagram.eh_V[0]), float(diagram.eh_V[-1]),
+            float(diagram.U_V[0]), float(diagram.U_V[-1]),
         ),
         aspect="auto",
         interpolation="bilinear",
@@ -171,7 +171,7 @@ def plot_boltzmann_diagram(
         from matplotlib.collections import LineCollection
 
         segments = phase_boundary_segments(
-            diagram.stable_species_index, diagram.pH, diagram.eh_V
+            diagram.stable_species_index, diagram.pH, diagram.U_V
         )
         if len(segments):
             ax.add_collection(
@@ -184,31 +184,31 @@ def plot_boltzmann_diagram(
         int(value) for value in np.unique(diagram.stable_species_index)
     )
     if label_domains:
-        pH_grid, eh_grid = np.meshgrid(diagram.pH, diagram.eh_V)
+        pH_grid, U_grid = np.meshgrid(diagram.pH, diagram.U_V)
         for species_index in stable_indices:
             item = species[species_index]
             mask = diagram.stable_species_index == species_index
             locations = np.column_stack(np.nonzero(mask))
-            coordinates = np.column_stack((pH_grid[mask], eh_grid[mask]))
+            coordinates = np.column_stack((pH_grid[mask], U_grid[mask]))
             target = np.mean(coordinates, axis=0)
             scales = np.asarray([
                 max(float(np.ptp(diagram.pH)), 1.0),
-                max(float(np.ptp(diagram.eh_V)), 1.0),
+                max(float(np.ptp(diagram.U_V)), 1.0),
             ])
             row, column = locations[int(np.argmin(np.sum(
                 ((coordinates - target) / scales) ** 2, axis=1
             )))]
             ax.text(
-                diagram.pH[column], diagram.eh_V[row], item.species,
+                diagram.pH[column], diagram.U_V[row], item.species,
                 ha="center", va="center", fontsize=8,
                 bbox={"facecolor": "white", "alpha": 0.72,
                       "edgecolor": "none", "pad": 1.5},
             )
     if title is None:
         title = f"{diagram.system.system} - soft minimum (width {smoothed.width_J_mol / 1000:.3g} kJ/mol)"
-    ax.set(xlabel="pH", ylabel="Eh (V vs SHE)", title=title)
+    ax.set(xlabel="pH", ylabel="U (V vs SHE)", title=title)
     ax.set_xlim(float(diagram.pH[0]), float(diagram.pH[-1]))
-    ax.set_ylim(float(diagram.eh_V[0]), float(diagram.eh_V[-1]))
+    ax.set_ylim(float(diagram.U_V[0]), float(diagram.U_V[-1]))
     if show_legend:
         peak_weights = np.max(smoothed.weights, axis=(1, 2))
         displayed = [
@@ -245,13 +245,13 @@ def plot_mass_balance_summary(
         show_boundaries=show_boundaries, show_water=show_water,
     )
     precipitated = axes[1].pcolormesh(
-        diagram.pH, diagram.eh_V, diagram.precipitated_metal_fraction,
+        diagram.pH, diagram.U_V, diagram.precipitated_metal_fraction,
         cmap="Blues", vmin=0.0, vmax=1.0, shading="nearest", rasterized=True,
     )
     figure.colorbar(precipitated, ax=axes[1], label="precipitated metal fraction")
     floor = np.finfo(np.float64).tiny
     dissolved = axes[2].pcolormesh(
-        diagram.pH, diagram.eh_V,
+        diagram.pH, diagram.U_V,
         np.log10(np.maximum(diagram.dissolved_metal_mol_L, floor)),
         cmap="viridis", shading="nearest", rasterized=True,
     )
@@ -263,7 +263,7 @@ def plot_mass_balance_summary(
             axis.plot(diagram.pH, diagram.her_V, "--", color="black", linewidth=1.0)
             axis.plot(diagram.pH, diagram.oer_V, "--", color="black", linewidth=1.0)
         axis.set_xlim(float(diagram.pH[0]), float(diagram.pH[-1]))
-        axis.set_ylim(float(diagram.eh_V[0]), float(diagram.eh_V[-1]))
+        axis.set_ylim(float(diagram.U_V[0]), float(diagram.U_V[-1]))
         axis.set_xlabel("pH")
     if title:
         figure.suptitle(title)
@@ -290,14 +290,14 @@ def plot_official_materials_project_diagram(
     for display_index, phase_index in enumerate(stable_indices):
         compact[diagram.stable_phase_index == phase_index] = display_index
     ax.pcolormesh(
-        diagram.pH, diagram.eh_V, compact,
+        diagram.pH, diagram.U_V, compact,
         cmap=ListedColormap([colors[item.phase_id] for item in stable_phases]),
         vmin=-0.5, vmax=len(stable_phases) - 0.5, shading="nearest", rasterized=True,
     )
     if len(stable_phases) > 1:
         from matplotlib.collections import LineCollection
 
-        segments = phase_boundary_segments(compact, diagram.pH, diagram.eh_V)
+        segments = phase_boundary_segments(compact, diagram.pH, diagram.U_V)
         if len(segments):
             ax.add_collection(LineCollection(
                 segments, colors="black", linewidths=0.65, zorder=3
@@ -305,28 +305,28 @@ def plot_official_materials_project_diagram(
     ax.plot(diagram.pH, diagram.her_V, "--", color="black", linewidth=1.0)
     ax.plot(diagram.pH, diagram.oer_V, "--", color="black", linewidth=1.0)
     if label_domains:
-        pH_grid, eh_grid = np.meshgrid(diagram.pH, diagram.eh_V)
+        pH_grid, U_grid = np.meshgrid(diagram.pH, diagram.U_V)
         for display_index, phase in enumerate(stable_phases):
             mask = compact == display_index
             locations = np.column_stack(np.nonzero(mask))
-            coordinates = np.column_stack((pH_grid[mask], eh_grid[mask]))
+            coordinates = np.column_stack((pH_grid[mask], U_grid[mask]))
             target = np.mean(coordinates, axis=0)
             scales = np.asarray([
                 max(float(np.ptp(diagram.pH)), 1.0),
-                max(float(np.ptp(diagram.eh_V)), 1.0),
+                max(float(np.ptp(diagram.U_V)), 1.0),
             ])
             row, column = locations[int(np.argmin(np.sum(
                 ((coordinates - target) / scales) ** 2, axis=1
             )))]
             ax.text(
-                diagram.pH[column], diagram.eh_V[row], phase.label,
+                diagram.pH[column], diagram.U_V[row], phase.label,
                 ha="center", va="center", fontsize=8,
                 bbox={"facecolor": "white", "alpha": 0.72,
                       "edgecolor": "none", "pad": 1.5},
             )
-    ax.set(xlabel="pH", ylabel="Eh (V vs SHE)", title=title)
+    ax.set(xlabel="pH", ylabel="U (V vs SHE)", title=title)
     ax.set_xlim(float(diagram.pH[0]), float(diagram.pH[-1]))
-    ax.set_ylim(float(diagram.eh_V[0]), float(diagram.eh_V[-1]))
+    ax.set_ylim(float(diagram.U_V[0]), float(diagram.U_V[-1]))
     if show_legend:
         ax.legend(
             handles=[
@@ -375,7 +375,7 @@ def plot_official_materials_project_comparison(
     )
     changed = (~comparison.same_thermodynamic_species).astype(int)
     axes[2].pcolormesh(
-        experimental.pH, experimental.eh_V, changed,
+        experimental.pH, experimental.U_V, changed,
         cmap=ListedColormap(["#f3f3f3", "#d95f02"]),
         vmin=-0.5, vmax=1.5, shading="nearest", rasterized=True,
     )
@@ -393,7 +393,7 @@ def plot_official_materials_project_comparison(
     )
     for axis in axes:
         axis.set_xlabel("pH")
-    axes[0].set_ylabel("Eh (V vs SHE)")
+    axes[0].set_ylabel("U (V vs SHE)")
     if title:
         figure.suptitle(title)
     return figure, axes

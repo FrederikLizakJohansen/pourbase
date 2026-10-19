@@ -55,7 +55,7 @@ def parser() -> argparse.ArgumentParser:
     sweep.add_argument("--maximum", type=float, default=0.0)
     sweep.add_argument("--points", type=int, default=7)
     sweep.add_argument("--probe-pH", type=float, default=7.0)
-    sweep.add_argument("--probe-eh", type=float, default=0.0)
+    sweep.add_argument("--probe-U", type=float, default=0.0)
     sweep.add_argument("--output", type=Path, default=Path("pourbaix-sweep.png"))
     evidence(sweep)
     return root
@@ -90,7 +90,7 @@ def run(args: argparse.Namespace) -> None:
             args.symbol, conditions, args.minimum, args.maximum, args.points,
             allow_incomplete=not args.require_complete, energy_policy=_policy(args),
         )
-        figure, _ = plot_concentration_sweep(result, probe_pH=args.probe_pH, probe_eh_V=args.probe_eh)
+        figure, _ = plot_concentration_sweep(result, probe_pH=args.probe_pH, probe_U_V=args.probe_U)
         print(f"Wrote {save_figure(figure, args.output, dpi=150).resolve()}")
     else:
         if args.mode == Mode.MASS_BALANCE.value and (args.blend_width or args.boltzmann_scale) is not None:
