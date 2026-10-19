@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 16 October 2026 checkpoint contains **1,026 species and 3,249 observations**
-across 74 supported systems, with **903/812/696 selected G/S/H properties**.
+The latest 19 October 2026 checkpoint contains **1,029 species and 3,260 observations**
+across 74 supported systems, with **906/815/699 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1178,3 +1178,12 @@ route, independently open NBS input and carried NEA input terms.
 `R11d_nickel_hydrosulfide_derivations` retains reaction constants, stated
 widths, full input IDs, standard-state assumptions and the HS-/S2- conversion.
 See [the source review](sources/psi-nickel-hydrosulfides.md).
+
+R11e adds eleven observations: selected NEA annabergite G/H/S, qualified
+local bicarbonate/silicate G estimates and two complete local pyrophosphate
+G/H/S variants. The latter preserve alternative G observations while filling
+H/S gaps. `source_reuse_R11e_PSI_nickel`,
+`source_permission_NEA_TDB_Ni_R11e` and `R11e_nickel_derivations` retain
+separate reuse bases, complete inputs, approximate-source qualifications and
+reference-cycle differences. Every previous row and preferred value remains.
+See [the ten-route source review](sources/psi-nickel-carbonate-silicate.md).

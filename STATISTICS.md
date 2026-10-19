@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 1026 |
+| Species | 1029 |
 | Supported elemental systems | 74 of 118 elements |
-| Recommended Gibbs energies | 903 (88 %) |
-| Recommended entropies | 812 (79 %) |
-| Recommended formation enthalpies | 696 (68 %) |
-| Reported values retained | 3249 |
-| Source records | 1723 (176 distinct citations) |
-| Phase records | 575 (356 resolved) |
-| Warnings | 1387 |
+| Recommended Gibbs energies | 906 (88 %) |
+| Recommended entropies | 815 (79 %) |
+| Recommended formation enthalpies | 699 (68 %) |
+| Reported values retained | 3260 |
+| Source records | 1727 (179 distinct citations) |
+| Phase records | 576 (357 resolved) |
+| Warnings | 1392 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 27 |
@@ -23,8 +23,8 @@ Gibbs energies by evidence status:
 
 | Status | Species |
 |---|---|
-| `verified` | 585 |
-| `source_verified_estimate` | 244 |
+| `verified` | 586 |
+| `source_verified_estimate` | 246 |
 | `not_available` | 117 |
 | `defined_reference_state` | 74 |
 | `terminal_evidence_gap` | 6 |
@@ -33,8 +33,8 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| aqueous | 542 | 477 | 417 | 296 |
-| solid | 431 | 378 | 344 | 350 |
+| aqueous | 544 | 479 | 419 | 298 |
+| solid | 432 | 379 | 345 | 351 |
 | gas | 48 | 45 | 48 | 45 |
 | liquid | 5 | 3 | 3 | 5 |
 
@@ -42,19 +42,19 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 1026 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 1026 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 3249 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1723 | Full citations, links, locators and access dates |
-| `phases` | 575 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 1387 | Scientific cautions attached to records |
+| `species` | 1029 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 1029 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 3260 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1727 | Full citations, links, locators and access dates |
+| `phases` | 576 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 1392 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 27 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 11 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 20 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 23 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -131,7 +131,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Na | Sodium (Na) | 17 | 10 | 7 | 0 | 0 | 16 | 15 | 13 | 37 |
 | Nb | Niobium (Nb) | 7 | 4 | 3 | 0 | 0 | 7 | 4 | 4 | 5 |
 | Nd | Neodymium (Nd) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 9 | 15 |
-| Ni | Nickel (Ni) | 57 | 26 | 29 | 1 | 1 | 52 | 40 | 41 | 60 |
+| Ni | Nickel (Ni) | 60 | 28 | 30 | 1 | 1 | 55 | 43 | 44 | 65 |
 | Os | Osmium (Os) | 7 | 2 | 4 | 1 | 0 | 7 | 5 | 5 | 8 |
 | P | Phosphorus (P) | 9 | 7 | 2 | 0 | 0 | 9 | 7 | 7 | 2 |
 | Pb | Lead (Pb) | 19 | 10 | 9 | 0 | 0 | 17 | 18 | 14 | 42 |

@@ -129,6 +129,32 @@ The same OECD acknowledgment requirement must be included in sublicenses and
 passed on by further sublicensees. Runtime ligand reference evaluations remain
 explicit; they can give reaction constants different from the NEA auxiliary set.
 
+## R11e nickel carbonate, silicate, arsenate and pyrophosphate evaluations
+
+The R11e nickel follow-up acknowledges Gamsjäger et al. (2005),
+*Chemical Thermodynamics of Nickel*, NEA volume 6, Table III-1 p. 46
+(annabergite G/H/S), Table III-2 p. 50 (pyrophosphate reaction evaluations),
+and sections V.6.2.2.2/V.6.3.2.1. OECD and NEA are acknowledged for these
+selected values and the retained Ni2+ inputs. Their OECD data terms and
+written clarification apply: every sublicense of work using these data
+must include the same OECD acknowledgment requirement and require further
+sublicensees to pass it on. Additional source-specific restrictions remain
+applicable. Independent auxiliary tables remain outside the import.
+
+Original PSI numerical evaluations are cited separately: Hummel and Thoenen
+(2014), PSI TM-44-14-05, pp. 25–26 (approximate supplemental bicarbonate),
+and Hummel (2014), PSI TM-44-12-05, pp. 10–11/Fig. 8.6 (nickel-silicate
+SIT reanalysis). Their isolated original numerical results use the established
+individual-fact route with attribution. Complete reports and bulk PSI
+database files retain their own rights. Miron et al. (2017),
+doi:10.2475/07.2017.01, supplies the retained original silicate anchor.
+
+NIST is acknowledged for the explicitly open non-SRD NBS PDR M32124 input
+cells, CSV logical records 1281/1357/1673, under the NIST open licence,
+without warranty. Source qualifications, complete calculations and
+cross-reference differences accompany the local estimates. See
+[the R11e source review](docs/sources/psi-nickel-carbonate-silicate.md).
+
 ## PSI nickel hydrosulfide evaluations
 
 The R11d nickel hydrosulfide continuation cites Hummel, W. and Thoenen, T.

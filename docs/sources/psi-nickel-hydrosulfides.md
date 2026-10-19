@@ -105,8 +105,9 @@ complex changes dissolved nickel concentrations in those balances.
 - [ ] **R11d1:** Obtain Bjerrum (1941), *Metal Ammine Formation in Aqueous
   Solution*, original nickel numerical pages (1957 reprint acceptable),
   confirm constants/conditions and reuse basis, then review the six ammines.
-- [ ] **R11e:** Reconcile the remaining PSI original-source reaction routes
-  and choose the next bounded eligible-source batch. Wider R11 stays open.
+- [x] **R11e:** Complete the ten-route nickel follow-up with eleven
+  observations and explicit arsenite/bound holds.
+  See [the review](psi-nickel-carbonate-silicate.md). Wider R11 stays open.
 
 PSI p. 21 and Table 5.5 attribute the six ammonia constants to Bjerrum.
 Available catalogue records, Google Books snippets and Bjerrum's 1982

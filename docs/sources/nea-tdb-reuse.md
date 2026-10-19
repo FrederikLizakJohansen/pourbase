@@ -416,6 +416,16 @@ permission review is carried forward and the scientific hold remains explicit.
 
 ## Independent original studies in a NEA follow-up
 
+R11e resolves the earlier annabergite reference/model hold with selected NEA
+G/H/S and the existing free arsenate reference. It retains original PSI
+bicarbonate/silicate numerical evaluations through their own individual-fact
+route and complete local pyrophosphate variants using permitted NEA reaction
+data and explicitly open NBS inputs. Source approximation, ionic-strength
+limits and formation-cycle differences stay explicit; previous direct NEA
+G values remain preferred. Keep upper bounds and unknown hydration outside
+the point-value import until the missing scientific requirements are met.
+See [the ten-route review](psi-nickel-carbonate-silicate.md).
+
 R11d retains two local nickel hydrosulfide formation-G estimates from
 original PSI-authored regression results, with retained NEA6 Ni2+ and
 explicitly open NBS HS- anchors. The PSI results use the established
