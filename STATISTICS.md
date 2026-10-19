@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 1029 |
+| Species | 1030 |
 | Supported elemental systems | 74 of 118 elements |
-| Recommended Gibbs energies | 906 (88 %) |
-| Recommended entropies | 815 (79 %) |
-| Recommended formation enthalpies | 699 (68 %) |
-| Reported values retained | 3260 |
-| Source records | 1727 (179 distinct citations) |
-| Phase records | 576 (357 resolved) |
-| Warnings | 1392 |
+| Recommended Gibbs energies | 907 (88 %) |
+| Recommended entropies | 816 (79 %) |
+| Recommended formation enthalpies | 700 (68 %) |
+| Reported values retained | 3267 |
+| Source records | 1730 (182 distinct citations) |
+| Phase records | 577 (358 resolved) |
+| Warnings | 1397 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 27 |
@@ -24,7 +24,7 @@ Gibbs energies by evidence status:
 | Status | Species |
 |---|---|
 | `verified` | 586 |
-| `source_verified_estimate` | 246 |
+| `source_verified_estimate` | 247 |
 | `not_available` | 117 |
 | `defined_reference_state` | 74 |
 | `terminal_evidence_gap` | 6 |
@@ -34,7 +34,7 @@ Species by phase:
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
 | aqueous | 544 | 479 | 419 | 298 |
-| solid | 432 | 379 | 345 | 351 |
+| solid | 433 | 380 | 346 | 352 |
 | gas | 48 | 45 | 48 | 45 |
 | liquid | 5 | 3 | 3 | 5 |
 
@@ -42,19 +42,19 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 1029 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 1029 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 3260 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1727 | Full citations, links, locators and access dates |
-| `phases` | 576 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 1392 | Scientific cautions attached to records |
+| `species` | 1030 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 1030 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 3267 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1730 | Full citations, links, locators and access dates |
+| `phases` | 577 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 1397 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 27 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 11 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 23 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 25 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -148,7 +148,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Se | Selenium (Se) | 29 | 11 | 7 | 11 | 0 | 26 | 22 | 25 | 40 |
 | Si | Silicon (Si) | 5 | 3 | 2 | 0 | 0 | 5 | 4 | 4 | 9 |
 | Sm | Samarium (Sm) | 13 | 7 | 6 | 0 | 0 | 12 | 6 | 8 | 16 |
-| Sn | Tin (Sn) | 49 | 23 | 17 | 8 | 1 | 47 | 27 | 25 | 41 |
+| Sn | Tin (Sn) | 50 | 23 | 18 | 8 | 1 | 48 | 28 | 26 | 46 |
 | Sr | Strontium (Sr) | 11 | 6 | 5 | 0 | 0 | 11 | 11 | 9 | 20 |
 | Ta | Tantalum (Ta) | 4 | 2 | 2 | 0 | 0 | 4 | 2 | 1 | 6 |
 | Tb | Terbium (Tb) | 11 | 6 | 5 | 0 | 0 | 10 | 7 | 8 | 13 |

@@ -151,8 +151,9 @@ exclude ligand species away from 298.15 K, including complete triplets.
   separately justified water-component model. No anhydrous phase is inferred.
 - [ ] **R11e2:** Seek an eligible measured dicarbonate point value. A value
   below an upper bound requires evidence; the bound itself stays external.
-- [ ] **R11f:** Review the seven remaining tin reaction routes within the
-  other-original-source PSI inventory; wider R11 stays open.
+- [x] **R11f:** Complete the [seven tin source routes](tin-original-routes.md):
+  seven observations, one crystalline phase and three explicit branch holds.
+  Wider R11 stays open, with 40 other-original-source routes.
 
 Six original-Bjerrum ammonia holds, zirconium scientific/thermal work and
 other sources' permission holds remain separate. Historical requested

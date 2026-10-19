@@ -445,3 +445,11 @@ methods can remain a follow-up when an admitted numerical result is explicitly
 verified in the primary abstract; identify that limited verification scope.
 A source-specific restriction or unclear reuse basis still requires a hold.
 See [the gas source review](nea-zirconium-gas-upgrade.md).
+
+R11f carries the completed NEA tin-anchor reviews into four historical local G
+alternatives, with the OECD credit and downstream acknowledgment obligation
+preserved. A new crystalline burtite triplet and original Nagra reaction facts
+use separately documented individual-original-numerical-facts decisions; the
+NEA permission does not cover those publications. The burtite article is
+CC BY-NC-ND, with only its three isolated original property results admitted
+under the factual-results route. See [tin source routes](tin-original-routes.md).

@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 19 October 2026 checkpoint contains **1,029 species and 3,260 observations**
-across 74 supported systems, with **906/815/699 selected G/S/H properties**.
+The latest 19 October 2026 checkpoint contains **1,030 species and 3,267 observations**
+across 74 supported systems, with **907/816/700 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1187,3 +1187,10 @@ H/S gaps. `source_reuse_R11e_PSI_nickel`,
 separate reuse bases, complete inputs, approximate-source qualifications and
 reference-cycle differences. Every previous row and preferred value remains.
 See [the ten-route source review](sources/psi-nickel-carbonate-silicate.md).
+
+R11f adds seven observations: four historical tin G alternatives and an original
+crystalline burtite G/H/S triplet. Metadata `R11f_tin_derivations` retains full
+formulas, native water normalization, original reaction widths and local inputs.
+`source_reuse_R11f_tin_original_results` records the separate isolated-original-
+numerical-facts basis and carried NEA input obligations. The burtite article is
+CC BY-NC-ND; publication expression stays external. See [tin source routes](sources/tin-original-routes.md).

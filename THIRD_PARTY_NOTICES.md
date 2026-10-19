@@ -789,3 +789,37 @@ These independent references are separate from NEA/OECD permission.
 Earlier NEA observations retain OECD/NEA attribution and the same
 acknowledgment requirement in sublicenses, including onward propagation by
 further sublicensees. See [the source review](docs/sources/nea-zirconium-temperature-review.md).
+
+## R11f original tin evaluations and crystalline burtite
+
+Hummel, Berner, Curti, Pearson and Thoenen (2002), *Nagra/PSI Chemical
+Thermodynamic Data Base 01/01*, Nagra NTB02-16, pp. 407, 409 and 415:
+four isolated original reaction evaluations support attributed local historical
+G alternatives. Source: https://media.nagra.ch/uploads/2022/08/e_ntb02-016.pdf.
+Nagra's publication remains copyrighted. No report, source table arrangement,
+inherited database or publication expression is redistributed. The limited
+original numerical facts follow the project's individual-facts reuse policy.
+
+Haase, Christensen, Nielsen, Koch, Galazka and Majzlan (2021), *Stability and
+solubility of members of tin perovskites in the schoenfliesite subgroup*,
+Chemical Thermodynamics and Thermal Analysis 1–2, 100005,
+https://doi.org/10.1016/j.ctta.2021.100005, Table 7, burtite CaSn(OH)6:
+three original numerical G/H/S results are included as isolated factual results.
+The article is CC BY-NC-ND 4.0; its expression, figures and table arrangements
+remain external under those terms. This numerical-facts use does not claim a
+GPL-compatible licence to redistribute or adapt that article. No bulk source
+table or separately licensed auxiliary dataset is included. See
+https://creativecommons.org/faq/ and
+https://www.copyright.gov/help/faq/faq-protect.html.
+
+The historical local estimates retain NEA12 inputs. OECD and the OECD Nuclear
+Energy Agency are acknowledged, with the relevant NEA tin-volume citations and
+written clarification NEA-TDB-OECD-2026-10-14. The OECD data terms permit use,
+adaptation and redistribution, including commercially, subject to applicable
+source-specific additional restrictions. Every sublicense of work using these
+data must include the same OECD acknowledgment requirement and require further
+sublicensees to pass it on. NIST is acknowledged for retained open non-SRD NBS
+reference inputs under https://www.nist.gov/open/license, without warranty.
+Separate publication/source rights remain applicable. The full evidence and
+scientific scope appear in docs/sources/tin-original-routes.md and database
+metadata; private correspondence and complete source publications remain external.
