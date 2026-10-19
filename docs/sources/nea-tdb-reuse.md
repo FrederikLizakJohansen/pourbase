@@ -461,3 +461,10 @@ numerical-facts route. The inherited JAEA mixed-chloride selections remain held.
 The NEA permission and its downstream acknowledgment requirement continue for
 NEA material elsewhere in the database. See
 [palladium source routes](palladium-original-routes.md).
+
+R11h carries the completed NEA permission review forward while adding six
+separately reviewed original Nagra europium reaction evaluations under the
+limited original-numerical-facts route. Open NBS and the existing Miron silicate
+reference supply the local inputs. Amorphous original-source verification and
+simple-carbonate hydration remain precise holds; the older strong silicate
+model stays external. See [europium source routes](europium-original-routes.md).

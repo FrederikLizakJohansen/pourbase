@@ -855,3 +855,28 @@ matches the already selected open NBS observation. Existing OECD credit and
 the same acknowledgment requirement for further sublicensees continue to apply
 to NEA-derived material elsewhere in this distribution. See
 `docs/sources/palladium-original-routes.md` for source-specific scope and holds.
+
+## R11h original europium evaluations
+
+Hummel et al. (2002), Nagra NTB02-16, pp. 150/155/160,
+https://media.nagra.ch/uploads/2022/08/e_ntb02-016.pdf, and Hummel and Thoenen
+(2023), Nagra NTB21-03, pp. 900/1003,
+https://media.nagra.ch/uploads/2023/05/NTB-21-03.pdf: six isolated original
+numerical reaction evaluations support local europium G estimates, preserving
+original source intervals, variants and phase/model qualifications. Their use
+follows the established individual-original-numerical-facts route. Nagra's
+publication copyright and reproduction/storage rights remain applicable;
+complete publications, protected expression, figures, table layouts and bulk
+source databases remain external. Supporting factual-data guidance:
+https://creativecommons.org/faq/ and
+https://www.copyright.gov/help/faq/faq-protect.html.
+
+NIST is acknowledged for explicitly open non-SRD NBS PDR M32124 reference
+inputs, https://doi.org/10.18434/M32124, under
+https://www.nist.gov/open/license, without warranty. The existing Miron 2017
+silicate reference carries its original-result/open-water review and attribution.
+Existing OECD credit and the same acknowledgment requirement for further
+sublicensees continue for NEA-derived material elsewhere; they do not license
+Nagra publications. Original amorphous-source, unknown carbonate hydration and
+superseded strong-silicate-model issues remain separately documented in
+`docs/sources/europium-original-routes.md` and database reuse metadata.

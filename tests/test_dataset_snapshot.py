@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1036), ("reported_thermochemistry", 3275),
-                                 ("sources", 1737), ("warnings", 1403), ("additional_components", 11),
+            for table, count in (("species", 1038), ("reported_thermochemistry", 3281),
+                                 ("sources", 1743), ("warnings", 1407), ("additional_components", 11),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -640,7 +640,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         record = self.database.species_records((rid,))[0]
         expected = -574100 + 3 * -278790 + GAS_CONSTANT_J_MOL_K * 298.15 * LN_10 * -19.28
         self.assertAlmostEqual(record.thermochemistry.gibbs_energy_J_mol.value, expected, places=6)
-        self.assertEqual(len(record.reported), 3)
+        self.assertEqual(len(record.reported), 5)
         observation = next(row for row in record.reported if row.selected_as_recommended)
         self.assertTrue(observation.selected_as_recommended)
         self.assertEqual(observation.status, "source_verified_estimate")
@@ -1913,9 +1913,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 913, "absolute_entropy": 816, "enthalpy_of_formation": 700})
+                         {"gibbs_energy_of_formation": 915, "absolute_entropy": 816, "enthalpy_of_formation": 700})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "49645568fbf6d060",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "c002ce744f9753dc",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

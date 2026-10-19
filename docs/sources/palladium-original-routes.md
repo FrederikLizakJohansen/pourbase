@@ -145,7 +145,8 @@ The database now contains **1,036 species and 3,275 observations**, with
 references, tests and packaged notices accompany this checkpoint. Concurrent
 GUI implementation remains untouched.
 
-The finite R11g review is complete. The wider queue contains **33 other-original-
-source routes**. **R11h: six europium routes** is the next bounded review;
+The finite R11g review is complete. After the completed [europium review](europium-original-routes.md), the wider
+queue contains **27 other-original-source routes**. **R11i: five iron hydrolysis/carbonate routes**
+is the next bounded review;
 R11g chloride/solid follow-ups and prior tin, nickel, ammonia, solid and
 zirconium holds retain separate entries in the running tracker.

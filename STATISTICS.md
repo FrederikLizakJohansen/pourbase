@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 1036 |
+| Species | 1038 |
 | Supported elemental systems | 74 of 118 elements |
-| Recommended Gibbs energies | 913 (88 %) |
+| Recommended Gibbs energies | 915 (88 %) |
 | Recommended entropies | 816 (79 %) |
-| Recommended formation enthalpies | 700 (68 %) |
-| Reported values retained | 3275 |
-| Source records | 1737 (188 distinct citations) |
-| Phase records | 577 (358 resolved) |
-| Warnings | 1403 |
+| Recommended formation enthalpies | 700 (67 %) |
+| Reported values retained | 3281 |
+| Source records | 1743 (192 distinct citations) |
+| Phase records | 578 (359 resolved) |
+| Warnings | 1407 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 28 |
@@ -24,7 +24,7 @@ Gibbs energies by evidence status:
 | Status | Species |
 |---|---|
 | `verified` | 586 |
-| `source_verified_estimate` | 253 |
+| `source_verified_estimate` | 255 |
 | `not_available` | 117 |
 | `defined_reference_state` | 74 |
 | `terminal_evidence_gap` | 6 |
@@ -33,8 +33,8 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| aqueous | 550 | 485 | 419 | 298 |
-| solid | 433 | 380 | 346 | 352 |
+| aqueous | 551 | 486 | 419 | 298 |
+| solid | 434 | 381 | 346 | 352 |
 | gas | 48 | 45 | 48 | 45 |
 | liquid | 5 | 3 | 3 | 5 |
 
@@ -42,19 +42,19 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 1036 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 1036 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 3275 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1737 | Full citations, links, locators and access dates |
-| `phases` | 577 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 1403 | Scientific cautions attached to records |
+| `species` | 1038 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 1038 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 3281 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1743 | Full citations, links, locators and access dates |
+| `phases` | 578 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 1407 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 28 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 11 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 27 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 29 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -108,7 +108,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Cu | Copper (Cu) | 29 | 16 | 13 | 0 | 0 | 22 | 27 | 16 | 50 |
 | Dy | Dysprosium (Dy) | 8 | 5 | 3 | 0 | 0 | 8 | 6 | 6 | 9 |
 | Er | Erbium (Er) | 8 | 5 | 3 | 0 | 0 | 8 | 6 | 7 | 10 |
-| Eu | Europium (Eu) | 13 | 6 | 7 | 0 | 0 | 12 | 10 | 11 | 13 |
+| Eu | Europium (Eu) | 15 | 7 | 8 | 0 | 0 | 14 | 10 | 11 | 17 |
 | F | Fluorine (F) | 4 | 3 | 0 | 1 | 0 | 4 | 4 | 4 | 1 |
 | Fe | Iron (Fe) | 66 | 28 | 38 | 0 | 0 | 55 | 45 | 41 | 82 |
 | Ga | Gallium (Ga) | 9 | 6 | 3 | 0 | 0 | 7 | 8 | 2 | 17 |

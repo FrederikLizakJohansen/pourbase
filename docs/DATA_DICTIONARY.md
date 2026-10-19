@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 19 October 2026 checkpoint contains **1,036 species and 3,275 observations**
-across 74 supported systems, with **913/816/700 selected G/S/H properties**.
+The latest 19 October 2026 checkpoint contains **1,038 species and 3,281 observations**
+across 74 supported systems, with **915/816/700 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1204,3 +1204,12 @@ reference matches the existing preferred open NBS NH3 observation. Two justified
 policy overrides select substantive 2023 hydrolysis revisions while preserving
 their 2002 alternatives; the policy now has 46 overrides and 10 exclusions.
 See [palladium source routes](sources/palladium-original-routes.md).
+
+R11h adds six original-evaluation local europium G observations: crystalline
+hydroxide, two fluoride alternatives, nominal crystalline hydroxycarbonate, and
+two monosilicate variants. Two species and two preferred G properties become
+available; four alternatives remain. `R11h_europium_derivations` retains inputs,
+source intervals and native/full water transformations;
+`source_reuse_R11h_original_europium` records reuse scope and precise
+amorphous-source/simple-carbonate-hydration holds. See
+[europium source routes](sources/europium-original-routes.md).
