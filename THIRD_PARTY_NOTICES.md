@@ -1015,3 +1015,31 @@ numerical facts verified in the publisher abstract support local Ra solubility
 and RaOH association estimates on open reference inputs. The complete article
 has no open-licence claim. Original solid-enthalpy sign issues remain held.
 See [all source and scientific decisions](docs/sources/final-original-routes.md).
+
+### R11m precipitated manganese carbonate
+
+Garrels, R. M., Thompson, M. E. and Siever, R. (1960), *Stability of some
+carbonates at 25 degrees C and one atmosphere total pressure*, American
+Journal of Science 258, 402–418, https://doi.org/10.2475/ajs.258.6.402:
+one individually attributed original precipitated-MnCO3 formation-G estimate
+from the p.402 opening table, with material limitations on p.409. Reuse follows
+the carried individual-original-numerical-facts policy. The article itself has
+no asserted open licence; complete text, tables, figures and OCR remain
+external. The original value and standard pressure remain in its locator.
+
+Grenthe et al. (1992), *Chemical Thermodynamics of Uranium*, sectionII.3.2,
+pp.24–27, Eq.II.38 p.26: OECD and the OECD Nuclear Energy Agency are
+acknowledged for the standard-state pressure method used in the local
+1-atm to 1-bar adaptation. The carried NEA-TDB-OECD-2026-10-14 clarification
+and [OECD data terms](https://www.oecd.org/en/about/terms-conditions.html)
+remain applicable. Every sublicense of work using these data must include
+the same acknowledgment requirement and require further sublicensees to do
+the same. Source-specific restrictions remain applicable.
+
+Wagman et al. (1982), *The NBS Tables of Chemical Thermodynamic Properties*,
+explicitly open non-SRD [NIST PDR M32124](https://doi.org/10.18434/M32124)
+with errata: NIST acknowledged for precipitated MnCO3 H, logical record6408,
+column8. The [NIST open licence](https://www.nist.gov/open/license) applies;
+data are provided without warranty. Existing source/licence review carries
+forward. Separate source preparations and missing uncertainty remain explicit.
+See [the source and pressure review](docs/sources/synthetic-manganese-carbonate.md).

@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 20 October 2026 checkpoint contains **1,055 species and 3,371 observations**
-across 75 supported systems, with **932/827/711 selected G/S/H properties**.
+The latest 20 October 2026 checkpoint contains **1,056 species and 3,373 observations**
+across 75 supported systems, with **933/827/712 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1258,3 +1258,13 @@ conditions, derivations, alternatives and the previous radium coverage row.
 CN/HCN require an explicit N2 reservoir. Nb2O5 retains the NBS high-temperature
 phase label. Native finite-I niobium and synthetic MnCO3 remain separate
 scientific holds. See [all 13 decisions](sources/final-original-routes.md).
+
+R11m adds a distinct precipitated MnCO3 record with two observations: original
+Garrels1960 solubility-derived G, normalized from 1 atm to 1 bar with the NEA
+standard-state prescription, and open NBS precipitated-material H. The raw G,
+original pressure, +48.94571697 J/mol correction, specimen limitations and
+mixed-source scope remain in metadata `R11m_precipitated_MnCO3_observations`.
+`source_reuse_R11m_precipitated_MnCO3` and `R11m_native_route_history` preserve
+reuse and route decisions. Earlier rows, preferred IDs and policy remain.
+The later native reaction constant retains its original-table follow-up.
+See [the synthetic manganese carbonate review](sources/synthetic-manganese-carbonate.md).

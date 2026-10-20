@@ -180,14 +180,11 @@ pass, including ideal and Davies activity models. Thermal checks at
   confirms the native constants inherit the finite-I NBS basis. Modern
   Peiffert2010 DOI10.1007/s10953-010-9495-z uses B-Nb2O5; its phase cannot be
   replaced by NBS's high-temperature form.
-- [ ] **R11l2 — Rds-Syn:** reconcile the native Nordstrom1990
-  re-expression with the original Garrels1960 specimen and pressure basis.
-  The [original paper](https://doi.org/10.2475/ajs.258.6.402), retrieved privately,
-  distinguishes a broad-XRD fine precipitate, better-crystallized salt-bridge
-  material, and natural samples containing about 5 mol% other cations
-  (p. 409 / PDF p. 8). Its experiment and formation-G calculation use 1 atm.
-  The native value needs a supported specimen mapping and 1 bar reconciliation.
-  Nagra2002 p. 188 distinguishes it from the crystalline route.
+- [x] **R11l2 — original precipitated MnCO3 and pressure review:**
+  [R11m](synthetic-manganese-carbonate.md) verifies the original Garrels1960
+  material and formation G, applies the explicit NEA pressure prescription,
+  and adds open NBS precipitated-material H. The exact later native
+  Nordstrom1990 re-expression remains separately open as R11m1.
 - [ ] **R11l3 — modern Ra fits:** obtain the original numerical basis and finish
   source-specific review of Brown/Ekberg/Matyskin2019,
   DOI10.1016/j.gca.2019.04.009. The Chalmers record provides metadata.
@@ -206,3 +203,9 @@ pass, including ideal and Davies activity models. Thermal checks at
 Historical requests remain **116/131** covered: NEA **28/28**, NIST **88/103**.
 The six original crystalline-G gaps remain. All earlier source reviews and
 separate holds carry forward. The wider R11 parent remains open.
+
+R11m update: [the synthetic manganese carbonate review](synthetic-manganese-carbonate.md)
+resolves the original Garrels phase and formation-G pressure basis and adds
+its qualified pressure-adjusted G plus open NBS precipitated-material H.
+The later native Nordstrom numerical re-expression remains separately held
+as R11m1. Other requirements above retain their earlier decisions.
