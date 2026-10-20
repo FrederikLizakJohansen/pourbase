@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 19 October 2026 checkpoint contains **1,038 species and 3,286 observations**
-across 74 supported systems, with **915/816/700 selected G/S/H properties**.
+The latest 20 October 2026 checkpoint contains **1,043 species and 3,313 observations**
+across 74 supported systems, with **920/817/701 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1230,3 +1230,11 @@ the Shock1997 G/S observations; coverage counts remain unchanged. Metadata
 `source_reuse_MP17_cobalt_check` preserves the exact cell, open licence,
 correction trail, historical values and the separate hafnium source hold.
 See [cobalt and hafnium source review](sources/mp-cobalt-hafnium-check.md).
+
+R11j adds 27 original silicate observations, five species and one H2SiO4(2−)
+free reference, filling seven properties while preserving all earlier preferred
+IDs. NEA selected auxiliary G/H/S and original PSI/Nagra reaction estimates
+retain separate source terms and reference bases. The alkaline-Al 20°C/1.2M
+constant stays held. Metadata `source_reuse_R11j_silicates` and
+`R11j_silicate_observations` record the sources and arithmetic.
+See [the silicate source review](sources/silicate-original-routes.md).

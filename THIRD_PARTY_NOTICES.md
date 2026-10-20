@@ -922,3 +922,32 @@ and the Brookins/Latimer hafnium source hold are documented separately in
 SRD observation is imported in this batch. Existing OECD attribution and
 the same acknowledgment requirement for further sublicensees remain in force
 for the NEA-derived material elsewhere in the distribution.
+
+### R11j original silicate evaluations
+
+Grenthe et al. (1992), *Chemical Thermodynamics of Uranium*, OECD2004 reprint,
+Table IV.1 p.72 and silicon discussion pp.394–399, and Guillaumont et al.(2003),
+*Update on the Chemical Thermodynamics of Uranium, Neptunium, Plutonium,
+Americium and Technetium*, Table8-1 pp.141–142, supply NEA-authored evaluated
+H2SiO4(2−) G/H/S and H4Si4O12(4−) G. OECD and the OECD Nuclear Energy Agency
+are acknowledged through these citations. Reuse follows written clarification
+NEA-TDB-OECD-2026-10-14 and the
+[OECD data terms](https://www.oecd.org/en/about/terms-conditions.html), including
+commercial adaptation and redistribution. Every sublicense of work using these
+data must include the same acknowledgment requirement and require further
+sublicensees to do the same. No separate third-party restriction was identified
+on these NEA-authored evaluations. Historical editions and reference discrepancies
+are identified in the observation locators.
+
+Hummel et al.(2002), Nagra NTB02-16 pp.315–317; Hummel(2014), PSI TM-44-12-05
+pp.9–10/13; and Hummel and Thoenen(2023), Nagra NTB21-03 pp.966/969/972/994,
+provide original reaction evaluations. Isolated numerical facts and locally
+derived formation-G estimates follow the carried original-result reuse review.
+Publication copyright and reproduction/storage rights remain applicable; full
+reports, table expression and bulk database files stay outside the distribution.
+NEA permission does not extend to these reports. Open non-SRD NBS reference
+inputs acknowledge NIST under its open licence and are distributed without warranty;
+the retained Miron2017 input carries its completed original-result review.
+Shared experimental ancestry, uncertain stoichiometry and missing total-G
+covariance are explicit. The 20°C/1.2M alkaline-Al constant remains on hold.
+See [the silicate source review](docs/sources/silicate-original-routes.md).
