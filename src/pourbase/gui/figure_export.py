@@ -114,7 +114,7 @@ def table_text(table: Table, delimiter: str = ",") -> str:
 
 class _ContextMenu(QObject):
     def __init__(self, widget: QWidget, data: DataSource | None, name: Callable[[], str]) -> None:
-        super().__init__(widget)
+        super().__init__()  # no Qt parent: PySide6 on Windows with Python 3.14 rejects one; widget.export_menu keeps it alive
         self.widget, self.data, self.name = widget, data, name
         self.extra_actions: list[tuple[str, Callable[[], None]]] = []  # listed first, e.g. "Pop out"
 

@@ -38,7 +38,7 @@ and test with `python -m unittest discover -s tests`.
 
 ## Desktop application
 
-`pourbase-gui` opens a periodic table coloured by the stable species of every element at a chosen
+`pourbase-gui` (or `pourbase gui`, which prints errors to the terminal on Windows) opens a periodic table coloured by the stable species of every element at a chosen
 pH, potential and temperature, or by the share of a pH–potential window where an element is immune,
 passive or corroding. Click an element to open its system:
 
