@@ -1066,3 +1066,26 @@ inferred. Earlier OECD acknowledgments and the requirement for every further
 sublicensee to pass on the acknowledgment requirement remain in force for
 NEA inputs elsewhere in this database.
 See [the niobium source and standard-state review](docs/sources/niobium-standard-state.md).
+
+### R11o open modern radium solubility evaluations
+
+Copyright 2022 Paul L. Brown, Artem V. Matyskin and Christian Ekberg.
+*The aqueous chemistry of radium*, Radiochimica Acta 110(6–9),505–513,
+https://doi.org/10.1515/ract-2021-1141, published by De Gruyter, is licensed
+under [CC BY4.0](https://creativecommons.org/licenses/by/4.0/). The original
+licence footer is verified in the Chalmers advance-online PDF, article p.1 / PDF p.2.
+Two evaluated solid-solubility entries in Table 1, article p.4 / PDF p.5, are adapted.
+Changes made by pourbase: convert the evaluated logK values into local
+formation-G estimates with independently verified open ionic references;
+record pressure/model assumptions, partial intervals and unavailable total
+uncertainty. No endorsement by the source authors or publisher is implied.
+The source attribution and CC BY4.0 notice remain applicable to this material.
+
+NIST is acknowledged for explicitly open non-SRD PDR M32124 ionic reference
+inputs, https://doi.org/10.18434/M32124. Its open licence,
+https://www.nist.gov/open/license, applies; data are distributed without
+warranty. No new restricted SRD/JAEA or commercial compilation table is
+imported. The original 2019 thermal table remains outside this batch.
+Earlier OECD attribution and downstream acknowledgment requirements remain
+applicable to the database's NEA material.
+See [the source and model review](docs/sources/modern-radium-fits.md).

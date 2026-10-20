@@ -21,7 +21,7 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 20 October 2026 checkpoint contains **1,059 species and 3,385 observations**
+The latest 20 October 2026 checkpoint contains **1,059 species and 3,387 observations**
 across 75 supported systems, with **933/830/715 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
@@ -1279,3 +1279,13 @@ is inferred. Metadata `R11n_niobium_observations`, `source_reuse_R11n_niobium` a
 normalization, original numerical-facts reuse and the source's oxide-reference
 assumption. Source intervals retain their quoted meaning. The old solid identity
 is retained separately. See [the niobium review](sources/niobium-standard-state.md).
+
+R11o adds two locally derived G alternatives from Brown/Matyskin/Ekberg2022
+Table1 evaluated solid solubilities under its verified CC BY4.0 licence.
+The current open NBS Ra2+/anion inputs, exact AOP/PDF locators, partial logK
+intervals and pressure-flat approximation are retained in metadata
+`R11o_radium_observations`. `source_reuse_R11o_modern_radium` records credit,
+licence/change notices and reference ancestry; `R11o_radium_source_holds`
+keeps the original2019 full-table/thermal follow-up and other holds separate.
+The policy selects the modern carbonate alternative; sulfate retains NBS G.
+Every earlier row remains. See [the modern radium review](sources/modern-radium-fits.md).

@@ -187,9 +187,11 @@ pass, including ideal and Davies activity models. Thermal checks at
   material and formation G, applies the explicit NEA pressure prescription,
   and adds open NBS precipitated-material H. The exact later native
   Nordstrom1990 re-expression remains separately open as R11m1.
-- [ ] **R11l3 — modern Ra fits:** obtain the original numerical basis and finish
-  source-specific review of Brown/Ekberg/Matyskin2019,
-  DOI10.1016/j.gca.2019.04.009. The Chalmers record provides metadata.
+- [ ] **R11l3 — original2019 Ra thermal fits:** the full numerical fit/thermal
+  table remains unavailable through the checked routes. [R11o](modern-radium-fits.md)
+  independently adds two CC BY4.0 evaluations from Brown/Matyskin/Ekberg2022.
+  These additions retain their own source and model scope; the original2019
+  H/Cp/thermal-parameter follow-up remains open.
 - [ ] **R11l4 — experimental Ra carbonate:**
   [Matyskin et al. (2023)](https://doi.org/10.1021/acs.inorgchem.3c01513) has a
   verified CC-BY4.0 licence. Its Ra(Ba)CO3/Ba(Ra)CO3 sample and 25.1 °C
