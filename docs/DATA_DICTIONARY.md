@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 20 October 2026 checkpoint contains **1,056 species and 3,373 observations**
-across 75 supported systems, with **933/827/712 selected G/S/H properties**.
+The latest 20 October 2026 checkpoint contains **1,059 species and 3,385 observations**
+across 75 supported systems, with **933/830/715 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1268,3 +1268,14 @@ mixed-source scope remain in metadata `R11m_precipitated_MnCO3_observations`.
 reuse and route decisions. Earlier rows, preferred IDs and policy remain.
 The later native reaction constant retains its original-table follow-up.
 See [the synthetic manganese carbonate review](sources/synthetic-manganese-carbonate.md).
+
+R11n adds twelve original Peiffert2010 fitted-model G/H/S observations at infinite
+dilution, including three new hydroxylated ions. The neutral Nb(OH)5 evaluation
+is normalized by subtracting two source-water properties to the existing HNbO3
+identity. All earlier observations remain. Three finite-I NBS G observations are
+preserved and excluded from standard-state selection; no I=1 to I=0 correction
+is inferred. Metadata `R11n_niobium_observations`, `source_reuse_R11n_niobium` and
+`R11n_niobium_route_history` record exact source cells, model intervals, water
+normalization, original numerical-facts reuse and the source's oxide-reference
+assumption. Source intervals retain their quoted meaning. The old solid identity
+is retained separately. See [the niobium review](sources/niobium-standard-state.md).

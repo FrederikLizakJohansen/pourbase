@@ -1043,3 +1043,26 @@ column8. The [NIST open licence](https://www.nist.gov/open/license) applies;
 data are provided without warranty. Existing source/licence review carries
 forward. Separate source preparations and missing uncertainty remain explicit.
 See [the source and pressure review](docs/sources/synthetic-manganese-carbonate.md).
+
+### R11n niobium aqueous fitted models
+
+Peiffert, C., Nguyen-Trung, C., Palmer, D. A., Laval, J. P. and Giffaut, E.
+(2010), *Solubility of B-Nb2O5 and the Hydrolysis of Niobium(V) in Aqueous
+Solution as a Function of Temperature and Ionic Strength*, Journal of
+Solution Chemistry 39, 197–218, https://doi.org/10.1007/s10953-010-9495-z:
+twelve individually attributed original G/H/S fitted-model results from
+Table 7 p. 216, including a local neutral water-equivalent normalization.
+Reuse follows the carried individual-original-numerical-facts policy.
+No open licence for the article is asserted; complete source, table layout,
+prose, figures and OCR remain external. Source intervals and the authors'
+oxide-reference assumption remain explicit.
+
+NIST is acknowledged for explicitly open non-SRD PDR M32124 reference data,
+https://doi.org/10.18434/M32124, including water logical record 41 and the
+previously reviewed high-temperature-labelled oxide. The NIST open licence,
+https://www.nist.gov/open/license, applies; data are distributed without
+warranty. No restricted source table or new whole-publication licence is
+inferred. Earlier OECD acknowledgments and the requirement for every further
+sublicensee to pass on the acknowledgment requirement remain in force for
+NEA inputs elsewhere in this database.
+See [the niobium source and standard-state review](docs/sources/niobium-standard-state.md).

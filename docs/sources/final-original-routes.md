@@ -175,11 +175,13 @@ pass, including ideal and Davies activity models. Thermal checks at
 
 ## Separate unfinished requirements
 
-- [ ] **R11l1 — NbO2(+):** resolve I = 1 mol/kg versus infinite dilution and
-  hydration before a standard-state formation value is added. Nagra p. 654
-  confirms the native constants inherit the finite-I NBS basis. Modern
-  Peiffert2010 DOI10.1007/s10953-010-9495-z uses B-Nb2O5; its phase cannot be
-  replaced by NBS's high-temperature form.
+- [x] **R11l1 — niobium finite-I/native-hydration review:**
+  [R11n](niobium-standard-state.md) resolves the source ancestry and eligibility:
+  retain three raw NBS finite-medium values and exclude them from I=0 selection.
+  Add twelve independent Peiffert2010 I=0 fitted-model G/H/S observations,
+  retaining neutral water equivalence and the authors' oxide-reference assumption.
+  Independent B-oxide phase thermochemistry and broader alkaline models remain
+  separately open as R11n1/R11n2.
 - [x] **R11l2 — original precipitated MnCO3 and pressure review:**
   [R11m](synthetic-manganese-carbonate.md) verifies the original Garrels1960
   material and formation G, applies the explicit NEA pressure prescription,
@@ -209,3 +211,10 @@ resolves the original Garrels phase and formation-G pressure basis and adds
 its qualified pressure-adjusted G plus open NBS precipitated-material H.
 The later native Nordstrom numerical re-expression remains separately held
 as R11m1. Other requirements above retain their earlier decisions.
+
+R11n update: [the niobium standard-state review](niobium-standard-state.md)
+completes the finite-I/hydration eligibility decision and adds twelve original
+infinite-dilution model observations. Earlier numerical values and solid identities
+remain. The NBS qualifier says ionic strength=1; Nagra specifies 1 M. An earlier
+1 mol/kg shorthand is not a verified unit conversion. Native constants retain
+their original finite-medium basis. Other source and chemistry holds remain.

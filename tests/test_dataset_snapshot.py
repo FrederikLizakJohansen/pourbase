@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1056), ("reported_thermochemistry", 3373),
-                                 ("sources", 1764), ("warnings", 1468), ("additional_components", 11),
+            for table, count in (("species", 1059), ("reported_thermochemistry", 3385),
+                                 ("sources", 1765), ("warnings", 1479), ("additional_components", 11),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1090,7 +1090,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         exclusion = next(e for e in self.database.policy.exclusions
                          if e.record_id == "r07-mg-basic-carbonate-four-mg-trihydrate")
         self.assertIn("incorrect", exclusion.reason)
-        self.assertEqual(len(self.database.policy.exclusions), 10)
+        self.assertEqual(len(self.database.policy.exclusions), 13)
 
     def test_magnesite_1965_solubility_estimate_uses_correct_gas_reference(self) -> None:
         record = self.database.species_records(("r07-mg-magnesite",))[0]
@@ -1867,9 +1867,11 @@ class DatasetSnapshotTests(unittest.TestCase):
     def test_periodic_screen(self) -> None:
         screen = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                           allow_incomplete=False)
-        self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 75, 57))
+        self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 75, 56))
         # The three newly retained H-only Se crystals make its Gibbs inventory incomplete.
         self.assertIs(screen.element("Se").status, pb.ElementStatus.INCOMPLETE)
+        # Finite-I Nb evidence stays retained and excluded from standard-state calculations.
+        self.assertIs(screen.element("Nb").status, pb.ElementStatus.INCOMPLETE)
         default = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE")
         self.assertEqual(sum(item.stable is not None for item in default.elements), 75)
         self.assertIs(screen.element("Fe").status, pb.ElementStatus.INCOMPLETE)
@@ -1882,7 +1884,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                          ("TiO₂", pb.Category.SOLID_OXIDE, "rutile"))
         fallback = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                             energy_policy="experimental_then_mp", allow_incomplete=False)
-        self.assertEqual(fallback.calculated_count, 60)
+        self.assertEqual(fallback.calculated_count, 59)
         platinum = self.database.load_system("Pt", energy_policy="experimental_then_mp")
         self.assertEqual({item.formula_ascii for item in platinum.species
                           if item.gibbs_status is pb.EvidenceStatus.MATERIALS_PROJECT_FALLBACK}, {"PtO", "PtO2"})
@@ -1918,9 +1920,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 933, "absolute_entropy": 827, "enthalpy_of_formation": 712})
+                         {"gibbs_energy_of_formation": 933, "absolute_entropy": 830, "enthalpy_of_formation": 715})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "416612a99dc16a8d",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "1c319430cfaf734e",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:
