@@ -14,6 +14,7 @@ authors = [{name = "Frederik Lizak Johansen"}]
 dependencies = [
   "numpy>=2.0",
   "matplotlib>=3.8",
+  "scipy>=1.10",
 ]
 keywords = ["Pourbaix diagram", "Gibbs energy", "thermochemistry", "electrochemistry", "corrosion", "database", "MCP"]
 classifiers = [
