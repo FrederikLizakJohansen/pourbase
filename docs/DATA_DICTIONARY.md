@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 20 October 2026 checkpoint contains **1,043 species and 3,313 observations**
-across 74 supported systems, with **920/817/701 selected G/S/H properties**.
+The latest 20 October 2026 checkpoint contains **1,045 species and 3,325 observations**
+across 74 supported systems, with **922/819/703 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1238,3 +1238,11 @@ retain separate source terms and reference bases. The alkaline-Al 20°C/1.2M
 constant stays held. Metadata `source_reuse_R11j_silicates` and
 `R11j_silicate_observations` record the sources and arithmetic.
 See [the silicate source review](sources/silicate-original-routes.md).
+
+R11k adds 12 observations for two aqueous diphosphate ions, filling six
+properties. It aligns the existing free-pyrophosphate reference with preferred
+NEA2003 G while preserving the old NBS pin in metadata and as an observation.
+All prior observations and preferred IDs remain. Metadata
+`source_reuse_R11k_pyrophosphate`, `R11k_pyrophosphate_observations` and
+`R11k_pyrophosphate_reference_history` preserve sources, cycles and the reference
+change. See [the pyrophosphate review](sources/pyrophosphate-original-routes.md).

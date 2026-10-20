@@ -951,3 +951,28 @@ the retained Miron2017 input carries its completed original-result review.
 Shared experimental ancestry, uncertain stoichiometry and missing total-G
 covariance are explicit. The 20°C/1.2M alkaline-Al constant remains on hold.
 See [the silicate source review](docs/sources/silicate-original-routes.md).
+
+### R11k pyrophosphate evaluations and reference alignment
+
+Grenthe etal.(1992), *Chemical Thermodynamics of Uranium*, OECD2004 reprint,
+TableIV.1 pp.69–70 and sectionVI.3.2 pp.386–389, and Guillaumont etal.(2003),
+*Update on the Chemical Thermodynamics of Uranium, Neptunium, Plutonium,
+Americium and Technetium*, Table8-1 pp.139–140 and Table8-2 pp.151–152,
+supply NEA-authored composite formation-G evaluations and selected reactions
+for P2O7(4−)/HP2O7(3−). OECD and the OECD Nuclear Energy Agency are acknowledged
+through those citations. Under written clarification NEA-TDB-OECD-2026-10-14
+and the [OECD data terms](https://www.oecd.org/en/about/terms-conditions.html),
+these data may be used, adapted and redistributed, including commercially,
+with appropriate attribution. Every sublicense of work using these data must
+include the same acknowledgment requirement and require further sublicensees
+to do the same. No additional restriction was identified on these NEA-authored
+composite numerical evaluations. The official November2005 errata were checked.
+Separately restricted tables and complete publications remain outside this import.
+
+Six additional G/H/S cells use the explicitly open non-SRD NBS PDR M32124
+CSV, logical records1281/1357. NIST is acknowledged under its open licence;
+the data are distributed without warranty. Two local NEA-reaction/NBS-reference
+G estimates preserve inputs and shared ancestry. The former NBS free-pyrophosphate
+pin remains in metadata and as a retained G observation; the current reference
+matches policy-selected NEA G. Complete reports and private permission evidence
+stay external. See [the pyrophosphate review](docs/sources/pyrophosphate-original-routes.md).

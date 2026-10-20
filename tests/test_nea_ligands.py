@@ -53,10 +53,9 @@ class NEALigandTests(unittest.TestCase):
                             + 3 * rtln + 7 * rtln - 2 * FARADAY_C_MOL * .2)
                 self.assertAlmostEqual(float(actual), expected, places=7)
 
-    def test_pyrophosphate_and_thiocyanate_references_are_open_nbs_rows(self):
+    def test_free_references_retain_open_nbs_and_selected_nea_sources(self):
         references = {r.ligand_id: r for r in self.database.available_ligands()}
         for ligand, formula, charge, energy in (
-            ("pyrophosphate-p2o7", "P2O7", -4, -1919000),
             ("thiocyanate-scn", "SCN", -1, 92710),
             ("arsenate-aso4", "AsO4", -3, -648410),
         ):
@@ -65,6 +64,11 @@ class NEALigandTests(unittest.TestCase):
                               reference.gibbs_energy_J_mol), (formula, charge, energy))
             self.assertIn("M32124", reference.source_citation)
             self.assertIn("logical record", self.database.source(reference.source_id).locator)
+        pyro = references["pyrophosphate-p2o7"]
+        self.assertEqual((pyro.formula_ascii, pyro.charge, pyro.gibbs_energy_J_mol),
+                         ("P2O7", -4, -1935503))
+        self.assertEqual(pyro.source_id, "NEA2003_R11k_pyrophosphate")
+        self.assertIn("M32124", self.database.source("NEA02c_NBS_PDR_P2O7_reference").citation)
         item = next(s for s in self.database.load_system("Ni", ligand_ids=("pyrophosphate-p2o7",)).species
                     if s.formula_ascii == "NiP2O7")
         self.assertEqual((item.core_oxygen_count, item.ligand_count, item.charge), (0, 1, -2))
