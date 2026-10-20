@@ -35,15 +35,15 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1045), ("reported_thermochemistry", 3325),
-                                 ("sources", 1755), ("warnings", 1423), ("additional_components", 11),
+            for table, count in (("species", 1055), ("reported_thermochemistry", 3371),
+                                 ("sources", 1762), ("warnings", 1465), ("additional_components", 11),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
             self.assertEqual(connection.execute("PRAGMA foreign_key_check").fetchall(), [])
         self.assertEqual(self.database.metadata["dataset_version"], "1.0.0")
         self.assertEqual(self.database.metadata["publication_status"], "release_candidate_pending_collaborator_review")
-        self.assertEqual(len(self.database.available_systems()), 74)
+        self.assertEqual(len(self.database.available_systems()), 75)
 
     def test_every_recommended_value_is_a_reported_value(self) -> None:
         recommended = self.database.recommended_value_ids()
@@ -604,7 +604,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertEqual((solid.metal_count, solid.ligand_count, solid.ligand_charge,
                           solid.electrons_per_metal, solid.protons_per_metal), (1, 1, -2, 2, 0))
         thermal = GAS_CONSTANT_J_MOL_K * 298.15
-        ksp = math.exp(-(ion.gibbs_energy_J_mol + 85800 - solid.gibbs_energy_J_mol) / thermal)
+        ksp = math.exp(-(ion.gibbs_energy_J_mol + 120695 - solid.gibbs_energy_J_mol) / thermal)
         for ls in (-18, -12, -6):
             conditions = pb.PourbaixConditions(
                 pH_points=3, U_points=3,
@@ -621,7 +621,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                                                inventory.precipitated_metal_fraction.flat):
                 self.assertAlmostEqual(dissolved / expected, 1.0, places=10)
                 self.assertAlmostEqual((dissolved + 1e-6 * precipitated) / 1e-6, 1.0, places=10)
-            boundary = (solid.gibbs_energy_J_mol - 85800 - thermal * LN_10 * ls) / (
+            boundary = (solid.gibbs_energy_J_mol - 120695 - thermal * LN_10 * ls) / (
                 2 * FARADAY_C_MOL
             )
             for offset, winner in ((-0.01, metal), (0.01, solid)):
@@ -815,9 +815,9 @@ class DatasetSnapshotTests(unittest.TestCase):
         ion = next(s for s in system.species if s.formula_ascii == "Ag" and s.charge == 1)
         self.assertEqual((solid.metal_count, solid.ligand_count, solid.ligand_charge,
                           solid.electrons_per_metal, solid.protons_per_metal), (2, 1, -2, 1, 0))
-        self.assertEqual(solid.ligand_gibbs_energy_J_mol, 85800.0)
+        self.assertEqual(solid.ligand_gibbs_energy_J_mol, 120695.0)
         thermal = GAS_CONSTANT_J_MOL_K * 298.15
-        ksp = math.exp(-(2 * ion.gibbs_energy_J_mol + 85800 - solid.gibbs_energy_J_mol) / thermal)
+        ksp = math.exp(-(2 * ion.gibbs_energy_J_mol + 120695 - solid.gibbs_energy_J_mol) / thermal)
         for log_activity in (-18, -12, -6):
             conditions = pb.PourbaixConditions(
                 pH_points=3, U_points=3,
@@ -825,7 +825,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                     "sulfide-s", log10_free_activity=log_activity
                 ),)),
             )
-            boundary = (solid.gibbs_energy_J_mol - 85800 - thermal * LN_10 * log_activity) / (
+            boundary = (solid.gibbs_energy_J_mol - 120695 - thermal * LN_10 * log_activity) / (
                 2 * FARADAY_C_MOL
             )
             for offset, winner in ((-0.01, metal), (0.01, solid)):
@@ -1867,22 +1867,22 @@ class DatasetSnapshotTests(unittest.TestCase):
     def test_periodic_screen(self) -> None:
         screen = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                           allow_incomplete=False)
-        self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 74, 56))
+        self.assertEqual((len(screen.elements), screen.supported_count, screen.calculated_count), (118, 75, 57))
         # The three newly retained H-only Se crystals make its Gibbs inventory incomplete.
         self.assertIs(screen.element("Se").status, pb.ElementStatus.INCOMPLETE)
         default = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE")
-        self.assertEqual(sum(item.stable is not None for item in default.elements), 74)
+        self.assertEqual(sum(item.stable is not None for item in default.elements), 75)
         self.assertIs(screen.element("Fe").status, pb.ElementStatus.INCOMPLETE)
         relaxed = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                             allow_incomplete=True)
         self.assertEqual(relaxed.element("Fe").stable.species, "Fe³⁺")
-        self.assertEqual(relaxed.calculated_count, 74)
+        self.assertEqual(relaxed.calculated_count, 75)
         titanium = screen.element("Ti")
         self.assertEqual((titanium.stable.species, titanium.category, titanium.structure_label),
                          ("TiO₂", pb.Category.SOLID_OXIDE, "rutile"))
         fallback = pb.screen_periodic_table(self.database, pH=0, potential_V=1.6, reference="RHE",
                                             energy_policy="experimental_then_mp", allow_incomplete=False)
-        self.assertEqual(fallback.calculated_count, 59)
+        self.assertEqual(fallback.calculated_count, 60)
         platinum = self.database.load_system("Pt", energy_policy="experimental_then_mp")
         self.assertEqual({item.formula_ascii for item in platinum.species
                           if item.gibbs_status is pb.EvidenceStatus.MATERIALS_PROJECT_FALLBACK}, {"PtO", "PtO2"})
@@ -1890,7 +1890,7 @@ class DatasetSnapshotTests(unittest.TestCase):
     def test_materials_project_rows(self) -> None:
         rows = self.database.materials_project_thermochemistry()
         self.assertEqual((len(rows), len({item["record_id"] for item in rows})), (299, 105))
-        self.assertEqual(sum(item["experimental_enthalpy_eV_atom"] is not None for item in rows), 288)
+        self.assertEqual(sum(item["experimental_enthalpy_eV_atom"] is not None for item in rows), 291)
         with tempfile.TemporaryDirectory() as directory:
             metadata = pb.write_mp_thermochemistry_bundle(self.database, directory)
             self.assertEqual(metadata["materials_project_energy_rows"], 299)
@@ -1918,9 +1918,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 922, "absolute_entropy": 819, "enthalpy_of_formation": 703})
+                         {"gibbs_energy_of_formation": 932, "absolute_entropy": 827, "enthalpy_of_formation": 711})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "f8245c4acb14f88a",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "f7f7744cf2d903c3",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

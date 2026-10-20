@@ -976,3 +976,42 @@ G estimates preserve inputs and shared ancestry. The former NBS free-pyrophospha
 pin remains in metadata and as a retained G observation; the current reference
 matches policy-selected NEA G. Complete reports and private permission evidence
 stay external. See [the pyrophosphate review](docs/sources/pyrophosphate-original-routes.md).
+
+### R11l final original-source routes
+
+Grenthe et al. (1992), *Chemical Thermodynamics of Uranium*, Table IV.1 p.67;
+Guillaumont et al. (2003), *Update on the Chemical Thermodynamics of Uranium,
+Neptunium, Plutonium, Americium and Technetium*, Table8-1 pp.137–138; and Olin
+et al. (2005), *Chemical Thermodynamics of Selenium*, TableIV-1 p.75 and
+pp.433–436: OECD and the OECD Nuclear Energy Agency are acknowledged for
+own composite sulfide, iodic-acid and aqueous CN/HCN evaluations. Written
+clarification NEA-TDB-OECD-2026-10-14 and the
+[OECD data terms](https://www.oecd.org/en/about/terms-conditions.html) apply.
+Every sublicense of work using these data must include the same acknowledgment
+requirement and require further sublicensees to do the same. Source-specific
+restrictions remain applicable. Scientific ancestry does not extend this
+permission to independently copied third-party tables.
+
+Wagman et al. (1982), *The NBS Tables of Chemical Thermodynamic Properties*,
+explicitly open non-SRD [NIST PDR M32124](https://doi.org/10.18434/M32124),
+with errata: NIST acknowledged for Ra(cr), Ra(2+), RaSO4(cr), high-temperature
+Nb2O5(cr), CN(−), HCN(aq), and reference inputs. The
+[NIST open licence](https://www.nist.gov/open/license) applies; data are
+provided without warranty. Existing release/licence reviews carry forward.
+
+Hummel and Thoenen (2023), *The PSI/Nagra Chemical Thermodynamic Database
+2020*, NTB21-03, pp.217/232–233/262–263/558–559/568–569,
+https://media.nagra.ch/uploads/2023/05/NTB-21-03.pdf: authors' own regression,
+SIT and analogy results support separately cited local estimates. The existing
+isolated-original-numerical-facts review is carried forward. Nagra retains
+copyright and reproduction/storage restrictions; this is separate from an
+open licence for its report or exports. Source Cp and supporting model outputs
+are retained as numerical metadata. Whole tables, figures and prose remain
+external. Independently inherited commercial selections remain held.
+
+Langmuir and Riese (1985), *The thermodynamic properties of radium*, GCA49,
+1593–1601, https://doi.org/10.1016/0016-7037(85)90264-9: original isolated
+numerical facts verified in the publisher abstract support local Ra solubility
+and RaOH association estimates on open reference inputs. The complete article
+has no open-licence claim. Original solid-enthalpy sign issues remain held.
+See [all source and scientific decisions](docs/sources/final-original-routes.md).

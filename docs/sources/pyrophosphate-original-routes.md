@@ -130,3 +130,8 @@ G/S/H **922/819/703**, 29 ligand references and 74 systems. The policy retains
 (NEA28/28, NIST88/103), and six original crystalline G gaps remain.
 Thirteen further R11 original routes and all earlier source/chemistry holds
 stay open. The next finite batch is the three radium routes.
+
+Subsequent checkpoint: [R11l](final-original-routes.md) reviews all 13 remaining
+original routes, including the three radium routes. Its separate source and
+scientific holds remain visible. The pyrophosphate observations and reference
+alignment described above are retained.

@@ -47,7 +47,10 @@ class PSINickelHydrosulfideTests(unittest.TestCase):
             for pH in (7, 10, 14):
                 energies = []
                 for loghs in (-5, -4):
-                    logs = loghs + pH - d["runtime_reference"]["HS_dissociation_pKa"]
+                    # The R11e metadata records its historical free-sulfide pin.
+                    # R11l aligns the current pin to the selected NEA ion.
+                    current_pka = (species.ligand_gibbs_energy_J_mol - 12080) / rtln
+                    logs = loghs + pH - current_pka
                     cfg = pb.PourbaixConditions(ligand_activities=pb.LigandActivityModel((
                         pb.LigandActivity("sulfide-s", log10_free_activity=logs),)))
                     actual = float(transformed_gibbs_J_mol_metal(

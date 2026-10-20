@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 20 October 2026 checkpoint contains **1,045 species and 3,325 observations**
-across 74 supported systems, with **922/819/703 selected G/S/H properties**.
+The latest 20 October 2026 checkpoint contains **1,055 species and 3,371 observations**
+across 75 supported systems, with **932/827/711 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1246,3 +1246,15 @@ All prior observations and preferred IDs remain. Metadata
 `source_reuse_R11k_pyrophosphate`, `R11k_pyrophosphate_observations` and
 `R11k_pyrophosphate_reference_history` preserve sources, cycles and the reference
 change. See [the pyrophosphate review](sources/pyrophosphate-original-routes.md).
+
+R11l reviews the final 13 original-source routes and adds 46 observations,
+10 species and 26 available properties. Radium becomes the 75th supported
+system. The unchanged policy now selects NEA G for sulfide and iodic acid;
+their former NBS observations remain. Free sulfide and cyanide references align
+with selected physical-ion G; metadata `R11l_reference_history` preserves both
+complete former pins. `source_reuse_R11l_original_routes`,
+`R11l_original_route_observations` and `R11l_coverage_history` retain source
+conditions, derivations, alternatives and the previous radium coverage row.
+CN/HCN require an explicit N2 reservoir. Nb2O5 retains the NBS high-temperature
+phase label. Native finite-I niobium and synthetic MnCO3 remain separate
+scientific holds. See [all 13 decisions](sources/final-original-routes.md).

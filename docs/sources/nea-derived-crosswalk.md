@@ -91,3 +91,18 @@ data must include the same OECD acknowledgment requirement and require
 further sublicensees to pass it on. See [the source instructions](nea-tdb-reuse.md)
 and [distributed notices](../../THIRD_PARTY_NOTICES.md). Independent restricted
 compilations retain their own permission status.
+
+## R11l checkpoint — 20 October 2026
+
+The [final 13 original-source routes](final-original-routes.md) now have
+explicit decisions, completing the remaining unreviewed original-route queue.
+Eleven routes yield eligible additions; finite-I niobium and less-stable
+synthetic MnCO3 retain specific scientific requirements. The batch adds
+46 observations and 10 species, fills 26 properties, and introduces radium
+as the 75th system. Every previous observation remains. The unchanged policy
+selects new NEA G for sulfide and iodic acid; free sulfide/cyanide references
+align with selected ion values, with complete old pins retained in metadata.
+All 440 reactions and 3,830 PSI property slots are reconciled in external
+checkpoint `r11l-final-13-source-routes/`. Earlier reviews and separate holds
+remain, and the wider R11 parent stays open. Historical request coverage and
+the six original crystalline G gaps are unchanged.

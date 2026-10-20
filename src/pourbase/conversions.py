@@ -18,6 +18,8 @@ from dataclasses import dataclass
 
 # Conventional atomic weights (g mol-1), rounded for practical solution preparation.
 # Source: CIAAW standard atomic weights, https://ciaaw.org/atomic-weights.htm
+# Ra uses the 226Ra mass, 226.025 g/mol, from the open NBS M32124 release
+# (logical record 10244); radium has no standard atomic weight.
 ATOMIC_WEIGHT_G_MOL: dict[str, float] = {
     "Ag": 107.8682, "Al": 26.9815385, "As": 74.921595, "Au": 196.96657,
     "B": 10.81, "Ba": 137.327, "Be": 9.0121831, "Bi": 208.98040,
@@ -33,7 +35,7 @@ ATOMIC_WEIGHT_G_MOL: dict[str, float] = {
     "Nb": 92.90637, "Nd": 144.242, "Ni": 58.6934,
     "P": 30.973761998, "Pb": 207.2, "Pd": 106.42, "Pr": 140.90766,
     "Pt": 195.084,
-    "Rb": 85.4678,
+    "Ra": 226.025, "Rb": 85.4678,
     "Os": 190.23, "Re": 186.207, "Rh": 102.90549, "Ru": 101.07,
     "S": 32.06, "Sb": 121.760, "Sc": 44.955908, "Se": 78.971,
     "Si": 28.085, "Sn": 118.710, "Sr": 87.62,
