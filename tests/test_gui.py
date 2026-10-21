@@ -333,6 +333,26 @@ class WindowTests(WindowTestCase):
         self.assertEqual(window.overview.canvas.screen.pH, 3.5)
         window.pages.setCurrentIndex(1)
 
+    def test_the_margin_landscape_rises_follows_a_sweep_and_lowers(self) -> None:
+        window = self.window
+        window.pages.setCurrentIndex(0)
+        overview = window.overview
+        overview.pH.setValue(0.0)
+        overview.potential.setValue(1.6)
+        window.update_overview()
+        overview.set_3d(True)
+        self.wait(lambda: overview.landscape.raise_amount == 1.0)
+        self.assertIs(overview.stack.currentWidget(), overview.landscape)
+        landscape = overview.landscape
+        self.assertGreater(landscape._targets[landscape._symbols.index("Ir")], 0.0)
+        overview.sweep_steps.setValue(5)
+        overview.play_button.setChecked(True)
+        self.wait(lambda: not overview.play_button.isChecked())
+        self.assertAlmostEqual(overview.canvas.screen.pH, 14.0)
+        overview.set_3d(False)
+        self.wait(lambda: overview.stack.currentWidget() is overview.canvas)
+        window.pages.setCurrentIndex(1)
+
     def test_the_mouse_wheel_does_not_change_value_inputs(self) -> None:
         from PySide6.QtCore import QPoint, QPointF, Qt
         from PySide6.QtGui import QWheelEvent

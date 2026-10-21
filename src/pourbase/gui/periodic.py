@@ -7,16 +7,18 @@ import re
 
 import numpy as np
 from matplotlib import colormaps
-from PySide6.QtCore import QPointF, QRectF, Qt, Signal
+from PySide6.QtCore import QPointF, QRectF, Qt, QTimer, Signal
 from PySide6.QtGui import QBrush, QColor, QFont, QFontMetricsF, QLinearGradient, QPainter, QPainterPath, QPen, QPixmap
 from PySide6.QtWidgets import (
-    QComboBox, QDoubleSpinBox, QHBoxLayout, QLabel, QMenu, QSizePolicy, QToolButton, QToolTip, QVBoxLayout, QWidget,
+    QComboBox, QDoubleSpinBox, QHBoxLayout, QLabel, QMenu, QSizePolicy, QStackedWidget, QToolButton, QToolTip,
+    QVBoxLayout, QWidget,
 )
 
 from ..inverse import KINDS
 from ..overview import Category, ElementResult, ElementStatus, PeriodicScreen
 from .figure_export import install_export_menu
 from .formula import draw_formula, phase_label, pretty_formula
+from .landscape import HEIGHT_TWEEN_MS, MarginLandscape
 from .widgets import FloatSlider
 
 CATEGORY_COLORS = {
@@ -79,6 +81,7 @@ def margin_color(margin_kJ: float) -> QColor:
 
 class PeriodicTableCanvas(QWidget):
     elementClicked = Signal(str)
+    redrawn = Signal()  # new screen, colors or selection; the margin landscape follows
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -127,6 +130,7 @@ class PeriodicTableCanvas(QWidget):
     def _redraw(self) -> None:
         self._static = None
         self.update()
+        self.redrawn.emit()
 
     def resizeEvent(self, event) -> None:
         self._static = None
@@ -518,6 +522,24 @@ class OverviewPage(QWidget):
         self.note.setStyleSheet("color: gray;")
         self.window_bar = self._window_controls()
         self.canvas = PeriodicTableCanvas()
+        self.landscape = MarginLandscape(self.canvas)
+        self.landscape.elementClicked.connect(self.canvas.elementClicked)
+        self.landscape.animationFinished.connect(self._landscape_settled)
+        self.stack = QStackedWidget()
+        self.stack.addWidget(self.canvas)
+        self.stack.addWidget(self.landscape)
+        self.view_button = QToolButton()
+        self.view_button.setText("3D")
+        self.view_button.setCheckable(True)
+        self.view_button.setToolTip("Raise the table into a 3D landscape of stability margins")
+        self.view_button.toggled.connect(self.set_3d)
+        self.sweep_bar = self._sweep_controls()
+        self.sweep_button = QToolButton()
+        self.sweep_button.setText("Sweep")
+        self.sweep_button.setCheckable(True)
+        self.sweep_button.setToolTip("Play the table through a range of pH or potential")
+        self.sweep_button.toggled.connect(self._sweep_shown)
+        self.screener = None  # (pH, potential) → PeriodicScreen at the current System settings; set by the window
         for slider in (self.pH, self.potential):
             slider.valueChanged.connect(lambda _value: self.changed.emit())
         self.reference.currentIndexChanged.connect(lambda _index: self.changed.emit())
@@ -535,13 +557,18 @@ class OverviewPage(QWidget):
         controls.addSpacing(16)
         controls.addWidget(QLabel("Color by"))
         controls.addWidget(self.color)
+        controls.addSpacing(16)
+        controls.addWidget(self.view_button)
+        controls.addWidget(self.sweep_button)
         layout = QVBoxLayout(self)
         layout.setContentsMargins(16, 12, 16, 8)
         layout.addLayout(controls)
         layout.addWidget(self.note)
         layout.addWidget(self.window_bar)
-        layout.addWidget(self.canvas, 1)
+        layout.addWidget(self.sweep_bar)
+        layout.addWidget(self.stack, 1)
         self.window_bar.hide()
+        self.sweep_bar.hide()
 
     def set_ligands(self, references, settings) -> None:
         """Show the ligand reservoirs of ``settings`` for the ligands in ``references``."""
@@ -605,6 +632,103 @@ class OverviewPage(QWidget):
             row.addWidget(widget)
         row.addStretch(1)
         return bar
+
+    def set_3d(self, on: bool) -> None:
+        """Raise the table into the margin landscape, or lower it back to the flat table."""
+        if self.view_button.isChecked() != on:
+            self.view_button.setChecked(on)  # calls back here through toggled
+            return
+        self.landscape.snapshot = self.canvas.grab()  # faded into the columns as they rise, and back
+        if on:
+            self.landscape.refresh()
+            self.stack.setCurrentWidget(self.landscape)
+            self.landscape.animate_to(1.0)
+        else:
+            self.landscape.animate_to(0.0)
+
+    def _landscape_settled(self, amount: float) -> None:
+        if amount <= 0.0 and not self.view_button.isChecked():
+            self.stack.setCurrentWidget(self.canvas)
+
+    def _sweep_controls(self) -> QWidget:
+        """Play the table through a range of pH or potential, in 2D or 3D."""
+        bar = QWidget()
+        row = QHBoxLayout(bar)
+        row.setContentsMargins(0, 0, 0, 0)
+        self.sweep_variable = QComboBox()
+        self.sweep_variable.addItem("pH", "pH")
+        self.sweep_variable.addItem("Potential", "U")
+        self.sweep_range = (QDoubleSpinBox(), QDoubleSpinBox())
+        self.sweep_steps = QDoubleSpinBox()
+        self.sweep_steps.setDecimals(0)
+        self.sweep_steps.setRange(5, 400)
+        self.sweep_steps.setValue(80)
+        self.sweep_steps.setToolTip("Number of frames from start to end")
+        self.sweep_variable.currentIndexChanged.connect(self._sweep_variable_changed)
+        self.play_button = QToolButton()
+        self.play_button.setText("▶ Play")
+        self.play_button.setCheckable(True)
+        self.play_button.toggled.connect(self._play_toggled)
+        self.loop_button = QToolButton()
+        self.loop_button.setText("Loop")
+        self.loop_button.setCheckable(True)
+        self.loop_button.setToolTip("Run back and forth until stopped")
+        for widget in (QLabel("Sweep"), self.sweep_variable, QLabel("from"), self.sweep_range[0], QLabel("to"),
+                       self.sweep_range[1], QLabel("  Frames"), self.sweep_steps, self.play_button,
+                       self.loop_button):
+            row.addWidget(widget)
+        row.addStretch(1)
+        self._sweep_timer = QTimer(self, interval=40, timeout=self._sweep_step)
+        self._sweep_frame, self._sweep_direction = 0, 1
+        self._sweep_variable_changed()
+        return bar
+
+    def _sweep_shown(self, shown: bool) -> None:
+        self.sweep_bar.setVisible(shown)
+        if not shown:
+            self.play_button.setChecked(False)
+
+    def _sweep_variable_changed(self) -> None:
+        pH = self.sweep_variable.currentData() == "pH"
+        for box, value in zip(self.sweep_range, (0.0, 14.0) if pH else (-1.5, 2.0)):
+            box.setRange(-2.0, 16.0) if pH else box.setRange(-2.5, 2.5)
+            box.setDecimals(2 if pH else 3)
+            box.setSingleStep(0.5 if pH else 0.05)
+            box.setSuffix("" if pH else " V")
+            box.setValue(value)
+
+    def _play_toggled(self, playing: bool) -> None:
+        self.play_button.setText("■ Stop" if playing else "▶ Play")
+        if playing and self.screener is not None:
+            self._sweep_frame, self._sweep_direction = 0, 1
+            self.landscape.tween_ms = self._sweep_timer.interval()  # columns glide from frame to frame
+            self._sweep_timer.start()
+        else:
+            self._sweep_timer.stop()
+            self.landscape.tween_ms = HEIGHT_TWEEN_MS
+            if not playing:
+                self.changed.emit()  # the window takes the last frame as the current conditions
+
+    def _sweep_step(self) -> None:
+        frames = int(self.sweep_steps.value())
+        start, end = self.sweep_range[0].value(), self.sweep_range[1].value()
+        value = start + (end - start) * self._sweep_frame / max(frames - 1, 1)
+        slider = self.pH if self.sweep_variable.currentData() == "pH" else self.potential
+        slider.setValue(value)
+        conditions = self.conditions()
+        try:
+            screen = self.screener(conditions["pH"], conditions["potential_V"])
+        except Exception:
+            self.play_button.setChecked(False)
+            raise
+        self.canvas.show_screen(screen)
+        self._sweep_frame += self._sweep_direction
+        if not 0 <= self._sweep_frame < frames:
+            if self.loop_button.isChecked():
+                self._sweep_direction *= -1
+                self._sweep_frame += 2 * self._sweep_direction
+            else:
+                self.play_button.setChecked(False)
 
     def window(self) -> dict:
         return {"kind": self.window_kind.currentData(),

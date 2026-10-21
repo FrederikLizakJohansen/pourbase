@@ -154,6 +154,8 @@ class MainWindow(QMainWindow):
         self.overview.canvas.elementClicked.connect(self.open_element)
         self.overview.ligandToggled.connect(self._overview_ligand_toggled)
         self.overview.windowChanged.connect(self.search_window)
+        self.overview.screener = lambda pH, U: self.session.screen(
+            **{**self._screen_arguments(), "pH": pH, "potential_V": U})
         self.panel = SettingsPanel(self.database)
         self.overview.temperatureChanged.connect(self.panel.temperature.spin.setValue)
         self.panel.changed.connect(self._settings_changed)
@@ -1627,7 +1629,8 @@ class MainWindow(QMainWindow):
         self.diagram_page.dark = self.dark
         self.diagram_page.path_panel.set_dark(self.dark)
         for widget in (self.diagram_page.diagram, self.speciation_page, self.sweep_page, self.dft_page,
-                       self.compare_page, self.overview.canvas, self.sensitivity_page, self.fixed_page):
+                       self.compare_page, self.overview.canvas, self.overview.landscape, self.sensitivity_page,
+                       self.fixed_page):
             widget.set_dark(self.dark)
         for window in self.pinned:
             window.set_dark(self.dark)
