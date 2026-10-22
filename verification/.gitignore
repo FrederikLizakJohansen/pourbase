@@ -1,0 +1,5 @@
+# downloaded sources and page grabs: third-party material, rebuilt by fetch_evidence.py
+cache/
+evidence/
+app-settings.ini
+__pycache__/
