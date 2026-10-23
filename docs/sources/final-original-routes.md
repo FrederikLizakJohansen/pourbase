@@ -126,8 +126,9 @@ has an original publisher abstract that directly supplies the 25 °C / 1 bar
 RaSO4/RaCO3 solubility constants **−10.26/−8.3**, and RaOH association
 log K **0.5**, H **1.1 kcal/mol**. These original isolated numerical facts
 support local estimates on checked open reference values. The complete article
-has no open-licence claim. Original solid-dissociation H sign issues remain
-held; the RaOH association estimate is retained separately.
+has no open-licence claim. The original solid-dissociation H sign issue is resolved by the authoritative
+correction documented in [R11q](radium-solid-enthalpies.md); the RaOH
+association estimate retains its separate evaluation.
 
 Local formation intervals remain NULL because anchor uncertainty/covariance is
 unavailable. Source reaction intervals are retained without invented independent
@@ -199,9 +200,13 @@ pass, including ideal and Davies activity models. Thermal checks at
   temperature are explicit. Exact composition/activity, rigorous thermal
   correction and independent refit remain open as R11p1–R11p3. The separately
   CC BY-NC4.0 supplement is excluded from imports and distributions.
-- [ ] **R11l5 — Ra solid H:** verify the original signed dissociation enthalpies
-  or an authoritative correction before adding thermal values. Original G
-  estimates remain eligible.
+- [x] **R11l5 — Ra solid H:**
+  [R11q](radium-solid-enthalpies.md) verifies the explicit authoritative
+  correction in Hummel etal.2002, pp300–301, and adds four local historical
+  H/S estimates from positive dissolution enthalpies. Two carbonate fields
+  become available; all prior preferred values and modern G remain.
+  Historical H/S retain their original logK variant; modern phase/thermal
+  questions remain R11p1–R11p3 and R11l3.
 - [ ] **R11l6 — higher AlF thermal values:** verify original Latimer–Jolly1953
   calorimetric cells, cumulative versus stepwise convention, finite-I treatment
   and reuse route before deriving H/S.

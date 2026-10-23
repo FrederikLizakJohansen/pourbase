@@ -9,12 +9,12 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Species | 1059 |
 | Supported elemental systems | 75 of 118 elements |
 | Recommended Gibbs energies | 933 (88 %) |
-| Recommended entropies | 830 (78 %) |
-| Recommended formation enthalpies | 715 (68 %) |
-| Reported values retained | 3388 |
-| Source records | 1767 (208 distinct citations) |
+| Recommended entropies | 831 (78 %) |
+| Recommended formation enthalpies | 716 (68 %) |
+| Reported values retained | 3392 |
+| Source records | 1768 (209 distinct citations) |
 | Phase records | 583 (359 resolved) |
-| Warnings | 1486 |
+| Warnings | 1490 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 29 |
@@ -34,7 +34,7 @@ Species by phase:
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
 | aqueous | 567 | 499 | 429 | 308 |
-| solid | 439 | 386 | 350 | 357 |
+| solid | 439 | 386 | 351 | 358 |
 | gas | 48 | 45 | 48 | 45 |
 | liquid | 5 | 3 | 3 | 5 |
 
@@ -44,17 +44,17 @@ Species by phase:
 |---|---|---|
 | `species` | 1059 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `selected_thermochemistry` | 1059 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 3388 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1767 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 3392 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1768 | Full citations, links, locators and access dates |
 | `phases` | 583 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 1486 | Scientific cautions attached to records |
+| `warnings` | 1490 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 29 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 11 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 53 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 56 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -138,7 +138,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Pd | Palladium (Pd) | 10 | 7 | 3 | 0 | 0 | 9 | 3 | 1 | 10 |
 | Pr | Praseodymium (Pr) | 12 | 7 | 5 | 0 | 0 | 10 | 5 | 7 | 15 |
 | Pt | Platinum (Pt) | 4 | 1 | 3 | 0 | 0 | 2 | 2 | 0 | 9 |
-| Ra | Radium (Ra) | 5 | 2 | 3 | 0 | 0 | 5 | 4 | 4 | 12 |
+| Ra | Radium (Ra) | 5 | 2 | 3 | 0 | 0 | 5 | 5 | 5 | 16 |
 | Rb | Rubidium (Rb) | 7 | 6 | 1 | 0 | 0 | 6 | 7 | 4 | 11 |
 | Re | Rhenium (Re) | 4 | 1 | 3 | 0 | 0 | 4 | 4 | 2 | 0 |
 | Rh | Rhodium (Rh) | 9 | 6 | 3 | 0 | 0 | 9 | 8 | 8 | 13 |

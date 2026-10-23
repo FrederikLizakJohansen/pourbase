@@ -86,3 +86,7 @@ scientific and permission holds retain their own status. Completed numerical
 and reuse reviews carry forward, including the fixed 100-value transcription
 audit. Historical request coverage stays 116/131 (NEA 28/28, NIST 88/103),
 with six original crystalline-G gaps.
+
+Later [R11q](radium-solid-enthalpies.md) resolves the historical signed-enthalpy
+review and adds separately derived historical H/S estimates. Its entropy uses
+the original1985 G variant. The modern-source qualifications above remain.

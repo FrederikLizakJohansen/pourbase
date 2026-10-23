@@ -24,7 +24,7 @@ class ExperimentalRadiumCarbonateTests(unittest.TestCase):
         self.assertEqual(value.evidence_class, 'E')
         self.assertAlmostEqual((value.value + 561500 + 527810) / rtl, -7.52)
         self.assertIsNone(value.uncertainty)
-        self.assertEqual(len(record.reported), 3)
+        self.assertEqual(len(record.reported), 5)
         for old in (-1136686.4788710426, -1132062.9911739891):
             self.assertTrue(any(abs(r.value - old) < 1e-7 for r in record.reported))
 
@@ -53,4 +53,5 @@ class ExperimentalRadiumCarbonateTests(unittest.TestCase):
         self.assertIn('R11p3', holds['independent_refit'])
         self.assertIn('held', holds['R11l3'])
         for prop in ('enthalpy_of_formation', 'absolute_entropy'):
-            self.assertNotIn((CARB, prop), self.db.selections)
+            self.assertFalse(any(r.property == prop and r.source.source_id == SID
+                                 for r in self.db.species_records((CARB,))[0].reported))

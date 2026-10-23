@@ -152,7 +152,8 @@ targets. Six original crystalline-G gaps remain. The main tracker retains
   parameterization is imported. The 2022 additions are separately sourced.
 - [ ] **R11l4:** resolve the Ba-containing 2023 carbonate material and 25.1 °C
   measurement conditions before a pure-RaCO3/298.15K reinterpretation.
-- [ ] **R11l5:** verify the historical signed solid dissociation enthalpies.
+- [x] **R11l5:** [R11q](radium-solid-enthalpies.md) verifies the authoritative
+  correction and adds separately qualified historical H/S alternatives.
 
 The finite 2022 open-source admission batch is complete. R11l3's original 2019
 requirement and the wider R11 task remain open. Completed reviews and other

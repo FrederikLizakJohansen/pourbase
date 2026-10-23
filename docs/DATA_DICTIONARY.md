@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 23 October 2026 checkpoint contains **1,059 species and 3,388 observations**
-across 75 supported systems, with **933/830/715 selected G/S/H properties**.
+The latest 23 October 2026 checkpoint contains **1,059 species and 3,392 observations**
+across 75 supported systems, with **933/831/716 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1300,3 +1300,16 @@ separates the main-article licence from the excluded CC BY-NC4.0 supplement;
 `R11p_radium_carbonate_holds` records exact-phase, thermal and refit follow-ups.
 All prior alternatives remain; ordinary class E ranking selects the2023 estimate.
 See [the experimental carbonate review](sources/experimental-radium-carbonate.md).
+
+R11q adds four historical radium-solid H/S estimates after verifying the
+explicit dissolution-enthalpy sign correction in Hummel etal.2002, pp300–301.
+The original1985 magnitudes and same-evaluation logK values are combined
+with checked open non-SRD NBS ionic anchors. Metadata
+`R11q_radium_solid_thermal_observations` retains inputs, equations and source
+locators; `source_reuse_R11q_radium_solid_thermal` records the carried scoped
+individual-numerical-facts route. Neither complete publication is asserted
+open licensed. Carbonate gains preferred H/S; every earlier preferred ID
+remains, including modern carbonate G. The historical entropy uses the
+original G variant; no new temperature model is established by the mixed
+selected properties. `R11q_radium_solid_thermal_holds` carries modern phase,
+thermal and independent-source holds. See [the signed-enthalpy review](sources/radium-solid-enthalpies.md).

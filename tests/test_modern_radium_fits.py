@@ -73,7 +73,8 @@ class ModernRadiumFitsTests(unittest.TestCase):
 
     def test_source_and_thermal_holds_stay_distinct_from_the_new_gibbs_estimates(self):
         for prop in ('enthalpy_of_formation', 'absolute_entropy'):
-            self.assertNotIn((CARB, prop), self.db.selections)
+            self.assertFalse(any(r.property == prop and r.source.source_id == SID
+                                 for r in self.db.species_records((CARB,))[0].reported))
         holds = json.loads(self.db.metadata['R11o_radium_source_holds'])
         self.assertEqual(holds['R11l3_2019_status'], 'held_original_full_numerical_table_and_thermal_basis')
         self.assertIn('Ba-containing', holds['separate_R11l4'])

@@ -1110,3 +1110,24 @@ retained when sharing this adaptation. No author endorsement is implied.
 The separately deposited CC BY-NC4.0 supporting information is excluded
 from the database and distributions. See
 [the source review](docs/sources/experimental-radium-carbonate.md).
+
+## R11q sign-corrected historical radium-solid estimates
+
+Langmuir, D. and Riese, A. C. (1985), *The thermodynamic properties of radium*,
+Geochimica et Cosmochimica Acta49(7),1593–1601,
+[DOI10.1016/0016-7037(85)90264-9](https://doi.org/10.1016/0016-7037(85)90264-9).
+Hummel, W.; Berner, U.; Curti, E.; Pearson, F. J.; Thoenen, T. (2002),
+*Nagra/PSI Chemical Thermodynamic Data Base01/01*, NTB02-16, section5.16,
+pp300–301, provides the explicit correction of the original solid
+dissolution-enthalpy signs.
+
+Pourbase retains four locally derived historical H/S estimates from the
+individual original reaction facts, the cited sign correction and the
+explicitly open non-SRD NBS references acknowledged above. This carries
+the documented scoped numerical-facts route. Complete publications,
+tables, prose, figures and database exports are excluded. Neither publication
+is asserted open licensed. The conversion and historical evaluation scope
+are identified in the database; modern carbonate G remains independent.
+The NIST open release is acknowledged and distributed without warranty.
+Existing OECD attribution and downstream acknowledgment obligations remain
+applicable to NEA material. See [the source review](docs/sources/radium-solid-enthalpies.md).
