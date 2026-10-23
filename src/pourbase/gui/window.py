@@ -31,7 +31,7 @@ from ..plotting import plot_official_materials_project_comparison
 from ..records import SpeciesRecord
 from ..scenario import Calculation, Mode, Scenario, calculate
 from ..sections import ligand_predominance, solubility
-from ..selection import SelectionPolicy, select, with_policy
+from ..selection import SelectionPolicy, compare_policies, select, with_policy
 from ..sensitivity import selection_sensitivity
 from ..uncertainty import stability_margin
 from ..user_data import open_dataset, with_user_species
@@ -50,6 +50,7 @@ from .pinned import PinnedDiagram
 from .placeholder import StackedView
 from .plots import record_colors
 from .policy_compare import PolicyComparisonDialog
+from .policy_editor import PolicyEditorPage
 from .search import Entry, SearchDialog, normalize
 from .session import SUFFIX as SESSION_SUFFIX
 from .session import (
@@ -61,7 +62,7 @@ from .state import CONCENTRATION_UNITS, LigandSetting, Session, Settings, databa
 from .sweep import SweepPage
 from .tasks import TaskRunner
 from .theme import THEME_MODES, apply_theme
-from .widgets import LoadingOverlay, WheelGuard, cross_fade
+from .widgets import ConfigTabWidget, LoadingOverlay, WheelGuard, cross_fade
 
 DEBOUNCE_MS = 30
 WARM_UP_DELAY_MS = 1500
@@ -234,11 +235,17 @@ class MainWindow(QMainWindow):
         system.setStretchFactor(1, 1)
         system.setCollapsible(0, False)
         system.setSizes([self.panel.minimumWidth(), 10_000])
-        self.pages = QTabWidget()
+        self.pages = ConfigTabWidget()
         self.pages.setDocumentMode(True)
         self.pages.addTab(self.overview, "Periodic table")
         self.pages.addTab(system, "System")
         self.pages.addTab(self.database_page, "Database")
+        self.policy_page = PolicyEditorPage(getattr(self.database, "path", None))
+        self.policy_page.applyRequested.connect(self.apply_policy_text)
+        self.policy_page.revertRequested.connect(lambda: self.load_policy(None))
+        self.pages.mark_config(self.pages.addTab(self.policy_page, "Selection policy"))
+        self.pages.setTabToolTip(self.pages.indexOf(self.policy_page), "Configuration: the rule that picks the "
+                                 "recommended value of every species")
         self.pages.setCornerWidget(self._masthead(), Qt.TopLeftCorner)
         self.pages.setCornerWidget(self._search_button(), Qt.TopRightCorner)
         self.pages.currentChanged.connect(self._page_changed)
@@ -406,6 +413,7 @@ class MainWindow(QMainWindow):
             ("Remove own species", lambda: self.load_user_species(None), None),
             ("Load selection policy (TOML)…", self.open_policy, None),
             ("Use the default selection policy", lambda: self.load_policy(None), None),
+            ("Edit selection policy…", self.edit_policy, None),
             (None, None, None),
             ("Quit", self.close, QKeySequence.Quit),
         ):
@@ -849,7 +857,8 @@ class MainWindow(QMainWindow):
             ("Sources behind this diagram…", self.show_sources),
             ("Load own species (CSV)…", self.open_user_species), ("Remove own species", lambda: self.load_user_species(None)),
             ("Open a dataset in a new window…", self.open_dataset)])
-        policy_text = (f"Policy: {Path(self.policy_path).name}" if self.policy_path else "Default selection policy")
+        policy_text = ("Default selection policy" if not self.policy_path else f"Policy: {self.policy.name} (edited)"
+                       if Path(self.policy_path) == self._edited_policy_path() else f"Policy: {Path(self.policy_path).name}")
         chips["policy"].configure(
             policy_text,
             ("The selection policy chooses one recommended value per species from the reported values. "
@@ -857,7 +866,7 @@ class MainWindow(QMainWindow):
             ACCENT if self.policy_path else NEUTRAL, dark=self.dark, menu=[
                 ("Load selection policy (TOML)…", self.open_policy), ("Use the default selection policy",
                                                                      lambda: self.load_policy(None)),
-                ("Compare selection policies…", self.compare_policies)])
+                ("Edit selection policy…", self.edit_policy), ("Compare selection policies…", self.compare_policies)])
         ligands = settings.ligand_activities()
         names = {item.ligand_id: item.name for item in self.database.available_ligands()}
         ligand_names = [names.get(item.ligand_id, item.ligand_id).split(" (")[0] for item in ligands]
@@ -1364,9 +1373,36 @@ class MainWindow(QMainWindow):
         """Calculate with the recommendations of a selection-policy file, or the default for None."""
         if not self._rebuild_database(path, self.user_species_path, "Load selection policy"):
             return False
-        self._set_status(f"Calculating with the selection policy {self.policy.name} ({self.policy.fingerprint})"
-                         if path else "Calculating with the default selection policy")
+        self.policy_page.policy_activated(path, self.policy.source_text)
+        if path:
+            changed = len(compare_policies(self.database, SelectionPolicy.default(), self.policy))
+            self._set_status(f"Calculating with the selection policy {self.policy.name} ({self.policy.fingerprint}); "
+                             f"{changed} recommended value{'' if changed == 1 else 's'} differ from the default")
+        else:
+            self._set_status("Calculating with the default selection policy")
         return True
+
+    def _edited_policy_path(self) -> Path:
+        """Where an applied policy text that is saved nowhere else is kept, so sessions and code can name it."""
+        return Path(self.stored.fileName()).parent / "edited-selection-policy.toml"
+
+    def apply_policy_text(self, text: str, path: str | None) -> None:
+        """Calculate with the policy text of the editor; ``path`` is the file it is saved in, if any."""
+        if text == SelectionPolicy.default().source_text:
+            self.load_policy(None)
+            return
+        if path is None:
+            path = str(self._edited_policy_path())
+            try:
+                Path(path).parent.mkdir(parents=True, exist_ok=True)
+                Path(path).write_text(text, encoding="utf-8")
+            except OSError as error:
+                QMessageBox.warning(self, "Apply selection policy", str(error))
+                return
+        self.load_policy(path)
+
+    def edit_policy(self) -> None:
+        self.pages.setCurrentWidget(self.policy_page)
 
     def _policy_selections(self) -> dict:
         if self._selections is None:
@@ -1628,6 +1664,7 @@ class MainWindow(QMainWindow):
         self.theme_actions[self.theme_mode].setChecked(True)
         self.diagram_page.dark = self.dark
         self.diagram_page.path_panel.set_dark(self.dark)
+        self.policy_page.set_dark(self.dark)
         for widget in (self.diagram_page.diagram, self.speciation_page, self.sweep_page, self.dft_page,
                        self.compare_page, self.overview.canvas, self.overview.landscape, self.sensitivity_page,
                        self.fixed_page):

@@ -4,6 +4,7 @@ import os
 import tempfile
 import time
 import unittest
+from pathlib import Path
 from unittest import mock
 
 import numpy as np
@@ -352,6 +353,30 @@ class WindowTests(WindowTestCase):
         overview.set_3d(False)
         self.wait(lambda: overview.stack.currentWidget() is overview.canvas)
         window.pages.setCurrentIndex(1)
+
+    def test_the_policy_editor_checks_applies_and_reverts(self) -> None:
+        from PySide6.QtWidgets import QMessageBox
+
+        from pourbase.gui.policy_editor import check_policy
+        from pourbase.selection import SelectionPolicy
+
+        window = self.window
+        page = window.policy_page
+        default = SelectionPolicy.default().source_text
+        self.assertEqual(page.text(), default)
+        policy, issues = check_policy(default.replace('"recency"]', '"recentcy"]'))
+        self.assertIsNone(policy)
+        self.assertTrue(issues[0].error)
+        self.assertEqual(issues[0].line, default[:default.index("tie_breaks =")].count("\n") + 1)
+        a, b, c = (default.index(f'[[classes]]\nname = "{name}"') for name in "ABC")
+        page.editor.setPlainText(default[:a] + default[b:c] + default[a:b] + default[c:])
+        page.apply()
+        self.assertEqual(Path(window.policy_path), window._edited_policy_path())
+        self.assertEqual(window.policy.classes[0].name, "B")
+        with mock.patch.object(QMessageBox, "warning", return_value=QMessageBox.Yes):
+            page.revert()
+        self.assertIsNone(window.policy_path)
+        self.assertEqual(page.text(), default)
 
     def test_the_mouse_wheel_does_not_change_value_inputs(self) -> None:
         from PySide6.QtCore import QPoint, QPointF, Qt

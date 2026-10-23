@@ -1,25 +1,41 @@
-# The rule that picks one recommended value per species and property from the values in
-# reported_thermochemistry. Copy this file, edit it and load it with
-# pourbase.SelectionPolicy.load(path) to calculate with your own rule.
+# This is the default rule for picking one value per species and property from
+# reported_thermochemistry. When sources disagree, the rankings below decide
+# which value goes into the calculation.
+#
+# Nothing gets deleted or rewritten in the database. The other reported values
+# are still there, along with their sources, so you can compare them later.
+#
+# Want to use your own ranking? Make a copy of this file, edit it, then load it
+# with pourbase.SelectionPolicy.load(path).
 
 name = "pourbase default"
 version = "1"
 
-# Species whose eligible values differ by more than this are listed for review.
+# Flag species for review if their eligible values differ by more than this
+# many kJ/mol. This is a warning, not a reason to discard either value.
 review_threshold_kJ_mol = 5.0
 
-# Reported values with these statuses are never selected.
+# Never pick values with these statuses, even if their source ranks highly.
+# The records stay in the database; they just cannot be recommended.
 ineligible_statuses = ["superseded_source_value", "terminal_evidence_gap"]
 
-# Ties within one class are broken in this order:
-#   element_consistency  the family that supplies most species of the same element
-#   original_publication of two publications by the same first author in one family, the earlier;
-#                        a later one repeats the evaluation
-#   stated_uncertainty   a value with a reported uncertainty
-#   recency              the more recent publication year
+# If the source ranking doesn't settle a choice, try these tie-breaks in order:
+#
+# element_consistency  Prefer the source family covering the most species of
+#                      the same element. This helps keep related data together.
+# original_publication For two papers by the same first author in a family,
+#                      prefer the earlier one when a later paper repeats it.
+# stated_uncertainty   Prefer a value with a reported uncertainty over one
+#                      without. This does not mean picking the smallest error.
+# recency              If there's still a tie, pick the newer publication.
 tie_breaks = ["element_consistency", "original_publication", "stated_uncertainty", "recency"]
 
-# Evidence classes, best first. Families inside a class are ranked in the order listed.
+# Source classes, from highest to lowest priority. Within each class, the
+# families are also ranked in the order shown.
+#
+# This is a practical default, not a guarantee that every value from a critical
+# review is better than every individual experiment. If you disagree with the
+# rankings, that's exactly what a custom policy is for.
 [[classes]]
 name = "A"
 description = "International critical reviews"
@@ -50,9 +66,11 @@ name = "F"
 description = "Computed values"
 families = ["Materials Project"]
 
-# How a source is assigned to a family: the first family whose pattern occurs in the citation.
-# A source matching no pattern belongs to "estimates" if its value is an estimate (typically a model
-# fitted to measured data), otherwise to "experimental papers".
+# How pourbase recognizes a source family from its citation. The first family
+# with a matching pattern wins, so keep that in mind if you add new patterns.
+# If nothing matches, the value is assigned to "estimates" if it's an estimate,
+# or "experimental papers" otherwise.
+# These patterns classify sources; they don't change any reported numbers.
 [families]
 "CODATA" = ["CODATA"]
 "NEA-TDB" = ["Nuclear Energy Agency"]
@@ -67,7 +85,10 @@ families = ["Materials Project"]
 "Shock and Sverjensky correlations" = ["Shock, E. L.", "Sverjensky, D. A.", "Sassani, D. C."]
 "Materials Project" = ["Materials Project"]
 
-# Values that are ineligible although their status allows them, each with its reason.
+# Exclusions: values we want to keep as evidence but not use in calculations.
+# The evidence status alone doesn't catch every issue, such as a different
+# reference temperature, standard state, or an uncertain phase assignment.
+# Each entry names the exact record, property, and source, plus the reason.
 
 [[exclusions]]
 record_id = "gfe-eu-euf3-q+0-solid-crystalline-trifluoride"
@@ -81,8 +102,9 @@ property = "absolute_entropy"
 source_id = "EuF3_R05_USBM1984_entropy"
 reason = "1 atm standard state of the 1984 evaluation; held until reconciled with the 1 bar record"
 
-# Exceptions to the rule, each with its reason.
-
+# These zirconium mineral values were measured at 323.15 K, not 298.15 K.
+# Keep the original reports, but don't silently treat them as room-temperature
+# values without a justified temperature correction.
 [[exclusions]]
 record_id = "nea02g4-zr-na-catapleiite"
 property = "gibbs_energy_of_formation"
@@ -100,6 +122,12 @@ record_id = "nea02g4-zr-elpidite"
 property = "gibbs_energy_of_formation"
 source_id = "NEA_OECD_20261014_Zr"
 reason = "Source discussion and original study give this observation at 323.15 K; no justified conversion to the 298.15 K calculation reference is available"
+
+# Overrides: use a specific reported value when the general ranking makes the
+# wrong call. This usually happens with two versions of the same evaluation,
+# or when a newer source genuinely revises an older result.
+# Alternatives remain available in the database. Keep overrides specific and
+# explain why; if you need lots of them for the same issue, revisit the rules.
 
 [[overrides]]
 record_id = "gfe-al-alh3sio4-q+2-aqueous-aq"
@@ -365,12 +393,16 @@ property = "enthalpy_of_formation"
 source_id = "MINES_R05_Migdisov2009Table7_NBSderived_gfe-yb-ybcl-q+2-aqueous-aq_hf"
 reason = "variants of one evaluation in the same source; the curated variant is kept"
 
+# This older hydromagnesite formula was later corrected. The reported number
+# stays in the database, but without a verified matching phase we don't use it.
 [[exclusions]]
 record_id = "r07-mg-basic-carbonate-four-mg-trihydrate"
 property = "gibbs_energy_of_formation"
 source_id = "NBS_R07_Mg_mineral_9097_gibbs_energy_of_formation"
 reason = "Robie and Hemingway (1973), USGS Journal 1, pp. 544/546, identify the four-Mg hydromagnesite formula as incorrect and replace it with the five-Mg composition. No independent crystalline phase matching this older NBS formula has been verified. Keep the historical reported value; exclude it from calculations pending composition-specific phase evidence."
 
+# The following observations were made at temperatures other than 298.15 K.
+# Retain the actual measurements, but don't use them as room-temperature data.
 [[exclusions]]
 record_id = "nea02g3-zr-monoxide-gas"
 property = "enthalpy_of_formation"
@@ -395,6 +427,9 @@ property = "gibbs_energy_of_formation"
 source_id = "AjaWoodWilliamsJones1997_NEA02g4b_original"
 reason = "Original study explicitly reports this formation Gibbs energy at 323.15 K. Retain the reported value and interval as evidence; no verified phase-specific thermal conversion to the 298.15 K calculation reference is available."
 
+# These palladium estimates were genuinely revised in a later evaluation.
+# The usual earlier-publication tie-break would pick the old fit, so we keep
+# an explicit override for the newer one.
 [[overrides]]
 record_id = "r11g-pd-pd-oh-2-aqueous"
 property = "gibbs_energy_of_formation"
@@ -407,8 +442,10 @@ property = "gibbs_energy_of_formation"
 source_id = "R11g_local_hydrolysis_2023"
 reason = "Nagra NTB21-03 (2023), pp755/757/758, substantively revises the 2002 fit using Pd metal as the controlling phase and an explicit hydrogen-fugacity model. Prefer the revised qualified estimate while retaining the original aqueous alternative. The same-author original-publication tie-break otherwise mistakes this revision for a repeat."
 
-# R11n: finite-medium Nb evidence is retained outside standard-state selection.
-
+# These niobium values were reported at ionic strength I = 1 M, not at the
+# infinite-dilution standard state used by the other aqueous records.
+# Without a justified conversion, keep them as evidence but exclude them from
+# standard-state calculations.
 [[exclusions]]
 record_id = "gfe-nb-nb-oh-4-q+1-aqueous-aqueous-ionic-strength-1"
 property = "gibbs_energy_of_formation"

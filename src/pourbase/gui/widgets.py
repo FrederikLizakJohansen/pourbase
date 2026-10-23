@@ -3,10 +3,11 @@
 import math
 
 from PySide6.QtCore import QCoreApplication, QEvent, QObject, QPropertyAnimation, QSettings, Qt, QTimer, Signal
+from PySide6.QtGui import QColor, QPainter
 from PySide6.QtWidgets import (
     QAbstractScrollArea, QAbstractSlider, QAbstractSpinBox, QComboBox, QDoubleSpinBox, QFrame, QGraphicsOpacityEffect,
-    QHBoxLayout, QLabel, QScrollBar, QSizePolicy, QSlider, QStyle, QStyleOptionSlider, QToolButton, QVBoxLayout,
-    QWidget,
+    QHBoxLayout, QLabel, QScrollBar, QSizePolicy, QSlider, QStyle, QStyleOptionSlider, QTabBar, QTabWidget, QToolButton,
+    QVBoxLayout, QWidget,
 )
 
 
@@ -317,3 +318,36 @@ class Section(QWidget):
         self.body.setVisible(expanded)
         if store and self._settings is not None:
             self._settings.setValue(self._key, expanded)
+
+
+class ConfigTabBar(QTabBar):
+    """A tab bar that tints the tabs of configuration pages, so they read apart from the views."""
+
+    TINT = QColor(61, 127, 217)
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.config_tabs: set[int] = set()
+
+    def paintEvent(self, event) -> None:
+        super().paintEvent(event)
+        painter = QPainter(self)
+        for index in self.config_tabs:
+            if 0 <= index < self.count():
+                rect = self.tabRect(index).adjusted(1, 2, -1, 0)
+                fill = QColor(self.TINT)
+                fill.setAlpha(45 if index == self.currentIndex() else 28)
+                painter.fillRect(rect, fill)
+        painter.end()
+
+
+class ConfigTabWidget(QTabWidget):
+    """A QTabWidget whose configuration tabs are tinted; mark them with ``mark_config``."""
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.setTabBar(ConfigTabBar(self))
+
+    def mark_config(self, index: int) -> None:
+        self.tabBar().config_tabs.add(index)
+        self.tabBar().update()
