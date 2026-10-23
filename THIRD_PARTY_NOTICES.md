@@ -1131,3 +1131,29 @@ are identified in the database; modern carbonate G remains independent.
 The NIST open release is acknowledged and distributed without warranty.
 Existing OECD attribution and downstream acknowledgment obligations remain
 applicable to NEA material. See [the source review](docs/sources/radium-solid-enthalpies.md).
+
+## R11r higher aluminium-fluoride thermal adaptations
+
+Latimer, W. M. and Jolly, W. L. (1953), *Heats and Entropies of Successive
+Steps in the Formation of AlF6---*, Journal of the American Chemical Society
+75(7),1548–1550, [DOI10.1021/ja01103a008](https://doi.org/10.1021/ja01103a008),
+TableVI,p1549. The original numerical/convention checks use indexed original
+journal text, crosschecked against retrieved primary PSI/Nagra evaluations:
+Hummel etal.(2002),NTB02-16,p98, and Hummel and Thoenen(2023),NTB21-03,
+pp263–264. The latter records the assumed finite-medium applicability at I=0.
+
+Pourbase adapts a narrow selection of original calorimetric facts into four
+local H/S estimates using independently reviewed G models and open ionic
+references. This carries the documented isolated-original-numerical-facts
+route. Neither complete publication is asserted open licensed. Publications,
+whole tables, prose, figures and database exports are excluded. The local
+cumulative conversion, finite-medium approximation and excluded original
+mixed-medium entropy are documented. Full-resolution original-PDF access
+is a separately recorded evidence follow-up.
+
+One Al3+ H observation and recipe reference cells come from the openly
+released, non-SRD NBS digitization, DOI10.18434/M32124, logical3571 and119.
+NIST is acknowledged; those data retain the open-release attribution and
+warranty statement above. Existing OECD attribution and downstream
+acknowledgment obligations remain applicable to NEA material. See
+[the source and model review](docs/sources/aluminium-fluoride-thermal.md).

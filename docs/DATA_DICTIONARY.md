@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 23 October 2026 checkpoint contains **1,059 species and 3,392 observations**
-across 75 supported systems, with **933/831/716 selected G/S/H properties**.
+The latest 23 October 2026 checkpoint contains **1,059 species and 3,397 observations**
+across 75 supported systems, with **933/833/718 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1313,3 +1313,17 @@ remains, including modern carbonate G. The historical entropy uses the
 original G variant; no new temperature model is established by the mixed
 selected properties. `R11q_radium_solid_thermal_holds` carries modern phase,
 thermal and independent-source holds. See [the signed-enthalpy review](sources/radium-solid-enthalpies.md).
+
+R11r adds four qualified higher-aluminium-fluoride H/S estimates and one
+open NBS Al3+ enthalpy observation. Metadata
+`R11r_aluminium_fluoride_thermal_observations` retains the exact cumulative
+calorimetric basis, finite-medium-to-I0 assumption, reference cells, existing
+G observation IDs and derived entropy equations. Original mixed-medium
+entropy values are excluded. Total H/S intervals remain unavailable.
+`source_reuse_R11r_aluminium_fluoride_thermal` records the carried original
+numerical-facts route, exact source access basis and open non-SRD NBS release.
+The AlF5/AlF6 additions fill four fields; Al3+ H changes under ordinary class B
+ranking while earlier estimates remain. Every prior G/S preferred ID remains.
+`R11r_aluminium_fluoride_thermal_holds` records rigorous finite-medium/interval
+and original full-resolution article follow-ups separately. See
+[the higher-AlF thermal review](sources/aluminium-fluoride-thermal.md).

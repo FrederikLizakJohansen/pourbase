@@ -94,7 +94,8 @@ class FinalOriginalRouteTests(unittest.TestCase):
             s = next(s for s in buffered.species if s.record_id == rid)
             self.assertEqual((s.charge, s.ligand_count, s.electrons_per_metal), (q, n, 3))
             self.assertAlmostEqual((-485000 + n * -278790 - s.gibbs_energy_J_mol) / RTL, 20.29)
-            self.assertIsNone(self.db.species_records((rid,))[0].thermochemistry.formation_enthalpy_J_mol.value)
+            self.assertEqual(self.db.selections[(rid, H)].chosen.source_id,
+                             "R11r_LatimerJolly1953_qualified_AlF_thermal")
 
     def test_cyanide_source_triplets_and_protonation_cycle(self):
         for rid, preferred, nbs in [

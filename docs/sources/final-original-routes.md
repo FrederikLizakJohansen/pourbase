@@ -109,7 +109,8 @@ The admitted own outputs are:
   **7.08, 5.65, 4.05, 2.51, 1.0, 0**, giving cumulative **20.29** for both.
   The fifth/sixth steps use two/one points and a trend estimate. G alternatives
   use retained Al(3+) and F(−) references. Reaction widths remain separately
-  documented; H/S require an original thermal-source follow-up.
+  documented. [R11r](aluminium-fluoride-thermal.md) adds separately qualified
+  H/S adaptations after the thermal convention/source review.
 - Pyrochroite, pp. 558–559 / PDF pp. 616–617: own analogy-model thermal mean
   **−123 ± 17 kJ/mol** for acid dissolution. Supporting H outputs
   **−122.5, −111.5, −137 and −121.4 kJ/mol** and their assigned intervals remain
@@ -207,9 +208,14 @@ pass, including ideal and Davies activity models. Thermal checks at
   become available; all prior preferred values and modern G remain.
   Historical H/S retain their original logK variant; modern phase/thermal
   questions remain R11p1–R11p3 and R11l3.
-- [ ] **R11l6 — higher AlF thermal values:** verify original Latimer–Jolly1953
-  calorimetric cells, cumulative versus stepwise convention, finite-I treatment
-  and reuse route before deriving H/S.
+- [x] **R11l6 — higher AlF thermal values:**
+  [R11r](aluminium-fluoride-thermal.md) checks original indexed calorimetric
+  cells against the retrieved primary review, resolves cumulative/stepwise
+  convention, and adds four class E H/S estimates under the review's explicit
+  finite-I-to-I0 approximation. One open NBS Al3+ H anchor is added separately.
+  Rigorous medium/uncertainty treatment and original full-resolution article
+  retrieval remain R11r1/R11r2; earlier source/permission holds stay separate.
+
 
 Historical requests remain **116/131** covered: NEA **28/28**, NIST **88/103**.
 The six original crystalline-G gaps remain. All earlier source reviews and

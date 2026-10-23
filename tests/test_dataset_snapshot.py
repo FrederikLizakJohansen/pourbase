@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1059), ("reported_thermochemistry", 3392),
-                                 ("sources", 1768), ("warnings", 1490), ("additional_components", 11),
+            for table, count in (("species", 1059), ("reported_thermochemistry", 3397),
+                                 ("sources", 1769), ("warnings", 1495), ("additional_components", 11),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1806,7 +1806,7 @@ class DatasetSnapshotTests(unittest.TestCase):
             self.assertEqual(rows[0].value, value)
             self.assertFalse(rows[0].selected_as_recommended)
 
-    def test_aluminum_calorimetry_fills_missing_enthalpy_with_reported_uncertainty(self) -> None:
+    def test_aluminum_calorimetry_alternative_keeps_reported_uncertainty(self) -> None:
         aluminum = self.database.species_records(("gfe-al-al-q+3-aqueous-aq",))[0]
         rows = {row.property: row for row in aluminum.reported if row.source
                 and row.source.source_id.startswith("WoleryJoveColon2017_Table25_")}
@@ -1816,10 +1816,10 @@ class DatasetSnapshotTests(unittest.TestCase):
             self.assertEqual(rows[prop].value, value)
             self.assertEqual(rows[prop].uncertainty, uncertainty)
             self.assertIn("TWO standard deviations", rows[prop].source.locator)
-            self.assertEqual(rows[prop].selected_as_recommended, prop == "enthalpy_of_formation")
+            self.assertFalse(rows[prop].selected_as_recommended)
         thermo = aluminum.thermochemistry
-        self.assertEqual(thermo.formation_enthalpy_J_mol.value, -538350.0)
-        self.assertEqual(thermo.formation_enthalpy_J_mol.uncertainty, 862.0)
+        self.assertEqual(thermo.formation_enthalpy_J_mol.value, -531000.0)
+        self.assertIsNone(thermo.formation_enthalpy_J_mol.uncertainty)
         self.assertEqual(thermo.gibbs_energy_J_mol.value, -485000.0)
         self.assertEqual(thermo.entropy_J_mol_K.value, -321.7)
         self.assertTrue(any("different evaluations" in warning.message for warning in aluminum.warnings))
@@ -1920,9 +1920,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 933, "absolute_entropy": 831, "enthalpy_of_formation": 716})
+                         {"gibbs_energy_of_formation": 933, "absolute_entropy": 833, "enthalpy_of_formation": 718})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "98b7476bb7505eed",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "0c42f5bd09b2392d",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:
