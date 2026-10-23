@@ -206,7 +206,10 @@ retains **5/18 checked headline reviews (27.8%)** and separately records holds.
   assumption; the solid records remain distinct.
 - [ ] **R11n2:** resolve higher hydrolysis/polymerisation and secondary
   sodium-niobate phases before claiming a broader alkaline solubility or
-  closed-component model.
+  closed-component model. R11u adds four qualified supplemental hexaniobate
+  G estimates; secondary-solid standard states, the weak absolute polymer
+  link and a closed polynuclear inventory remain open. See
+  [the alkaline-model review](niobium-alkaline-models.md).
 
 The finite-I/native-hydration review R11l1 is complete with its explicit
 eligibility decision and independent I=0 model observations. These two

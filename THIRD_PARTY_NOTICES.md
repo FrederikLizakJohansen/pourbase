@@ -1084,6 +1084,25 @@ Pourbase supplies its own brief interpretation; no calculated energies or
 article tables are imported. Existing Peiffert numerical-fact reuse and NEA
 OECD acknowledgment obligations continue separately.
 
+### R11u supplemental alkaline-niobium adaptations
+
+Hummel, W. and Thoenen, T. (2023), *The PSI Chemical Thermodynamic Database
+2020*, Nagra Technical Report 21-03, section 17.4.2.2, p. 667,
+https://media.nagra.ch/uploads/2023/05/NTB-21-03.pdf, supplies four original
+author SIT/regression results adapted into local hexaniobate formation-G
+estimates. Copyright 2023 Nagra, Wettingen, Switzerland. The established
+individual original numerical-facts route covers these narrowly cited model
+outputs; no open licence is asserted for the report, tables or database
+export. Complete publication, tables, prose, figures and OCR remain external.
+
+The pinned original Peiffert2010 neutral observation and open non-SRD NBS
+water retain their existing reuse reviews, NIST acknowledgment and warranty
+statement. Filella–May2020 CC BY-NC-ND article/supplement data, conditional
+sodium-salt constants and restricted compilations supply no new observations
+in this batch. Existing OECD credit and the requirement for further
+sublicensees to pass on the acknowledgment requirement remain in force
+independently. See [the source and model review](docs/sources/niobium-alkaline-models.md).
+
 ### R11o open modern radium solubility evaluations
 
 Copyright 2022 Paul L. Brown, Artem V. Matyskin and Christian Ekberg.

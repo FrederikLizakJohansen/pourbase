@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 23 October 2026 checkpoint contains **1,059 species and 3,398 observations**
-across 75 supported systems, with **933/833/718 selected G/S/H properties**.
+The latest 23 October 2026 checkpoint contains **1,063 species and 3,402 observations**
+across 75 supported systems, with **937/833/718 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1287,6 +1287,16 @@ unresolved absolute B reference and the archived original NBS phase note.
 Five warnings expose the nomenclature conflict. One phase evidence summary
 is corrected; the source label and unresolved identity remain. Thermochemical
 observations, preferred values and policy rules are unchanged.
+
+R11u adds four class-E supplemental hexaniobate G estimates on four aqueous
+records with six Nb atoms each. All previous observations and preferred
+values remain. Metadata `R11u_alkaline_niobium_review`,
+`R11u_hexaniobate_observations` and `R11u_alkaline_niobium_holds` retain
+original PSI author SIT outputs, the pinned neutral/water inputs and the
+weak absolute-link, source-condition and uncertainty qualifications.
+The existing mass-balance solver explicitly excludes these polynuclear
+aqueous species. Conditional sodium-salt thermochemistry and broader closed
+alkaline balances remain open. See [the alkaline-niobium review](sources/niobium-alkaline-models.md).
 
 R11o adds two locally derived G alternatives from Brown/Matyskin/Ekberg2022
 Table1 evaluated solid solubilities under its verified CC BY4.0 licence.
