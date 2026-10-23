@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 23 October 2026 checkpoint contains **1,232 species and 3,805 observations**
-across 75 supported systems, with **1031/999/809 selected G/S/H properties**.
+The latest 23 October 2026 checkpoint contains **1,257 species and 3,865 observations**
+across 75 supported systems, with **1046/1023/830 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1379,3 +1379,18 @@ formulas, fixed-endmember assumptions, buffered references and reuse routes.
 All earlier observations and preferred values remain. The external ledger
 classifies 822 direct/reaction property slots; joint solid solutions and
 inherited support data retain separate holds. See [the source review](sources/cemdata18.md).
+
+
+## R10 Heracles original-source routes
+
+R10 adds 60 observations and 25 species, filling 60 properties under the
+unchanged policy. Original NEA selected selenide G/H/S remain distinct from
+Heracles-derived Gibbs energies and missing selected cells. The new neutral
+`elemental-se-cr` buffer pins an existing standard-state observation;
+secondary Se remains externally buffered. A separate original 2024 RuTe2
+EMF evaluation retains its extrapolation and unresolved-polymorph
+qualifications. Metadata `R10_Heracles_source_review`,
+`R10_Heracles_observations` and `R10_Heracles_source_holds` preserve source
+versions, bibliography, full formulas and independent reuse routes. The
+external ledger classifies 2,664 slots across 888 records. See [the source
+review](sources/heracles.md).

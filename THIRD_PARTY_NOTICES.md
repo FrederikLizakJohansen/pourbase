@@ -1,5 +1,36 @@
 # Third-party data and attribution
 
+## R10 Heracles original-source routes and binary selenides
+
+OECD and the Nuclear Energy Agency are acknowledged for 57 selected
+numerical observations from Olin et al. (2005), *Chemical Thermodynamics
+of Selenium*, volume 7, Table III-1 pp. 43–49,
+https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/chemical_thermodynamics_of_selenium_volume_7.pdf.
+The carried written clarification and OECD data terms permit reuse,
+adaptation and redistribution, including commercially, subject to
+source-specific additional restrictions. Every sublicense of work using
+these data must include the same OECD acknowledgment requirement and
+require further sublicensees to pass it on. These conditions accompany
+pourbase's GPL-3.0 compilation. The elemental-Se reference reuses an
+existing standard-state observation.
+
+Scientific attribution for the independent original RuTe2 evaluation:
+Osadchii, E. G. and Voronin, M. V. (2024), *Thermodynamic Properties of
+RuTe2 Evaluated by EMF Measurements on a Solid State Electrochemical Cell*,
+Inorganic Materials 60, 832–837, https://doi.org/10.1134/S0020168524701061.
+Three individual original numerical facts follow the established
+individual-source policy. The article retains its copyright; no open
+article licence is asserted. Its full text, figures and protected prose
+are excluded from this import. NEA permission is independent of this route.
+
+The Heracles bibliography audit uses the GPL-3.0 ThermoHub data mirror,
+https://github.com/thermohub/thermohub, revision
+`c3e4acf4531204e4c2974c2d4ac5a1b96f37d5ba`. ThermoHub contributors and the
+ETH Board Open Research Data Program are acknowledged. The mirror licence
+does not establish reuse rights for separately inherited restricted
+compilations. Source versions, exact original cells and adaptations in
+pourbase are documented in [the source review](docs/sources/heracles.md).
+
 ## R09 Cemdata18 original hydrate evaluations
 
 Scientific attribution: Lothenbach, B., Kulik, D. A., Matschei, T., Balonis, M.,
