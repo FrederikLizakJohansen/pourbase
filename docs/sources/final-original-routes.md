@@ -192,11 +192,13 @@ pass, including ideal and Davies activity models. Thermal checks at
   independently adds two CC BY4.0 evaluations from Brown/Matyskin/Ekberg2022.
   These additions retain their own source and model scope; the original2019
   H/Cp/thermal-parameter follow-up remains open.
-- [ ] **R11l4 — experimental Ra carbonate:**
-  [Matyskin et al. (2023)](https://doi.org/10.1021/acs.inorgchem.3c01513) has a
-  verified CC-BY4.0 licence. Its Ra(Ba)CO3/Ba(Ra)CO3 sample and 25.1 °C
-  measurement conditions need a supported pure-RaCO3, 298.15 K interpretation.
-  This is a scientific hold.
+- [x] **R11l4 — experimental Ra carbonate:**
+  [R11p](experimental-radium-carbonate.md) completes the source/eligibility
+  review and adds one CC BY4.0 main-article, class E nominal-endmember G
+  estimate. The authors' pure-endmember hypothesis and nominal Table6
+  temperature are explicit. Exact composition/activity, rigorous thermal
+  correction and independent refit remain open as R11p1–R11p3. The separately
+  CC BY-NC4.0 supplement is excluded from imports and distributions.
 - [ ] **R11l5 — Ra solid H:** verify the original signed dissociation enthalpies
   or an authoritative correction before adding thermal values. Original G
   estimates remain eligible.

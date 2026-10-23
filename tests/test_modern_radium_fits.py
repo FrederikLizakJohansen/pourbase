@@ -31,7 +31,8 @@ class ModernRadiumFitsTests(unittest.TestCase):
             self.assertAlmostEqual((v.value + 561500 - anion) / RTL, k)
             self.assertEqual(v.status, 'source_verified_estimate')
             self.assertIsNone(v.uncertainty)
-        self.assertEqual(self.db.selections[(CARB, G)].chosen.source_id, SID)
+        self.assertEqual(self.db.selections[(CARB, G)].chosen.source_id,
+                         'R11p_Matyskin2023_CC_BY_carbonate_adaptation')
         self.assertEqual(self.db.selections[(CARB, G)].chosen.evidence_class, 'E')
         self.assertEqual(self.db.selections[(SULF, G)].chosen.value, -1365600)
         record = self.db.species_records((CARB,))[0]
@@ -55,7 +56,7 @@ class ModernRadiumFitsTests(unittest.TestCase):
                 ligand_activities=pb.LigandActivityModel((
                     pb.LigandActivity('carbonate-co3', log10_free_activity=loga),)))
             d = pb.MassBalanceEngine(self.db).calculate_system(pair, cfg, pb.TotalMetalConcentration(1e-6))
-            np.testing.assert_allclose(d.dissolved_metal_mol_L, min(1e-6, 10**(-7.49-loga)), rtol=1e-10)
+            np.testing.assert_allclose(d.dissolved_metal_mol_L, min(1e-6, 10**(-7.52-loga)), rtol=1e-10)
             np.testing.assert_allclose(d.dissolved_metal_mol_L + 1e-6*d.precipitated_metal_fraction,
                                       1e-6, rtol=1e-10)
             boundary = (self.solid.gibbs_energy_J_mol + 527810 - RTL*loga)/(2*FARADAY_C_MOL)
@@ -68,7 +69,7 @@ class ModernRadiumFitsTests(unittest.TestCase):
         # At free carbonate10^-2 the new Ksp leaves a1uM inventory dissolved;
         # the older -8.3 evaluation would precipitate approximately half.
         self.assertLess(10**(-8.3+2), 1e-6)
-        self.assertGreater(10**(-7.49+2), 1e-6)
+        self.assertGreater(10**(-7.52+2), 1e-6)
 
     def test_source_and_thermal_holds_stay_distinct_from_the_new_gibbs_estimates(self):
         for prop in ('enthalpy_of_formation', 'absolute_entropy'):

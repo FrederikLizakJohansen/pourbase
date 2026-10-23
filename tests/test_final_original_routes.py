@@ -46,7 +46,7 @@ class FinalOriginalRouteTests(unittest.TestCase):
 
     def test_radium_carbonate_preserves_its_estimated_endmember(self):
         record = self.db.species_records(("r11l-ra-raco3-crystalline-estimate",))[0]
-        self.assertEqual(len(record.reported), 2)
+        self.assertEqual(len(record.reported), 3)
         value = next(r for r in record.reported
                      if r.source.source_id == "R11l_local_Langmuir1985_original_estimates")
         self.assertEqual(value.status, "source_verified_estimate")

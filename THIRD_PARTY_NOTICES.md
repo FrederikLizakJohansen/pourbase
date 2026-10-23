@@ -1089,3 +1089,24 @@ imported. The original 2019 thermal table remains outside this batch.
 Earlier OECD attribution and downstream acknowledgment requirements remain
 applicable to the database's NEA material.
 See [the source and model review](docs/sources/modern-radium-fits.md).
+
+## R11p experimental radium carbonate adaptation
+
+© 2023 Artem V. Matyskin, Burçak Ebin, Stefan Allard, Natallia Torapava,
+Lars Eriksson, Ingmar Persson, Paul L. Brown and Christian Ekberg.
+*Disordered Crystal Structure and Anomalously High Solubility of Radium
+Carbonate*, Inorganic Chemistry 62(30), 12038–12049,
+[DOI 10.1021/acs.inorgchem.3c01513](https://doi.org/10.1021/acs.inorgchem.3c01513).
+The main article is licensed under
+[Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/).
+
+Pourbase adapts the authors' own Table6 solubility result to one local
+nominal-endmember formation-G estimate using the open non-SRD NBS ionic
+references acknowledged elsewhere in these notices. Changes include that
+conversion and qualified endmember, nominal-temperature and ambient-pressure
+assumptions; the source fit and adjusted intervals remain documented.
+Attribution, the licence link and identification of these changes must be
+retained when sharing this adaptation. No author endorsement is implied.
+The separately deposited CC BY-NC4.0 supporting information is excluded
+from the database and distributions. See
+[the source review](docs/sources/experimental-radium-carbonate.md).

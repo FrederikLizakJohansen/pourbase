@@ -21,7 +21,7 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 20 October 2026 checkpoint contains **1,059 species and 3,387 observations**
+The latest 23 October 2026 checkpoint contains **1,059 species and 3,388 observations**
 across 75 supported systems, with **933/830/715 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
@@ -1289,3 +1289,14 @@ licence/change notices and reference ancestry; `R11o_radium_source_holds`
 keeps the original2019 full-table/thermal follow-up and other holds separate.
 The policy selects the modern carbonate alternative; sulfate retains NBS G.
 Every earlier row remains. See [the modern radium review](sources/modern-radium-fits.md).
+
+R11p adds one qualified nominal-endmember G estimate adapted from the CC BY4.0
+main article by Matyskin et al.2023, Table6. Metadata
+`R11p_radium_carbonate_observations` preserves the two identical fit labels,
+fit and systematic-adjusted intervals, sample composition limits, actual bath
+and nominal table temperatures, and open ionic anchors. The total G interval
+remains unavailable. `source_reuse_R11p_experimental_radium_carbonate`
+separates the main-article licence from the excluded CC BY-NC4.0 supplement;
+`R11p_radium_carbonate_holds` records exact-phase, thermal and refit follow-ups.
+All prior alternatives remain; ordinary class E ranking selects the2023 estimate.
+See [the experimental carbonate review](sources/experimental-radium-carbonate.md).
