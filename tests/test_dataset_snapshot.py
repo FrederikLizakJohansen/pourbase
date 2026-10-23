@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1059), ("reported_thermochemistry", 3397),
-                                 ("sources", 1769), ("warnings", 1495), ("additional_components", 11),
+            for table, count in (("species", 1059), ("reported_thermochemistry", 3398),
+                                 ("sources", 1770), ("warnings", 1497), ("additional_components", 11),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1922,7 +1922,7 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         self.assertEqual(Counter(key[1] for key in selections),
                          {"gibbs_energy_of_formation": 933, "absolute_entropy": 833, "enthalpy_of_formation": 718})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "0c42f5bd09b2392d",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "622d203a1a99e242",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

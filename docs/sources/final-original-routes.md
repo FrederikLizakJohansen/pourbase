@@ -187,8 +187,9 @@ pass, including ideal and Davies activity models. Thermal checks at
 - [x] **R11l2 — original precipitated MnCO3 and pressure review:**
   [R11m](synthetic-manganese-carbonate.md) verifies the original Garrels1960
   material and formation G, applies the explicit NEA pressure prescription,
-  and adds open NBS precipitated-material H. The exact later native
-  Nordstrom1990 re-expression remains separately open as R11m1.
+  and adds open NBS precipitated-material H. [R11s](native-synthetic-manganese.md) resolves the later native
+  reaction-reference conversion and adds a qualified G alternative. The
+  strict R11m1 specimen requirement remains open.
 - [ ] **R11l3 — original2019 Ra thermal fits:** the full numerical fit/thermal
   table remains unavailable through the checked routes. [R11o](modern-radium-fits.md)
   independently adds two CC BY4.0 evaluations from Brown/Matyskin/Ekberg2022.
@@ -224,8 +225,8 @@ separate holds carry forward. The wider R11 parent remains open.
 R11m update: [the synthetic manganese carbonate review](synthetic-manganese-carbonate.md)
 resolves the original Garrels phase and formation-G pressure basis and adds
 its qualified pressure-adjusted G plus open NBS precipitated-material H.
-The later native Nordstrom numerical re-expression remains separately held
-as R11m1. Other requirements above retain their earlier decisions.
+[R11s](native-synthetic-manganese.md) reconciles the native numerical
+re-expression; strict specimen matching remains separately open as R11m1/R11s1. Other requirements above retain their earlier decisions.
 
 R11n update: [the niobium standard-state review](niobium-standard-state.md)
 completes the finite-I/hydration eligibility decision and adds twelve original

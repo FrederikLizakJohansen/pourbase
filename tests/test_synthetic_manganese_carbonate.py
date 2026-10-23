@@ -35,13 +35,15 @@ class SyntheticManganeseCarbonateTests(unittest.TestCase):
         # Lowering the O2 reference chemical potential raises this formation G.
         oxygen_mu_change = GAS_CONSTANT_J_MOL_K * 298.15 * math.log(1 / 1.01325)
         expected = -194.7 * 4184 - 1.5 * oxygen_mu_change
-        self.assertAlmostEqual(self.precipitate.gibbs_energy_J_mol, expected)
+        original = next(r for r in self.db.species_records((RID,))[0].reported
+                        if r.source.source_id == 'R11m_Garrels1960_precipitated_pressure_adaptation')
+        self.assertAlmostEqual(original.value, expected)
         self.assertAlmostEqual(d['pressure_correction_J_mol'], 48.9457169698282)
         self.assertIsNone(d['total_uncertainty'])
 
     def test_material_identity_and_open_enthalpy_keep_missing_properties_explicit(self):
         record = self.db.species_records((RID,))[0]
-        self.assertEqual(len(record.reported), 2)
+        self.assertEqual(len(record.reported), 3)
         self.assertEqual(self.db.selections[(RID, G)].chosen.evidence_class, 'E')
         self.assertEqual(self.db.selections[(RID, H)].chosen.evidence_class, 'B')
         self.assertEqual(self.db.selections[(RID, H)].chosen.value, -883200)
@@ -69,7 +71,7 @@ class SyntheticManganeseCarbonateTests(unittest.TestCase):
                 self.assertAlmostEqual(energy, expected)
                 crystal = float(transformed_gibbs_J_mol_metal(
                     self.crystal, self.db.reference_state, cfg, ph, potential))
-                self.assertAlmostEqual(energy - crystal, 4524.145716969855)
+                self.assertAlmostEqual(energy - crystal, 3883.7812686586985)
 
     def test_restricted_precipitate_solubility_and_metal_boundary_match_thermodynamics(self):
         solid = self.precipitate
@@ -77,7 +79,7 @@ class SyntheticManganeseCarbonateTests(unittest.TestCase):
         metal = next(s for s in self.system.species if s.formula_ascii == 'Mn' and s.phase == 'solid')
         ksp = math.exp(-(ion.gibbs_energy_J_mol + solid.ligand_gibbs_energy_J_mol -
                           solid.gibbs_energy_J_mol) / (GAS_CONSTANT_J_MOL_K*298.15))
-        self.assertAlmostEqual(math.log10(ksp), -10.277813002408848)
+        self.assertAlmostEqual(math.log10(ksp), -10.39)
         for loga in (-6, -3, -1):
             cfg = pb.PourbaixConditions(pH_points=3, U_points=3,
                 ligand_activities=pb.LigandActivityModel((

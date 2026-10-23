@@ -1157,3 +1157,28 @@ NIST is acknowledged; those data retain the open-release attribution and
 warranty statement above. Existing OECD attribution and downstream
 acknowledgment obligations remain applicable to NEA material. See
 [the source and model review](docs/sources/aluminium-fluoride-thermal.md).
+
+## R11s native synthetic manganese-carbonate adaptation
+
+USGS is acknowledged through Ball, J. W. and Nordstrom, D. K. (1991),
+*User's manual for WATEQ4F, with revised thermodynamic data base and test cases
+for calculating speciation of major, trace, and redox elements in natural waters*,
+USGS Open-File Report91-183,Table2,p30,record190,
+[DOI10.3133/ofr91183](https://doi.org/10.3133/ofr91183).
+The selected synthetic-material result is attributed to Nordstrom etal.(1990),
+*Revised Chemical Equilibrium Data for Major Water–Mineral Reactions and Their
+Limitations*,ACS416,398–413,Table2III,p406,
+[DOI10.1021/bk-1990-0416.ch031](https://doi.org/10.1021/bk-1990-0416.ch031),
+with original numerical ancestry in Garrels, Thompson and Siever(1960).
+
+Pourbase adapts one selected result into a local G estimate with separately
+open, non-SRD NBS ionic references. USGS/NIST attribution and the carried
+federal numerical-fact/evaluation route remain applicable; no blanket licence
+for other source rows or restricted upstream tables is inferred. NIST data
+are distributed without warranty under the open-release notice above.
+The local conversion, nominal material category and bicarbonate-reference
+reconciliation are identified. The complete ACS chapter is not asserted
+open licensed. Complete publications, tables, prose, figures and database
+exports are excluded. Existing OECD attribution and downstream acknowledgment
+obligations remain applicable to NEA material. See
+[the source review](docs/sources/native-synthetic-manganese.md).

@@ -21,7 +21,7 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 23 October 2026 checkpoint contains **1,059 species and 3,397 observations**
+The latest 23 October 2026 checkpoint contains **1,059 species and 3,398 observations**
 across 75 supported systems, with **933/833/718 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
@@ -1327,3 +1327,16 @@ ranking while earlier estimates remain. Every prior G/S preferred ID remains.
 `R11r_aluminium_fluoride_thermal_holds` records rigorous finite-medium/interval
 and original full-resolution article follow-ups separately. See
 [the higher-AlF thermal review](sources/aluminium-fluoride-thermal.md).
+
+R11s adds one synthetic-MnCO3 G alternative from the original selected
+logKsp=-10.39, checked in original indexed1990 chapter text and the retrieved
+primary USGS1991 report. Metadata `R11s_native_synthetic_manganese_observations`
+retains the source acid polynomial, native.06115 reconstruction, source-equivalent
+bicarbonate reference, current-reference residual and open ionic anchors.
+The nominal synthetic material remains distinct from crystalline rhodochrosite.
+The new G becomes preferred; every earlier observation and other preferred ID
+remains. `source_reuse_R11s_native_synthetic_manganese` records the carried
+USGS numerical-fact/federal-evaluation and open NBS routes;
+`R11s_native_synthetic_manganese_holds` retains exact specimen and original
+full-resolution archive requirements. No synthetic reaction H, S or thermal
+fit is inferred. See [the native synthetic-material review](sources/native-synthetic-manganese.md).

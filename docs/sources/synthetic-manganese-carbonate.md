@@ -133,18 +133,19 @@ basis; it is distinct from the later native evaluation.
 
 ## Remaining native variant
 
-- [ ] **R11m1:** obtain the original Nordstrom1990 numerical table, reference
-  inputs and exact specimen mapping for native **Rds-Syn**, reaction index 386:
-  `Mn2+ + HCO3− = H+ + MnCO3(syn)`, log K **0.06115**. The original
-  [USGS1991 WATEQ4F report](https://doi.org/10.3133/ofr91183), Table 2 p. 30,
-  row 190, repeats dissolution log Ksp **−10.39** with reference 47 and missing
-  reaction H. The original 1990 chapter's numerical table remains unavailable
-  through the checked publisher/author routes. These inherited reaction
-  numbers are retained in the reconciliation; this batch imports the verified
-  original Garrels observation and open NBS H.
+- [ ] **R11m1 — strict specimen requirement:**
+  [R11s](native-synthetic-manganese.md) resolves the original selected logK,
+  source reference and native carbonate/bicarbonate re-expression, and adds
+  one qualified nominal synthetic-material G alternative. Original1990
+  Table2III,p406 and the retrieved USGS1991Table2p30,row190 agree.
+  Exact specimen/surface matching remains R11s1; original full-resolution
+  chapter retrieval remains the separate R11s2 evidence upgrade.
+- [x] Original numerical-table and native reaction-reference reconciliation.
+- [x] Preserve both earlier observations and add the supported G alternative.
 
 The original-source identity and pressure parts of R11l2 are now resolved.
-The exact later native re-expression remains a separate source follow-up.
+The later native reaction re-expression is reconciled in R11s. Exact specimen
+mapping remains an open scientific follow-up.
 The broader R11 task and other sources' permission/scientific holds remain
 open. Historical requested-property coverage stays **116/131 = 88.5%**,
 including all **28/28 NEA** targets. The main checklist retains **5/18 = 27.8%**
