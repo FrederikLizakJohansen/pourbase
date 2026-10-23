@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 23 October 2026 checkpoint contains **1,179 species and 3,652 observations**
-across 75 supported systems, with **978/949/759 selected G/S/H properties**.
+The latest 23 October 2026 checkpoint contains **1,232 species and 3,805 observations**
+across 75 supported systems, with **1031/999/809 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1367,3 +1367,15 @@ Metadata `R08_NASA_source_review`, `R08_NASA_observations` and
 evidence and source/range holds. New gases require explicit inclusion;
 charged-gas energies remain missing. All previous preferred values remain.
 See [the NASA source review](sources/nasa-thermochemistry.md).
+
+
+## R09 Cemdata18 hydrate evaluations
+
+R09 adds 153 original, source-linked observations and 53 species, filling
+153 missing properties under the unchanged policy. Metadata
+`R09_Cemdata18_source_review`, `R09_Cemdata18_observations` and
+`R09_Cemdata18_source_holds` preserve original Table 1 locations, complete
+formulas, fixed-endmember assumptions, buffered references and reuse routes.
+All earlier observations and preferred values remain. The external ledger
+classifies 822 direct/reaction property slots; joint solid solutions and
+inherited support data retain separate holds. See [the source review](sources/cemdata18.md).

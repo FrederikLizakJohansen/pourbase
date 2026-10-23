@@ -1,5 +1,29 @@
 # Third-party data and attribution
 
+## R09 Cemdata18 original hydrate evaluations
+
+Scientific attribution: Lothenbach, B., Kulik, D. A., Matschei, T., Balonis, M.,
+Baquerizo, L., Dilnesa, B., Miron, G. D. and Myers, R. (2019), *Cemdata18:
+A chemical thermodynamic database for hydrated Portland cements and
+alkali-activated materials*, Cement and Concrete Research 115, 472–506,
+https://doi.org/10.1016/j.cemconres.2018.04.018. Individual observation locators
+identify Table 1 cells and the original experimental or model ancestry.
+
+The ThermoHub data mirror, https://github.com/thermohub/thermohub, revision
+`c3e4acf4531204e4c2974c2d4ac5a1b96f37d5ba`, is GPL-3.0 licensed. ThermoHub
+contributors and the ETH Board Open Research Data Program are acknowledged.
+Pourbase retains individual original hydrate evaluations at their published
+precision, with its own phase mappings, normalization and qualifications.
+These are selections and adaptations in pourbase's GPL-3.0 compilation.
+The individual numerical-fact reuse route is recorded separately from the
+article's copyright; no open licence is asserted for the full article.
+
+Inherited PSI/Nagra support, commercial clinker compilations, full articles
+and solid-solution models retain their separate rights and review status.
+The mirror licence supplies no blanket clearance for restricted ancestry.
+Existing OECD acknowledgment and downstream requirements continue for NEA
+inputs separately. See [the Cemdata18 source review](docs/sources/cemdata18.md).
+
 ## R08 NASA thermochemistry and open atomic references
 
 NASA CEA data use pinned revision
