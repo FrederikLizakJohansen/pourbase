@@ -1067,6 +1067,23 @@ sublicensee to pass on the acknowledgment requirement remain in force for
 NEA inputs elsewhere in this database.
 See [the niobium source and standard-state review](docs/sources/niobium-standard-state.md).
 
+R11t adds an attributed comparison with the original federal research of
+J. L. Waring, R. S. Roth and H. S. Parker (1973), *Temperature-Pressure Phase
+Relationships in Niobium Pentoxide*, Journal of Research of the National
+Bureau of Standards A77A(6), 705–711,
+https://doi.org/10.6028/jres.077A.042, Table 2, p. 708. NIST is acknowledged
+under its [open licence](https://www.nist.gov/open/license), without warranty.
+The comparison qualifies phase identity; it adds no absolute thermochemistry.
+
+Computational context is attributed to Benjamin Grimm, Moritz Nitzsche and
+Thomas Bredow, *Energetic Order of Nb2O5 and Ta2O5 Polymorphs* (2022),
+Physica Status Solidi B, 2200052, https://doi.org/10.1002/pssb.202200052.
+Copyright 2022 The Authors; published by Wiley-VCH GmbH under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Pourbase supplies its own brief interpretation; no calculated energies or
+article tables are imported. Existing Peiffert numerical-fact reuse and NEA
+OECD acknowledgment obligations continue separately.
+
 ### R11o open modern radium solubility evaluations
 
 Copyright 2022 Paul L. Brown, Artem V. Matyskin and Christian Ekberg.

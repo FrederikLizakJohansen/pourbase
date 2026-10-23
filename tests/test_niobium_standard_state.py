@@ -107,6 +107,39 @@ class NiobiumStandardStateTests(unittest.TestCase):
         self.assertIn('limited data', basis['model_scope'])
         self.assertIn('Solids change atpH>9', basis['model_scope'])
 
+    def test_phase_conflict_is_exposed_without_a_duplicate_absolute_B_reference(self):
+        review = json.loads(self.db.metadata['R11t_niobium_phase_review'])
+        self.assertFalse(review['independent_B_absolute_reference_established'])
+        self.assertEqual(review['new_thermochemical_observations'], 0)
+        self.assertEqual(review['Peiffert2010']['measured_cell']['b_A'], 3.82475)
+        self.assertEqual(review['independent_B_structure']['measured_cell']['b_A'], 4.8845)
+        for rid in ['r11l-nb-nb2o5-high-temperature', *IDS.values()]:
+            record = self.db.species_records((rid,))[0]
+            warning = next(w for w in record.warnings
+                           if w.type == 'r11t_niobium_phase_nomenclature_conflict')
+            self.assertIn('qualified fitted estimates', warning.message)
+            self.assertIn('10.6028/jres.077A.042', warning.source.url)
+        with self.db.connect() as c:
+            self.assertEqual(c.execute("SELECT COUNT(*) FROM reported_thermochemistry "
+                                       "WHERE value_id LIKE '%r11t%'").fetchone()[0], 0)
+            phase = c.execute("SELECT * FROM phases WHERE record_id=?",
+                              ('r11l-nb-nb2o5-high-temperature',)).fetchone()
+            self.assertEqual(phase['identity_status'], 'unresolved')
+            self.assertEqual(phase['source_phase_label'],
+                             review['corrected_phase_annotation']['before']['source_phase_label'])
+            self.assertIn('Distinct from Peiffert2010',
+                          review['corrected_phase_annotation']['before']['evidence_summary'])
+
+    def test_open_theoretical_context_stays_separate_from_experimental_evidence(self):
+        review = json.loads(self.db.metadata['R11t_niobium_phase_review'])
+        context = review['open_theoretical_context']
+        self.assertEqual(context['licence_url'], 'https://creativecommons.org/licenses/by/4.0/')
+        self.assertIn('No computed B values', context['interpretation'])
+        self.assertIn('Excluded from numerical imports', review['source_routes'][2]['disposition'])
+        for rid in IDS.values():
+            for prop in (G, H, S):
+                self.assertEqual(self.db.selections[rid, prop].chosen.evidence_class, 'E')
+
 
 if __name__ == '__main__':
     unittest.main()

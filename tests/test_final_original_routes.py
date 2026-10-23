@@ -83,7 +83,8 @@ class FinalOriginalRouteTests(unittest.TestCase):
         with self.db.connect() as c:
             phase = c.execute("SELECT * FROM phases WHERE record_id=?", (rid,)).fetchone()
             self.assertEqual(phase["identity_status"], "unresolved")
-            self.assertIn("Distinct from Peiffert2010 B-Nb2O5", phase["evidence_summary"])
+            self.assertIn("unresolved nomenclature/structure conflict", phase["evidence_summary"])
+            self.assertIn("Exact NBS-specimen crystallographic ancestry remains", phase["evidence_summary"])
 
     def test_higher_aluminium_fluorides_use_cumulative_constants(self):
         default = {s.record_id for s in self.db.load_system("Al").species}

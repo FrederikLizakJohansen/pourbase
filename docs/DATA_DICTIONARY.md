@@ -1280,6 +1280,14 @@ normalization, original numerical-facts reuse and the source's oxide-reference
 assumption. Source intervals retain their quoted meaning. The old solid identity
 is retained separately. See [the niobium review](sources/niobium-standard-state.md).
 
+R11t qualifies niobium phase identity with the original Peiffert XRD footnote
+and independent Waring1973 B-phase measurements. Metadata
+`R11t_niobium_phase_review` records the reported cells, source/reuse evidence,
+unresolved absolute B reference and the archived original NBS phase note.
+Five warnings expose the nomenclature conflict. One phase evidence summary
+is corrected; the source label and unresolved identity remain. Thermochemical
+observations, preferred values and policy rules are unchanged.
+
 R11o adds two locally derived G alternatives from Brown/Matyskin/Ekberg2022
 Table1 evaluated solid solubilities under its verified CC BY4.0 licence.
 The current open NBS Ra2+/anion inputs, exact AOP/PDF locators, partial logK

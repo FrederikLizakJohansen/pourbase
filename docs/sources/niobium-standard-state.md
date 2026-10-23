@@ -50,6 +50,55 @@ keeps its original identity separately. This batch supplies no independently
 verified B-oxide absolute thermochemistry or universal equivalence between
 high-temperature-labelled specimens and B.
 
+### R11t phase-identity follow-up
+
+Reviewed 23 October 2026. Peiffert's **Table 1 footnote, printed p. 201 / PDF
+p. 5**, reports a monoclinic P2 specimen with measured cell **a = 20.3819 Å,
+b = 3.82475 Å, c = 19.3660 Å, β = 115.698°**, compared with reference pattern
+00-037-1468. Both the original page and its footnote were inspected directly.
+
+Independent original experiments by
+[Waring, Roth and Parker (1973), *Temperature-Pressure Phase Relationships in
+Niobium Pentoxide*](https://doi.org/10.6028/jres.077A.042), **Table 2, printed
+p. 708 / PDF p. 4**, characterize B-Nb2O5 with **a = 12.744 Å, b = 4.8845 Å,
+c = 5.5629 Å, β = 105°1.9′**. They distinguish B and H experimentally.
+These different reported cells establish a nomenclature/structure conflict
+requiring further resolution. Peiffert's title and preparation temperature
+alone do not justify assigning independent B-solid thermochemistry or
+categorically renaming either specimen H.
+
+The previous NBS phase note asserted that the specimens were distinct
+polymorphs. R11t replaces that assertion with the documented conflict and
+archives the original note in metadata **`R11t_niobium_phase_review`**.
+The NBS source label and unresolved identity remain. Five warnings expose
+the qualification on the solid and four aqueous model records, linked to one
+new structural source citation. Every earlier
+thermochemical observation, source row and warning remains; all preferred
+values and policy rules are unchanged. **This review adds no numerical
+thermochemical observation.**
+
+[Grimm, Nitzsche and Bredow (2022), *Energetic Order of Nb2O5 and Ta2O5
+Polymorphs*](https://doi.org/10.1002/pssb.202200052) provides explicitly
+CC BY 4.0 computational context. Its DFT phase energies remain computational
+results. Its experimental benchmark concerns H-Nb2O5 and cites
+[Jacob et al. (2010)](https://doi.org/10.1021/je1004609); atomization references
+also cite NIST WebBook. None of those calculated or reconstructed values is
+imported here. The full Jacob evaluation remains a separate source follow-up.
+
+The original [King (1954) entropy study](https://doi.org/10.1021/ja01641a063)
+identifies its material as the high-temperature Brauer modification in its
+indexed original first page. Full original specimen and NBS evaluation
+ancestry still need verification. The downloaded Rao/Subba Rao review was
+identified as **NBS NSRDS 49**, so its compiled transition values are excluded
+from this task's numerical imports.
+
+**R11n1 remains open:** adding B absolute G/H/S requires an independently
+phase-verified evaluation at 298.15 K or a complete experimentally supported
+B–H thermodynamic cycle, including the temperature, pressure and heat-capacity
+treatment. Reversing Peiffert's aqueous fit would repeat its reference
+assumption. R11n2's alkaline/polymer/secondary-solid review proceeds separately.
+Original PDFs, page images and OCR stay in the external review directory.
+
 All new observations retain **`source_verified_estimate`, class E**. They come
 from the empirical four-species fit extrapolated to infinite dilution. The
 study reports unreliable SIT interaction parameters, limited evidence for

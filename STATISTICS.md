@@ -12,9 +12,9 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended entropies | 833 (79 %) |
 | Recommended formation enthalpies | 718 (68 %) |
 | Reported values retained | 3398 |
-| Source records | 1770 (211 distinct citations) |
+| Source records | 1771 (212 distinct citations) |
 | Phase records | 583 (359 resolved) |
-| Warnings | 1497 |
+| Warnings | 1502 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 29 |
@@ -45,16 +45,16 @@ Species by phase:
 | `species` | 1059 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `selected_thermochemistry` | 1059 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
 | `reported_thermochemistry` | 3398 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1770 | Full citations, links, locators and access dates |
+| `sources` | 1771 | Full citations, links, locators and access dates |
 | `phases` | 583 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 1497 | Scientific cautions attached to records |
+| `warnings` | 1502 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 29 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 11 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 62 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 63 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -129,7 +129,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Mo | Molybdenum (Mo) | 5 | 1 | 4 | 0 | 0 | 5 | 5 | 3 | 3 |
 | N | Nitrogen (N) | 8 | 5 | 0 | 3 | 0 | 8 | 8 | 8 | 20 |
 | Na | Sodium (Na) | 17 | 10 | 7 | 0 | 0 | 16 | 15 | 13 | 37 |
-| Nb | Niobium (Nb) | 11 | 7 | 4 | 0 | 0 | 8 | 8 | 8 | 17 |
+| Nb | Niobium (Nb) | 11 | 7 | 4 | 0 | 0 | 8 | 8 | 8 | 22 |
 | Nd | Neodymium (Nd) | 11 | 5 | 6 | 0 | 0 | 10 | 7 | 9 | 15 |
 | Ni | Nickel (Ni) | 60 | 28 | 30 | 1 | 1 | 55 | 43 | 44 | 76 |
 | Os | Osmium (Os) | 7 | 2 | 4 | 1 | 0 | 7 | 5 | 5 | 8 |
