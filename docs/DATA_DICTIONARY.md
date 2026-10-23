@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 23 October 2026 checkpoint contains **1,063 species and 3,402 observations**
-across 75 supported systems, with **937/833/718 selected G/S/H properties**.
+The latest 23 October 2026 checkpoint contains **1,179 species and 3,652 observations**
+across 75 supported systems, with **978/949/759 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1358,3 +1358,12 @@ USGS numerical-fact/federal-evaluation and open NBS routes;
 `R11s_native_synthetic_manganese_holds` retains exact specimen and original
 full-resolution archive requirements. No synthetic reaction H, S or thermal
 fit is inferred. See [the native synthetic-material review](sources/native-synthetic-manganese.md).
+
+R08 adds 250 observations and 116 species, filling 198 fields. Original
+NASA atomic entropies, open neutral-atom NBS observations, two local G
+estimates and nominal Fe0.947O alternatives remain separate observations.
+Metadata `R08_NASA_source_review`, `R08_NASA_observations` and
+`R08_NASA_source_holds` retain licence scope, exact cells, corrected formula
+evidence and source/range holds. New gases require explicit inclusion;
+charged-gas energies remain missing. All previous preferred values remain.
+See [the NASA source review](sources/nasa-thermochemistry.md).

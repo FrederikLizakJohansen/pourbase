@@ -41,7 +41,10 @@ class NEAAdjacentPhaseTests(unittest.TestCase):
                 self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, gibbs)
                 self.assertTrue(any("include_optional_gases=True" in w.message
                                     for w in record.warnings))
-                for observation in record.reported:
+                nea_observations = [observation for observation in record.reported
+                                    if observation.source.source_id.startswith("NEA_")]
+                self.assertEqual(len(nea_observations), 3)
+                for observation in nea_observations:
                     self.assertIn("TableIII-1 printedp44", observation.source.locator)
                     self.assertIn("further sublicensees", observation.source.locator)
         with self.database.connect() as connection:

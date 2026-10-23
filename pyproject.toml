@@ -56,7 +56,7 @@ version = {attr = "pourbase.__version__"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-pourbase = ["py.typed", "data/pourbase.sqlite", "data/selection-policy.toml", "gui/assets/*"]
+pourbase = ["py.typed", "data/pourbase.sqlite", "data/selection-policy.toml", "data/nasa-cea-LICENSE.txt", "data/nasa-cea-NOTICE.txt", "gui/assets/*"]
 
 [tool.ruff]
 line-length = 120

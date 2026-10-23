@@ -1,5 +1,41 @@
 # Third-party data and attribution
 
+## R08 NASA thermochemistry and open atomic references
+
+NASA CEA data use pinned revision
+`2f79a647e85737742fb08a127da00d1ea1d069da` of
+https://github.com/nasa/cea. Copyright (c) 2025, United States Government as
+represented by the Administrator of the National Aeronautics and Space
+Administration. Licensed under the Apache License, Version 2.0. NASA's
+NOTICE explicitly identifies its thermodynamic data files. Unmodified
+[licence](src/pourbase/data/nasa-cea-LICENSE.txt) and
+[NOTICE](src/pourbase/data/nasa-cea-NOTICE.txt) files accompany the database
+and wheel. Pourbase selects atomic entropy evaluations and adapts one
+nominal wustite fit, adding its own formation-G calculations, qualifications
+and record mappings. These are modifications and selections by pourbase.
+
+Scientific attribution: McBride, B. J., Zehe, M. J. and Gordon, S. (2002),
+*NASA Glenn Coefficients for Calculating Thermodynamic Properties of Individual
+Species*, NASA TP-2002-211556, https://ntrs.nasa.gov/citations/20020085330;
+Gordon, S. and McBride, B. J. (1999), *Thermodynamic Data to 20 000 K for
+Monatomic Gases*, NASA TP-1999-208523,
+https://ntrs.nasa.gov/citations/19990063361.
+
+The open non-SRD NIST PDR M32124 release supplies separately cited atomic
+and wustite observations and reference inputs, https://doi.org/10.18434/M32124.
+NIST is acknowledged under its [open licence](https://www.nist.gov/open/license);
+data are distributed without warranty. Pankratz, L. B. (1982), *Thermodynamic
+Properties of Elements and Oxides*, Bulletin 672, pp. 155–156,
+https://stacks.cdc.gov/view/cdc/219421, supplies public-domain federal
+composition and metastability evidence.
+
+The current NASA licence supplies no blanket permission for the distinct
+legacy snapshot or separately copied restricted tables. No copied
+JANAF/Chase/TRC or unverified commercial-compilation thermochemistry is
+imported here. Existing OECD credit and the requirement for further
+sublicensees to pass on the acknowledgment requirement continue for NEA
+inputs separately. See [the source review](docs/sources/nasa-thermochemistry.md).
+
 pourbase combines individual thermochemical values traced to scientific sources with selected
 Materials Project records. The GPL-3.0 license covers the code and the compilation. Source-specific
 terms and scientific citation obligations remain in force.
