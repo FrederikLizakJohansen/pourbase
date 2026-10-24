@@ -1364,3 +1364,27 @@ Completed source reviews carry forward, including OECD attribution and
 downstream acknowledgment obligations for NEA data and further sublicensees.
 Other permission and scientific holds remain independent. See
 [the source, formula-scale and reaction review](docs/sources/supcrt-versions.md).
+
+## R13 specialized PHREEQC review and open NBS salts
+
+NIST and Wagman, D. D. et al. (1982), *The NBS Tables of Chemical
+Thermodynamic Properties*, digitized with errata, are acknowledged through
+the explicitly open, non-SRD Public Data Repository release
+[DOI 10.18434/M32124](https://doi.org/10.18434/M32124).
+Twenty-six independently checked crystalline salt observations retain their
+exact logical CSV records, original units, 298.15 K/1 bar conditions and full
+formula units. Missing source values remain missing. NIST data are distributed
+without warranty, under the open-release notice above.
+
+PHREEQC and the specialized-file authors are acknowledged as comparison
+inputs, pinned through Reaktoro commit
+`f587235e692b7168faa272c8892a4c079a1f7dd9`. Native reaction curves,
+isotope fractionation, binding and activity-model parameters remain outside
+the distributed numerical additions. Complete source files, publications
+and correspondence stay outside distributions. Original JANAF/CODATA and
+other restricted or unclear numerical alternatives retain separate holds.
+USGS Bulletin 2131, Table 2 p. 23 is acknowledged for independent anhydrous
+mineral identification; no new numerical cell from that table is admitted.
+Existing OECD attribution and downstream acknowledgment requirements for
+NEA material, including further sublicensees, remain applicable.
+See [the source and model review](docs/sources/phreeqc-specialized.md).

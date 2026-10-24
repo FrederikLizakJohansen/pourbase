@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 24 October 2026 checkpoint contains **1,284 species and 3,948 observations**
-across 75 supported systems, with **1073/1050/857 selected G/S/H properties**.
+The latest 24 October 2026 checkpoint contains **1,296 species and 3,974 observations**
+across 75 supported systems, with **1080/1057/869 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1430,3 +1430,21 @@ remain closed with secondary activities externally prescribed. All 75 default
 maps and uncertainty masks remain. See [the source and version review](sources/supcrt-versions.md)
 and metadata `R12_SUPCRT_version_review`, `R12_USGS_observations` and
 `R12_source_and_scientific_holds`.
+
+## R13 specialized PHREEQC review and open NBS salt properties
+
+R13 classifies all 4,524 scoped reactions and 15,298 noncomment lines across
+five specialized files and model sections in the other nine pinned files.
+Interaction, isotope, surface, humic, exchange and kinetic parameters remain
+linked to their original files. No specialized parameter is imported as a
+formation property. Existing source reviews and independent holds carry forward.
+
+The batch adds 26 independently verified open non-SRD NBS observations on
+12 crystalline salt records, filling 26 properties. Five records retain H only;
+missing G/S stays explicit. All previous rows, preferred values, 75 default
+phase maps and uncertainty masks remain under the unchanged policy. Hydrate
+water, full formula units, source conditions and unresolved crystal identities
+are retained. Existing chloride/sulfate/Na reservoirs remain externally
+prescribed. See [the source and model review](sources/phreeqc-specialized.md)
+and metadata `R13_PHREEQC_specialized_review`, `R13_NBS_observations` and
+`R13_source_and_model_holds`.
