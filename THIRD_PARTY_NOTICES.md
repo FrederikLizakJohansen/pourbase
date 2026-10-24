@@ -1421,3 +1421,40 @@ publications and bulk graph files stay outside the distributed package.
 Exact page, unit, uncertainty, phase and source conditions accompany each
 observation. Borax and KHCO3 retain selected H only. See
 [the release and source review](docs/sources/thermohub-releases.md).
+
+## R15 hydrosulfide original numerical facts and open NBS anchor
+
+Akinfiev, N. N. and Zotov, A. V. (2001), *Thermodynamic Description of
+Chloride, Hydrosulfide, and Hydroxo Complexes of Ag(I), Cu(I), and Au(I)*,
+Geochemistry International 39, 990–1006, Table 2 p.993, supplies 17 isolated
+fitted/evaluated numerical observations. Their (2010) revised evaluation,
+Geochemistry International 48, 714–720, Table 3 p.717,
+[doi:10.1134/S0016702910070074](https://doi.org/10.1134/S0016702910070074),
+supplies 11 further observations. Hummel, W. and Thoenen, T. (2023), *The
+PSI Chemical Thermodynamic Database 2020*, Nagra NTB 21-03, section 32.3
+pp.1243–1247/Table 32-2 p.1249, supplies three original zinc regressions
+for nine local formation-property estimates.
+
+These use the established individual original numerical-facts route, with
+attribution. No open licence for whole articles, reports or databases is
+claimed. Complete publications, tables, prose, figures and native exports
+stay outside the distribution. Source copyright/publisher information and
+PSI report conditions were checked; no separate restriction on these isolated
+author-generated results was identified. This route supplies no blanket reuse
+of restricted commercial compilations or NIST SRD products.
+
+One missing Zn2+ enthalpy and independently checked existing reference
+inputs use the explicitly open non-SRD NBS PDR release
+[10.18434/M32124](https://doi.org/10.18434/M32124), logical records 4023
+and 584. NIST is acknowledged under its
+[open licence](https://www.nist.gov/open/license); data are distributed
+without warranty. Exact input IDs, formula units, units, original pages,
+fitting assumptions and uncertainty limitations accompany each observation.
+The disputed 2001 AgHS and 2010 AuHS enthalpies and unverified 2014 zinc cells remain held.
+
+Existing OECD/NEA citation and downstream acknowledgment requirements remain
+applicable to the unchanged free-S2− reference and other NEA material. Every
+sublicense of work using NEA data must include the same OECD acknowledgment
+requirement and require further sublicensees to do the same. NEA permission
+is separate from the original-paper factual and open NBS routes above.
+See [the hydrosulfide source review](docs/sources/hydrosulfide-complexes.md).

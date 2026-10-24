@@ -1467,3 +1467,26 @@ requirements accompany the observations. No reference, policy or runtime
 model changes. Metadata keys are `R14_ThermoHub_release_review`,
 `R14_NEA15_observations` and `R14_source_and_version_holds`.
 See [the source review](sources/thermohub-releases.md).
+
+## R15 hydrosulfide observations and sulfur representation
+
+R15 adds 38 observations on nine new aqueous species and existing Zn2+,
+filling 28 properties (9 G, 9 S and 10 H). Original 2001 and verified 2010
+author fits retain all genuine variants; unchanged repetitions are
+deduplicated. The unchanged policy selects 2001 where eligible under its same-author
+earliest-publication tie-break. AgHS H selects 2010 because its 2001 derived
+H is held. Three independent PSI 2023 zinc regressions
+yield nine local G/H/S estimates with open NBS anchors. Missing Zn2+ H
+is added directly from logical record 4023. The disputed 2001 AgHS H and 2010 AuHS H remain outside production.
+
+All sulfur uses the unchanged free-S2− reference. Residual H and charge
+preserve exact HS stoichiometry. Current S2−/HS− G imply pKa
+19.028524733842467 at 298.15 K; fixed free and one-acid unbound reservoirs
+retain their documented scope. Primary balances keep sulfur externally
+prescribed. Native Zn charges 16/23/30, unverified 2014 numerical cells,
+full closed sulfur and ligand thermal models retain explicit holds.
+Source-specific numerical-facts/NBS routes and existing OECD downstream
+terms remain separate. Metadata keys: `R15_hydrosulfide_source_review`,
+`R15_hydrosulfide_observations`, `R15_chemistry_support` and
+`R15_source_and_model_holds`.
+See [the source and calculation review](sources/hydrosulfide-complexes.md).
