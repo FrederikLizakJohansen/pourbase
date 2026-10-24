@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 24 October 2026 checkpoint contains **1,259 species and 3,873 observations**
-across 75 supported systems, with **1048/1025/832 selected G/S/H properties**.
+The latest 24 October 2026 checkpoint contains **1,284 species and 3,948 observations**
+across 75 supported systems, with **1073/1050/857 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1410,3 +1410,23 @@ route, source pages, shared experimental ancestry, quoted widths and component
 limits are recorded in metadata `R11v_PSI_Nagra_completion`,
 `R11v_USGS_observations` and `R11v_source_and_scientific_holds`.
 See [the source and reaction review](sources/psinagra-completion.md).
+
+## R12 SUPCRT versions and original USGS mineral evaluations
+
+R12 compares all eight pinned SUPCRT variants: 11,350 record representations,
+34,050 G/H/S slots and 28 version pairs. Every distinct representation has
+an original-source and scope decision, with completed R06 reviews carried.
+Molar-basis differences, including doubled enstatite and ferrosilite formulas,
+remain explicit. Direct bulk numerical rights and original source holds stay
+separate from compatible mirror comparisons.
+
+The batch adds 75 original USGS observations and 25 named phases, making
+75 properties available. All earlier rows and preferred values remain under
+the unchanged policy. Twenty phases have named SUPCRT counterparts; five
+are adjacent original USGS additions. Complete formulas, distinct polymorphs,
+quoted intervals and property-specific ancestry are retained. Existing silica,
+Ca and Na reservoirs support the component minerals; primary inventories
+remain closed with secondary activities externally prescribed. All 75 default
+maps and uncertainty masks remain. See [the source and version review](sources/supcrt-versions.md)
+and metadata `R12_SUPCRT_version_review`, `R12_USGS_observations` and
+`R12_source_and_scientific_holds`.

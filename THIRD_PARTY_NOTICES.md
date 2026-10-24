@@ -1339,3 +1339,28 @@ NEA reviews continue under OECD attribution and downstream acknowledgment
 requirements, including the obligation for further sublicensees to pass them
 on. Other source-specific conditions and permission holds remain independent.
 See [the complete source and component review](docs/sources/psinagra-completion.md).
+
+## R12 SUPCRT version comparison and original USGS silicates
+
+US Geological Survey and Robie, R. A. and Hemingway, B. S. (1995) are
+acknowledged for *Thermodynamic Properties of Minerals and Related Substances
+at 298.15 K and 1 Bar Pressure and at Higher Temperatures*, USGS Bulletin
+2131, Table 2, pp. 19, 31–35 and 39,
+[DOI 10.3133/b2131](https://doi.org/10.3133/b2131).
+Seventy-five individually verified author critical-evaluation cells use the
+[USGS-authored public-domain route](https://www.usgs.gov/faqs/are-usgs-reportspublications-copyrighted).
+Original property-specific experimental and fitted-research ancestry, quoted
+intervals, full formula units and phase qualifications are retained. No
+additional third-party ownership restriction was identified for these cells.
+Complete publications and held native SUPCRT/HP2011 numerical compilations
+stay outside distributions.
+
+The eight Reaktoro SUPCRT variants at commit
+`f587235e692b7168faa272c8892a4c079a1f7dd9` are comparison inputs.
+ThermoHub at `c3e4acf4531204e4c2974c2d4ac5a1b96f37d5ba` and GEOPIG
+retain their earlier attribution and source-specific terms. Solver-wrapper
+licences and numerical matches supply no blanket upstream data grant.
+Completed source reviews carry forward, including OECD attribution and
+downstream acknowledgment obligations for NEA data and further sublicensees.
+Other permission and scientific holds remain independent. See
+[the source, formula-scale and reaction review](docs/sources/supcrt-versions.md).
