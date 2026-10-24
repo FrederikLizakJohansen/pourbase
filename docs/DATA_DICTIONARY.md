@@ -21,8 +21,8 @@ thermochemical quantities use one formula unit as the molar basis.
 
 ## NEA-TDB permission and selected-data extension
 
-The latest 23 October 2026 checkpoint contains **1,257 species and 3,865 observations**
-across 75 supported systems, with **1046/1023/830 selected G/S/H properties**.
+The latest 24 October 2026 checkpoint contains **1,259 species and 3,873 observations**
+across 75 supported systems, with **1048/1025/832 selected G/S/H properties**.
 NEA-TDB data are available under OECD data terms following written clarification.
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
@@ -1394,3 +1394,19 @@ qualifications. Metadata `R10_Heracles_source_review`,
 versions, bibliography, full formulas and independent reuse routes. The
 external ledger classifies 2,664 slots across 888 records. See [the source
 review](sources/heracles.md).
+
+## R11 completed PSI/Nagra inventory and original USGS minerals
+
+R11v adds eight observations and two species: original USGS G/H/S for ordered
+dolomite and kaolinite, plus two original 1994 dolomite G/H alternatives.
+Six additional properties become available. All earlier evidence and preferred
+values remain under the unchanged selection policy. The finite 3,830-slot,
+440-reaction inventory has explicit source and scope decisions; unresolved
+original-property, version, phase and scientific holds remain separate.
+
+The new records use existing free Ca/carbonate and aqueous-silica reservoirs,
+full formula units, and primary Mg/Al inventory balances. The USGS public-domain
+route, source pages, shared experimental ancestry, quoted widths and component
+limits are recorded in metadata `R11v_PSI_Nagra_completion`,
+`R11v_USGS_observations` and `R11v_source_and_scientific_holds`.
+See [the source and reaction review](sources/psinagra-completion.md).

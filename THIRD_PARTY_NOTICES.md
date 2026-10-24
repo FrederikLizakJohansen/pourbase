@@ -1309,3 +1309,33 @@ open licensed. Complete publications, tables, prose, figures and database
 exports are excluded. Existing OECD attribution and downstream acknowledgment
 obligations remain applicable to NEA material. See
 [the source review](docs/sources/native-synthetic-manganese.md).
+
+## R11v PSI/Nagra completion and USGS mixed minerals
+
+US Geological Survey and the original authors are acknowledged:
+
+- Robie, R. A. and Hemingway, B. S. (1995), *Thermodynamic Properties of
+  Minerals and Related Substances at 298.15 K and 1 Bar Pressure and at Higher
+  Temperatures*, USGS Bulletin 2131, Table 2, pp. 25 and 39; thermal tables
+  pp. 269 and 382, [DOI 10.3133/b2131](https://doi.org/10.3133/b2131).
+- Hemingway, B. S. and Robie, R. A. (1994), *Enthalpy and Gibbs energy of
+  formation of dolomite, CaMg(CO3)2, at 298.15 K from HCl solution calorimetry*,
+  USGS Open-File Report 94-575, pp. 2 and 4,
+  [DOI 10.3133/ofr94575](https://doi.org/10.3133/ofr94575).
+
+Eight individually verified author observations use the
+[USGS-authored public-domain data route](https://www.usgs.gov/faqs/are-usgs-reportspublications-copyrighted).
+Property-specific experimental ancestry, the original preliminary-report
+qualification and shared dolomite evaluation inputs are retained. No additional
+third-party ownership restriction was identified for these author cells.
+Complete source publications, tables, figures and private correspondence stay
+outside distributions. Disordered dolomite and unverified mirror variants
+retain separate original-source holds.
+
+The ThermoHub compilation remains acknowledged at commit
+`c3e4acf4531204e4c2974c2d4ac5a1b96f37d5ba`; its GPL-3.0 licence supplies
+no blanket clearance for inherited restricted numerical sources. Completed
+NEA reviews continue under OECD attribution and downstream acknowledgment
+requirements, including the obligation for further sublicensees to pass them
+on. Other source-specific conditions and permission holds remain independent.
+See [the complete source and component review](docs/sources/psinagra-completion.md).
