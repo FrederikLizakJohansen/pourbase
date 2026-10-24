@@ -1448,3 +1448,22 @@ are retained. Existing chloride/sulfate/Na reservoirs remain externally
 prescribed. See [the source and model review](sources/phreeqc-specialized.md)
 and metadata `R13_PHREEQC_specialized_review`, `R13_NBS_observations` and
 `R13_source_and_model_holds`.
+
+## R14 ThermoHub release review and NEA ancillary observations
+
+R14 pins the v1.2.0 archive, tag and repository against a 24 October 2026
+catalog cutoff. All 23 graph collections are byte-identical; nine substance
+families contain 9,039 records and 27,117 G/H/S slots. The explicit repository
+GPL route and discrepant deposit CC BY metadata remain separate from
+original numerical-source decisions. No graph scalar enters this batch.
+
+Fourteen independently verified NEA2024 Table III-1 p.47 observations add
+six solids and fill four G, four S and six H properties. All earlier SQL
+rows and selections remain. The selected borax and KHCO3 enthalpies retain
+missing G/S; quoted approximately 95% uncertainty widths retain their
+interpretation. Complete source formulas, phase identities, buffered
+carbonate/phosphate/sodium references and OECD downstream acknowledgment
+requirements accompany the observations. No reference, policy or runtime
+model changes. Metadata keys are `R14_ThermoHub_release_review`,
+`R14_NEA15_observations` and `R14_source_and_version_holds`.
+See [the source review](sources/thermohub-releases.md).

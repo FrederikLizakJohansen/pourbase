@@ -1388,3 +1388,36 @@ mineral identification; no new numerical cell from that table is admitted.
 Existing OECD attribution and downstream acknowledgment requirements for
 NEA material, including further sublicensees, remain applicable.
 See [the source and model review](docs/sources/phreeqc-specialized.md).
+
+## R14 ThermoHub catalog and selected ancillary NEA data
+
+The ThermoHub v1.2.0 archive (Zenodo DOI 10.5281/zenodo.13797639) and
+repository commit `c3e4acf4531204e4c2974c2d4ac5a1b96f37d5ba` have
+byte-identical graph collections under the repository GPL-3.0 route.
+The deposit's CC BY 4.0 metadata discrepancy is preserved. ThermoHub
+contributors, George Dan Miron, ORD Thrace and the ETH Board Open Research
+Data Program are acknowledged. This batch imports no graph scalar.
+Original-source rights and earlier permission holds remain separate.
+
+Fourteen observations for six crystals use Rand, M.; Palmer, D. A.; Fuger,
+J.; Gajda, T. (2024), *Selected Ancillary Compounds of Interest to Radioactive
+Waste Management*, Chemical Thermodynamics 15, OECD Nuclear Energy Agency,
+NEA No. 7626, edited by Martinez, J. S.; Ragoussi, M.-E.; Costa, D.,
+Table III-1 p. 47, accessed 24 October 2026. Source:
+[NEA volume 15](https://www.oecd-nea.org/upload/docs/application/pdf/2024-06/cts15-selected_ancillary_compounds-r-final-rev.pdf).
+OECD and the OECD Nuclear Energy Agency are acknowledged. The supplied
+NEA-TDB-OECD-2026-10-14 clarification and
+[OECD data terms](https://www.oecd.org/en/about/terms-conditions.html)
+permit use, adaptation and redistribution, including commercially, with
+appropriate citation, subject to actual source-specific additional restrictions.
+None was identified for these 14 NEA-selected cells. Independently copied
+commercial auxiliary tables retain their own holds.
+
+**Every sublicense of work using these data must include the same OECD
+acknowledgment requirement and require further sublicensees to do the same.**
+
+The original email and applicable terms evidence remain preserved. Complete
+publications and bulk graph files stay outside the distributed package.
+Exact page, unit, uncertainty, phase and source conditions accompany each
+observation. Borax and KHCO3 retain selected H only. See
+[the release and source review](docs/sources/thermohub-releases.md).
