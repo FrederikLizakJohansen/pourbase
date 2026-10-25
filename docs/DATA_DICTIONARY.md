@@ -1623,3 +1623,23 @@ downstream acknowledgment apply to NEA material; NIST credit and its open-releas
 warranty statement apply to the independent NBS cells. Other auxiliary species,
 phase correspondence and earlier source/model holds continue separately.
 See [the source review](sources/nea2020-auxiliary-oxides.md).
+
+## Selected sodium/calcium vanadates
+
+R11j3c adds crystalline NaVO3 and Ca(VO3)2 with ten observations and six G/H/S
+properties. Four own selected NEA2020 G/H outputs coexist with six independent
+original open NBS G/H/S cells. The existing policy selects NEA G/H and NBS S;
+every earlier observation and preferred candidate remains. The calcium salt
+retains two V atoms per reported formula unit, with its original NBS CaO·V2O5
+notation recorded. Each salt buffers one sodium/calcium cation and reduces by
+five electrons per V. Exact structures remain unresolved.
+
+Metadata keys are `R11j3c_NEA2020_vanadate_review`,
+`R11j3c_vanadate_observations` and `R11j3c_source_and_model_holds`. Source
+uncertainty meaning, bibliography discrepancies for informational entropy,
+full formula units and exact source cells remain explicit. No informational
+NEA S/Cp cell is imported by this batch. The existing ligand thermal exclusions
+continue; closed sodium/calcium inventories remain separate. All default maps
+and uncertainty masks remain unchanged. OECD citation/downstream obligations
+and the original NBS open-release credit/warranty conditions accompany the data.
+See [the source review](sources/nea2020-vanadate-solids.md).

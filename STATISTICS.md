@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 1455 |
+| Species | 1457 |
 | Supported elemental systems | 75 of 118 elements |
-| Recommended Gibbs energies | 1168 (80 %) |
-| Recommended entropies | 1141 (78 %) |
-| Recommended formation enthalpies | 1026 (71 %) |
-| Reported values retained | 4448 |
-| Source records | 1795 (236 distinct citations) |
-| Phase records | 841 (479 resolved) |
-| Warnings | 2186 |
+| Recommended Gibbs energies | 1170 (80 %) |
+| Recommended entropies | 1143 (78 %) |
+| Recommended formation enthalpies | 1028 (71 %) |
+| Reported values retained | 4458 |
+| Source records | 1797 (238 distinct citations) |
+| Phase records | 843 (479 resolved) |
+| Warnings | 2190 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 30 |
@@ -23,7 +23,7 @@ Gibbs energies by evidence status:
 
 | Status | Species |
 |---|---|
-| `verified` | 765 |
+| `verified` | 767 |
 | `source_verified_estimate` | 328 |
 | `not_available` | 281 |
 | `defined_reference_state` | 75 |
@@ -33,7 +33,7 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| solid | 697 | 559 | 530 | 610 |
+| solid | 699 | 561 | 532 | 612 |
 | aqueous | 586 | 518 | 441 | 323 |
 | gas | 167 | 88 | 167 | 88 |
 | liquid | 5 | 3 | 3 | 5 |
@@ -42,19 +42,19 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 1455 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 1455 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 4448 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1795 | Full citations, links, locators and access dates |
-| `phases` | 841 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 2186 | Scientific cautions attached to records |
+| `species` | 1457 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 1457 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 4458 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1797 | Full citations, links, locators and access dates |
+| `phases` | 843 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 2190 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 30 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 59 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 113 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 116 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -157,7 +157,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Ti | Titanium (Ti) | 12 | 2 | 7 | 3 | 0 | 10 | 12 | 7 | 23 |
 | Tl | Thallium (Tl) | 17 | 10 | 7 | 0 | 0 | 10 | 14 | 9 | 25 |
 | Tm | Thulium (Tm) | 12 | 6 | 6 | 0 | 0 | 10 | 8 | 8 | 15 |
-| V | Vanadium (V) | 23 | 13 | 7 | 3 | 0 | 17 | 21 | 11 | 28 |
+| V | Vanadium (V) | 25 | 13 | 9 | 3 | 0 | 19 | 23 | 13 | 32 |
 | W | Tungsten (W) | 12 | 1 | 8 | 3 | 0 | 6 | 8 | 8 | 21 |
 | Y | Yttrium (Y) | 13 | 8 | 5 | 0 | 0 | 12 | 10 | 11 | 27 |
 | Yb | Ytterbium (Yb) | 12 | 6 | 6 | 0 | 0 | 10 | 7 | 9 | 15 |
