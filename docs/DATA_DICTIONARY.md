@@ -1740,3 +1740,18 @@ Metadata keys are `R11j3h_NEA_Sr_Ba_review`, `R11j3h_Sr_Ba_observations`
 and `R11j3h_source_and_model_holds`. Seventeen unchanged 2020 reprints link to
 the original evaluation. Source confidence conventions, exact locations and reuse
 conditions accompany each observation. See [the source review](sources/nea-sr-ba-auxiliaries.md).
+
+## NEA halogen and sulfur auxiliary versions
+
+R11j3i retains 21 observations on seven existing aqueous records: 17 original
+NEA1992 selections and four distinct NEA2003 internal numerical/uncertainty
+revisions. Nineteen current inventory cells link to exact source versions,
+including two previously retained HIO3/S²− cells. The formal H2SO3(aq) cell
+remains a scientific identity/water-reference follow-up, R11j3i1.
+
+Metadata keys are `R11j3i_NEA_halogen_sulfur_review`,
+`R11j3i_halogen_sulfur_observations` and `R11j3i_source_and_model_holds`.
+All prior observations, exact identities and 31 fixed free references remain.
+The policy changes 17 preferred IDs; no species or property fill is created.
+See [the source review](sources/nea-halogen-sulfur-auxiliaries.md) for full-formula
+HF2 normalization, source-specific equilibrium constants, thermal routes and reuse.

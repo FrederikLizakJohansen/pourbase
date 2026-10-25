@@ -1725,3 +1725,24 @@ Three independent Sr(NO3)2 alternatives are attributed to Wagman et al. (1982),
 This explicitly open non-SRD release carries NIST credit and the
 [NIST open licence](https://www.nist.gov/open/license); data are distributed without warranty.
 See [the source review](docs/sources/nea-sr-ba-auxiliaries.md).
+
+## R11j3i own NEA halogen and sulfur auxiliary evaluations
+
+Seventeen original selections are attributed to Grenthe et al. (1992), *Chemical
+Thermodynamics of Uranium*, Chemical Thermodynamics 1, OECD Nuclear Energy
+Agency, Table IV.1, pp.65–68; Chapter VI, pp.366–380
+([official reprint](https://www.oecd-nea.org/upload/docs/application/pdf/2019-12/uranium.pdf)).
+Four distinct internal-calculation or uncertainty revisions are attributed to
+Guillaumont et al. (2003), *Update on the Chemical Thermodynamics of Uranium,
+Neptunium, Plutonium, Americium and Technetium*, Chemical Thermodynamics 5,
+Table 8-1, pp.136,138 and p.135 conventions
+([official volume](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/update_on_the_chemical_thermodynamics_of_uranium_neptunium_plutonium_americium_and_technetium_volume_5.pdf)).
+Accessed 25 October 2026. OECD and NEA are acknowledged.
+
+The supplied written clarification and [OECD data terms](https://www.oecd.org/en/about/terms-conditions.html)
+cover these own evaluated outputs, with applicable additional restrictions checked.
+When sharing or licensing work using these data, include the same acknowledgment
+requirement in sublicences and require further sublicensees to do the same.
+Original numerical ancestry and source confidence conventions accompany each value.
+Complete publications and private correspondence remain outside the distributions.
+See [the source review](docs/sources/nea-halogen-sulfur-auxiliaries.md).
