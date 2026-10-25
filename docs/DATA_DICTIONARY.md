@@ -1727,3 +1727,16 @@ This checkpoint changes no SQL row, recommendation or paper number. The next
 numerical group is Sr/Ba auxiliary ions/salts and elemental entropy references.
 Existing reviews, policy follow-up R11j3f1 and all independent source/model holds
 carry forward. See [the source inventory](sources/nea2020-auxiliary-inventory.md).
+
+## Original NEA Sr/Ba auxiliary selections
+
+R11j3h adds 17 own NEA1992 selections and three independent open NBS alternatives,
+including a new crystalline Sr(NO3)2 record with G/H/S. Fourteen existing preferred
+IDs change under the existing policy. Old observations and source-specific fits
+remain, as do all 31 fixed free-component references. The nitrate uses two existing
+nitrate components, zero core O/H and two electrons per Sr; structure is unresolved.
+
+Metadata keys are `R11j3h_NEA_Sr_Ba_review`, `R11j3h_Sr_Ba_observations`
+and `R11j3h_source_and_model_holds`. Seventeen unchanged 2020 reprints link to
+the original evaluation. Source confidence conventions, exact locations and reuse
+conditions accompany each observation. See [the source review](sources/nea-sr-ba-auxiliaries.md).

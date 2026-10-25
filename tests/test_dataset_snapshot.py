@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1460), ("reported_thermochemistry", 4482),
-                                 ("sources", 1802), ("warnings", 2199), ("additional_components", 59),
+            for table, count in (("species", 1461), ("reported_thermochemistry", 4502),
+                                 ("sources", 1804), ("warnings", 2207), ("additional_components", 59),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1192,7 +1192,8 @@ class DatasetSnapshotTests(unittest.TestCase):
             ion = self.database.species_records((
                 f"gfe-{symbol.lower()}-{symbol.lower()}-q+2-aqueous-aq",
             ))[0]
-            value = ion.thermochemistry.formation_enthalpy_J_mol
+            value = next(r for r in ion.reported if r.property == "enthalpy_of_formation"
+                         and r.source and r.source.source_id.startswith(f"NBS_R07_{symbol}_ion"))
             self.assertEqual(value.value, enthalpy)
             self.assertEqual(value.status, pb.EvidenceStatus.VERIFIED)
             self.assertIn("10.18434/M32124", value.source.url)
@@ -1224,7 +1225,14 @@ class DatasetSnapshotTests(unittest.TestCase):
         ):
             rid = f"r07-{symbol.lower()}-{symbol.lower()}hco3-q+1-aq"
             self.assertNotIn(rid, {s.record_id for s in self.database.load_system(symbol).species})
-            system = self.database.load_system(symbol, ligand_ids=("carbonate-co3",))
+            # This regression checks the original fit against its original NBS ion anchor.
+            rid_ion = f"gfe-{symbol.lower()}-{symbol.lower()}-q+2-aqueous-aq"
+            anchor = next(r for r in self.database.species_records((rid_ion,))[0].reported
+                          if r.property == "gibbs_energy_of_formation" and r.value_id.endswith(":gf:preferred"))
+            policy = self.database.policy.with_override(rid_ion, "gibbs_energy_of_formation",
+                                                        anchor.source.source_id, "Original fit source view")
+            original = pb.ThermodynamicDatabase(self.database.path, policy=policy)
+            system = original.load_system(symbol, ligand_ids=("carbonate-co3",))
             ion = next(s for s in system.species if s.formula_ascii == symbol and s.charge == 2)
             neutral = next(s for s in system.species
                            if s.formula_ascii == symbol + "CO3" and s.is_aqueous)
@@ -1238,7 +1246,7 @@ class DatasetSnapshotTests(unittest.TestCase):
                     "carbonate-co3", log10_free_activity=log_carbonate,
                 ),)),
             )
-            diagram = pb.MassBalanceEngine(self.database).calculate_system(
+            diagram = pb.MassBalanceEngine(original).calculate_system(
                 replace(system, species=(ion, neutral, bicarbonate), excluded=()),
                 conditions, pb.TotalMetalConcentration(1e-4),
             )
@@ -1920,9 +1928,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 1173, "absolute_entropy": 1146, "enthalpy_of_formation": 1031})
+                         {"gibbs_energy_of_formation": 1174, "absolute_entropy": 1147, "enthalpy_of_formation": 1032})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "502cb7bb1c8c937a",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "5bed5f7bb0c538bd",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

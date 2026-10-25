@@ -1705,3 +1705,23 @@ acknowledgment requirement in sublicences and require further sublicensees
 to do the same. Publication copyright and independent source-specific conditions
 remain applicable; complete publications and private correspondence stay external.
 See [the source-history review](docs/sources/nea-oxide-evaluation-history.md).
+
+## R11j3h original NEA Sr/Ba auxiliaries and open NBS nitrate alternatives
+
+Seventeen own NEA selections are attributed to Grenthe et al. (1992),
+*Chemical Thermodynamics of Uranium*, Chemical Thermodynamics 1, OECD Nuclear
+Energy Agency, Table IV.1, p. 77; Chapter VI.5, pp. 400–401
+([official reprint](https://www.oecd-nea.org/upload/docs/application/pdf/2019-12/uranium.pdf),
+accessed 25 October 2026). OECD and NEA are acknowledged. The supplied written
+clarification and [OECD data terms](https://www.oecd.org/en/about/terms-conditions.html)
+cover these own evaluated selections, with applicable additional restrictions checked.
+When sharing or licensing work using these data, include the same acknowledgment
+requirement in sublicences and require further sublicensees to do the same.
+Seventeen unchanged 2020 reprint cells are linked to the original evaluation.
+
+Three independent Sr(NO3)2 alternatives are attributed to Wagman et al. (1982),
+*The NBS Tables of Chemical Thermodynamic Properties*, digitized with errata,
+[NIST Public Data Repository M32124](https://doi.org/10.18434/M32124).
+This explicitly open non-SRD release carries NIST credit and the
+[NIST open licence](https://www.nist.gov/open/license); data are distributed without warranty.
+See [the source review](docs/sources/nea-sr-ba-auxiliaries.md).
