@@ -1755,3 +1755,20 @@ All prior observations, exact identities and 31 fixed free references remain.
 The policy changes 17 preferred IDs; no species or property fill is created.
 See [the source review](sources/nea-halogen-sulfur-auxiliaries.md) for full-formula
 HF2 normalization, source-specific equilibrium constants, thermal routes and reuse.
+
+## NEA phosphorus auxiliary observations
+
+R11j3j adds 19 observations: nine NEA selections and ten independent open NBS
+alternatives. Three new aqueous diphosphates gain G/H/S, and amorphous red P
+gains H, for four records and ten available properties. Its missing G makes the
+strict P inventory incomplete: strict periodic counts are 54 experimentally and
+57 with computational fallbacks; the available-data screen still calculates 75.
+Five earlier inventory cells
+link to completed R14e2/R11k reviews. All 14 phosphorus cells are reconciled.
+
+Metadata keys are `R11j3j_NEA_phosphorus_review`,
+`R11j3j_phosphorus_observations` and `R11j3j_source_and_model_holds`.
+Full two-P formula units, crystalline white P references, original NBS cycle
+warnings and closed-primary polynuclear exclusions remain explicit. Earlier
+preferred values and all 31 fixed references are preserved. See
+[the source review](sources/nea-phosphorus-auxiliaries.md).

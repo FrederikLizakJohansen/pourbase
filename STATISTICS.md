@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 1461 |
+| Species | 1465 |
 | Supported elemental systems | 75 of 118 elements |
-| Recommended Gibbs energies | 1174 (80 %) |
-| Recommended entropies | 1147 (79 %) |
-| Recommended formation enthalpies | 1032 (71 %) |
-| Reported values retained | 4523 |
-| Source records | 1806 (247 distinct citations) |
-| Phase records | 847 (479 resolved) |
-| Warnings | 2214 |
+| Recommended Gibbs energies | 1177 (80 %) |
+| Recommended entropies | 1150 (78 %) |
+| Recommended formation enthalpies | 1036 (71 %) |
+| Reported values retained | 4542 |
+| Source records | 1808 (249 distinct citations) |
+| Phase records | 848 (479 resolved) |
+| Warnings | 2221 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 31 |
@@ -23,9 +23,9 @@ Gibbs energies by evidence status:
 
 | Status | Species |
 |---|---|
-| `verified` | 771 |
+| `verified` | 774 |
 | `source_verified_estimate` | 328 |
-| `not_available` | 281 |
+| `not_available` | 282 |
 | `defined_reference_state` | 75 |
 | `terminal_evidence_gap` | 6 |
 
@@ -33,8 +33,8 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| solid | 703 | 565 | 536 | 616 |
-| aqueous | 586 | 518 | 441 | 323 |
+| solid | 704 | 565 | 536 | 617 |
+| aqueous | 589 | 521 | 444 | 326 |
 | gas | 167 | 88 | 167 | 88 |
 | liquid | 5 | 3 | 3 | 5 |
 
@@ -42,19 +42,19 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 1461 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 1461 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 4523 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1806 | Full citations, links, locators and access dates |
-| `phases` | 847 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 2214 | Scientific cautions attached to records |
+| `species` | 1465 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 1465 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 4542 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1808 | Full citations, links, locators and access dates |
+| `phases` | 848 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 2221 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 31 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 59 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 131 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 134 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -133,7 +133,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Nd | Neodymium (Nd) | 14 | 5 | 9 | 0 | 0 | 11 | 8 | 12 | 20 |
 | Ni | Nickel (Ni) | 65 | 28 | 33 | 3 | 1 | 58 | 48 | 47 | 89 |
 | Os | Osmium (Os) | 9 | 2 | 6 | 1 | 0 | 7 | 5 | 7 | 12 |
-| P | Phosphorus (P) | 15 | 9 | 3 | 3 | 0 | 12 | 12 | 11 | 14 |
+| P | Phosphorus (P) | 19 | 12 | 4 | 3 | 0 | 15 | 15 | 15 | 21 |
 | Pb | Lead (Pb) | 24 | 10 | 10 | 4 | 0 | 20 | 23 | 17 | 52 |
 | Pd | Palladium (Pd) | 12 | 7 | 5 | 0 | 0 | 9 | 4 | 2 | 13 |
 | Pr | Praseodymium (Pr) | 15 | 7 | 8 | 0 | 0 | 10 | 5 | 10 | 21 |

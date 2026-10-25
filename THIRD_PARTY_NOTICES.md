@@ -1746,3 +1746,24 @@ requirement in sublicences and require further sublicensees to do the same.
 Original numerical ancestry and source confidence conventions accompany each value.
 Complete publications and private correspondence remain outside the distributions.
 See [the source review](docs/sources/nea-halogen-sulfur-auxiliaries.md).
+
+## R11j3j NEA phosphorus auxiliaries and independent open NBS alternatives
+
+Nine selected observations are attributed to Grenthe et al. (1992), *Chemical
+Thermodynamics of Uranium*, Chemical Thermodynamics 1, OECD Nuclear Energy
+Agency, Table IV.1, pp.69–70; Chapter VI.3.2, pp.386–389
+([official reprint](https://www.oecd-nea.org/upload/docs/application/pdf/2019-12/uranium.pdf),
+accessed 25 October 2026). OECD and NEA are acknowledged. Their own evaluations,
+source ancestry and uncertainty conventions accompany each observation.
+The supplied written clarification and [OECD data terms](https://www.oecd.org/en/about/terms-conditions.html)
+cover these selected outputs, with applicable additional restrictions checked.
+When sharing or licensing work using these data, include the same acknowledgment
+requirement in sublicences and require further sublicensees to do the same.
+
+Ten independent alternatives and shared original NBS ancestry are attributed to
+Wagman et al. (1982), *The NBS Tables of Chemical Thermodynamic Properties*,
+digitized with errata, the explicitly open non-SRD
+[NIST Public Data Repository M32124](https://doi.org/10.18434/M32124).
+NIST is acknowledged; the [NIST open licence](https://www.nist.gov/open/license)
+applies and data are distributed without warranty. Missing uncertainties and original
+source-cycle discrepancies remain explicit. See [the source review](docs/sources/nea-phosphorus-auxiliaries.md).
