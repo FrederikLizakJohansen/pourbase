@@ -1629,3 +1629,32 @@ accessed 25 October 2026. NIST is acknowledged under its
 warranty. Full formula units, exact cells and source uncertainty/bibliographic
 qualifications accompany the observations.
 See [the source review](docs/sources/nea2020-vanadate-solids.md).
+
+## R11j3d selected NEA vanadium oxide and pyrovanadate
+
+Six selected V2O5/Mg2V2O7 G/H/S observations are attributed to Grenthe et al.
+(2020), *Second Update on the Chemical Thermodynamics of U, Np, Pu, Am and Tc*,
+Chemical Thermodynamics 14, OECD Nuclear Energy Agency, NEA No. 7500,
+Table 14-1, p. 605; Chapter 14.1, pp. 602–603; Appendix A, p. 1204
+([source](https://www.oecd-nea.org/upload/docs/application/pdf/2020-10/7500_second_update_of_u_np_pu_am_and_tc_web.pdf),
+accessed 25 October 2026). OECD and NEA are acknowledged. The V2O5 selection
+retains its adopted IVTAN calorimetry-evaluation ancestry. The fixed free-Mg
+reference reuses the already retained Rand et al. (2024) NEA selected Mg2+ G
+observation with its earlier attribution and source-specific terms.
+
+The supplied written NEA clarification and
+[OECD data terms](https://www.oecd.org/en/about/terms-conditions.html) cover
+these selected/evaluated outputs, including commercial adaptation and redistribution,
+with citation and applicable additional restrictions checked. When sharing or
+licensing work using these data, include the same OECD acknowledgment requirement
+in sublicences and require further sublicensees to do the same.
+
+Three independent original NBS Mg2V2O7 observations are attributed to Wagman et al.
+(1982), *The NBS Tables of Chemical Thermodynamic Properties*, digitized with
+errata in the explicitly open non-SRD
+[NIST Public Data Repository M32124](https://doi.org/10.18434/M32124),
+accessed 25 October 2026. NIST is acknowledged under its
+[open licence](https://www.nist.gov/open/license); data are distributed without
+warranty. Source conventions, quoted widths, full formula units and sign/reference
+qualifications accompany the data.
+See [the source review](docs/sources/nea2020-vanadium-oxide-pyrovanadate.md).

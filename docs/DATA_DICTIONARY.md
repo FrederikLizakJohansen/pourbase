@@ -1643,3 +1643,28 @@ continue; closed sodium/calcium inventories remain separate. All default maps
 and uncertainty masks remain unchanged. OECD citation/downstream obligations
 and the original NBS open-release credit/warranty conditions accompany the data.
 See [the source review](sources/nea2020-vanadate-solids.md).
+
+## Selected V2O5 and magnesium pyrovanadate
+
+R11j3d retains nine observations: six own selected NEA V2O5/Mg2V2O7 G/H/S
+outputs and three independent original open NBS Mg2V2O7 alternatives. It adds
+one crystalline species and three properties. The unchanged policy selects the
+NEA outputs, changes three earlier V2O5 preferred values and preserves all
+previous observations. V2O5 retains its adopted IVTAN-evaluation ancestry and
+the source formation-entropy sign qualification; stored S remains absolute S.
+Mg2V2O7 retains the full two-V/two-Mg formula unit and unresolved exact structure.
+
+The fixed `magnesium-mg2` reference reuses the retained eligible NEA2024 Mg2+ G,
+with its original value ID, locator and 786 J/mol quoted width in metadata.
+It creates no new reported observation. The existing fixed-buffer model treats
+reference chemical potentials as fixed; reference uncertainty propagation,
+closed Mg inventories and ligand thermal functions remain separate work.
+All 30 earlier references retain their values and source identities.
+
+Metadata keys are `R11j3d_NEA2020_vanadium_review`,
+`R11j3d_vanadium_observations` and `R11j3d_source_and_model_holds`.
+All 14 own selected Table14-1 scalar G/H/S cells are retained across
+R11j3a/R11j3c/R11j3d. Informational/Cp cells and remaining borate/auxiliary
+source decisions continue separately. OECD citation/downstream obligations
+and independent NBS open-release credit/warranty conditions accompany the data.
+See [the source review](sources/nea2020-vanadium-oxide-pyrovanadate.md).
