@@ -1713,3 +1713,17 @@ All earlier SQL rows, phase metadata and 31 fixed references remain. The current
 thermal rules use the selected original H/G triplets; all reviewed default maps
 and masks remain unchanged. OECD citation and downstream acknowledgment apply.
 See [the source-history review](sources/nea-oxide-evaluation-history.md).
+
+## Remaining NEA 2020 auxiliary source inventory
+
+R11j3g inventories all 243 Table8-1 rows and 729 scalar G/H/S slots: 102 linked
+completed same-evaluation cells, 87 defined references, 358 copied bold CODATA
+cells held, nine identified Glushko cells held, 109 nonbold cells with named
+source/identity follow-ups and 64 blanks. The 121 Cp cells remain in external
+R18 model/schema work. All numerical values and quoted widths reconcile with
+the original PDF text; raw tables and font evidence stay outside the distribution.
+
+This checkpoint changes no SQL row, recommendation or paper number. The next
+numerical group is Sr/Ba auxiliary ions/salts and elemental entropy references.
+Existing reviews, policy follow-up R11j3f1 and all independent source/model holds
+carry forward. See [the source inventory](sources/nea2020-auxiliary-inventory.md).
