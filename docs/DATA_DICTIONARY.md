@@ -1603,3 +1603,23 @@ VO4 H/S retain their earlier estimated observations and model scope. Six copied
 CsCl/CsBr candidates stay held; other own auxiliary solid selections continue
 separately. OECD citation and downstream acknowledgment obligations accompany
 the additions. See [the source review](sources/nea2020-vanadium-reanalysis.md).
+
+## NEA auxiliary oxides and original NBS alternatives
+
+R11j3b adds crystalline SrO and BaO with ten observations and six G/H/S
+properties. Four own revised NEA2020 G/S outputs coexist with six independent
+original open NBS G/H/S cells. The unchanged policy selects NEA G/S and NBS H;
+every earlier observation and preferred candidate remains. The two exact
+structures remain unresolved, with source crystalline labels and full MO formula
+units retained. NEA total uncertainty widths retain their approximately 95%
+meaning; missing NBS uncertainties stay NULL.
+
+Metadata keys are `R11j3b_NEA2020_oxide_review`, `R11j3b_oxide_observations`
+and `R11j3b_source_and_model_holds`. Source locations, values, units and
+298.15 K/1 bar conditions accompany each observation. Existing thermal rules
+use same-G-source S before H from a different source. All default diagrams and
+uncertainty masks remain unchanged in the reviewed grid. OECD citation and
+downstream acknowledgment apply to NEA material; NIST credit and its open-release
+warranty statement apply to the independent NBS cells. Other auxiliary species,
+phase correspondence and earlier source/model holds continue separately.
+See [the source review](sources/nea2020-auxiliary-oxides.md).

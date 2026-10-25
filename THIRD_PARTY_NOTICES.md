@@ -1580,3 +1580,27 @@ do the same. Numerical ancestry, source uncertainty meaning and the source
 reaction consistency qualification accompany the observations. Proposed copied
 CsCl/CsBr compilation cells retain a separate source hold.
 See [the source review](docs/sources/nea2020-vanadium-reanalysis.md).
+
+## R11j3b NEA auxiliary oxides and open NBS alternatives
+
+Four revised SrO/BaO G/S selections are attributed to Grenthe et al. (2020),
+*Second Update on the Chemical Thermodynamics of U, Np, Pu, Am and Tc*,
+Chemical Thermodynamics 14, OECD Nuclear Energy Agency, NEA No. 7500,
+Chapter 14.3.2, pp. 607–608
+([source](https://www.oecd-nea.org/upload/docs/application/pdf/2020-10/7500_second_update_of_u_np_pu_am_and_tc_web.pdf),
+accessed 25 October 2026). OECD and NEA are acknowledged. The supplied written
+clarification and [OECD data terms](https://www.oecd.org/en/about/terms-conditions.html)
+apply to these own selected outputs, including commercial adaptation and
+redistribution, with citation and applicable additional restrictions checked.
+When sharing or licensing work using these data, include the same OECD
+acknowledgment requirement in sublicences and require further sublicensees
+to do the same.
+
+Six independent original NBS G/H/S observations are attributed to Wagman et al.
+(1982), *The NBS Tables of Chemical Thermodynamic Properties*, digitized with
+errata in the explicitly open non-SRD
+[NIST Public Data Repository M32124](https://doi.org/10.18434/M32124),
+accessed 25 October 2026. NIST is acknowledged under its
+[open licence](https://www.nist.gov/open/license); data are distributed without
+warranty. Exact source cells and evaluation conventions accompany the observations.
+See [the source review](docs/sources/nea2020-auxiliary-oxides.md).
