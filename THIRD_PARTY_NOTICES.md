@@ -1684,3 +1684,24 @@ accessed 25 October 2026. NIST is acknowledged under its
 warranty. Source conditions, full formula units and missing uncertainties remain
 explicit. Copied compilation and mixed-state boric-acid cells retain separate holds.
 See [the source review](docs/sources/nea2020-borate-auxiliaries.md).
+
+## R11j3f original NEA SrO/BaO evaluation history
+
+Six original selected oxide G/H/S observations are attributed to Grenthe et al.
+(1992), *Chemical Thermodynamics of Uranium*, Chemical Thermodynamics 1,
+OECD Nuclear Energy Agency, Table IV.1, p. 77; Chapter VI.5, pp. 400–401
+([official reprint](https://www.oecd-nea.org/upload/docs/application/pdf/2019-12/uranium.pdf),
+accessed 25 October 2026). OECD and NEA are acknowledged. Same-evaluation
+2003 reprints and two unchanged 2020 H cells are linked without duplicate
+observations. Original experimental ancestry and source confidence conventions
+accompany every added observation.
+
+The supplied written NEA clarification and
+[OECD data terms](https://www.oecd.org/en/about/terms-conditions.html) cover
+these own selected/evaluated outputs, including commercial adaptation and
+redistribution, with citation and applicable additional restrictions checked.
+When sharing or licensing work using these data, include the same OECD
+acknowledgment requirement in sublicences and require further sublicensees
+to do the same. Publication copyright and independent source-specific conditions
+remain applicable; complete publications and private correspondence stay external.
+See [the source-history review](docs/sources/nea-oxide-evaluation-history.md).

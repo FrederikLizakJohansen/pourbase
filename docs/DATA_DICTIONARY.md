@@ -1691,3 +1691,25 @@ and `R11j3e_source_and_model_holds`. Existing ligand thermal exclusions and
 source-specific OECD downstream/NIST open-release obligations continue.
 Other auxiliary versions, source holds and model work remain separate.
 See [the source review](sources/nea2020-borate-auxiliaries.md).
+
+## Original NEA oxide evaluation history
+
+R11j3f adds six original own NEA1992 SrO/BaO G/H/S observations on existing
+records. Six identical 2003 reprint cells and two unchanged 2020 H cells link
+to that original evaluation. No new species or property is created. Original
+1-bar conventions, source confidence widths and shared experimental ancestry
+remain explicit; all earlier NBS and 2020 alternatives remain eligible.
+
+The existing policy selects all six earlier observations. NEA H outranks NBS H
+by class. The first-author `original_publication` heuristic also selects 1992
+G/S over independent 2020 revisions because both citations begin with Grenthe.
+R11j3f1 tracks that specific policy limitation. A temporary recency-first view
+verifies the newer G/S choices while production retains the existing policy.
+No citation or evidence status is changed to force a preference.
+
+Metadata keys are `R11j3f_NEA_oxide_history_review`,
+`R11j3f_oxide_history_observations` and `R11j3f_source_and_model_holds`.
+All earlier SQL rows, phase metadata and 31 fixed references remain. The current
+thermal rules use the selected original H/G triplets; all reviewed default maps
+and masks remain unchanged. OECD citation and downstream acknowledgment apply.
+See [the source-history review](sources/nea-oxide-evaluation-history.md).

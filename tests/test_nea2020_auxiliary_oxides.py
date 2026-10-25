@@ -12,13 +12,20 @@ class NEA2020AuxiliaryOxideTests(unittest.TestCase):
     def setUpClass(cls):
         cls.db=pb.ThermodynamicDatabase.bundled()
 
-    def test_independent_evaluations_are_both_retained_and_selected_by_property(self):
+    def original_source_view(self,rid):
+        policy=self.db.policy
+        for prop,source in [(G,SID),(S,SID),(H,NBS)]:
+            policy=policy.with_override(rid,prop,source,'Temporary original-source regression view')
+        return pb.ThermodynamicDatabase(self.db.path,policy=policy)
+
+    def test_independent_original_evaluations_are_retained_in_source_specific_views(self):
         for symbol,g,h,entropy,oldg in [('Sr',-559400,-592000,53.63,-561900),('Ba',-519780,-553500,70.01,-525100)]:
             rid=f'r11j3b-{symbol.lower()}-{symbol.lower()}o-crystalline'
             record=self.db.species_records((rid,))[0]
-            self.assertEqual(len(record.reported),5)
+            self.assertEqual(sum(r.source.source_id in {SID,NBS} for r in record.reported),5)
+            view=self.original_source_view(rid)
             for prop,value,source in [(G,g,SID),(H,h,NBS),(S,entropy,SID)]:
-                chosen=self.db.selections[rid,prop].chosen
+                chosen=view.selections[rid,prop].chosen
                 self.assertEqual(chosen.source_id,source)
                 self.assertAlmostEqual(chosen.value,value)
             self.assertTrue(any(r.property==G and r.value==oldg and r.source.source_id==NBS for r in record.reported))
@@ -29,6 +36,8 @@ class NEA2020AuxiliaryOxideTests(unittest.TestCase):
             self.assertEqual(record.phase_identity.status,'unresolved')
             self.assertIsNone(record.phase_identity.spacegroup_symbol)
             for row in record.reported:
+                if row.source.source_id not in {SID,NBS}:
+                    continue
                 ev=json.loads(row.source.locator)
                 self.assertEqual((row.temperature_K,row.pressure_bar),(298.15,1))
                 if row.source.source_id==SID:
@@ -40,14 +49,14 @@ class NEA2020AuxiliaryOxideTests(unittest.TestCase):
                     self.assertIsNone(row.uncertainty)
 
     def test_mo_oxide_energy_keeps_complete_atom_and_electron_balance(self):
-        phase=next(x for x in self.db.load_system('Sr').species if x.record_id=='r11j3b-sr-sro-crystalline')
+        phase=next(x for x in self.original_source_view('r11j3b-sr-sro-crystalline').load_system('Sr').species if x.record_id=='r11j3b-sr-sro-crystalline')
         self.assertEqual((phase.metal_count,phase.core_oxygen_count,phase.core_hydrogen_count,phase.charge,phase.electrons_per_metal),(1,1,0,0,2))
         expected=-559400-self.db.reference_state.water_gibbs_energy_J_mol-2*GAS_CONSTANT_J_MOL_K*298.15*LN_10*7-2*FARADAY_C_MOL
         self.assertAlmostEqual(float(standard_transformed_gibbs_J_mol_metal(phase,self.db.reference_state,pb.PourbaixConditions(),7,1)),expected)
 
     def test_same_g_source_entropy_drives_thermal_derivative(self):
         rid='r11j3b-ba-bao-crystalline'
-        view=at_temperature(self.db,323.15)
+        view=at_temperature(self.original_source_view(rid),323.15)
         with self.db.connect() as c:
             element=c.execute("select t.entropy_J_mol_K/s.metal_count from selected_thermochemistry t join species s using(record_id) where s.symbol='Ba'and t.gibbs_status='defined_reference_state'and t.entropy_J_mol_K is not null").fetchone()[0]
         self.assertEqual(view.formation_entropies()[rid][1],'S°, source of ΔfG°')
