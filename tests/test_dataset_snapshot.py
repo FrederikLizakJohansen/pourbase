@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1453), ("reported_thermochemistry", 4423),
-                                 ("sources", 1791), ("warnings", 2173), ("additional_components", 59),
+            for table, count in (("species", 1453), ("reported_thermochemistry", 4434),
+                                 ("sources", 1792), ("warnings", 2180), ("additional_components", 59),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")

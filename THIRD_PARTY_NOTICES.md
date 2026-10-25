@@ -1540,3 +1540,22 @@ Thermoddem bulk permission remains held separately; no native number is imported
 Existing OECD/NEA attribution and the acknowledgment requirement passed to
 sublicensees and further sublicensees remain applicable to NEA material.
 See [the original-source review](docs/sources/nbs-crystalline-chlorides.md).
+
+## R11j3 NEA 2020 silicon auxiliary versions
+
+Eleven older selected silicon observations are attributed to Lemire, Palmer,
+Taylor and Schlenz (2020), *Chemical Thermodynamics of Iron, Part 2*, Chemical
+Thermodynamics 13b, OECD Nuclear Energy Agency, NEA No. 7499, Table IV-1, p. 67
+([source](https://www.oecd-nea.org/upload/docs/application/pdf/2020-03/7499-vol13b-iron.pdf),
+accessed 25 October 2026), carrying the original [1992GRE/FUG] evaluation.
+OECD and NEA are acknowledged. Nineteen repeated cells in the two 2020 volumes
+are linked to the original or forthcoming 2024 evaluation already retained.
+
+The supplied written NEA clarification and
+[OECD data terms](https://www.oecd.org/en/about/terms-conditions.html) permit
+use, adaptation and redistribution, including commercially, with appropriate
+citation and applicable additional restrictions checked. When sharing or
+licensing work using these data, include the same OECD acknowledgment requirement
+in sublicences and require further sublicensees to do the same. Directly copied
+bold CODATA/reference cells retain their separate source decision.
+See [the source-version review](docs/sources/nea2020-silicate-versions.md).

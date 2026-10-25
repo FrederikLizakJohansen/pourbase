@@ -1564,3 +1564,23 @@ ReCl3 and RaCl2 dihydrate retain original printed values and explicit cycle
 consistency warnings. Default diagrams,masks and strict completeness remain
 unchanged. Independent source permission holds and broader chloride/brine/thermal
 models continue separately. See [the source review](sources/nbs-crystalline-chlorides.md).
+
+## NEA 2020 silicon source versions
+
+R11j3 adds 11 older own selected silicon G/H/S observations on existing records.
+Iron Part 2 Table IV-1 retains the original 1992 evaluation; four of its 15
+populated cells already exist. The second 2020 update Table 8-1 carries the
+forthcoming ancillary evaluation: all 15 populated cells match the retained
+2024 values and uncertainty widths. These 19 repeated cells receive links.
+Across both volumes, the 78 silicon G/H/S slots comprise 11 additions, 19 links,
+24 empty own-selected slots and 24 copied bold CODATA/reference cells with a
+separate source decision. No new property or species is created.
+
+Metadata keys are `R11j3_NEA2020_silicate_version_review`,
+`R11j3_NEA2020_earlier_observations` and `R11j3_source_and_model_holds`.
+Each new observation retains original units, full formula unit, conditions,
+source uncertainty meaning and the exact source location. All preferred values,
+policy overrides, pinned free-silicate references and model exclusions remain.
+OECD citation and downstream acknowledgment obligations accompany the data.
+Other own selected 2020 auxiliary candidates continue separately.
+See [the source-version review](sources/nea2020-silicate-versions.md).
