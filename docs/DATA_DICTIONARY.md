@@ -1544,3 +1544,23 @@ all earlier phase alternatives remain. Vitreous silica carries no crystal symmet
 Metadata keys are `R14e2_NEA2024_source_review`, `R14e2_NEA2024_observations`
 and `R14e2_source_and_model_holds`. OECD downstream obligations and all earlier
 independent source/model holds continue. See [the source review](sources/nea-remaining-ancillary.md).
+
+## Further original NBS crystalline chlorides
+
+R16d1 reconciles 157 original chloride/hydrate rows across 66 systems:
+210 added observations, 95 linked earlier cells and 166 empty G/H/S slots.
+It adds 111 species and fills 201 properties (45 G,46 S,110 H). The new records
+retain 44 full triplets,65 H-only rows and two S-only rows; no missing G is
+inferred. All new structures remain unresolved, with source phase/color labels
+preserved. Full formula units, hydrate water and the existing chloride buffer
+remain explicit. The policy changes only earlier halite S,72.1 to72.13;
+all previous observations and other preferred candidates remain.
+
+Metadata keys are `R16d1_NBS_chloride_source_review`,
+`R16d1_NBS_chloride_observations` and `R16d1_source_and_model_holds`.
+Each observation retains its exact original CSV cell,source value/unit,
+298.15 K/1 bar conditions,NULL uncertainty and critically evaluated source type.
+ReCl3 and RaCl2 dihydrate retain original printed values and explicit cycle
+consistency warnings. Default diagrams,masks and strict completeness remain
+unchanged. Independent source permission holds and broader chloride/brine/thermal
+models continue separately. See [the source review](sources/nbs-crystalline-chlorides.md).

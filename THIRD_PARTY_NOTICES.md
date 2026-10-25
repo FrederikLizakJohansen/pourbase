@@ -1520,3 +1520,23 @@ acknowledgment requirement in sublicences and require further sublicensees
 to do the same. Directly copied bold CODATA cells retain a separate source
 hold. Source conditions, approximately 95% uncertainty meaning and full formula
 units accompany each observation. See [the source review](docs/sources/nea-remaining-ancillary.md).
+
+## R16d1 original open NBS crystalline chlorides
+
+The database includes 210 additional original crystalline chloride/hydrate
+observations from Wagman et al. (1982), *The NBS Tables of Chemical
+Thermodynamic Properties*, digitized with errata in the explicitly open,
+non-SRD NIST Public Data Repository release
+[doi:10.18434/M32124](https://doi.org/10.18434/M32124), accessed 25 October 2026.
+NIST is acknowledged under its [open licence](https://www.nist.gov/open/license).
+The data are distributed without warranty. Exact source CSV records/columns,
+units, conditions, formula units, missing uncertainties and source consistency
+qualifications accompany every observation.
+
+Ninety-five already retained representations of the same original NBS evaluation
+are linked. Earlier independent evaluations remain. Complete publications,
+raw bulk files and private correspondence stay outside the distribution.
+Thermoddem bulk permission remains held separately; no native number is imported.
+Existing OECD/NEA attribution and the acknowledgment requirement passed to
+sublicensees and further sublicensees remain applicable to NEA material.
+See [the original-source review](docs/sources/nbs-crystalline-chlorides.md).
