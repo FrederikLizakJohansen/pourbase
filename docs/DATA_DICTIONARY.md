@@ -1584,3 +1584,22 @@ policy overrides, pinned free-silicate references and model exclusions remain.
 OECD citation and downstream acknowledgment obligations accompany the data.
 Other own selected 2020 auxiliary candidates continue separately.
 See [the source-version review](sources/nea2020-silicate-versions.md).
+
+## Own NEA 2020 vanadium selections
+
+R11j3a retains four own selected observations on existing aqueous records:
+VO2+ G/H/S and VO4(3−) G. VO2+ gains its missing formation enthalpy. The
+unchanged policy selects all four observations and changes three prior preferred
+values, preserving every earlier alternative. Stored VO2+ S is the conventional
+absolute ionic entropy −38.0 J/(mol K); the printed formation entropy −206.5 is
+a separate quantity. Complete formula units, charge, standard molal conventions,
+298.15 K/1 bar and approximately 95% total source uncertainty remain explicit.
+
+Metadata keys are `R11j3a_NEA2020_vanadium_review`,
+`R11j3a_NEA2020_vanadium_observations` and `R11j3a_source_and_model_holds`.
+The 0.51 kJ/mol difference between the selected formation-G reaction cycle and
+the separately printed reaction 14.6 value remains a source qualification.
+VO4 H/S retain their earlier estimated observations and model scope. Six copied
+CsCl/CsBr candidates stay held; other own auxiliary solid selections continue
+separately. OECD citation and downstream acknowledgment obligations accompany
+the additions. See [the source review](sources/nea2020-vanadium-reanalysis.md).

@@ -10,11 +10,11 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Supported elemental systems | 75 of 118 elements |
 | Recommended Gibbs energies | 1166 (80 %) |
 | Recommended entropies | 1139 (78 %) |
-| Recommended formation enthalpies | 1023 (70 %) |
-| Reported values retained | 4434 |
-| Source records | 1792 (233 distinct citations) |
+| Recommended formation enthalpies | 1024 (70 %) |
+| Reported values retained | 4438 |
+| Source records | 1793 (234 distinct citations) |
 | Phase records | 839 (479 resolved) |
-| Warnings | 2180 |
+| Warnings | 2182 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 30 |
@@ -34,7 +34,7 @@ Species by phase:
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
 | solid | 695 | 557 | 528 | 608 |
-| aqueous | 586 | 518 | 441 | 322 |
+| aqueous | 586 | 518 | 441 | 323 |
 | gas | 167 | 88 | 167 | 88 |
 | liquid | 5 | 3 | 3 | 5 |
 
@@ -44,17 +44,17 @@ Species by phase:
 |---|---|---|
 | `species` | 1453 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `selected_thermochemistry` | 1453 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 4434 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1792 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 4438 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1793 | Full citations, links, locators and access dates |
 | `phases` | 839 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 2180 | Scientific cautions attached to records |
+| `warnings` | 2182 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 30 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 59 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 107 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 110 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -157,7 +157,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Ti | Titanium (Ti) | 12 | 2 | 7 | 3 | 0 | 10 | 12 | 7 | 23 |
 | Tl | Thallium (Tl) | 17 | 10 | 7 | 0 | 0 | 10 | 14 | 9 | 25 |
 | Tm | Thulium (Tm) | 12 | 6 | 6 | 0 | 0 | 10 | 8 | 8 | 15 |
-| V | Vanadium (V) | 23 | 13 | 7 | 3 | 0 | 17 | 21 | 10 | 26 |
+| V | Vanadium (V) | 23 | 13 | 7 | 3 | 0 | 17 | 21 | 11 | 28 |
 | W | Tungsten (W) | 12 | 1 | 8 | 3 | 0 | 6 | 8 | 8 | 21 |
 | Y | Yttrium (Y) | 13 | 8 | 5 | 0 | 0 | 12 | 10 | 11 | 27 |
 | Yb | Ytterbium (Yb) | 12 | 6 | 6 | 0 | 0 | 10 | 7 | 9 | 15 |

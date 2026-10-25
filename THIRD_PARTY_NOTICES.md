@@ -1559,3 +1559,24 @@ licensing work using these data, include the same OECD acknowledgment requiremen
 in sublicences and require further sublicensees to do the same. Directly copied
 bold CODATA/reference cells retain their separate source decision.
 See [the source-version review](docs/sources/nea2020-silicate-versions.md).
+
+## R11j3a own NEA 2020 vanadium reanalysis
+
+Four selected aqueous vanadium observations are attributed to Grenthe, Gaona,
+Plyasunov, Rao, Runde, Grambow, Konings, Smith and Moore (2020), *Second Update
+on the Chemical Thermodynamics of U, Np, Pu, Am and Tc*, Chemical Thermodynamics
+14, OECD Nuclear Energy Agency, NEA No. 7500, Chapter 14.1.2 and Table 14-1,
+pp. 603–605
+([source](https://www.oecd-nea.org/upload/docs/application/pdf/2020-10/7500_second_update_of_u_np_pu_am_and_tc_web.pdf),
+accessed 25 October 2026). OECD and NEA are acknowledged.
+
+The supplied written NEA clarification and
+[OECD data terms](https://www.oecd.org/en/about/terms-conditions.html) apply to
+these own selected/evaluated outputs, including commercial adaptation and
+redistribution, with citation and applicable additional restrictions checked.
+When sharing or licensing work using these data, include the same OECD
+acknowledgment requirement in sublicences and require further sublicensees to
+do the same. Numerical ancestry, source uncertainty meaning and the source
+reaction consistency qualification accompany the observations. Proposed copied
+CsCl/CsBr compilation cells retain a separate source hold.
+See [the source review](docs/sources/nea2020-vanadium-reanalysis.md).
