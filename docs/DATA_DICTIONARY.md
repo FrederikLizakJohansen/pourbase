@@ -1507,3 +1507,19 @@ the independent NBS licence route. Metadata keys are
 `R16_Thermoddem_rights_review`, `R16_open_NBS_observations`,
 `R16_source_and_model_holds` and `R16_source_reuse`.
 See [the rights and original-source review](sources/thermoddem-original-routes.md).
+
+## Further NEA ancillary evaluations
+
+R14e retains 63 original NEA 2024 nonbold selections on 23 Al/Mg/Ca records,
+adding four species and nine properties. The unchanged policy selects 54 new
+preferred observations and preserves every earlier alternative. Bayerite and
+NEA α-MgSO4 remain H-only; the generic earlier magnesium sulfate keeps its
+identity separately from the new α/β records. MgSO4(aq) uses the sulfate buffer.
+Gypsum and beta-calcium-phosphate retain full hydrate/multi-Ca formula units.
+
+Metadata keys are `R14e_NEA2024_source_review`, `R14e_NEA2024_observations`
+and `R14e_source_and_model_holds`. Exact table/PDF pages, original values,
+units, approximately 95% uncertainty meaning, phase and source-specific OECD
+obligations accompany each observation. Directly copied bold CODATA cells
+retain their separate hold. Other ancillary observations and R18 model work
+continue separately. See [the source review](sources/nea-ancillary-expansion.md).

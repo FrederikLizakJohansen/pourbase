@@ -17,10 +17,12 @@ class SpecializedPHREEQCSourceTests(unittest.TestCase):
 
     def test_nbs_standard_enthalpy_uses_the_298K_column(self):
         record = self.database.species_records(('r13-mg-nbs-record8880',))[0]
-        thermo = record.thermochemistry
-        self.assertEqual((thermo.gibbs_energy_J_mol.value, thermo.formation_enthalpy_J_mol.value,
-                          thermo.entropy_J_mol_K.value), (-591790, -641320, 89.62))
-        for row in record.reported:
+        rows = [row for row in record.reported if row.source and
+                row.source.source_id == 'R13_NBS_PDR_salt_properties']
+        self.assertEqual({row.property: row.value for row in rows}, {
+            'gibbs_energy_of_formation': -591790, 'enthalpy_of_formation': -641320,
+            'absolute_entropy': 89.62})
+        for row in rows:
             self.assertEqual((row.temperature_K, row.pressure_bar), (298.15, 1))
             self.assertIsNone(row.uncertainty)
             locator = json.loads(row.source.locator)
@@ -28,7 +30,9 @@ class SpecializedPHREEQCSourceTests(unittest.TestCase):
             self.assertEqual(locator['csv_column_zero_based'], {
                 'gibbs_energy_of_formation': 8, 'enthalpy_of_formation': 7,
                 'absolute_entropy': 10}[row.property])
-            self.assertEqual(self.database.selections[record.record_id, row.property].chosen.evidence_class, 'B')
+            candidate = next(c for c in self.database.selections[record.record_id, row.property].candidates
+                             if c.value_id == row.value_id)
+            self.assertEqual(candidate.evidence_class, 'B')
 
     def test_magnesium_hydrate_water_is_counted_once(self):
         rid = 'r13-mg-nbs-record8909'

@@ -1482,3 +1482,22 @@ OECD/NEA attribution and the requirement to pass the same acknowledgment
 requirement to sublicensees and further sublicensees remain applicable to NEA
 material. NEA permission and other services' open-data statements grant no
 Thermoddem bulk permission. See [the source review](docs/sources/thermoddem-original-routes.md).
+
+## R14e NEA 2024 ancillary selections
+
+The database includes 63 additional nonbold selected thermodynamic observations
+from Rand, Palmer, Fuger and Gajda (2024), *Selected Ancillary Compounds of
+Interest to Radioactive Waste Management*, Chemical Thermodynamics 15, OECD
+Nuclear Energy Agency, NEA No. 7626, Table III-1, pp. 45–46
+([source](https://www.oecd-nea.org/upload/docs/application/pdf/2024-06/cts15-selected_ancillary_compounds-r-final-rev.pdf),
+accessed 25 October 2026). OECD and NEA are acknowledged. The supplied NEA
+clarification and [OECD data terms](https://www.oecd.org/en/about/terms-conditions.html)
+permit use, adaptation and redistribution, including commercially, subject to
+applicable additional restrictions and attribution.
+
+When sharing or licensing work using these data, include the same OECD
+acknowledgment requirement in sublicences and require further sublicensees to
+do the same. The table's directly copied bold CODATA Key Values retain a
+separate source decision and are excluded from this batch. Original uncertainty,
+phase and internal-reference conventions accompany every added observation.
+See [the source review](docs/sources/nea-ancillary-expansion.md).

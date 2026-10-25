@@ -40,7 +40,7 @@ class AluminiumFluorideThermalTests(unittest.TestCase):
                              'R11l_local_Nagra2023_original_models')
         self.assertAlmostEqual(hs[6] - hs[5] + 332630, -1550 * 4.184)
 
-    def test_open_al_enthalpy_keeps_the_previous_evaluation_and_controls_thermal_derivative(self):
+    def test_open_al_enthalpy_is_retained_and_NEA_entropy_controls_thermal_derivative(self):
         h = self.db.selections[AL, H].chosen
         self.assertEqual((h.value, h.evidence_class), (-531000, 'B'))
         old = next(r for r in self.db.species_records((AL,))[0].reported
@@ -50,7 +50,11 @@ class AluminiumFluorideThermalTests(unittest.TestCase):
         for t in (323.15, 373.15):
             ion = next(s for s in at_temperature(self.db, t).load_system('Al').species
                        if s.record_id == AL)
-            expected = -485000 - (t - 298.15) * (-531000 + 485000) / 298.15
+            # The new G/S share a source; that S precedes H from another source.
+            formation_entropy = -334 - 28.33 + 3 * 130.680 / 2
+            expected = -488824 - (t - 298.15) * formation_entropy
+            self.assertEqual(at_temperature(self.db, t).formation_entropies()[AL][1],
+                             'S°, source of ΔfG°')
             self.assertAlmostEqual(ion.gibbs_energy_J_mol, expected)
 
     def test_finite_medium_approximation_and_original_entropy_exclusion_are_explicit(self):
