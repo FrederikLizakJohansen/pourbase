@@ -1668,3 +1668,26 @@ R11j3a/R11j3c/R11j3d. Informational/Cp cells and remaining borate/auxiliary
 source decisions continue separately. OECD citation/downstream obligations
 and independent NBS open-release credit/warranty conditions accompany the data.
 See [the source review](sources/nea2020-vanadium-oxide-pyrovanadate.md).
+
+## NEA borate auxiliaries and original open alternatives
+
+R11j3e retains nine observations on two crystalline borate records: three own
+selected/recalculated NEA CaB2O4 G/H/S outputs and six independent original
+open NBS CaO·B2O3/NaBO2 G/H/S cells. Six properties become available. The
+policy selects NEA G/H/S for calcium borate and NBS G/H/S for sodium borate,
+preserving every earlier observation and preferred candidate. Complete two-B
+calcium and one-B sodium formula units, existing cation references and three
+electrons per B remain explicit. Exact structures remain unresolved.
+
+All 15 Table14-2 G/H/S slots have decisions: three own CaB2O4 cells admitted,
+two defined references with no new observation and ten copied or mixed-state
+cells held separately. The row labelled B(OH)3(aq) combines aqueous G with
+crystalline H/S, as the original 2003 table confirms; it supplies no new aqueous
+observation. Earlier independent boric-acid data remain. Quoted NEA total
+uncertainty widths retain their source meaning; missing NBS uncertainties stay NULL.
+
+Metadata keys are `R11j3e_NEA2020_borate_review`, `R11j3e_borate_observations`
+and `R11j3e_source_and_model_holds`. Existing ligand thermal exclusions and
+source-specific OECD downstream/NIST open-release obligations continue.
+Other auxiliary versions, source holds and model work remain separate.
+See [the source review](sources/nea2020-borate-auxiliaries.md).

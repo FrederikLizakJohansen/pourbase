@@ -1658,3 +1658,29 @@ accessed 25 October 2026. NIST is acknowledged under its
 warranty. Source conventions, quoted widths, full formula units and sign/reference
 qualifications accompany the data.
 See [the source review](docs/sources/nea2020-vanadium-oxide-pyrovanadate.md).
+
+## R11j3e own NEA calcium borate and open NBS borates
+
+Three selected/recalculated CaB2O4 G/H/S observations are attributed to Grenthe
+et al. (2020), *Second Update on the Chemical Thermodynamics of U, Np, Pu, Am
+and Tc*, Chemical Thermodynamics 14, OECD Nuclear Energy Agency, NEA No. 7500,
+Table 14-2, p. 606; Appendix A, pp. 1205–1206
+([source](https://www.oecd-nea.org/upload/docs/application/pdf/2020-10/7500_second_update_of_u_np_pu_am_and_tc_web.pdf),
+accessed 25 October 2026). OECD and NEA are acknowledged. The independent
+NEA recalculation of the original calorimetry supplies the source/reuse basis.
+The supplied written clarification and
+[OECD data terms](https://www.oecd.org/en/about/terms-conditions.html) cover
+these own outputs, including commercial adaptation and redistribution, with
+citation and applicable additional restrictions checked. When sharing or licensing
+work using these data, include the same OECD acknowledgment requirement in
+sublicences and require further sublicensees to do the same.
+
+Six original NBS CaO·B2O3/NaBO2 observations are attributed to Wagman et al.
+(1982), *The NBS Tables of Chemical Thermodynamic Properties*, digitized with
+errata in the explicitly open non-SRD
+[NIST Public Data Repository M32124](https://doi.org/10.18434/M32124),
+accessed 25 October 2026. NIST is acknowledged under its
+[open licence](https://www.nist.gov/open/license); data are distributed without
+warranty. Source conditions, full formula units and missing uncertainties remain
+explicit. Copied compilation and mixed-state boric-acid cells retain separate holds.
+See [the source review](docs/sources/nea2020-borate-auxiliaries.md).
