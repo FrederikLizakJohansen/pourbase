@@ -1490,3 +1490,20 @@ terms remain separate. Metadata keys: `R15_hydrosulfide_source_review`,
 `R15_hydrosulfide_observations`, `R15_chemistry_support` and
 `R15_source_and_model_holds`.
 See [the source and calculation review](sources/hydrosulfide-complexes.md).
+
+## R16 Thermoddem rights review and independent NBS chloride cells
+
+R16 adds 64 original open non-SRD NBS observations on 24 crystalline source
+rows, adding 15 species and filling 44 properties (14 G, 14 S and 16 H).
+Nine Fe/Ni records retain earlier observations and preferences. FeCl2 dihydrate
+gains a missing enthalpy; CoCl2 monohydrate remains H-only. Exact source formula
+units include CdCl2·2.5H2O. All 15 new structure assignments remain unresolved.
+Existing chloride buffers and primary-metal balance scope remain unchanged.
+
+All 1,790 Thermoddem reaction blocks remain rights/source held. No native
+Thermoddem number enters production. Recorded restriction wording,
+its original URL and failed current retrievals are preserved separately from
+the independent NBS licence route. Metadata keys are
+`R16_Thermoddem_rights_review`, `R16_open_NBS_observations`,
+`R16_source_and_model_holds` and `R16_source_reuse`.
+See [the rights and original-source review](sources/thermoddem-original-routes.md).

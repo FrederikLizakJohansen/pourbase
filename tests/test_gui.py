@@ -583,7 +583,7 @@ class WindowTests(WindowTestCase):
         self.assertGreater(window.database_page.proxy.rowCount(), 0)
         window.database_page.filter.setText("")
         window.database_page.tables.setCurrentText("selected_thermochemistry")
-        self.assertEqual(window.database_page.proxy.rowCount(), 1311)
+        self.assertEqual(window.database_page.proxy.rowCount(), 1326)
         self.assertFalse(window.database_page.note.isHidden())
 
     def test_copied_code_reproduces_the_diagram_with_policy_and_own_species(self) -> None:

@@ -1458,3 +1458,27 @@ sublicense of work using NEA data must include the same OECD acknowledgment
 requirement and require further sublicensees to do the same. NEA permission
 is separate from the original-paper factual and open NBS routes above.
 See [the hydrosulfide source review](docs/sources/hydrosulfide-complexes.md).
+
+## R16 independent open NBS chloride observations
+
+Sixty-four observations on 24 crystalline chloride/hydrate rows use Wagman,
+D. D. et al. (1982), *The NBS Tables of Chemical Thermodynamic Properties*,
+digitized with errata in the explicitly open non-SRD NIST Public Data Repository
+release [10.18434/M32124](https://doi.org/10.18434/M32124). NIST is acknowledged
+under its [open licence](https://www.nist.gov/open/license); data are distributed
+without warranty. Every observation retains its original formula, exact CSV
+record and column, standard conditions, units and source-specific limitations.
+Missing uncertainties and G/S values remain explicit. Existing Fe/Ni alternatives
+and preferred values remain stored and selected by the unchanged policy.
+
+Thermoddem v1.10 names/equations supplied composition leads. No native numeric
+value, reaction enthalpy or analytical function is imported, and its bulk
+redistribution permission remains held. Earlier BRGM terms evidence and failed
+current retrievals are preserved in the external rights register; no later
+compatible Thermoddem-specific grant was verified. Complete bulk source files
+and publications stay outside the distribution.
+
+OECD/NEA attribution and the requirement to pass the same acknowledgment
+requirement to sublicensees and further sublicensees remain applicable to NEA
+material. NEA permission and other services' open-data statements grant no
+Thermoddem bulk permission. See [the source review](docs/sources/thermoddem-original-routes.md).
