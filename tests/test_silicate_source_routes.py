@@ -28,12 +28,14 @@ class SilicateSourceRoutesTests(unittest.TestCase):
                    for x in record.reported if x.property == S}
         self.assertEqual(entropy, {
             'NEA_1992_R11j_selected_silicates': (-1.487, 51.592),
-            'NEA_2003_R11j_selected_silicates': (-1.488, 51.592)})
-        self.assertEqual(self.db.selections[(H2, S)].chosen.value, -1.488)
-        self.assertEqual(self.db.selections[(H2, H)].chosen.uncertainty, 15330)
+            'NEA_2003_R11j_selected_silicates': (-1.488, 51.592),
+            'NEA_OECD_20261025_ancillary_R14e2': (-10.453, 50.402)})
+        self.assertEqual(self.db.selections[(H2, S)].chosen.value, -10.453)
+        self.assertEqual(self.db.selections[(H2, H)].chosen.uncertainty, 15051)
         ligand = next(x for x in self.db.available_ligands() if x.ligand_id == LID)
-        self.assertEqual(ligand.gibbs_energy_J_mol,
-                         self.db.selections[(H2, G)].chosen.value)
+        # The established free-component reference retains its original evaluation.
+        self.assertEqual(ligand.gibbs_energy_J_mol, -1175651)
+        self.assertEqual(self.db.selections[(H2, G)].chosen.value, -1177088)
 
     def test_local_associations_reconstruct_with_their_own_protonation_basis(self):
         details = json.loads(self.db.metadata['R11j_silicate_observations'])
@@ -96,7 +98,7 @@ class SilicateSourceRoutesTests(unittest.TestCase):
         for temperature in (323.15, 373.15):
             shifted = next(s for s in at_temperature(self.db, temperature).load_system('Si').species
                            if s.record_id == H2)
-            expected = -1175651 - (temperature-298.15)*(-1381960+1175651)/298.15
+            expected = -1177088 - (temperature-298.15)*(-1386070+1177088)/298.15
             self.assertAlmostEqual(shifted.gibbs_energy_J_mol, expected)
 
     def test_condition_hold_and_separate_reuse_routes_remain_explicit(self):

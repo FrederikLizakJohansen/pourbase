@@ -1501,3 +1501,22 @@ do the same. The table's directly copied bold CODATA Key Values retain a
 separate source decision and are excluded from this batch. Original uncertainty,
 phase and internal-reference conventions accompany every added observation.
 See [the source review](docs/sources/nea-ancillary-expansion.md).
+
+## R14e2 remaining NEA ancillary formation observations
+
+A further 60 own selected G/H/S observations are attributed to Rand, Palmer,
+Fuger and Gajda (2024), *Selected Ancillary Compounds of Interest to Radioactive
+Waste Management*, Chemical Thermodynamics 15, OECD Nuclear Energy Agency,
+NEA No. 7626, Table III-1, pp. 44–47
+([source](https://www.oecd-nea.org/upload/docs/application/pdf/2024-06/cts15-selected_ancillary_compounds-r-final-rev.pdf),
+accessed 25 October 2026). The phosphate row retains its original NEA 1992
+selected-evaluation attribution. OECD and NEA are acknowledged.
+
+The supplied written NEA clarification and OECD data terms apply to these
+selected evaluations, including commercial adaptation and redistribution,
+with appropriate credit and applicable additional restrictions checked.
+When sharing or licensing work using these data, include the same OECD
+acknowledgment requirement in sublicences and require further sublicensees
+to do the same. Directly copied bold CODATA cells retain a separate source
+hold. Source conditions, approximately 95% uncertainty meaning and full formula
+units accompany each observation. See [the source review](docs/sources/nea-remaining-ancillary.md).

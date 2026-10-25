@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1330), ("reported_thermochemistry", 4153),
-                                 ("sources", 1789), ("warnings", 1951), ("additional_components", 58),
+            for table, count in (("species", 1342), ("reported_thermochemistry", 4213),
+                                 ("sources", 1790), ("warnings", 1981), ("additional_components", 59),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1124,7 +1124,7 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertIn("10.18434/M32124", h.source.url)
         self.assertIn("logical record 9196", h.source.locator)
         for formula, log_k, selected_g in (
-            ("CaCO3", 3.22, -1099084), ("CaHCO3", 1.11, -1145214),
+            ("CaCO3", 3.22, -1098795), ("CaHCO3", 1.11, -1145214),
         ):
             charge = 0 if formula == "CaCO3" else 1
             rid = f"gfe-ca-{formula.lower()}-q+{charge}-aqueous-aq"
@@ -1252,12 +1252,10 @@ class DatasetSnapshotTests(unittest.TestCase):
             np.testing.assert_allclose(observed, bicarbonate_log_k, atol=.005, rtol=0)
 
     def test_original_carbonate_relative_fit_preserves_phase_thermodynamics(self) -> None:
-        calcite = self.database.species_records(("r07-ca-caco3-calcite",))[0].thermochemistry
-        anchors = {
-            "gibbs_energy_of_formation": calcite.gibbs_energy_J_mol.value,
-            "absolute_entropy": calcite.entropy_J_mol_K.value,
-            "enthalpy_of_formation": calcite.formation_enthalpy_J_mol.value,
-        }
+        calcite = self.database.species_records(("r07-ca-caco3-calcite",))[0]
+        # The retained relative model uses its original USGS anchors.
+        anchors = {row.property: row.value for row in calcite.reported
+                   if row.source and row.source.source_id.startswith("USGS_R07_B2131_calcite_")}
         temperature, gas_constant = 298.15, 8.31446261815324
         for phase, coefficients, volume in (
             ("aragonite", (-171.9773, 2903.293), 34.15),
@@ -1429,7 +1427,7 @@ class DatasetSnapshotTests(unittest.TestCase):
             "gfe-si-h4sio4-q+0-aqueous-aq", "gfe-si-h3sio4-q-1-aqueous-aq",
             "gfe-ca-cah3sio4-q+1-aqueous-aq",
         ))
-        self.assertEqual(neutral.thermochemistry.gibbs_energy_J_mol.value, -1316600.0)
+        self.assertEqual(neutral.thermochemistry.gibbs_energy_J_mol.value, -1309201.0)
         self.assertGreaterEqual({r.value for r in neutral.reported
                                  if r.property == "gibbs_energy_of_formation"},
                                 {-834103 - 2 * 237129, -834041 - 2 * 237129})
@@ -1843,9 +1841,9 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertTrue(all(not row.selected_as_recommended and row.uncertainty is None
                             for row in rows))
         self.assertTrue(all("H4SiO4(aq) columns" in row.source.locator for row in rows))
-        self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, -1316600.0)
-        self.assertEqual(record.thermochemistry.entropy_J_mol_K.value, 180.0)
-        self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value, -1468600.0)
+        self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value, -1309201.0)
+        self.assertEqual(record.thermochemistry.entropy_J_mol_K.value, 181.105)
+        self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value, -1461070.0)
         self.assertFalse(any(s.formula_ascii == "SiO2" and s.phase == "aqueous"
                              for s in self.database.load_system("Si").species))
 
@@ -1922,9 +1920,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 1109, "absolute_entropy": 1086, "enthalpy_of_formation": 906})
+                         {"gibbs_energy_of_formation": 1121, "absolute_entropy": 1093, "enthalpy_of_formation": 913})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "3440eaf2e13feb31",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "7e5a8fa36a944968",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

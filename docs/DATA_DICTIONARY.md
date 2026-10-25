@@ -1523,3 +1523,24 @@ units, approximately 95% uncertainty meaning, phase and source-specific OECD
 obligations accompany each observation. Directly copied bold CODATA cells
 retain their separate hold. Other ancillary observations and R18 model work
 continue separately. See [the source review](sources/nea-ancillary-expansion.md).
+
+## Remaining NEA ancillary formation properties
+
+R14e2 retains 60 further own selected NEA observations across 24 records,
+adding 12 species and 26 properties. The unchanged policy selects 33 new
+preferred observations, retains every earlier alternative and keeps the existing
+H3SiO4 G override. All 137 populated own selected Table III-1 G/H/S cells are
+retained across R14/R14e1/R14e2; 23 copied bold CODATA cells remain held, and
+20 source slots contain no selected value.
+
+New source-defined silicate oligomers retain complete multi-Si formula units
+and charge. G-only oligomers retain missing H/S and thermal exclusions.
+The existing closed-Si solver excludes polynuclear aqueous species explicitly;
+fixed-activity diagrams retain them.
+Chrysotile uses the silica buffer; fluorapatite combines phosphate and fluoride.
+Colemanite/inyoite retain the source CaB3 formula units, structural OH and hydrate
+waters, with Ca externally buffered. The existing ordered dolomite identity and
+all earlier phase alternatives remain. Vitreous silica carries no crystal symmetry.
+Metadata keys are `R14e2_NEA2024_source_review`, `R14e2_NEA2024_observations`
+and `R14e2_source_and_model_holds`. OECD downstream obligations and all earlier
+independent source/model holds continue. See [the source review](sources/nea-remaining-ancillary.md).

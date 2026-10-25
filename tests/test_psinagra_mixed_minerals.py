@@ -18,22 +18,25 @@ class PSINagraMixedMineralTests(unittest.TestCase):
         for rid, values in [('r11v-mg-dolomite-ordered', (-2161300, -2324500, 155.2)),
                             ('r11v-al-kaolinite', (-3797500, -4119000, 200.4))]:
             record = self.database.species_records((rid,))[0]
-            thermo = record.thermochemistry
-            self.assertEqual((thermo.gibbs_energy_J_mol.value, thermo.formation_enthalpy_J_mol.value,
-                              thermo.entropy_J_mol_K.value), values)
+            # Keep checking the original evaluation after newer source selections.
+            original_rows = [row for row in record.reported if row.source and
+                             row.source.source_id == 'R11v_USGS1995_mixed_minerals']
+            self.assertEqual({row.property: row.value for row in original_rows}, dict(zip(
+                ['gibbs_energy_of_formation', 'enthalpy_of_formation', 'absolute_entropy'], values)))
             self.assertEqual(record.phase_identity.status, 'resolved')
-            for row in record.reported:
+            for row in original_rows:
                 self.assertEqual((row.temperature_K, row.pressure_bar), (298.15, 1))
                 self.assertIn('USGS', row.source.locator)
                 selection = self.database.selections[rid, row.property]
-                self.assertEqual(selection.chosen.evidence_class, 'B')
+                candidate = next(c for c in selection.candidates if c.value_id == row.value_id)
+                self.assertEqual(candidate.evidence_class, 'B')
         dolomite = self.database.species_records(('r11v-mg-dolomite-ordered',))[0]
         original = {row.property: row for row in dolomite.reported
                     if row.source.source_id == 'R11v_HemingwayRobie1994_dolomite_original'}
         self.assertEqual(original['gibbs_energy_of_formation'].value, -2161700)
         self.assertEqual(original['enthalpy_of_formation'].uncertainty, 1100)
         self.assertTrue(all(not row.selected_as_recommended for row in original.values()))
-        self.assertEqual(len(dolomite.reported), 5)
+        self.assertEqual(len(dolomite.reported), 8)
 
     def test_ordered_dolomite_requires_both_reservoirs_and_charge_balance(self):
         rid = 'r11v-mg-dolomite-ordered'
@@ -52,7 +55,7 @@ class PSINagraMixedMineralTests(unittest.TestCase):
             cfg = pb.PourbaixConditions(ligand_activities=pb.LigandActivityModel((
                 pb.LigandActivity('calcium-ca2', log10_free_activity=calcium),
                 pb.LigandActivity('carbonate-co3', log10_free_activity=carbonate))))
-            expected = -2161300 - (-553580 + rtln * calcium) - 2 * (-527810 + rtln * carbonate)
+            expected = -2163402 - (-553580 + rtln * calcium) - 2 * (-527810 + rtln * carbonate)
             for potential in [-1, 0, 1]:
                 self.assertAlmostEqual(float(standard_transformed_gibbs_J_mol_metal(
                     phase, self.database.reference_state, cfg, 7, potential)),
