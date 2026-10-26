@@ -1,7 +1,7 @@
 symbol,system,species,aqueous,solid,gas,liquid,gibbs,entropy,enthalpy,warnings
 Ag,Silver (Ag),26,14,9,3,0,23,25,20,47
 Al,Aluminum (Al),66,8,56,2,0,63,62,62,94
-As,Arsenic (As),11,7,4,0,0,11,10,10,5
+As,Arsenic (As),14,7,6,1,0,13,12,13,20
 Au,Gold (Au),20,15,5,0,0,13,10,8,34
 B,Boron (B),13,3,7,3,0,10,12,11,16
 Ba,Barium (Ba),19,6,11,2,0,17,18,16,38

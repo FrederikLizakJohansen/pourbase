@@ -1767,3 +1767,33 @@ digitized with errata, the explicitly open non-SRD
 NIST is acknowledged; the [NIST open licence](https://www.nist.gov/open/license)
 applies and data are distributed without warranty. Missing uncertainties and original
 source-cycle discrepancies remain explicit. See [the source review](docs/sources/nea-phosphorus-auxiliaries.md).
+
+## R11j3k NEA arsenic auxiliaries, open NBS alternatives and local conversions
+
+Selected arsenic observations are attributed to Grenthe et al. (1992), *Chemical
+Thermodynamics of Uranium*, Chemical Thermodynamics 1, OECD Nuclear Energy
+Agency, Table IV.1, pp.70–71; Chapter VI.3.3, pp.389–391
+([official reprint](https://www.oecd-nea.org/upload/docs/application/pdf/2019-12/uranium.pdf)).
+The distinct monoclinic calculation is attributed to Guillaumont et al. (2003),
+*Update*, Chemical Thermodynamics 5, Table 8-1, p.140
+([official volume](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/update_on_the_chemical_thermodynamics_of_uranium_neptunium_plutonium_americium_and_technetium_volume_5.pdf)).
+The adjusted gas evaluation is attributed to Gamsjäger et al. (2005), *Chemical
+Thermodynamics of Nickel*, Chemical Thermodynamics 6, Table IV-1, p.60 and
+Chapter VI.1.1, p.249
+([official volume](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/chemical_thermodynamics_of_nickel_volume_6.pdf)).
+Accessed 26 October 2026. OECD and NEA are acknowledged. Interim source
+scope, original research ancestry and source confidence conventions remain explicit.
+
+The supplied written clarification and [OECD data terms](https://www.oecd.org/en/about/terms-conditions.html)
+cover these selected outputs and adaptations, with applicable additional restrictions
+checked. When sharing or licensing work using these data, include the same
+acknowledgment requirement in sublicences and require further sublicensees to do the same.
+
+Original NBS alternatives and liquid-water conversion inputs are attributed to
+Wagman et al. (1982), *The NBS Tables of Chemical Thermodynamic Properties*,
+digitized with errata, explicitly open non-SRD
+[NIST Public Data Repository M32124](https://doi.org/10.18434/M32124).
+NIST is acknowledged; the [NIST open licence](https://www.nist.gov/open/license)
+applies and data are distributed without warranty. Six local water-representation
+conversions preserve the original source quantities and input references.
+See [the source review](docs/sources/nea-arsenic-auxiliaries.md).

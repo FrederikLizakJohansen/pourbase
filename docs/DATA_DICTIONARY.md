@@ -1772,3 +1772,23 @@ Full two-P formula units, crystalline white P references, original NBS cycle
 warnings and closed-primary polynuclear exclusions remain explicit. Earlier
 preferred values and all 31 fixed references are preserved. See
 [the source review](sources/nea-phosphorus-auxiliaries.md).
+
+## NEA arsenic auxiliaries and water representations
+
+R11j3k retains 46 observations: 33 NEA selections or revisions, seven independent
+open NBS alternatives and six local water-representation conversions. Three new
+records gain seven properties. All 35 inventory cells are reconciled through 32
+direct source links and three verified conversions onto existing canonical records.
+The six conversions also retain the older AsO2− representation from the original review.
+
+Metadata keys are `R11j3k_NEA_arsenic_review`, `R11j3k_arsenic_observations`
+and `R11j3k_source_and_model_holds`. Original interim NBS selection scope,
+broad NEA confidence, complete As4O6/As6O20H10 units and the NBS gas cycle
+warning remain explicit. Converted alternatives enter class E with unknown total
+width; original raw quantities and open water inputs remain in their locators.
+
+All previous observations, resolved phase identities and 31 fixed free references
+remain. The existing policy changes 25 earlier preferred IDs (eight numerical
+changes). The H-only hydrate makes strict As completeness fail: 53 experimental
+systems or 56 with fallbacks; available-data calculations still cover all 75.
+See [the source review](sources/nea-arsenic-auxiliaries.md).
