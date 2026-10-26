@@ -26,32 +26,34 @@ class NEAOxideEvaluationHistoryTests(unittest.TestCase):
                 self.assertFalse(ev['table_cell_is_bold_CODATA_copy'])
                 self.assertIn('95%',ev['uncertainty_convention'])
 
-    def test_unmodified_first_author_rule_selects_original_values_and_keeps_newer_candidates(self):
+    def test_reviewed_lineage_selects_independent_revision_and_retains_original_values(self):
         for rid in ['r11j3b-sr-sro-crystalline','r11j3b-ba-bao-crystalline']:
             for prop in [G,H,S]:
                 selection=self.db.selections[rid,prop]
-                self.assertEqual(selection.chosen.source_id,SID)
+                self.assertEqual(selection.chosen.source_id,SID if prop==H else LATER)
                 self.assertEqual(selection.chosen.evidence_class,'A')
                 if prop in [G,S]:
                     later=next(x for x in selection.candidates if x.source_id==LATER)
-                    self.assertEqual((selection.chosen.year,later.year),(1992,2020))
-                    self.assertNotEqual(selection.chosen.value,later.value)
-        self.assertEqual(self.db.policy.fingerprint,'53505340b507')
+                    original=next(x for x in selection.candidates if x.source_id==SID)
+                    self.assertEqual((original.year,later.year),(1992,2020))
+                    self.assertNotEqual(original.value,later.value)
+        self.assertEqual(self.db.policy.fingerprint,'f8ee0083e857')
 
-    def test_temporary_recency_view_demonstrates_the_independent_revision_policy_followup(self):
+    def test_recency_view_and_reviewed_default_agree_on_the_independent_revision(self):
         policy=replace(self.db.policy,tie_breaks=('element_consistency','stated_uncertainty','recency','original_publication'),source_text='')
         view=pb.ThermodynamicDatabase(self.db.path,policy=policy)
         for rid in ['r11j3b-sr-sro-crystalline','r11j3b-ba-bao-crystalline']:
             for prop in [G,S]:
                 self.assertEqual(view.selections[rid,prop].chosen.source_id,LATER)
             self.assertEqual(view.selections[rid,H].chosen.source_id,SID)
-        self.assertEqual(self.db.policy.fingerprint,'53505340b507')
+        self.assertEqual(self.db.policy.fingerprint,'f8ee0083e857')
 
-    def test_old_source_triplet_drives_thermal_model_without_rewriting_reference_states(self):
+    def test_revised_same_source_entropy_drives_thermal_model(self):
         rid='r11j3b-ba-bao-crystalline'
         for temperature in [323.15,373.15]:
             phase=next(x for x in at_temperature(self.db,temperature).load_system('Ba').species if x.record_id==rid)
-            self.assertAlmostEqual(phase.gibbs_energy_J_mol,-520394-(temperature-298.15)*(-548100+520394)/298.15)
+            self.assertAlmostEqual(phase.gibbs_energy_J_mol,-519780-(temperature-298.15)*(-94.986))
+            self.assertEqual(at_temperature(self.db,temperature).formation_entropies()[rid][1],"S°, source of ΔfG°")
         self.assertEqual(self.db.species_records((rid,))[0].phase_identity.status,'unresolved')
 
     def test_reprints_add_no_duplicate_observations_and_keep_OECD_conditions(self):

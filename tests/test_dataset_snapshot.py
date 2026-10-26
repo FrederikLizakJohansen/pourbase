@@ -1934,7 +1934,7 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         self.assertEqual(Counter(key[1] for key in selections),
                          {"gibbs_energy_of_formation": 1241, "absolute_entropy": 1213, "enthalpy_of_formation": 1180})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "9c2ce4c15343fafb",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "ae3314cf312519c9",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

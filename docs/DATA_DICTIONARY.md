@@ -1865,3 +1865,40 @@ Metadata keys are `R11j3i1_sulfurous_acid_review`,
 The scientific identity hold is resolved; nonunit-water and new thermal
 component models remain separate. See
 [the source review](sources/nea-sulfurous-acid-water.md).
+
+## Reviewed evaluation lineage and selector identity
+
+Reported-value provenance can include an `evaluation_lineage` object in its
+JSON `source_locator`. Version 1 requires nonempty `evaluation_id` and
+`derivation_id` strings; `reprint_of_value_id` is an optional observation link.
+The same evaluation and derivation identify one evaluated result. Independent
+revisions receive distinct evaluation identities; changed reference inputs
+receive distinct derivation identities. Equal numbers or shared authors alone
+do not establish these identities. Source citations, uncertainty and status
+retain their scientific meanings.
+
+`ReportedValue.evaluation_lineage` and `Candidate.evaluation_lineage` expose
+the reviewed identities, including through record export. Unannotated locators
+remain supported. Explicit reprint links must reference an observation of the
+same species, property, evaluation and derivation; missing, incompatible and
+cyclic links raise an error. Policy exclusions do not erase the linked original.
+This optional provenance uses the existing schema 9 observation locator and
+requires no table migration.
+
+Selector `2-explicit-evaluation-lineage` applies `original_publication` within
+the reviewed evaluation and derivation. Independent revisions proceed to the
+remaining tie-breaks. Original-publication precedence, evidence classes,
+family ranking, exclusions and explicit overrides remain separately defined.
+The compatibility stage retains the historical first-author/year rule between
+unannotated observations. Further groups need their own evaluation histories.
+
+Policy fingerprints include the selector version as well as the configuration;
+`selection.describe` reports `selector_version`. The current default fingerprint
+is `f8ee0083e857`, and the recommendation fingerprint is `ae3314cf312519c9`.
+The R11j3f2 batch annotates ten previously reviewed SrO/BaO observations and
+changes four preferences to the independent 2020 G/S revisions. Original 1992 H
+stays preferred, and all 4,889 observations remain. It adds no source, species
+or previously missing property. The thermal model now uses the entropy from
+the revised Gibbs source for these two oxides. Metadata
+`R11j3f2_explicit_evaluation_lineage` records the compatibility scope.
+See [the evaluation history](sources/nea-oxide-evaluation-history.md).

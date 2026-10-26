@@ -23,8 +23,9 @@ ineligible_statuses = ["superseded_source_value", "terminal_evidence_gap"]
 #
 # element_consistency  Prefer the source family covering the most species of
 #                      the same element. This helps keep related data together.
-# original_publication For two papers by the same first author in a family,
-#                      prefer the earlier one when a later paper repeats it.
+# original_publication Prefer the original within a reviewed evaluation and
+#                      derivation. Independent revisions reach later tie-breaks.
+#                      Unreviewed groups retain the legacy first-author rule.
 # stated_uncertainty   Prefer a value with a reported uncertainty over one
 #                      without. This does not mean picking the smallest error.
 # recency              If there's still a tie, pick the newer publication.

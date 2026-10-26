@@ -25,11 +25,13 @@ from typing import Any
 
 from .database import ThermodynamicDatabase
 from .models import EvidenceStatus, MetalSystem
+from .records import EvaluationLineage
 
 PROPERTIES = ("gibbs_energy_of_formation", "enthalpy_of_formation", "absolute_entropy")
 TIE_BREAKS = ("element_consistency", "original_publication", "stated_uncertainty", "recency")
 FALLBACK_EXPERIMENTAL = "experimental papers"
 FALLBACK_ESTIMATE = "estimates"
+SELECTOR_VERSION = "2-explicit-evaluation-lineage"
 
 
 @dataclass(frozen=True)
@@ -103,9 +105,9 @@ class SelectionPolicy:
 
     @property
     def fingerprint(self) -> str:
-        """A short hash that identifies the policy in results."""
+        """A short hash identifying both policy configuration and selector behavior."""
         text = self.source_text or repr(self)
-        return hashlib.sha256(text.encode("utf-8")).hexdigest()[:12]
+        return hashlib.sha256((SELECTOR_VERSION + "\n" + text).encode("utf-8")).hexdigest()[:12]
 
     def with_class_order(self, names: Iterable[str]) -> SelectionPolicy:
         """The same policy with the classes in a new order."""
@@ -155,6 +157,7 @@ class Candidate:
     family: str
     evidence_class: str
     year: int | None
+    evaluation_lineage: EvaluationLineage | None = None
 
 
 @dataclass(frozen=True)
@@ -186,11 +189,31 @@ def candidates(database: ThermodynamicDatabase, policy: SelectionPolicy,
     wanted = tuple(properties)
     rows = database._rows(
         "SELECT r.value_id, r.record_id, r.property, r.value, r.uncertainty, r.status, r.source_id, "
-        "s.citation FROM reported_thermochemistry AS r JOIN sources AS s USING(source_id) "
+        "r.source_locator, s.citation FROM reported_thermochemistry AS r JOIN sources AS s USING(source_id) "
         f"WHERE r.value IS NOT NULL AND r.property IN ({','.join('?' * len(wanted))})",
         wanted,
     )
     grouped: dict[tuple[str, str], list[Candidate]] = defaultdict(list)
+    lineages = {row["value_id"]: EvaluationLineage.from_locator(row["source_locator"]) for row in rows}
+    by_id = {row["value_id"]: row for row in rows}
+    # Validate explicit links against evidence, including observations excluded by policy.
+    # A linked reprint remains a reprint when its original has an ineligible status.
+    for value_id, lineage in lineages.items():
+        chain = set()
+        current = value_id
+        while (current_lineage := lineages[current]) is not None and current_lineage.reprint_of_value_id:
+            if current in chain:
+                raise ValueError(f"Cyclic evaluation_lineage reprint link at {current}")
+            chain.add(current)
+            parent = current_lineage.reprint_of_value_id
+            if parent not in by_id:
+                raise ValueError(f"evaluation_lineage {current} references missing value {parent}")
+            target = lineages[parent]
+            if target is None or (target.evaluation_id, target.derivation_id) != (
+                    current_lineage.evaluation_id, current_lineage.derivation_id) or any(
+                    by_id[parent][key] != by_id[current][key] for key in ("record_id", "property")):
+                raise ValueError(f"Incompatible evaluation_lineage reprint link from {current} to {parent}")
+            current = parent
     excluded = {(item.record_id, item.property_name, item.source_id) for item in policy.exclusions}
     for row in rows:
         if row["status"] in policy.ineligible_statuses or \
@@ -202,6 +225,7 @@ def candidates(database: ThermodynamicDatabase, policy: SelectionPolicy,
             value=float(row["value"]), uncertainty=row["uncertainty"], status=row["status"],
             source_id=row["source_id"], citation=row["citation"], family=family,
             evidence_class=policy.class_of(family), year=_year(row["citation"]),
+            evaluation_lineage=lineages[row["value_id"]],
         ))
     return grouped
 
@@ -231,11 +255,26 @@ def select(database: ThermodynamicDatabase, policy: SelectionPolicy | None = Non
             elif name == "stated_uncertainty":
                 ties.append(0 if item.uncertainty is not None else 1)
             elif name == "original_publication":
-                # a later publication of the same authors' evaluation repeats it: the earliest wins
-                repeated = any(other is not item and other.family == item.family
-                               and first_author(other) == first_author(item) and other.year != item.year
-                               for other in items)
-                ties.append(item.year or 9999 if repeated else 0)
+                lineage = item.evaluation_lineage
+                if lineage is not None:
+                    # Independent revisions compete in the remaining tie-breaks. Within
+                    # one reviewed evaluation/derivation, prefer the original publication.
+                    same = [other for other in items if other.family == item.family
+                            and other.evaluation_lineage is not None
+                            and (other.evaluation_lineage.evaluation_id, other.evaluation_lineage.derivation_id)
+                            == (lineage.evaluation_id, lineage.derivation_id)]
+                    earlier = any(other.evaluation_lineage.reprint_of_value_id is None
+                                  and other.year is not None and (item.year is None or other.year < item.year)
+                                  for other in same)
+                    ties.append(int(bool(lineage.reprint_of_value_id or earlier)))
+                else:
+                    # Compatibility stage: retain the historical author/year rule only
+                    # between observations whose evaluation lineage is still unreviewed.
+                    repeated = any(other is not item and other.family == item.family
+                                   and other.evaluation_lineage is None
+                                   and first_author(other) == first_author(item) and other.year != item.year
+                                   for other in items)
+                    ties.append((item.year or 9999) if repeated else 0)
             elif name == "recency":
                 ties.append(-(item.year or 0))
         return (class_rank, family_rank, *ties, item.value_id)
@@ -349,6 +388,7 @@ def stored_selection(database: ThermodynamicDatabase, properties: Iterable[str] 
 def describe(policy: SelectionPolicy) -> dict[str, Any]:
     """A JSON-serializable summary of a policy for results and reports."""
     return {"name": policy.name, "version": policy.version, "fingerprint": policy.fingerprint,
+            "selector_version": SELECTOR_VERSION,
             "classes": [{"name": item.name, "families": list(item.families)} for item in policy.classes],
             "tie_breaks": list(policy.tie_breaks), "review_threshold_kJ_mol": policy.review_threshold_J_mol / 1000,
             "overrides": len(policy.overrides), "exclusions": len(policy.exclusions)}

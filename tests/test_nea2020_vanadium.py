@@ -48,7 +48,7 @@ class NEA2020VanadiumTests(unittest.TestCase):
         for temperature in [323.15,373.15]:
             phase=next(x for x in at_temperature(self.db,temperature).load_system('V').species if x.record_id==VO2)
             self.assertAlmostEqual(phase.gibbs_energy_J_mol,-590280-(temperature-298.15)*(-651840+590280)/298.15)
-        self.assertEqual(self.db.policy.fingerprint,'53505340b507')
+        self.assertEqual(self.db.policy.fingerprint,'f8ee0083e857')
 
     def test_copied_cs_candidates_remain_separate_and_OECD_obligation_is_retained(self):
         review=json.loads(self.db.metadata['R11j3a_NEA2020_vanadium_review'])

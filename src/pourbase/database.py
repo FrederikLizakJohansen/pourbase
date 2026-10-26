@@ -23,6 +23,7 @@ from .models import (
     ThermodynamicSpecies,
 )
 from .records import (
+    EvaluationLineage,
     ComputationalFallback,
     PhaseIdentity,
     PropertyValue,
@@ -350,6 +351,8 @@ class ThermodynamicDatabase:
                     ),
                     supersedes_value_id=row["supersedes_value_id"],
                     temperature_K=row["temperature_K"], pressure_bar=row["pressure_bar"],
+                    evaluation_lineage=EvaluationLineage.from_locator(
+                        row["source_locator"] if "source_locator" in row.keys() else None),
                 ))
             for values in reported.values():
                 values.sort(key=lambda item: (item.property, not item.selected_as_recommended, item.value_id))

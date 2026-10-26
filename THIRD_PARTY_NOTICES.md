@@ -1882,3 +1882,9 @@ applies and data are distributed without warranty. Goldberg and Parker (1985),
 provides the scientific-convention reference; no numerical property rows from
 that article are imported. Accessed 26 October 2026.
 See [the source review](docs/sources/nea-sulfurous-acid-water.md).
+
+R11j3f2 adds reviewed evaluation/derivation identities to the existing SrO/BaO
+source locators and updates selection to distinguish independent NEA revisions
+from reprints. Original numerical values, confidence intervals and citations
+are preserved. The OECD/NEA attribution and downstream acknowledgment
+requirement above continue to apply to all retained alternatives.

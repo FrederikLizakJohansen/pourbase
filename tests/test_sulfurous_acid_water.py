@@ -68,7 +68,7 @@ class SulfurousAcidWaterTests(unittest.TestCase):
         review = json.loads(self.db.metadata['R11j3i1_sulfurous_acid_review'])
         self.assertTrue(review['scientific_identity_hold_resolved'])
         self.assertEqual((review['new_observations'], review['new_species'], review['newly_available_properties']), (2, 0, 0))
-        self.assertEqual(self.db.policy.fingerprint, '53505340b507')
+        self.assertEqual(self.db.policy.fingerprint, 'f8ee0083e857')
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
 
 

@@ -2,8 +2,9 @@
 
 R11j3f adds six original NEA G/H/S observations on the existing SrO and BaO
 records. It adds no species or previously missing property. All earlier NBS and
-2020 NEA observations remain. The existing policy selects the six earlier values;
-a specific limitation in its first-author reprint heuristic is recorded as R11j3f1.
+2020 NEA observations remain. R11j3f2 now selects the independently revised 2020 G/S values and retains
+the two original 1992 H values. Ten reviewed observation lineages distinguish
+independent revisions from actual reprints.
 
 ## Original values, conventions and reprint links
 
@@ -32,24 +33,36 @@ barium research of Cordfunke, Konings and Ouweltjes, combines the selected H/S
 and assigns source uncertainties. Its original G calculations use the 1-bar
 reference state. All six cells are nonbold own NEA selections.
 
-## Effect of the existing selection policy
+## Selection history and the explicit-lineage correction
 
 Two H preferences change from original NBS to the class-A NEA values:
 SrO −592.0 to −590.6 kJ/mol and BaO −553.5 to −548.1 kJ/mol. The 5.4 kJ/mol
 BaO H spread remains explicit in the retained alternatives.
 
-The same import also changes four G/S preferences from the 2020 revision to
-the earlier values above. The policy's `original_publication` tie-break treats
+At the R11j3f checkpoint, the import also changed four G/S preferences from the 2020 revision to
+the earlier values above. The earlier policy's `original_publication` tie-break treated
 two NEA citations sharing first author Grenthe as an original and a reprint,
-and therefore chooses 1992. The 2020 review independently revised the G/S
+and therefore chose 1992. The 2020 review independently revised the G/S
 selections using newer calorimetry. Its values remain eligible and stored:
 SrO G −559.400, S 53.630; BaO G −519.780, S 70.010 in the units above.
 
-R11j3f1 records the need to distinguish an independent revision from a reprint.
-A temporary policy view placing recency ahead of that heuristic selects the
-2020 G/S values and retains the newly admitted original H. Production uses
-the existing policy. Source citations, evidence statuses and numerical values
-retain their original meanings; all alternatives remain available for review.
+R11j3f1 quantified the heuristic and verified the bounded four-choice proposal.
+R11j3f2 implements it with explicit evaluation and derivation identities in
+observation provenance. Current defaults select 2020 G/S: SrO −559400 J/mol
+and 53.63 J/(mol K); BaO −519780 J/mol and 70.01 J/(mol K).
+Original 1992 H remains selected. No numerical observation, uncertainty,
+status, citation, fixed reference or phase identity changes. The source-linked
+1992/2003 and 2020 H reprint cells remain linked without duplicate observations.
+
+Within a reviewed evaluation and derivation, `original_publication` prefers
+the original; independent revisions compete in later tie-breaks. Explicit
+reprint links work across author changes. The compatibility stage retains the
+legacy heuristic for unannotated groups, carrying the separate broader review
+forward. Selector version `2-explicit-evaluation-lineage` is included in policy
+fingerprints; the default fingerprint is now `f8ee0083e857`. The recommendation
+fingerprint is `ae3314cf312519c9`. Optional lineage is visible through reported
+evidence, candidate selection and record export. These changes add no source
+or observation and carry the existing OECD attribution and downstream terms.
 
 ## Reuse, validation and continuing work
 
@@ -67,9 +80,11 @@ Staging preserves every previous SQL row, all phase metadata and all 31 fixed
 references. It checks source units/widths, repeat-import behaviour, both source
 reference cycles, six energies, four thermal calculations and eight supported
 primary balances. All six preference changes are reviewed. All 75 default maps
-and 1σ/3σ masks remain unchanged at 81×91 resolution. The existing thermal
-model follows the now selected original H/G triplets.
+and 1σ/3σ masks remain unchanged at 81×91 resolution. The original checkpoint used the 1992 H/G triplets. After R11j3f2, the
+thermal model uses the 2020 S from the selected Gibbs source: formation
+entropies are −104.646 J/(mol K) for SrO and −94.986 J/(mol K) for BaO.
+The original H alternatives remain stored and selected as enthalpies.
 
 Exact SrO/BaO structures retain their earlier unresolved status. Broader auxiliary
-source work, the focused policy follow-up, R06/R07 and the original six crystalline
+source work, further explicit-lineage reviews, R06/R07 and the original six crystalline
 Gibbs gaps continue separately. Concurrent GUI implementation remains untouched.
