@@ -1902,3 +1902,14 @@ or previously missing property. The thermal model now uses the entropy from
 the revised Gibbs source for these two oxides. Metadata
 `R11j3f2_explicit_evaluation_lineage` records the compatibility scope.
 See [the evaluation history](sources/nea-oxide-evaluation-history.md).
+
+## Original NBS crystalline fluorides
+
+R16d3a retains 80 original observations and 25 crystalline records, supplying
+71 previously missing properties. All earlier preferred values remain.
+Original phase descriptions, full hydrate units, missing widths and separate
+G-only records are explicit. Structured observation provenance exposes the
+original NBS evaluation and SI derivation. CrF3 retains a printed-source
+consistency qualification. Fluoride uses the unchanged buffered component;
+new thermal, brine and closed-fluoride models remain separate.
+See [the source review](sources/nbs-crystalline-fluorides.md).

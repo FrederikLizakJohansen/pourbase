@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1610), ("reported_thermochemistry", 4889),
-                                 ("sources", 1822), ("warnings", 2490), ("additional_components", 59),
+            for table, count in (("species", 1635), ("reported_thermochemistry", 4969),
+                                 ("sources", 1823), ("warnings", 2521), ("additional_components", 59),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -1321,9 +1321,11 @@ class DatasetSnapshotTests(unittest.TestCase):
 
         plain = self.database.load_system("Y")
         full = self.database.load_system("Y", ligand_ids=["fluoride-f"])
-        complexes = sorted((s for s in full.species if s.ligand_id == "fluoride-f"),
+        complexes = sorted((s for s in full.species if s.ligand_id == "fluoride-f" and s.is_aqueous),
                            key=lambda s: s.ligand_count)
         self.assertEqual(len(complexes), 2)
+        self.assertEqual({s.formula_ascii for s in full.species
+                          if s.ligand_id == "fluoride-f" and not s.is_aqueous}, {"YF3"})
         self.assertFalse(any(s.ligand_id == "fluoride-f" for s in plain.species))
         for s in complexes:
             self.assertEqual(s.charge + s.ligand_count, 3)
@@ -1932,9 +1934,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 1241, "absolute_entropy": 1213, "enthalpy_of_formation": 1180})
+                         {"gibbs_energy_of_formation": 1266, "absolute_entropy": 1236, "enthalpy_of_formation": 1203})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "ae3314cf312519c9",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "773f25382fef9762",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

@@ -1888,3 +1888,16 @@ source locators and updates selection to distinguish independent NEA revisions
 from reprints. Original numerical values, confidence intervals and citations
 are preserved. The OECD/NEA attribution and downstream acknowledgment
 requirement above continue to apply to all retained alternatives.
+
+## R16d3a original NBS crystalline fluoride observations
+
+Credit Wagman et al. (1982), *The NBS Tables of Chemical Thermodynamic
+Properties*, digitized with errata in explicitly open non-SRD
+[NIST Public Data Repository M32124](https://doi.org/10.18434/M32124).
+NIST is acknowledged. The recorded [NIST open licence](https://www.nist.gov/open/license)
+and warranty statement above apply; these data are distributed without warranty.
+The 26 October 2026 additions retain original G/H/S values, complete hydrate
+units and source phase descriptions, with SI conversion and explicit missing
+confidence intervals. CrF3 preserves a printed-source consistency qualification.
+The source publications and private permission correspondence remain external.
+See [the source review](docs/sources/nbs-crystalline-fluorides.md).
