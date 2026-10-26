@@ -1831,3 +1831,18 @@ NIST is acknowledged; the [NIST open licence](https://www.nist.gov/open/license)
 applies. Data are distributed without warranty. Original missing uncertainties
 and the KI publisher's relaxed G/H/S qualification remain explicit.
 See [the source review](docs/sources/nea-other-auxiliaries.md).
+
+## R16d2a original open NBS crystalline bromides and iodides
+
+Original source properties are attributed to Wagman et al. (1982), *The NBS
+Tables of Chemical Thermodynamic Properties*, digitized with errata in the
+explicitly open non-SRD [NIST Public Data Repository M32124](https://doi.org/10.18434/M32124).
+NIST is acknowledged. The [NIST open licence](https://www.nist.gov/open/license)
+applies; data are distributed without warranty. Accessed 26 October 2026.
+Exact original cells, source formula/phase, conditions and missing uncertainties
+accompany each observation. The printed Table 99:Na pp.2-304–2-305
+establishes the anhydrous NaI cells and corrects the digitized hydrate identity
+to NaI·2H2O. Original numerical values and source-consistency qualifications
+remain explicit. Earlier source-specific notices and OECD downstream
+acknowledgment requirements carry forward.
+See [the source review](docs/sources/nbs-crystalline-bromides-iodides.md).

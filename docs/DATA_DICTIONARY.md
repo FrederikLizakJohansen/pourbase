@@ -1815,3 +1815,20 @@ Strict coverage stays 53 experimental systems or 56 with fallbacks, with
 available-data calculations covering 75. The finite nonbold auxiliary source
 review is complete; independent source and model holds remain tracked.
 See [the source review](sources/nea-other-auxiliaries.md).
+
+## Original open NBS bromide/iodide Gibbs-bearing rows
+
+R16d2a retains 175 observations across 57 new crystalline records and fills
+169 properties. Fifteen original-evaluation cells already present are linked
+without duplication. All earlier preferred values and observations remain.
+Metadata keys are `R16d2a_NBS_halide_source_review`,
+`R16d2a_NBS_halide_observations` and `R16d2a_source_and_model_holds`.
+
+The source CSV's NaI hydrate multiplier is corrected from the printed table
+to NaI·2H2O. Raw source labels, complete hydrate units and correction evidence
+remain in observation locators. NaI/NaI·2H2O cycle discrepancies and the
+publisher's relaxed constraint are explicit. Polyhalide formal alkali oxidation
+states and net reaction electron coefficients are stored separately. Existing
+free-component references, phase identities, default maps and strict coverage
+remain. The remaining 90 preview rows stay tracked for the next batch.
+See [the source review](sources/nbs-crystalline-bromides-iodides.md).

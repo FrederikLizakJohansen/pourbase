@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 1473 |
+| Species | 1530 |
 | Supported elemental systems | 75 of 118 elements |
-| Recommended Gibbs energies | 1184 (80 %) |
-| Recommended entropies | 1157 (79 %) |
-| Recommended formation enthalpies | 1044 (71 %) |
-| Reported values retained | 4624 |
-| Source records | 1819 (260 distinct citations) |
-| Phase records | 853 (479 resolved) |
-| Warnings | 2252 |
+| Recommended Gibbs energies | 1241 (81 %) |
+| Recommended entropies | 1213 (79 %) |
+| Recommended formation enthalpies | 1100 (72 %) |
+| Reported values retained | 4799 |
+| Source records | 1820 (261 distinct citations) |
+| Phase records | 910 (479 resolved) |
+| Warnings | 2313 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 31 |
@@ -23,7 +23,7 @@ Gibbs energies by evidence status:
 
 | Status | Species |
 |---|---|
-| `verified` | 781 |
+| `verified` | 838 |
 | `source_verified_estimate` | 328 |
 | `not_available` | 283 |
 | `defined_reference_state` | 75 |
@@ -33,7 +33,7 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| solid | 709 | 569 | 540 | 622 |
+| solid | 766 | 626 | 596 | 678 |
 | aqueous | 590 | 522 | 445 | 327 |
 | gas | 169 | 90 | 169 | 90 |
 | liquid | 5 | 3 | 3 | 5 |
@@ -42,19 +42,19 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 1473 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 1473 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 4624 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1819 | Full citations, links, locators and access dates |
-| `phases` | 853 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 2252 | Scientific cautions attached to records |
+| `species` | 1530 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 1530 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 4799 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1820 | Full citations, links, locators and access dates |
+| `phases` | 910 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 2313 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 31 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 59 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 141 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 144 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -88,78 +88,78 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 
 | Element | System | Species | Aqueous | Solid | Gas | Liquid | Gibbs | Entropy | Enthalpy | Warnings |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Ag | Silver (Ag) | 26 | 14 | 9 | 3 | 0 | 23 | 25 | 20 | 47 |
-| Al | Aluminum (Al) | 66 | 8 | 56 | 2 | 0 | 63 | 62 | 62 | 94 |
-| As | Arsenic (As) | 14 | 7 | 6 | 1 | 0 | 13 | 12 | 13 | 20 |
+| Ag | Silver (Ag) | 27 | 14 | 10 | 3 | 0 | 24 | 26 | 21 | 48 |
+| Al | Aluminum (Al) | 67 | 8 | 57 | 2 | 0 | 64 | 63 | 63 | 95 |
+| As | Arsenic (As) | 15 | 7 | 7 | 1 | 0 | 14 | 13 | 14 | 21 |
 | Au | Gold (Au) | 20 | 15 | 5 | 0 | 0 | 13 | 10 | 8 | 34 |
 | B | Boron (B) | 13 | 3 | 7 | 3 | 0 | 10 | 12 | 11 | 16 |
-| Ba | Barium (Ba) | 19 | 6 | 11 | 2 | 0 | 17 | 18 | 16 | 38 |
+| Ba | Barium (Ba) | 21 | 6 | 13 | 2 | 0 | 19 | 20 | 18 | 40 |
 | Be | Beryllium (Be) | 20 | 11 | 6 | 3 | 0 | 8 | 19 | 7 | 36 |
-| Bi | Bismuth (Bi) | 12 | 5 | 6 | 1 | 0 | 9 | 9 | 5 | 18 |
+| Bi | Bismuth (Bi) | 13 | 5 | 7 | 1 | 0 | 10 | 9 | 5 | 19 |
 | Br | Bromine (Br) | 10 | 6 | 0 | 3 | 1 | 8 | 10 | 8 | 7 |
-| C | Carbon (C) | 13 | 6 | 1 | 6 | 0 | 11 | 13 | 11 | 20 |
-| Ca | Calcium (Ca) | 37 | 11 | 24 | 2 | 0 | 31 | 30 | 32 | 84 |
-| Cd | Cadmium (Cd) | 21 | 12 | 7 | 2 | 0 | 14 | 17 | 9 | 29 |
+| C | Carbon (C) | 14 | 6 | 2 | 6 | 0 | 12 | 14 | 12 | 21 |
+| Ca | Calcium (Ca) | 40 | 11 | 27 | 2 | 0 | 34 | 33 | 35 | 87 |
+| Cd | Cadmium (Cd) | 24 | 12 | 10 | 2 | 0 | 17 | 20 | 12 | 32 |
 | Ce | Cerium (Ce) | 15 | 7 | 8 | 0 | 0 | 13 | 10 | 12 | 17 |
 | Cl | Chlorine (Cl) | 12 | 8 | 0 | 4 | 0 | 10 | 12 | 10 | 8 |
 | Co | Cobalt (Co) | 24 | 7 | 14 | 3 | 0 | 17 | 22 | 14 | 38 |
 | Cr | Chromium (Cr) | 17 | 8 | 7 | 2 | 0 | 9 | 13 | 6 | 24 |
-| Cs | Caesium (Cs) | 10 | 5 | 2 | 3 | 0 | 7 | 10 | 5 | 16 |
-| Cu | Copper (Cu) | 39 | 18 | 18 | 3 | 0 | 30 | 37 | 24 | 66 |
+| Cs | Caesium (Cs) | 15 | 5 | 7 | 3 | 0 | 12 | 15 | 10 | 21 |
+| Cu | Copper (Cu) | 40 | 18 | 19 | 3 | 0 | 31 | 38 | 25 | 67 |
 | Dy | Dysprosium (Dy) | 10 | 5 | 5 | 0 | 0 | 9 | 7 | 8 | 12 |
 | Er | Erbium (Er) | 10 | 5 | 5 | 0 | 0 | 9 | 7 | 9 | 13 |
 | Eu | Europium (Eu) | 18 | 7 | 11 | 0 | 0 | 15 | 11 | 14 | 22 |
 | F | Fluorine (F) | 7 | 3 | 0 | 4 | 0 | 5 | 7 | 5 | 9 |
-| Fe | Iron (Fe) | 88 | 29 | 56 | 3 | 0 | 72 | 65 | 60 | 122 |
-| Ga | Gallium (Ga) | 13 | 6 | 5 | 2 | 0 | 9 | 12 | 5 | 23 |
+| Fe | Iron (Fe) | 88 | 29 | 56 | 3 | 0 | 72 | 65 | 60 | 123 |
+| Ga | Gallium (Ga) | 14 | 6 | 6 | 2 | 0 | 10 | 13 | 6 | 24 |
 | Gd | Gadolinium (Gd) | 13 | 6 | 7 | 0 | 0 | 11 | 7 | 9 | 15 |
-| Ge | Germanium (Ge) | 10 | 1 | 5 | 4 | 0 | 8 | 9 | 7 | 12 |
+| Ge | Germanium (Ge) | 12 | 1 | 7 | 4 | 0 | 10 | 11 | 9 | 14 |
 | Hf | Hafnium (Hf) | 9 | 6 | 3 | 0 | 0 | 9 | 9 | 9 | 18 |
-| Hg | Mercury (Hg) | 17 | 11 | 3 | 2 | 1 | 11 | 17 | 10 | 26 |
+| Hg | Mercury (Hg) | 19 | 11 | 5 | 2 | 1 | 13 | 19 | 12 | 28 |
 | Ho | Holmium (Ho) | 12 | 6 | 6 | 0 | 0 | 11 | 8 | 10 | 15 |
 | I | Iodine (I) | 13 | 8 | 2 | 3 | 0 | 11 | 12 | 10 | 10 |
-| In | Indium (In) | 15 | 7 | 6 | 2 | 0 | 7 | 11 | 6 | 26 |
+| In | Indium (In) | 17 | 7 | 8 | 2 | 0 | 9 | 13 | 8 | 28 |
 | Ir | Iridium (Ir) | 5 | 1 | 4 | 0 | 0 | 3 | 2 | 4 | 6 |
 | K | Potassium (K) | 22 | 10 | 9 | 3 | 0 | 19 | 20 | 17 | 48 |
 | La | Lanthanum (La) | 14 | 5 | 9 | 0 | 0 | 11 | 9 | 10 | 17 |
-| Li | Lithium (Li) | 11 | 3 | 5 | 3 | 0 | 7 | 9 | 7 | 15 |
+| Li | Lithium (Li) | 18 | 3 | 12 | 3 | 0 | 14 | 16 | 14 | 22 |
 | Lu | Lutetium (Lu) | 12 | 6 | 6 | 0 | 0 | 11 | 8 | 9 | 14 |
-| Mg | Magnesium (Mg) | 45 | 11 | 32 | 2 | 0 | 40 | 38 | 38 | 85 |
+| Mg | Magnesium (Mg) | 48 | 11 | 35 | 2 | 0 | 43 | 41 | 41 | 88 |
 | Mn | Manganese (Mn) | 32 | 11 | 19 | 2 | 0 | 28 | 30 | 25 | 49 |
 | Mo | Molybdenum (Mo) | 12 | 1 | 8 | 3 | 0 | 6 | 8 | 8 | 17 |
 | N | Nitrogen (N) | 10 | 5 | 0 | 5 | 0 | 9 | 10 | 9 | 25 |
-| Na | Sodium (Na) | 23 | 10 | 10 | 3 | 0 | 21 | 21 | 18 | 48 |
+| Na | Sodium (Na) | 27 | 10 | 14 | 3 | 0 | 25 | 25 | 22 | 54 |
 | Nb | Niobium (Nb) | 20 | 11 | 6 | 3 | 0 | 14 | 12 | 11 | 39 |
 | Nd | Neodymium (Nd) | 14 | 5 | 9 | 0 | 0 | 11 | 8 | 12 | 20 |
 | Ni | Nickel (Ni) | 65 | 28 | 33 | 3 | 1 | 58 | 48 | 47 | 89 |
 | Os | Osmium (Os) | 9 | 2 | 6 | 1 | 0 | 7 | 5 | 7 | 12 |
 | P | Phosphorus (P) | 19 | 12 | 4 | 3 | 0 | 15 | 15 | 15 | 21 |
-| Pb | Lead (Pb) | 24 | 10 | 10 | 4 | 0 | 20 | 23 | 17 | 52 |
-| Pd | Palladium (Pd) | 12 | 7 | 5 | 0 | 0 | 9 | 4 | 2 | 13 |
+| Pb | Lead (Pb) | 25 | 10 | 11 | 4 | 0 | 21 | 24 | 18 | 53 |
+| Pd | Palladium (Pd) | 13 | 7 | 6 | 0 | 0 | 10 | 5 | 3 | 14 |
 | Pr | Praseodymium (Pr) | 15 | 7 | 8 | 0 | 0 | 10 | 5 | 10 | 21 |
 | Pt | Platinum (Pt) | 9 | 1 | 8 | 0 | 0 | 2 | 2 | 5 | 19 |
 | Ra | Radium (Ra) | 7 | 2 | 5 | 0 | 0 | 6 | 7 | 6 | 20 |
-| Rb | Rubidium (Rb) | 11 | 6 | 2 | 3 | 0 | 8 | 11 | 6 | 18 |
+| Rb | Rubidium (Rb) | 14 | 6 | 5 | 3 | 0 | 11 | 14 | 9 | 21 |
 | Re | Rhenium (Re) | 6 | 1 | 5 | 0 | 0 | 5 | 5 | 4 | 4 |
 | Rh | Rhodium (Rh) | 10 | 6 | 4 | 0 | 0 | 9 | 8 | 9 | 15 |
 | Ru | Ruthenium (Ru) | 8 | 2 | 6 | 0 | 0 | 6 | 7 | 4 | 9 |
 | S | Sulfur (S) | 14 | 10 | 1 | 3 | 0 | 12 | 13 | 11 | 14 |
-| Sb | Antimony (Sb) | 9 | 3 | 6 | 0 | 0 | 9 | 7 | 7 | 5 |
+| Sb | Antimony (Sb) | 10 | 3 | 7 | 0 | 0 | 10 | 8 | 8 | 6 |
 | Sc | Scandium (Sc) | 13 | 5 | 5 | 3 | 0 | 9 | 11 | 11 | 23 |
 | Se | Selenium (Se) | 30 | 11 | 8 | 11 | 0 | 26 | 22 | 26 | 42 |
 | Si | Silicon (Si) | 20 | 10 | 8 | 2 | 0 | 19 | 12 | 11 | 45 |
 | Sm | Samarium (Sm) | 16 | 7 | 9 | 0 | 0 | 13 | 7 | 11 | 21 |
-| Sn | Tin (Sn) | 55 | 23 | 19 | 12 | 1 | 50 | 32 | 29 | 62 |
-| Sr | Strontium (Sr) | 19 | 6 | 11 | 2 | 0 | 18 | 19 | 16 | 36 |
+| Sn | Tin (Sn) | 55 | 23 | 19 | 12 | 1 | 50 | 32 | 29 | 63 |
+| Sr | Strontium (Sr) | 22 | 6 | 14 | 2 | 0 | 21 | 22 | 19 | 39 |
 | Ta | Tantalum (Ta) | 10 | 2 | 5 | 3 | 0 | 5 | 5 | 5 | 18 |
 | Tb | Terbium (Tb) | 13 | 6 | 7 | 0 | 0 | 11 | 8 | 10 | 16 |
 | Te | Tellurium (Te) | 5 | 2 | 3 | 0 | 0 | 4 | 3 | 4 | 6 |
-| Ti | Titanium (Ti) | 12 | 2 | 7 | 3 | 0 | 10 | 12 | 7 | 23 |
-| Tl | Thallium (Tl) | 17 | 10 | 7 | 0 | 0 | 10 | 14 | 9 | 27 |
+| Ti | Titanium (Ti) | 15 | 2 | 10 | 3 | 0 | 13 | 15 | 10 | 26 |
+| Tl | Thallium (Tl) | 19 | 10 | 9 | 0 | 0 | 12 | 16 | 11 | 29 |
 | Tm | Thulium (Tm) | 12 | 6 | 6 | 0 | 0 | 10 | 8 | 8 | 15 |
 | V | Vanadium (V) | 26 | 13 | 10 | 3 | 0 | 20 | 24 | 14 | 35 |
 | W | Tungsten (W) | 12 | 1 | 8 | 3 | 0 | 6 | 8 | 8 | 21 |
 | Y | Yttrium (Y) | 13 | 8 | 5 | 0 | 0 | 12 | 10 | 11 | 27 |
 | Yb | Ytterbium (Yb) | 12 | 6 | 6 | 0 | 0 | 10 | 7 | 9 | 15 |
-| Zn | Zinc (Zn) | 30 | 13 | 15 | 2 | 0 | 28 | 29 | 26 | 59 |
+| Zn | Zinc (Zn) | 33 | 13 | 18 | 2 | 0 | 31 | 32 | 29 | 62 |
 | Zr | Zirconium (Zr) | 97 | 26 | 49 | 21 | 1 | 74 | 68 | 76 | 131 |
