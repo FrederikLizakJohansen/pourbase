@@ -59,8 +59,8 @@ the original; independent revisions compete in later tie-breaks. Explicit
 reprint links work across author changes. The compatibility stage retains the
 legacy heuristic for unannotated groups, carrying the separate broader review
 forward. Selector version `2-explicit-evaluation-lineage` is included in policy
-fingerprints; the default fingerprint is now `f8ee0083e857`. The recommendation
-fingerprint is `ae3314cf312519c9`. Optional lineage is visible through reported
+fingerprints; at the R11j3f2 checkpoint the default fingerprint was `f8ee0083e857`.
+Its recommendation fingerprint was `ae3314cf312519c9`. Optional lineage is visible through reported
 evidence, candidate selection and record export. These changes add no source
 or observation and carry the existing OECD attribution and downstream terms.
 

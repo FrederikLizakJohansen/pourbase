@@ -1893,8 +1893,8 @@ The compatibility stage retains the historical first-author/year rule between
 unannotated observations. Further groups need their own evaluation histories.
 
 Policy fingerprints include the selector version as well as the configuration;
-`selection.describe` reports `selector_version`. The current default fingerprint
-is `f8ee0083e857`, and the recommendation fingerprint is `ae3314cf312519c9`.
+`selection.describe` reports `selector_version`. At the R11j3f2 checkpoint, the default fingerprint
+was `f8ee0083e857`, and the recommendation fingerprint was `ae3314cf312519c9`.
 The R11j3f2 batch annotates ten previously reviewed SrO/BaO observations and
 changes four preferences to the independent 2020 G/S revisions. Original 1992 H
 stays preferred, and all 4,889 observations remain. It adds no source, species
@@ -1921,3 +1921,17 @@ BeF2 remains separate from alpha-quartz; fractional hydrates preserve their
 molar basis. The complete 64-row source inventory accounts for all 192 slots:
 103 new observations, 15 retained original cells and 74 blanks. All earlier
 preferences, fixed references and independent source/model holds remain.
+
+## Original NBS Gibbs-bearing sulfides
+
+R16d4a retains 99 original observations and 27 records, with 83 previously
+missing properties including pyrite G/H. Full primary and sulfur counts
+preserve the molar basis. The S2−-referenced electron coefficient 2nS/nPrimary
+is distinct from formal oxidation, including PdS2 and Na2S2. New source phase
+labels remain; four unresolved phase rows stay external. Seven preferences
+change through the existing family ranking. Three documented overrides retain
+the reviewed later USGS molybdenite triplet; older NBS alternatives remain.
+The current policy has 49 overrides and 13 exclusions, fingerprint
+`586e3da17300`; recommendation fingerprint `8b7deec3f6d62880`. All earlier
+observations, fixed references and independent source holds remain.
+See [the source review](sources/nbs-crystalline-sulfides.md).

@@ -464,3 +464,21 @@ record_id = "gfe-nb-nbo3-q-1-aqueous-aqueous-ionic-strength-1"
 property = "gibbs_energy_of_formation"
 source_id = "NIST_NBS_1982_Table_55_Nb_NbO3_aqueous, ionic strength 1__open"
 reason = "Open NBS source explicitly labels ionic strength=1; Nagra2002p236 specifies I=1M. This finite-medium observation has no justified conversion to the infinite-dilution standard state. Preserve raw evidence and exclude from standard-state calculations; independent Peiffert2010 I0 fitted estimates use separate scoped records or water-equivalent neutral identity."
+
+[[overrides]]
+record_id = "r05-mo-mos2-molybdenite"
+property = "gibbs_energy_of_formation"
+source_id = "R05_completion_USGS1995_r05-mo-mos2-molybdenite_gf"
+reason = "Prefer the reviewed USGS1995 molybdenite triplet (Bulletin2131 p13/PDF19): H/G cite the revised O'Hare,Lewis,Parkinson1988 fluorine-combustion evaluation, and S cites McBride/Westrum1976 calorimetry,with stated source intervals. The newly retained NBS1982 Table52:Mo p2-201 was prepared1966 and predates these revisions; its H/G differ by about37kJ/mol. Keep the later source-consistent triplet preferred while preserving every older NBS alternative. R16d4a property-history review."
+
+[[overrides]]
+record_id = "r05-mo-mos2-molybdenite"
+property = "enthalpy_of_formation"
+source_id = "R05_completion_USGS1995_r05-mo-mos2-molybdenite_hf"
+reason = "Prefer the reviewed USGS1995 molybdenite triplet (Bulletin2131 p13/PDF19): H/G cite the revised O'Hare,Lewis,Parkinson1988 fluorine-combustion evaluation, and S cites McBride/Westrum1976 calorimetry,with stated source intervals. The newly retained NBS1982 Table52:Mo p2-201 was prepared1966 and predates these revisions; its H/G differ by about37kJ/mol. Keep the later source-consistent triplet preferred while preserving every older NBS alternative. R16d4a property-history review."
+
+[[overrides]]
+record_id = "r05-mo-mos2-molybdenite"
+property = "absolute_entropy"
+source_id = "R05_completion_USGS1995_r05-mo-mos2-molybdenite_entropy"
+reason = "Prefer the reviewed USGS1995 molybdenite triplet (Bulletin2131 p13/PDF19): H/G cite the revised O'Hare,Lewis,Parkinson1988 fluorine-combustion evaluation, and S cites McBride/Westrum1976 calorimetry,with stated source intervals. The newly retained NBS1982 Table52:Mo p2-201 was prepared1966 and predates these revisions; its H/G differ by about37kJ/mol. Keep the later source-consistent triplet preferred while preserving every older NBS alternative. R16d4a property-history review."

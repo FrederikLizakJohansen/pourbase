@@ -66,7 +66,7 @@ class NEASrBaAuxiliaryTests(unittest.TestCase):
         review=json.loads(self.db.metadata['R11j3h_NEA_Sr_Ba_review'])
         self.assertEqual((review['new_observations'],review['new_species'],review['NEA_own_observations'],review['open_NBS_observations'],review['same2020reprint_cells_linked']),(20,1,17,3,17))
         self.assertEqual(len(json.loads(self.db.metadata['R11j3h_Sr_Ba_observations'])),20)
-        self.assertEqual(self.db.policy.fingerprint,'f8ee0083e857')
+        self.assertEqual(self.db.policy.fingerprint,'586e3da17300')
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')
 

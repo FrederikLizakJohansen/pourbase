@@ -34,7 +34,7 @@ class NEA2020OxidePyrovanadateTests(unittest.TestCase):
         self.assertEqual(ref.source_id,'NEA_OECD_20261025_ancillary_R14e')
         self.assertEqual(source['quoted_source_uncertainty_J_mol'],786)
         self.assertEqual(self.db.selections[source['record_id'],G].chosen.value_id,source['original_value_id'])
-        self.assertEqual(self.db.policy.fingerprint,'f8ee0083e857')
+        self.assertEqual(self.db.policy.fingerprint,'586e3da17300')
 
     def test_pyrovanadate_energy_keeps_two_mg_and_two_v_atoms(self):
         phase=next(x for x in self.db.load_system('V',ligand_ids=(LIGAND,)).species if x.record_id==MG)

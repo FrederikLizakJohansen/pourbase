@@ -1909,3 +1909,23 @@ and units, distinct polymorphs, full fractional hydrate formula units and SI
 conversion are retained. Missing Gibbs energies and confidence intervals remain
 explicit. These additions carry the source attribution; earlier OECD/NEA
 attribution and downstream acknowledgment remain applicable to NEA observations.
+
+## R16d4a original NBS crystalline sulfide observations
+
+Credit Wagman et al. (1982), *The NBS Tables of Chemical Thermodynamic
+Properties*, digitized with errata in explicitly open non-SRD
+[NIST M32124](https://doi.org/10.18434/M32124). NIST is acknowledged;
+its recorded [open licence](https://www.nist.gov/open/license) and warranty
+statement apply. Data are distributed without warranty. Added 26 October 2026:
+original G/H/S values, full formula units, source phase labels, SI conversion,
+explicit missing widths and evaluation/derivation identities.
+
+The previously reviewed USGS molybdenite revision remains preferred under three
+documented property rules. USGS and Robie and Hemingway (1995), Bulletin 2131,
+[doi:10.3133/b2131](https://doi.org/10.3133/b2131), are acknowledged. Every
+older NBS alternative remains. Selb et al. (2017),
+[doi:10.1002/zaac.201700140](https://doi.org/10.1002/zaac.201700140), supplies
+the scientific Pd(II)/disulfide definition; no numerical thermochemistry from
+that article is imported. Earlier OECD/NEA attribution and downstream
+acknowledgment requirements remain applicable to NEA observations.
+See [the source review](docs/sources/nbs-crystalline-sulfides.md).
