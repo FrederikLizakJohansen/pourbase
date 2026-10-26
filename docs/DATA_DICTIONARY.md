@@ -1832,3 +1832,20 @@ states and net reaction electron coefficients are stored separately. Existing
 free-component references, phase identities, default maps and strict coverage
 remain. The remaining 90 preview rows stay tracked for the next batch.
 See [the source review](sources/nbs-crystalline-bromides-iodides.md).
+
+## Remaining open NBS bromide/iodide enthalpies
+
+R16d2b retains 88 enthalpy observations, adding 80 H-only crystalline records
+and eight alternatives on existing records. All earlier preferred values and
+observations remain. The two source-empty rows have explicit dispositions;
+they create no empty species. Metadata keys are `R16d2b_NBS_halide_source_review`,
+`R16d2b_NBS_halide_observations` and `R16d2b_source_and_model_holds`.
+
+Full hydrate units, fractional hydration and distinct formal oxidation/net
+electron coefficients for polyhalides are retained. Missing G/S and confidence
+remain explicit. Enabling the corresponding halide includes missing-G records
+in the completeness report; available-data calculations omit them. Default
+maps, masks and strict 53/56 periodic counts remain unchanged.
+The full 154-row inventory is reconciled: 263 new observations, 15 original-cell
+links, 184 source blanks, 137 new records and 249 newly available properties.
+See [the source review](sources/nbs-crystalline-bromides-iodides.md).

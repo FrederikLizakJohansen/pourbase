@@ -79,3 +79,41 @@ The remaining 90 source rows are tracked separately for the next batch,
 including two rows with no numerical G/H/S value. Completed source reviews,
 NEA permission and downstream acknowledgment requirements carry forward.
 See [distributed notices](../../THIRD_PARTY_NOTICES.md).
+
+## Remaining enthalpy rows: R16d2b
+
+The final 90 source rows contain 88 enthalpy cells and two rows with no
+numerical G/H/S value. R16d2b retains all 88 enthalpies, adding 80 crystalline
+records with H only. Eight observations are alternatives on existing NEA
+records: SnBr2, SnI2, NiBr2, NiI2, FeBr3, FeI2, ZrBr4 and ZrI4.
+All earlier preferred values and observations remain. BiBr3 and SnI4 supply
+no numerical G/H/S in these original rows; their source-empty dispositions
+are retained without adding empty records. Existing SnI4 evidence remains.
+
+Every new observation uses the same explicitly open NBS release, exact source
+record, original value, crystalline phase, units and conditions as the first
+batch. Missing uncertainty remains NULL. Complete hydrate formulas retain
+all water, including BaI2·2.5H2O with fractional stoichiometry. NaI3, KI3
+and RbBr3 retain formal alkali oxidation state +1 separately from the net
+three-electron reaction against free halide.
+
+The H-only records have explicit missing G and S. They are excluded from
+Gibbs calculations and reported as missing-G records when the corresponding
+halide component is enabled. Default component scope and strict periodic
+counts remain unchanged at 53 experimental systems or 56 with fallbacks.
+Available-data calculations continue to cover 75 systems. No Gibbs energy
+or entropy is inferred from enthalpy alone.
+
+Validation covers all 270 remaining source-property slots, full formulas and
+reaction charge, 150 buffered-halide diagrams and 500 primary-element balances
+across 50 systems. Earlier preferred values, default maps and uncertainty masks
+remain unchanged. Buffered phase maps also remain unchanged when incomplete
+systems are calculated using their available Gibbs energies.
+
+Metadata keys are `R16d2b_NBS_halide_source_review`,
+`R16d2b_NBS_halide_observations` and `R16d2b_source_and_model_holds`.
+Together the two batches reconcile all 154 rows and 462 G/H/S slots:
+263 newly retained observations, 15 linked original cells and 184 source blanks.
+They add 137 species and fill 249 properties. All source rows now have an
+explicit disposition. Structure identity, missing thermochemistry, independent
+source permissions and model extensions remain separately tracked.

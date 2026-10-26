@@ -1846,3 +1846,16 @@ to NaI·2H2O. Original numerical values and source-consistency qualifications
 remain explicit. Earlier source-specific notices and OECD downstream
 acknowledgment requirements carry forward.
 See [the source review](docs/sources/nbs-crystalline-bromides-iodides.md).
+
+## R16d2b remaining open NBS crystalline bromide/iodide enthalpies
+
+Original enthalpies are attributed to Wagman et al. (1982), *The NBS Tables
+of Chemical Thermodynamic Properties*, digitized with errata in the explicitly
+open non-SRD [NIST Public Data Repository M32124](https://doi.org/10.18434/M32124).
+NIST is acknowledged. The [NIST open licence](https://www.nist.gov/open/license)
+applies; data are distributed without warranty. Accessed 26 October 2026.
+Exact original record/column, formula, crystalline state, conditions and missing
+uncertainty accompany each observation. Full hydrate and polyhalide units
+remain explicit. Existing source-specific notices and OECD downstream
+acknowledgment requirements carry forward.
+See [the source review](docs/sources/nbs-crystalline-bromides-iodides.md).
