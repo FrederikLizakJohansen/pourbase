@@ -21,7 +21,7 @@ when considering a replacement.
 | NiO₂ | Native aqueous NiO₂²⁻ remains a different species. The [2025 oxygen-rich oxide study](https://doi.org/10.1021/acs.inorgchem.5c01477) includes computed Ni₂O₅ stability, with a different composition and thermodynamic scope. |
 | PdO₂ | [Wolff et al. (2021)](https://doi.org/10.1039/D1CE00220A) supplies a ternary phase-equilibrium lead. An isolated, verified 298.15 K formation G for the target crystal remains missing. |
 | PtO | Native aqueous PtO is a separate species. Primary platinum-oxide DFT studies provide computed energies and structural leads; exact experimental crystal G requires further evidence. |
-| PtO₂ | [Chen and Yang (2020)](https://doi.org/10.1016/j.commatsci.2020.109708) distinguishes computed α/β phase free energies. The [open NBS release](https://doi.org/10.18434/M32124), logical record 6146, supplies PtO₂ **gas**, which retains its own phase scope. |
+| PtO₂ | [Chen and Yang (2020)](https://doi.org/10.1016/j.commatsci.2020.109708) distinguishes computed α/β phase Gibbs energies. The [open NBS release](https://doi.org/10.18434/M32124), logical record 6146, supplies PtO₂ **gas**, which retains its own phase scope. |
 
 The retrieved 2019 indium author manuscript carries **CC BY-NC-ND 3.0**.
 Its introduction gives an adopted NIST 46.7 log Ksp of −36.9, while its conclusion

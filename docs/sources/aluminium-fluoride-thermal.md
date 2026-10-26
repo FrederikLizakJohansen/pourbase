@@ -49,7 +49,7 @@ Scomplex = S(Al3+) + n S(F−) + Sassociation
 
 Both properties enter as local class E `source_verified_estimate` observations,
 filling four missing fields. Original 1953 entropy values are excluded:
-their free energies use ionic strength 0.50, while the enthalpies use
+their Gibbs energies use ionic strength 0.50, while the enthalpies use
 0.06–0.2. The local entropies above are derived from the retained I=0 G
 models and qualified H approximation. No measured infinite-dilution entropy
 or additional temperature model is claimed. Ambient aqueous pressure-flat

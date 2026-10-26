@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this dataset, cite this release and the scientific sources linked from the thermochemistry table."
-title: "Curated Gibbs Free Energies for Aqueous Metal Species and Crystalline Solids"
+title: "Curated Gibbs Energies for Aqueous Metal Species and Crystalline Solids"
 type: dataset
 authors:
   - family-names: "Johansen"
