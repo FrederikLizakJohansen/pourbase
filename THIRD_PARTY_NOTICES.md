@@ -1797,3 +1797,37 @@ NIST is acknowledged; the [NIST open licence](https://www.nist.gov/open/license)
 applies and data are distributed without warranty. Six local water-representation
 conversions preserve the original source quantities and input references.
 See [the source review](docs/sources/nea-arsenic-auxiliaries.md).
+
+## R11j3l remaining NEA auxiliary selections and open NBS alternatives
+
+Grenthe, I. et al. (1992). Chemical Thermodynamics of Uranium. Chemical Thermodynamics 1, OECD Nuclear Energy Agency. Table IV.1 pp.64,68,69,71; Chapters VI.2.3, VI.3.1.1, VI.4.1.2; Appendix A p.620.
+([official volume](https://www.oecd-nea.org/upload/docs/application/pdf/2019-12/uranium.pdf)).
+
+Rard, J. A. et al. (1999). Chemical Thermodynamics of Technetium. Chemical Thermodynamics 3, OECD Nuclear Energy Agency. Table IV.1 p.54; Chapter VI.1.1.1 pp.267–268.
+([official volume](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/chemical_thermodynamics_of_technetium_volume_3.pdf)).
+
+Guillaumont, R. et al. (2003). Update on the Chemical Thermodynamics of Uranium, Neptunium, Plutonium, Americium and Technetium. Chemical Thermodynamics 5, OECD Nuclear Energy Agency. Table 8-1 p.139; Chapter 14.1.1.1 p.393.
+([official volume](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/update_on_the_chemical_thermodynamics_of_uranium_neptunium_plutonium_americium_and_technetium_volume_5.pdf)).
+
+Gamsjäger, H. et al. (2005). Chemical Thermodynamics of Nickel. Chemical Thermodynamics 6, OECD Nuclear Energy Agency. Table III-1 p.44; Chapter V.1.2 p.77; Chapter VI.2.1 and Table VI-1 p.250.
+([official volume](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/chemical_thermodynamics_of_nickel_volume_6.pdf)).
+
+Olin, Å. et al. (2005). Chemical Thermodynamics of Selenium. Chemical Thermodynamics 7, OECD Nuclear Energy Agency. Table IV-1 p.75; Chapter VI.2.1.1 pp.433–434.
+([official volume](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/chemical_thermodynamics_of_selenium_volume_7.pdf)).
+
+OECD and NEA are acknowledged. Accessed 26 October 2026. The supplied
+clarification and [OECD data terms](https://www.oecd.org/en/about/terms-conditions.html)
+cover these selected/evaluated outputs and adaptations, subject to applicable
+additional restrictions. Include the same acknowledgment requirement in
+sublicences and require further sublicensees to do the same. Direct copied
+NaF Glushko cells remain held. Scientific ancestry and source qualifications
+accompany each admitted observation.
+
+Original NBS alternatives and reference-only aqueous H2O2 context are attributed
+to Wagman et al. (1982), *The NBS Tables of Chemical Thermodynamic Properties*,
+digitized with errata, explicitly open non-SRD
+[NIST Public Data Repository M32124](https://doi.org/10.18434/M32124).
+NIST is acknowledged; the [NIST open licence](https://www.nist.gov/open/license)
+applies. Data are distributed without warranty. Original missing uncertainties
+and the KI publisher's relaxed G/H/S qualification remain explicit.
+See [the source review](docs/sources/nea-other-auxiliaries.md).

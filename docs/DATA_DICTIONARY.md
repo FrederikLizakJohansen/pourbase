@@ -1792,3 +1792,26 @@ remain. The existing policy changes 25 earlier preferred IDs (eight numerical
 changes). The H-only hydrate makes strict As completeness fail: 53 experimental
 systems or 56 with fallbacks; available-data calculations still cover all 75.
 See [the source review](sources/nea-arsenic-auxiliaries.md).
+
+## Remaining NEA auxiliary observations
+
+R11j3l retains 36 reported observations: 18 NEA selected/evaluated properties
+and 18 original open NBS alternatives. Five new species gain 15 properties;
+the existing Ni entropy review is linked without duplication. Twelve earlier
+preferred records change, including eleven numerical changes. All earlier
+observations, fixed references and phase identities remain.
+
+Metadata keys are `R11j3l_NEA_auxiliary_review`, `R11j3l_auxiliary_observations`,
+`R11j3l_source_and_model_holds` and `R11j3l_H2O2_reference_observations`.
+The last preserves four reference-only context properties, excluded from reported
+observation and preferred-property counts. New HCN gas requires optional-gas
+selection, fixed fugacity and an external N2 reference. SCN− is primary S with
+one buffered CN− reference and zero electron coefficient. NaNO3/KBr/KI use
+one free-anion component each. Source-specific uncertainties and qualifications
+remain explicit. Three direct copied Glushko NaF cells stay held.
+
+The default phase maps remain unchanged; N/Tl uncertainty masks are updated.
+Strict coverage stays 53 experimental systems or 56 with fallbacks, with
+available-data calculations covering 75. The finite nonbold auxiliary source
+review is complete; independent source and model holds remain tracked.
+See [the source review](sources/nea-other-auxiliaries.md).
