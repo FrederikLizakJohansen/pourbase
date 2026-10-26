@@ -76,3 +76,8 @@ permission holds remain separate. See [NEA reuse](nea-tdb-reuse.md) and
 Metadata keys are `R11j3i_NEA_halogen_sulfur_review`,
 `R11j3i_halogen_sulfur_observations` and `R11j3i_source_and_model_holds`.
 All prior observations, species identities, phase metadata and production policy remain.
+
+The later R11j3i1 review resolves the formal H2SO3 hold through an explicit
+unit-water conversion onto the existing SO2(aq) population. Both original
+Gibbs versions are retained as local derived alternatives. See
+[the water-representation review](nea-sulfurous-acid-water.md).

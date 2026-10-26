@@ -11,10 +11,10 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended Gibbs energies | 1241 (77 %) |
 | Recommended entropies | 1213 (75 %) |
 | Recommended formation enthalpies | 1180 (73 %) |
-| Reported values retained | 4887 |
-| Source records | 1821 (261 distinct citations) |
+| Reported values retained | 4889 |
+| Source records | 1822 (262 distinct citations) |
 | Phase records | 990 (479 resolved) |
-| Warnings | 2489 |
+| Warnings | 2490 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 31 |
@@ -44,17 +44,17 @@ Species by phase:
 |---|---|---|
 | `species` | 1610 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
 | `selected_thermochemistry` | 1610 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 4887 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1821 | Full citations, links, locators and access dates |
+| `reported_thermochemistry` | 4889 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1822 | Full citations, links, locators and access dates |
 | `phases` | 990 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 2489 | Scientific cautions attached to records |
+| `warnings` | 2490 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 31 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 59 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 147 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 150 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -143,7 +143,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Re | Rhenium (Re) | 7 | 1 | 6 | 0 | 0 | 5 | 5 | 5 | 6 |
 | Rh | Rhodium (Rh) | 10 | 6 | 4 | 0 | 0 | 9 | 8 | 9 | 15 |
 | Ru | Ruthenium (Ru) | 10 | 2 | 8 | 0 | 0 | 6 | 7 | 6 | 13 |
-| S | Sulfur (S) | 14 | 10 | 1 | 3 | 0 | 12 | 13 | 11 | 14 |
+| S | Sulfur (S) | 14 | 10 | 1 | 3 | 0 | 12 | 13 | 11 | 15 |
 | Sb | Antimony (Sb) | 11 | 3 | 8 | 0 | 0 | 10 | 8 | 9 | 8 |
 | Sc | Scandium (Sc) | 14 | 5 | 6 | 3 | 0 | 9 | 11 | 12 | 25 |
 | Se | Selenium (Se) | 30 | 11 | 8 | 11 | 0 | 26 | 22 | 26 | 42 |

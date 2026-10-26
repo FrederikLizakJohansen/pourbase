@@ -1859,3 +1859,26 @@ uncertainty accompany each observation. Full hydrate and polyhalide units
 remain explicit. Existing source-specific notices and OECD downstream
 acknowledgment requirements carry forward.
 See [the source review](docs/sources/nbs-crystalline-bromides-iodides.md).
+
+## R11j3i1 local sulfurous-acid water-representation alternatives
+
+Original evaluated inputs are attributed to Grenthe et al. (1992), *Chemical
+Thermodynamics of Uranium*, Chemical Thermodynamics 1, OECD Nuclear Energy
+Agency, Table IV.1 p.68 and Chapter VI.2.1.5 pp.376–378
+([official volume](https://www.oecd-nea.org/upload/docs/application/pdf/2019-12/uranium.pdf)),
+and Guillaumont et al. (2003), *Update*, Chemical Thermodynamics 5,
+Table 8-1 p.138
+([official volume](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/update_on_the_chemical_thermodynamics_of_uranium_neptunium_plutonium_americium_and_technetium_volume_5.pdf)).
+OECD and NEA are acknowledged. The supplied clarification and
+[OECD data terms](https://www.oecd.org/en/about/terms-conditions.html) cover
+these selected outputs and adaptations. Include the same acknowledgment
+requirement in sublicences and require further sublicensees to do the same.
+
+The liquid-water reference is attributed to Wagman et al. (1982), explicitly
+open non-SRD [NIST M32124](https://doi.org/10.18434/M32124).
+NIST is acknowledged; its [open licence](https://www.nist.gov/open/license)
+applies and data are distributed without warranty. Goldberg and Parker (1985),
+[doi:10.6028/jres.090.024](https://doi.org/10.6028/jres.090.024), pp.342–343,
+provides the scientific-convention reference; no numerical property rows from
+that article are imported. Accessed 26 October 2026.
+See [the source review](docs/sources/nea-sulfurous-acid-water.md).

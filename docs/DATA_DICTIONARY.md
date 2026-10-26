@@ -1849,3 +1849,19 @@ maps, masks and strict 53/56 periodic counts remain unchanged.
 The full 154-row inventory is reconciled: 263 new observations, 15 original-cell
 links, 184 source blanks, 137 new records and 249 newly available properties.
 See [the source review](sources/nbs-crystalline-bromides-iodides.md).
+
+## Formal sulfurous-acid water representation
+
+R11j3i1 retains two local derived Gibbs alternatives on the existing neutral
+SO2(aq) record, preserving raw 1992/2003 H2SO3 source versions and confidence
+intervals in the locators. The explicit unit-water convention subtracts the
+unchanged open liquid-water anchor. Combined confidence remains NULL because
+the water input supplies no uncertainty/covariance. Class E and
+`source_verified_estimate` distinguish the local conversions. Every preferred
+value and species identity remains; no independent acid population is added.
+
+Metadata keys are `R11j3i1_sulfurous_acid_review`,
+`R11j3i1_water_converted_observations` and `R11j3i1_SO2_water_convention`.
+The scientific identity hold is resolved; nonunit-water and new thermal
+component models remain separate. See
+[the source review](sources/nea-sulfurous-acid-water.md).
