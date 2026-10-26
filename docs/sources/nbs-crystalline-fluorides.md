@@ -53,3 +53,29 @@ The full fluoride inventory contains 64 rows and 118 numeric G/H/S cells:
 29 Gibbs-bearing rows and 83 numeric cells. The remaining 35 rows contain
 35 numeric cells. Metadata keys are `R16d3a_NBS_fluoride_source_review`,
 `R16d3a_NBS_fluoride_observations` and `R16d3a_source_and_model_holds`.
+
+## Completion of the remaining H/S rows
+
+R16d3b completes the 35 remaining source rows: 19 new enthalpies and four
+new entropies on 23 records, with 12 original source cells already retained
+and linked without duplication. All 70 remaining source blanks have explicit
+dispositions. Source-derived G stays absent for every new record. When fluoride
+is requested, calculations report and omit these records for missing G.
+
+Beta-cristobalite BeF2 (`cr2`, logical row8763) retains H −1023800 J/mol,
+separately from alpha-quartz BeF2 (row8762, H −1026800 J/mol). Its G and S
+remain unknown. No value is transferred between the two phases. Cubic PtF6
+and OsF6 retain source entropies with no space group inferred. RbF·1.5H2O and
+CsF·1.5H2O keep 1.5 O and 3 H per primary formula unit; no doubling or
+truncation changes their molar basis. Every new observation retains structured
+evaluation/SI-derivation identities and missing confidence intervals.
+
+The full 64-row inventory now reconciles 192 source slots: 118 numeric cells
+(103 added observations and 15 original links) and 74 source blanks. Across
+both batches it supplies 48 records and 94 newly available properties. Earlier
+preferred values and all fixed references remain. The H/S completion preserves
+all 75 default maps/masks, 81 buffered maps, 54 thermal inventories and 216
+primary balances. Earlier source qualifications and independent model/permission
+holds carry forward. Metadata keys for this completion are
+`R16d3b_NBS_fluoride_HS_review`, `R16d3b_NBS_fluoride_HS_observations`
+and `R16d3b_source_and_model_holds`.

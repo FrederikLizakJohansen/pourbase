@@ -1913,3 +1913,11 @@ original NBS evaluation and SI derivation. CrF3 retains a printed-source
 consistency qualification. Fluoride uses the unchanged buffered component;
 new thermal, brine and closed-fluoride models remain separate.
 See [the source review](sources/nbs-crystalline-fluorides.md).
+
+R16d3b completes the original fluoride inventory with 19 H and four S
+observations on 23 records. Their absent Gibbs energies remain explicit;
+calculations omit and report them when fluoride is requested. Beta-cristobalite
+BeF2 remains separate from alpha-quartz; fractional hydrates preserve their
+molar basis. The complete 64-row source inventory accounts for all 192 slots:
+103 new observations, 15 retained original cells and 74 blanks. All earlier
+preferences, fixed references and independent source/model holds remain.

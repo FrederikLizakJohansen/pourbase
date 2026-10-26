@@ -1901,3 +1901,11 @@ units and source phase descriptions, with SI conversion and explicit missing
 confidence intervals. CrF3 preserves a printed-source consistency qualification.
 The source publications and private permission correspondence remain external.
 See [the source review](docs/sources/nbs-crystalline-fluorides.md).
+
+R16d3b completes the same original open NBS fluoride source with 19 enthalpy
+and four entropy observations. NIST credit, the recorded open licence and
+warranty statement above apply. Added 26 October 2026: exact source values
+and units, distinct polymorphs, full fractional hydrate formula units and SI
+conversion are retained. Missing Gibbs energies and confidence intervals remain
+explicit. These additions carry the source attribution; earlier OECD/NEA
+attribution and downstream acknowledgment remain applicable to NEA observations.
