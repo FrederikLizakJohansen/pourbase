@@ -2001,3 +2001,18 @@ acknowledgment requirement in any sublicences and require further sublicensees
 to do the same. Other sources retain their separate terms and permission holds.
 The full source book and private correspondence remain external. See
 [the numerical source review](docs/sources/nea-iron-sulfides-2020.md).
+
+
+## R16d6b NEA own adjusted experimental sulfide data
+
+Credit OECD (2020), Chemical Thermodynamics of Iron, Part2, NEA No7499;
+Lemire, R. J.; Palmer, D. A.; Taylor, P.; Schlenz, H.,
+[official source](https://www.oecd-nea.org/upload/docs/application/pdf/2020-03/7499-vol13b-iron.pdf)
+(accessed27October2026). Fifteen own review-adjusted numerical observations
+retain exact locations, source intervals and experimental ancestry. The supplied
+OECD clarification and recorded data terms apply, with any source-specific
+additional restrictions. When sharing or licensing work made using these data,
+include the same acknowledgment requirement in every sublicense and require
+further sublicensees to do the same. Other sources retain their separate terms
+and permission holds. Full source books and private correspondence stay external.
+See [the source review](docs/sources/nea-iron-sulfide-adjustments.md).

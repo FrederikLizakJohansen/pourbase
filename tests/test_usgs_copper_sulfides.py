@@ -84,8 +84,8 @@ class USGSCopperSulfideTests(unittest.TestCase):
     def test_Fe_crosswalk_and_independent_holds_remain_separate(self):
         self.assertEqual((self.review['held_Fe_source_rows'], self.review['held_Fe_source_cells']), (2, 6))
         self.assertTrue(all(r['symbol'] == 'Cu' for r in self.rows))
-        self.assertEqual(self.db.policy.fingerprint, '118f85cc935a')
-        self.assertEqual((len(self.db.policy.overrides), len(self.db.policy.exclusions)), (56, 13))
+        self.assertEqual(self.db.policy.fingerprint, '4ffe2d63a073')
+        self.assertEqual((len(self.db.policy.overrides), len(self.db.policy.exclusions)), (58, 14))
         self.assertEqual(len(json.loads(self.db.metadata['R16d4c_remaining_source_holds'])), 8)
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],

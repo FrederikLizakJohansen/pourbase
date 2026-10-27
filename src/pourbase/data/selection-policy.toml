@@ -493,7 +493,7 @@ reason = "Retain the reviewed USGS1995 formation enthalpy and its stated interva
 record_id = "r05-zn-zns-wurtzite"
 property = "enthalpy_of_formation"
 source_id = "R05_completion_USGS1995_r05-zn-zns-wurtzite_hf"
-reason = "Retain the reviewed USGS1995 formation enthalpy and its stated interval with the currently preferred G/S evaluation. The newly retained older NBS H-only alternative has no confidence interval and would introduce a substantial formation-cycle mismatch if substituted into that triplet. Exact original NBS value and formula-unit conversion remain eligible evidence; source-version differences are explicit in the R16d4b review."
+reason = "Retain the reviewed USGS1995 formation enthalpy and its stated interval with the currently preferred G/S evaluation. The newly retained older NBS H-only alternative has no confidence interval and would introduce a substantial formation-cycle mismatch if substituted into that triplet. Exact original NBS value and formula-unit conversion remain eligible evidence; source-version differences are explicit in the R16d4b review. R16d6b retains the own NEA2020 reassessment of Adami/King1964 H=-191170\u00b12010J/mol. This differs by12630J/mol from the coherent USGS triplet; its source-specific cycle/phase-history question remains explicit. Retain this existing triplet preference pending that independent discrepancy review,while keeping the new class-A alternative eligible."
 
 [[overrides]]
 record_id = "r05-w-ws2-tungstenite"
@@ -524,3 +524,21 @@ record_id = "r05-fe-fes2-marcasite"
 property = "enthalpy_of_formation"
 source_id = "R16d6_NEA2020_Fe_sulfide_body"
 reason = "Prefer the explicit NEA2020 discussion recommendation on p183, with uncertainty2.38kJ/mol matching the quoted pyrite/transition input propagation. Retain the table p45 representation with uncertainty2.438kJ/mol as an unresolved source discrepancy. This replaces the older USGS-specific override because a new own NEA critical evaluation now supplies the phase-matched triplet; all earlier alternatives remain."
+
+[[overrides]]
+record_id = "r16d6-fe-fe9s10-5c-pyrrhotite"
+property = "enthalpy_of_formation"
+source_id = "R16d6_NEA2020_Fe_sulfide_main"
+reason = "Prefer the final NEA2020 combined 5C enthalpy over retained per-study adjusted equilibrium/calorimetric components. All are alternatives of related experimental ancestry, not independent final recommendations."
+
+[[overrides]]
+record_id = "r05-fe-fes2-pyrite"
+property = "enthalpy_of_formation"
+source_id = "R16d6_NEA2020_Fe_sulfide_main"
+reason = "Prefer the final NEA2020 combined pyrite enthalpy with its evaluated total interval over the retained own per-study adjustments from calorimetry and third-law equilibrium. All original measurements and review variants remain."
+
+[[exclusions]]
+record_id = "r16d6-fe-fe7s8-4c-pyrrhotite"
+property = "enthalpy_of_formation"
+source_id = "R16d6b_NEA2020_comparison2014"
+reason = "NEA2020 p172 presents this reviewer-standardized 2014 result for comparison only and explicitly leaves it outside the assessment because its Ag2S thermochemical anchor has not been evaluated in the TDB project. Retain the own corrected observation and interval; scientific eligibility remains excluded pending that anchor review."

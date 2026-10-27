@@ -2005,3 +2005,13 @@ remain as alternatives. Policy118f85cc935a prefers the explicit final selections
 seven earlier choices change and every earlier observation remains. OECD
 attribution and downstream acknowledgment apply. See
 [the source review](sources/nea-iron-sulfides-2020.md).
+
+
+## NEA own adjusted sulfide alternatives: R16d6b
+
+Fifteen review-adjusted H observations retain individual experimental ancestry,
+full formula units and printed uncertainty intervals. Distinct 3C pyrrhotite
+and quenched FeS records add H only. One 2014 comparison result has an explicit
+scientific selection exclusion. All earlier observations and choices remain.
+Policy4ffe2d63a073 has58 overrides/14 exclusions; recommendation3344748823f9fcb1.
+See [the source review](sources/nea-iron-sulfide-adjustments.md).
