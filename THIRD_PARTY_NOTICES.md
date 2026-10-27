@@ -2061,3 +2061,20 @@ clarification and data terms apply, with any source-specific restrictions.
 When sharing or licensing work made using these data, include the same
 acknowledgment requirement in every sublicense and require further sublicensees
 to do the same. Other sources retain their separate terms and permission holds.
+
+
+## R16d6g NEA iron cyanide and thiocyanate data
+
+Credit OECD (2020), Lemire, R. J.; Palmer, D. A.; Taylor, P.; Schlenz, H.,
+*Chemical Thermodynamics of Iron, Part 2*, NEA No. 7499,
+[official source](https://www.oecd-nea.org/upload/docs/application/pdf/2020-03/7499-vol13b-iron.pdf)
+(accessed 27 October 2026). Twenty-seven own selected/evaluated observations
+retain exact source locations, formula units and uncertainty qualifications.
+The recorded OECD clarification and data terms apply, with any source-specific
+additional restrictions. When sharing or licensing work made using these data,
+include the same acknowledgment requirement in every sublicense and require
+further sublicensees to do the same. The K+ buffered reference reuses the separate
+open non-SRD [NIST NBS M32124](https://doi.org/10.18434/M32124) observation:
+NIST is acknowledged and the data are distributed without warranty. Other
+sources retain their separate terms and permission holds. See the
+[source review](docs/sources/nea-iron-cyanide-thiocyanate.md).

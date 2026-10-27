@@ -80,14 +80,14 @@ class NBSSulfideThermalTests(unittest.TestCase):
             selection=self.db.selections[self.row(logical)['record_id'],prop]
             self.assertEqual((selection.chosen.value,selection.chosen.evidence_class),(value,'A'))
             self.assertNotEqual(selection.chosen.source_id,SID)
-        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,17))
-        self.assertEqual(self.db.policy.fingerprint,'4d3bf8cf952c')
+        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,18))
+        self.assertEqual(self.db.policy.fingerprint,'7d50a722bdbb')
 
     def test_source_holds_and_independent_reuse_conditions_carry_forward(self):
         holds=self.review['source_phase_held_rows']
         self.assertEqual({x['logical_record']for x in holds},{5344,6256,6481,8109,8113})
         self.assertTrue({x['logical_record']for x in holds}.isdisjoint(x['logical_record']for x in self.review['records']))
-        self.assertEqual(len(self.db.available_ligands()),32)
+        self.assertEqual(len(self.db.available_ligands()),33)
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')
 

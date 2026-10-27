@@ -71,8 +71,8 @@ class NBSCrystallineSulfideTests(unittest.TestCase):
             self.assertTrue(selection.basis.startswith('override:'))
             self.assertIn('1988',selection.basis)
             self.assertTrue(any(x.source_id==SID for x in selection.candidates))
-        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,17))
-        self.assertEqual(self.db.policy.fingerprint,'4d3bf8cf952c')
+        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,18))
+        self.assertEqual(self.db.policy.fingerprint,'7d50a722bdbb')
         self.assertEqual(self.review['preference_review']['original_NBS_cells']['preparation_year'],1966)
 
     def test_pyrite_now_has_G_and_H_while_original_entropy_is_retained(self):
@@ -93,7 +93,7 @@ class NBSCrystallineSulfideTests(unittest.TestCase):
         self.assertEqual((ev['original_table'],ev['original_printed_page'],ev['original_pdf_page']),('42:Pd','2-183',191))
         self.assertTrue(ev['printed_GHS_cells_visually_verified'])
         self.assertAlmostEqual(ev['source_cycle_residual_J_mol'],-1032.2345)
-        self.assertEqual(len(self.db.available_ligands()),32)
+        self.assertEqual(len(self.db.available_ligands()),33)
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')
 

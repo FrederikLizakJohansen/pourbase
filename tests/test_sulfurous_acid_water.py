@@ -58,7 +58,7 @@ class SulfurousAcidWaterTests(unittest.TestCase):
     def test_one_population_and_existing_preference_are_preserved(self):
         with self.db.connect() as c:
             self.assertEqual(c.execute("SELECT count(*) FROM species WHERE formula_ascii='H2SO3'").fetchone()[0], 0)
-            self.assertEqual(c.execute('SELECT count(*) FROM ligands').fetchone()[0], 32)
+            self.assertEqual(c.execute('SELECT count(*) FROM ligands').fetchone()[0], 33)
         self.assertEqual(self.db.selections[RID, G].chosen.value, -300676)
         self.assertNotEqual(self.db.selections[RID, G].chosen.source_id, SID)
         context = json.loads(self.db.metadata['R11j3i1_SO2_water_convention'])
@@ -68,7 +68,7 @@ class SulfurousAcidWaterTests(unittest.TestCase):
         review = json.loads(self.db.metadata['R11j3i1_sulfurous_acid_review'])
         self.assertTrue(review['scientific_identity_hold_resolved'])
         self.assertEqual((review['new_observations'], review['new_species'], review['newly_available_properties']), (2, 0, 0))
-        self.assertEqual(self.db.policy.fingerprint, '4d3bf8cf952c')
+        self.assertEqual(self.db.policy.fingerprint, '7d50a722bdbb')
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
 
 

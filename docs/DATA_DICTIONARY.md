@@ -2050,3 +2050,16 @@ reference, copied from an existing reviewed NEA2005 observation; all 31 earlier
 references remain, giving 32 in total. Its entropy includes a source-qualified
 configurational estimate. Chromite remains external pending a suitable open
 chromium reference. See the [source review](sources/nea-iron-silicates-ferrite.md).
+
+
+## NEA cyanide/thiocyanate closing batch: R16d6g
+
+Twenty-seven observations add 11 species and 26 selectable properties. One
+literal KFe(CN)6(3−) entropy is reported with an exact scientific exclusion for
+a source reaction-cycle discrepancy. Conditional fit errors remain qualified
+metadata; the uncertainty field keeps the reported total interval or NULL.
+Five additional-component rows encode complete potassium counts. The new K+
+reference reuses an existing open NBS observation; all 32 prior references remain.
+All earlier observations and preferred values are preserved. See the
+[source review](sources/nea-iron-cyanide-thiocyanate.md) and the
+[closing summary](database-expansion-closure.md).

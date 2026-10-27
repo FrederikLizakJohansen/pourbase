@@ -10,3 +10,5 @@ prune scripts
 exclude *.csv
 exclude collaborator-*.md permission-emails.md agent-prompt-*.md
 global-exclude __pycache__ *.py[cod]
+
+include docs/database-follow-ups.csv

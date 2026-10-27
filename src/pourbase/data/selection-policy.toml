@@ -584,3 +584,9 @@ record_id = "r16d6f-fe-nife2o4-trevorite"
 property = "enthalpy_of_formation"
 source_id = "R16d6f_NEA2020_silicate_ferrite"
 reason = "Prefer the final NEA2020 combined nickel-ferrite formation enthalpy over its retained own per-study adjusted calorimetric inputs. This final assessment supplies the H used with the published G/S triplet; shared NiO/hematite ancestry and all alternatives remain explicit."
+
+[[exclusions]]
+record_id = "r16d6g-fe-kfecn6-minus3"
+property = "absolute_entropy"
+source_id = "R16d6g_NEA2020_Fe_CN_SCN_main"
+reason = "NEA2020 main TableIII-1 p49 prints234.300 J/(molK), one J/(molK) above its own TableIII-2 p54 entropy cycle for Fe(CN)6(4−)+K+ association. G/H separately reproduce the source reaction. Retain the literal reported S and exclude it from selection pending the exact source correction/evaluation variant. No locally corrected replacement is imported from auxiliary compilation inputs; OECD permission is available."

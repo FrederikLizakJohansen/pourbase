@@ -53,7 +53,7 @@ class NEAIronSilicateFerriteTests(unittest.TestCase):
         with closing(self.db.connect())as c:r=c.execute("select *from ligands where ligand_id='nickel-ni2'").fetchone()
         self.assertEqual((r['formula_ascii'],r['charge'],r['gibbs_energy_J_mol']),('Ni',2,-45773))
         self.assertEqual(r['source_id'],'NEA_OECD_20261014_Ni')
-        self.assertEqual(len(self.db.available_ligands()),32)
+        self.assertEqual(len(self.db.available_ligands()),33)
 
     def test_ferrite_final_H_and_qualified_entropy_keep_all_alternatives(self):
         rid='r16d6f-fe-nife2o4-trevorite';record=self.db.species_records((rid,))[0]
@@ -62,7 +62,7 @@ class NEAIronSilicateFerriteTests(unittest.TestCase):
         self.assertEqual(self.db.selections[rid,S].chosen.status,'source_verified_estimate')
         rule=next(x for x in self.db.policy.overrides if x.record_id==rid and x.property_name==H)
         self.assertIn('combined',rule.reason)
-        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,17))
+        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,18))
 
     def test_positive_Ni_component_and_full_Fe_unit_balance(self):
         rid='r16d6f-fe-nife2o4-trevorite'

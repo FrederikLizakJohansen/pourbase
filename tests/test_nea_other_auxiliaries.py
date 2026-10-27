@@ -73,7 +73,7 @@ class NEAOtherAuxiliaryTests(unittest.TestCase):
         self.assertEqual(context['NBS']['properties'], {G: -134030, H: -191170, S: 143.9})
         with self.db.connect() as c:
             self.assertEqual(c.execute("SELECT count(*) FROM species WHERE formula_ascii='H2O2'").fetchone()[0], 0)
-            self.assertEqual(c.execute('SELECT count(*) FROM ligands').fetchone()[0], 32)
+            self.assertEqual(c.execute('SELECT count(*) FROM ligands').fetchone()[0], 33)
 
     def test_reprint_link_and_direct_copy_hold_remain_distinct(self):
         review = json.loads(self.db.metadata['R11j3l_NEA_auxiliary_review'])
@@ -86,7 +86,7 @@ class NEAOtherAuxiliaryTests(unittest.TestCase):
         tl = self.db.species_records(('gfe-tl-tl-q+1-aqueous-aq',))[0]
         self.assertTrue(any(x.type == 'r11j3l_Tl_discussion_sign_typo' for x in tl.warnings))
         self.assertEqual(self.db.selections[tl.record_id, G].chosen.value, -32400)
-        self.assertEqual(self.db.policy.fingerprint, '4d3bf8cf952c')
+        self.assertEqual(self.db.policy.fingerprint, '7d50a722bdbb')
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
 
 
