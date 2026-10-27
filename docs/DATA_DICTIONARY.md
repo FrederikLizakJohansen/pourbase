@@ -1952,3 +1952,16 @@ rows need source-phase or formal-state evidence and remain external, along with
 the four Gibbs-bearing phase holds. Current policy: 53 overrides, 13 exclusions,
 fingerprint `544b421b7f1c`; recommendation `f304af9ea86db5bf`.
 See [the source review](sources/nbs-crystalline-sulfides.md).
+
+
+## NBS sulfide source definitions: R16d4c
+
+One original Ce3S4 enthalpy, −1661000 J/mol per full formula unit, becomes
+available after review of its formal Ce(III) definition. The published ionic
+model includes one conduction electron per Ce3S4 unit; the balanced buffered
+S2− reaction independently uses 8/3 net electrons per Ce. G/S and uncertainty
+remain missing; the exact NBS specimen structure remains unresolved. All prior
+values and preferred choices stay. Eight source rows/16 numeric cells retain
+specific phase or bonding holds. Policy `544b421b7f1c` is unchanged;
+recommendation fingerprint is `868726936e6d92c1`.
+See [the source review](sources/nbs-crystalline-sulfides.md).

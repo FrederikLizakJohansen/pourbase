@@ -1944,3 +1944,14 @@ chemical-definition context; numerical thermochemistry from those articles is
 outside this import. The OECD/NEA attribution and downstream acknowledgment
 requirement above continue to apply to NEA observations, including the same
 requirement for further sublicensees. Added 26 October2026.
+
+
+R16d4c adds the original Ce3S4 enthalpy from explicitly open non-SRD
+[NIST M32124](https://doi.org/10.18434/M32124). Credit Wagman et al. (1982)
+and NIST. The recorded NIST open licence applies; data are distributed without
+warranty. [Arbouw (1974), p.38](https://www2.lorentz.leidenuniv.nl/history/proefschriften/sources/Arbouw_1974.pdf)
+provides the chemical-definition context for formal Ce(III) with a conduction
+electron; numerical thermochemistry from the thesis is outside this import.
+The earlier OECD/NEA attribution and downstream acknowledgment requirements,
+including their application to further sublicensees, continue unchanged.
+Added27 October2026.

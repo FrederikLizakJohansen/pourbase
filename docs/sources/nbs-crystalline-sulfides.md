@@ -136,3 +136,35 @@ acknowledgment requirements carry forward.
 
 Metadata keys are `R16d4b_NBS_sulfide_HS_review`,
 `R16d4b_NBS_sulfide_HS_observations` and `R16d4b_source_and_model_holds`.
+
+
+## Ce3S4 formal-state follow-up: R16d4c
+
+Original NBS logical record8113 gives H −1661 kJ/mol per full Ce3S4 unit,
+stored as −1661000 J/mol. The published ionic model in
+[Arbouw (1974), sectionIII-4, p.38](https://www2.lorentz.leidenuniv.nl/history/proefschriften/sources/Arbouw_1974.pdf)
+has trivalent Ce, divalent sulfur and one conduction electron per Ce3S4 unit.
+The model definition permits formal Ce+3 to be recorded separately from the
+balanced free-S2− reference coefficient8/3 per Ce. Full primary/sulfur counts
+are3/4, with7 atoms per formula unit. The exact NBS specimen structure stays
+unassigned; no Gibbs energy, entropy or confidence interval is inferred. The
+thesis supplies chemical-definition evidence; its numerical thermochemistry is
+outside this import. The original NBS H uses the same cleared M32124 release.
+
+This follow-up adds one H-only record and one property. Every prior observation
+and preferred choice remains; all31 references and all independent model and
+reuse holds carry forward. Policy `544b421b7f1c` stays unchanged, with53
+overrides and13 exclusions. Recommendation fingerprint: `868726936e6d92c1`.
+
+Eight source rows/16 numeric cells remain external. The completed Ag2S phase
+reviews carry forward. Cu2S alpha and the two NiS rows still need original
+phase correspondence. IrS2 and CeS2 need source-specific phase/bonding
+correspondence. For Re2S7,
+[Schwarz et al. (2004)](https://doi.org/10.1021/cm034467v) reports a Re(V)
+formulation with mixed sulfide/disulfide ligands, illustrating why a conventional
++7 assignment needs specimen evidence. These definition references add no
+thermochemical numbers. Their findings remain separate from the cleared NBS
+reuse basis. The complete91-row/273-slot inventory now accounts for148 new
+observations,3 original-cell links,16 held numeric cells and106 blanks.
+Metadata: `R16d4c_source_definition_review`, `R16d4c_NBS_Ce3S4_observation`
+and `R16d4c_remaining_source_holds`.

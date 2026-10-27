@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 1727 |
+| Species | 1728 |
 | Supported elemental systems | 75 of 118 elements |
 | Recommended Gibbs energies | 1294 (75 %) |
 | Recommended entropies | 1268 (73 %) |
-| Recommended formation enthalpies | 1291 (75 %) |
-| Reported values retained | 5139 |
-| Source records | 1826 (266 distinct citations) |
-| Phase records | 1107 (479 resolved) |
-| Warnings | 2695 |
+| Recommended formation enthalpies | 1292 (75 %) |
+| Reported values retained | 5140 |
+| Source records | 1827 (267 distinct citations) |
+| Phase records | 1108 (479 resolved) |
+| Warnings | 2697 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 31 |
@@ -24,7 +24,7 @@ Gibbs energies by evidence status:
 | Status | Species |
 |---|---|
 | `verified` | 891 |
-| `not_available` | 427 |
+| `not_available` | 428 |
 | `source_verified_estimate` | 328 |
 | `defined_reference_state` | 75 |
 | `terminal_evidence_gap` | 6 |
@@ -33,7 +33,7 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| solid | 963 | 679 | 651 | 869 |
+| solid | 964 | 679 | 651 | 870 |
 | aqueous | 590 | 522 | 445 | 327 |
 | gas | 169 | 90 | 169 | 90 |
 | liquid | 5 | 3 | 3 | 5 |
@@ -42,19 +42,19 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 1727 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 1727 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 5139 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1826 | Full citations, links, locators and access dates |
-| `phases` | 1107 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 2695 | Scientific cautions attached to records |
+| `species` | 1728 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 1728 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 5140 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1827 | Full citations, links, locators and access dates |
+| `phases` | 1108 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 2697 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 31 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 59 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 163 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 166 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -100,7 +100,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | C | Carbon (C) | 14 | 6 | 2 | 6 | 0 | 12 | 14 | 12 | 21 |
 | Ca | Calcium (Ca) | 43 | 11 | 30 | 2 | 0 | 36 | 35 | 38 | 91 |
 | Cd | Cadmium (Cd) | 26 | 12 | 12 | 2 | 0 | 19 | 22 | 14 | 34 |
-| Ce | Cerium (Ce) | 18 | 7 | 11 | 0 | 0 | 14 | 11 | 15 | 22 |
+| Ce | Cerium (Ce) | 19 | 7 | 12 | 0 | 0 | 14 | 11 | 16 | 24 |
 | Cl | Chlorine (Cl) | 12 | 8 | 0 | 4 | 0 | 10 | 12 | 10 | 8 |
 | Co | Cobalt (Co) | 31 | 7 | 21 | 3 | 0 | 18 | 23 | 21 | 51 |
 | Cr | Chromium (Cr) | 23 | 8 | 13 | 2 | 0 | 10 | 14 | 12 | 36 |
