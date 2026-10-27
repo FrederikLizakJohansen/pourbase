@@ -86,7 +86,7 @@ class NEAOtherAuxiliaryTests(unittest.TestCase):
         tl = self.db.species_records(('gfe-tl-tl-q+1-aqueous-aq',))[0]
         self.assertTrue(any(x.type == 'r11j3l_Tl_discussion_sign_typo' for x in tl.warnings))
         self.assertEqual(self.db.selections[tl.record_id, G].chosen.value, -32400)
-        self.assertEqual(self.db.policy.fingerprint, '544b421b7f1c')
+        self.assertEqual(self.db.policy.fingerprint, '118f85cc935a')
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
 
 

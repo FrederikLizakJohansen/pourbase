@@ -35,8 +35,8 @@ class DatasetSnapshotTests(unittest.TestCase):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
             )}
             self.assertEqual(tables, TABLES)
-            for table, count in (("species", 1733), ("reported_thermochemistry", 5155),
-                                 ("sources", 1829), ("warnings", 2707), ("additional_components", 59),
+            for table, count in (("species", 1737), ("reported_thermochemistry", 5176),
+                                 ("sources", 1832), ("warnings", 2714), ("additional_components", 59),
                                  ("computational_fallbacks", 6), ("element_coverage", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
@@ -224,11 +224,11 @@ class DatasetSnapshotTests(unittest.TestCase):
         zinc = self.database.load_system("Zn", ligand_ids=("sulfide-s",))
         phases = {s.record_id for s in zinc.species if s.formula_ascii == "ZnS"}
         self.assertEqual(phases, {"r05-zn-zns-sphalerite", "r05-zn-zns-wurtzite"})
-        # Original NBS G/H complete pyrite while its earlier entropy remains evidence.
+        # NEA2020 revises the preferred triplet; NBS and earlier entropy stay as evidence.
         pyrite = self.database.species_records(("r05-fe-fes2-pyrite",))[0]
-        self.assertEqual(pyrite.thermochemistry.gibbs_energy_J_mol.value, -166900)
-        self.assertEqual(pyrite.thermochemistry.formation_enthalpy_J_mol.value, -178200)
-        self.assertEqual(pyrite.thermochemistry.entropy_J_mol_K.value, 52.93)
+        self.assertEqual(pyrite.thermochemistry.gibbs_energy_J_mol.value, -162219)
+        self.assertEqual(pyrite.thermochemistry.formation_enthalpy_J_mol.value, -173630)
+        self.assertEqual(pyrite.thermochemistry.entropy_J_mol_K.value, 52.92)
         self.assertTrue(any(row.property == "absolute_entropy" and row.value == 52.9
                             for row in pyrite.reported))
         self.assertIn(pyrite.record_id, {s.record_id for s in iron.species})
@@ -1938,9 +1938,9 @@ class SelectionPolicyGuardTests(unittest.TestCase):
         database = pb.ThermodynamicDatabase.bundled()
         selections = database.selections
         self.assertEqual(Counter(key[1] for key in selections),
-                         {"gibbs_energy_of_formation": 1299, "absolute_entropy": 1273, "enthalpy_of_formation": 1297})
+                         {"gibbs_energy_of_formation": 1303, "absolute_entropy": 1275, "enthalpy_of_formation": 1301})
         chosen = sorted(f"{key[0]}|{key[1]}|{item.chosen.value_id}" for key, item in selections.items())
-        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "db8a6770212f9101",
+        self.assertEqual(hashlib.sha256("\n".join(chosen).encode()).hexdigest()[:16], "86b894f121b636b2",
                          "the evidence or the default policy changed the recommended values")
 
     def test_the_file_holds_no_recommendations(self) -> None:

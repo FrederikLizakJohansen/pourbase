@@ -76,7 +76,7 @@ class NBSFluorideThermalPropertyTests(unittest.TestCase):
             self.assertEqual(next(x for x in plain.excluded if x.record_id==rid).reason.value,"ligand_species_not_selected")
             self.assertNotIn(rid,{x.record_id for x in enabled.species})
             self.assertEqual(next(x for x in enabled.excluded if x.record_id==rid).reason.value,"recommended_gibbs_energy_unavailable")
-        self.assertEqual(self.db.policy.fingerprint,'544b421b7f1c')
+        self.assertEqual(self.db.policy.fingerprint,'118f85cc935a')
         self.assertEqual(len(self.db.available_ligands()),31)
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')

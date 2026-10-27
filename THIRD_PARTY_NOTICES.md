@@ -1983,3 +1983,21 @@ units retained. Full source reports and article tables remain external.
 Earlier NIST and OECD/NEA attribution and downstream acknowledgment,
 including the same requirement for further sublicensees, remain applicable.
 Added27 October2026. See [the source review](docs/sources/usgs-copper-sulfides.md).
+
+
+## R16d6 NEA2020 main iron sulfide evaluations
+
+Credit OECD (2020), Chemical Thermodynamics of Iron, Part2, NEA No7499;
+Lemire, R. J.; Palmer, D. A.; Taylor, P.; Schlenz, H.,
+[official source](https://www.oecd-nea.org/upload/docs/application/pdf/2020-03/7499-vol13b-iron.pdf)
+(accessed27October2026). Twenty-one own selected/evaluated numerical
+observations retain exact source locations and shared experimental ancestry.
+The supplied OECD clarification permits use, adaptation and redistribution,
+including commercially, subject to appropriate attribution and any applicable
+source-specific additional restrictions.
+
+When sharing or licensing work created using these data, include the same
+acknowledgment requirement in any sublicences and require further sublicensees
+to do the same. Other sources retain their separate terms and permission holds.
+The full source book and private correspondence remain external. See
+[the numerical source review](docs/sources/nea-iron-sulfides-2020.md).

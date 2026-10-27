@@ -71,7 +71,7 @@ class NEA2020SilicateVersionTests(unittest.TestCase):
             phase = next(s for s in at_temperature(view, temperature).load_system('Si').species if s.record_id == rid)
             expected = -1307735 - (temperature - 298.15) * (-1456960 + 1307735) / 298.15
             self.assertAlmostEqual(phase.gibbs_energy_J_mol, expected)
-        self.assertEqual(self.db.policy.fingerprint, '544b421b7f1c')
+        self.assertEqual(self.db.policy.fingerprint, '118f85cc935a')
         self.assertEqual(self.db.selections[rid, G].chosen.source_id, 'NEA_OECD_20261025_ancillary_R14e2')
 
     def test_current_preferences_references_and_source_holds_are_preserved(self):

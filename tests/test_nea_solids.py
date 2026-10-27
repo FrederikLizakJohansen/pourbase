@@ -63,7 +63,7 @@ class NEASolidTests(unittest.TestCase):
         ))
         self.assertEqual(mackinawite.formula_ascii, troilite.formula_ascii)
         self.assertEqual(mackinawite.thermochemistry.gibbs_energy_J_mol.value, -96677)
-        self.assertIsNone(troilite.thermochemistry.gibbs_energy_J_mol.value)
+        self.assertEqual(troilite.thermochemistry.gibbs_energy_J_mol.value, -101259)
         system = self.database.load_system("Ni", ligand_ids=("sulfide-s",))
         disulfide = next(s for s in system.species if s.formula_ascii == "NiS2")
         self.assertEqual(disulfide.formal_metal_oxidation_state, 2)

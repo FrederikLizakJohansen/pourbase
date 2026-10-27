@@ -496,13 +496,31 @@ source_id = "R05_completion_USGS1995_r05-zn-zns-wurtzite_hf"
 reason = "Retain the reviewed USGS1995 formation enthalpy and its stated interval with the currently preferred G/S evaluation. The newly retained older NBS H-only alternative has no confidence interval and would introduce a substantial formation-cycle mismatch if substituted into that triplet. Exact original NBS value and formula-unit conversion remain eligible evidence; source-version differences are explicit in the R16d4b review."
 
 [[overrides]]
-record_id = "r05-fe-fes2-marcasite"
-property = "enthalpy_of_formation"
-source_id = "R05_completion_USGS1995_r05-fe-fes2-marcasite_hf"
-reason = "Retain the reviewed USGS1995 formation enthalpy and its stated interval with the currently preferred G/S evaluation. The newly retained older NBS H-only alternative has no confidence interval and would introduce a substantial formation-cycle mismatch if substituted into that triplet. Exact original NBS value and formula-unit conversion remain eligible evidence; source-version differences are explicit in the R16d4b review."
-
-[[overrides]]
 record_id = "r05-w-ws2-tungstenite"
 property = "enthalpy_of_formation"
 source_id = "R05_completion_USGS1995_r05-w-ws2-tungstenite_hf"
 reason = "Retain the reviewed USGS1995 formation enthalpy and its stated interval with the currently preferred G/S evaluation. The newly retained older NBS H-only alternative has no confidence interval and would introduce a substantial formation-cycle mismatch if substituted into that triplet. Exact original NBS value and formula-unit conversion remain eligible evidence; source-version differences are explicit in the R16d4b review."
+
+[[overrides]]
+record_id = "r05-fe-fes-troilite"
+property = "enthalpy_of_formation"
+source_id = "R16d6_NEA2020_Fe_sulfide_main"
+reason = "Prefer the final NEA2020 recommendation with its deliberately broadened source interval over the retained same-evaluation intermediate combination. All original and prior source alternatives remain."
+
+[[overrides]]
+record_id = "r16d6-fe-fe7s8-4c-pyrrhotite"
+property = "enthalpy_of_formation"
+source_id = "R16d6_NEA2020_Fe_sulfide_main"
+reason = "Prefer the final NEA2020 4C pyrrhotite recommendation with the broadened source interval over the retained same-evaluation intermediate combination. Exact polytype identity remains separate from legacy unspecified Fe7S8."
+
+[[overrides]]
+record_id = "r16d6-fe-fe3s4-greigite"
+property = "gibbs_energy_of_formation"
+source_id = "R16d6_NEA2020_Fe_sulfide_main"
+reason = "Prefer the final NEA2020 greigite recommendation with expanded uncertainty for sulfur control, fine grains and possible mackinawite impurity. The intermediate re-evaluation remains eligible evidence with shared experimental ancestry."
+
+[[overrides]]
+record_id = "r05-fe-fes2-marcasite"
+property = "enthalpy_of_formation"
+source_id = "R16d6_NEA2020_Fe_sulfide_body"
+reason = "Prefer the explicit NEA2020 discussion recommendation on p183, with uncertainty2.38kJ/mol matching the quoted pyrite/transition input propagation. Retain the table p45 representation with uncertainty2.438kJ/mol as an unresolved source discrepancy. This replaces the older USGS-specific override because a new own NEA critical evaluation now supplies the phase-matched triplet; all earlier alternatives remain."

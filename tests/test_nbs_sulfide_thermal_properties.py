@@ -71,7 +71,7 @@ class NBSSulfideThermalTests(unittest.TestCase):
             self.assertNotIn((rid,G),self.db.selections)
 
     def test_coherent_triplets_and_NEAA_values_stay_preferred(self):
-        for rid,value,width in[('r05-as-as4s4-realgar',-123600,20000),('r05-zn-zns-wurtzite',-203800,1500),('r05-fe-fes2-marcasite',-169500,2100),('r05-w-ws2-tungstenite',-241600,2500)]:
+        for rid,value,width in[('r05-as-as4s4-realgar',-123600,20000),('r05-zn-zns-wurtzite',-203800,1500),('r05-fe-fes2-marcasite',-169430,2380),('r05-w-ws2-tungstenite',-241600,2500)]:
             selection=self.db.selections[rid,H]
             self.assertEqual((selection.chosen.value,selection.chosen.uncertainty),(value,width))
             self.assertTrue(selection.basis.startswith('override:'))
@@ -80,8 +80,8 @@ class NBSSulfideThermalTests(unittest.TestCase):
             selection=self.db.selections[self.row(logical)['record_id'],prop]
             self.assertEqual((selection.chosen.value,selection.chosen.evidence_class),(value,'A'))
             self.assertNotEqual(selection.chosen.source_id,SID)
-        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(53,13))
-        self.assertEqual(self.db.policy.fingerprint,'544b421b7f1c')
+        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(56,13))
+        self.assertEqual(self.db.policy.fingerprint,'118f85cc935a')
 
     def test_source_holds_and_independent_reuse_conditions_carry_forward(self):
         holds=self.review['source_phase_held_rows']

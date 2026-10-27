@@ -68,7 +68,7 @@ class NBSCrystallineFluorideTests(unittest.TestCase):
             for prop in[G,H,S]:
                 self.assertEqual(self.db.selections[rid,prop].chosen.evidence_class,'A')
                 self.assertNotEqual(self.db.selections[rid,prop].chosen.source_id,SID)
-        self.assertEqual(self.db.policy.fingerprint,'544b421b7f1c')
+        self.assertEqual(self.db.policy.fingerprint,'118f85cc935a')
         self.assertEqual(len(self.db.available_ligands()),31)
         self.assertEqual(json.loads(self.db.metadata['R11j3f2_explicit_evaluation_lineage'])['lineage_annotations'],10)
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])

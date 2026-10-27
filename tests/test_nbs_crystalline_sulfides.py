@@ -71,16 +71,18 @@ class NBSCrystallineSulfideTests(unittest.TestCase):
             self.assertTrue(selection.basis.startswith('override:'))
             self.assertIn('1988',selection.basis)
             self.assertTrue(any(x.source_id==SID for x in selection.candidates))
-        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(53,13))
-        self.assertEqual(self.db.policy.fingerprint,'544b421b7f1c')
+        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(56,13))
+        self.assertEqual(self.db.policy.fingerprint,'118f85cc935a')
         self.assertEqual(self.review['preference_review']['original_NBS_cells']['preparation_year'],1966)
 
     def test_pyrite_now_has_G_and_H_while_original_entropy_is_retained(self):
         rid='r05-fe-fes2-pyrite';record=self.db.species_records((rid,))[0]
-        self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value,-166900)
-        self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value,-178200)
+        self.assertTrue(any(x.property==G and x.value==-166900 and x.source.source_id==SID for x in record.reported))
+        self.assertTrue(any(x.property==H and x.value==-178200 and x.source.source_id==SID for x in record.reported))
+        self.assertEqual(record.thermochemistry.gibbs_energy_J_mol.value,-162219)
+        self.assertEqual(record.thermochemistry.formation_enthalpy_J_mol.value,-173630)
         self.assertTrue(any(x.property==S and x.value==52.9 and x.uncertainty==.1 for x in record.reported))
-        self.assertEqual(record.thermochemistry.entropy_J_mol_K.value,52.93)
+        self.assertEqual(record.thermochemistry.entropy_J_mol_K.value,52.92)
         self.assertNotIn(rid,{x.record_id for x in self.db.load_system('Fe').species})
         self.assertIn(rid,{x.record_id for x in self.db.load_system('Fe',ligand_ids=('sulfide-s',)).species})
 

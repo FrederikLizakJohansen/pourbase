@@ -60,7 +60,7 @@ class NEA2020BorateAuxiliaryTests(unittest.TestCase):
             self.assertNotIn(rid,{x.record_id for x in self.db.load_system('B').species})
             self.assertIn(rid,{x.record_id for x in self.db.load_system('B',ligand_ids=(ligand,)).species})
             self.assertNotIn(rid,{x.record_id for x in at_temperature(self.db,323.15).load_system('B',ligand_ids=(ligand,)).species})
-        self.assertEqual(self.db.policy.fingerprint,'544b421b7f1c')
+        self.assertEqual(self.db.policy.fingerprint,'118f85cc935a')
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
 
 if __name__=='__main__':

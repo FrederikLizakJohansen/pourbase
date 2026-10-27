@@ -1993,3 +1993,15 @@ selections, each new source value lies above the balanced mixture; this diagnost
 stays separate from measured uncertainty and physical stability claims. Policy
 `544b421b7f1c` is unchanged; recommendation `db8a6770212f9101`.
 See [the source review](sources/usgs-copper-sulfides.md).
+
+
+## NEA2020 main iron sulfides: R16d6
+
+Twenty-one observations add four source-defined phases and ten available
+properties. Full Fe11S12/Fe9S10/Fe7S8 units scale the source cells by12/10/8.
+Ordered pyrrhotites stay distinct from legacy ordering-unspecified Fe7S8.
+Own intermediate combinations and the marcasite table/body uncertainty variants
+remain as alternatives. Policy118f85cc935a prefers the explicit final selections;
+seven earlier choices change and every earlier observation remains. OECD
+attribution and downstream acknowledgment apply. See
+[the source review](sources/nea-iron-sulfides-2020.md).
