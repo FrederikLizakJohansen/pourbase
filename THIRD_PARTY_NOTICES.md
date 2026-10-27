@@ -1970,3 +1970,16 @@ for the original entropy-column comparison; CDC marks that report Public Domain.
 Full source reports and article tables remain external. Earlier NIST credit
 and OECD/NEA attribution and downstream acknowledgment, including the same
 requirement for further sublicensees, remain applicable. Added27 October2026.
+
+
+## R16d5b USGS copper sulfide selections
+
+Credit Robie, R. A. and Hemingway, B. S. (1995), US Geological Survey
+Bulletin2131, [doi:10.3133/b2131](https://doi.org/10.3133/b2131), printed p.11,
+for nine individually verified author-selected copper sulfide G/H/S cells.
+The completed public-domain federal-evaluation route applies, with original
+property-specific numerical ancestry, source intervals and nominal empirical
+units retained. Full source reports and article tables remain external.
+Earlier NIST and OECD/NEA attribution and downstream acknowledgment,
+including the same requirement for further sublicensees, remain applicable.
+Added27 October2026. See [the source review](docs/sources/usgs-copper-sulfides.md).

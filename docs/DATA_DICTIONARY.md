@@ -1978,3 +1978,18 @@ unassigned. Source intervals, shared ancestry and specimen qualifications stay
 explicit. Policy `544b421b7f1c` is unchanged; recommendation fingerprint
 `cfe67366d3a4a32d`. The eight NBS source-definition holds remain separate.
 See [the source review](sources/usgs-cobalt-sulfides.md).
+
+
+## USGS copper sulfide selections: R16d5b
+
+Nine original USGS G/H/S selections add nominal anilite Cu1.75S, digenite
+Cu1.80S and djurleite Cu1.95S records. Each retains its full source empirical
+molar unit, fractional Cu count and quoted interval. Per-Cu energies divide by
+that count once; buffered S2− reaction electrons are2/x per Cu. Conventional
+formula-average formal states are recorded without assigning individual atomic
+charges. The named source phases are identified; exact structures remain
+unassigned. All earlier values and choices stay. Under current Cu2S/CuS endpoint
+selections, each new source value lies above the balanced mixture; this diagnostic
+stays separate from measured uncertainty and physical stability claims. Policy
+`544b421b7f1c` is unchanged; recommendation `db8a6770212f9101`.
+See [the source review](sources/usgs-copper-sulfides.md).
