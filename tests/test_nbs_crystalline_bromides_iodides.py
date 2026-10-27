@@ -75,7 +75,7 @@ class NBSBromideIodideTests(unittest.TestCase):
         for rid in ['r11j3l-k-kbr-crystalline', 'r11j3l-k-ki-crystalline']:
             self.assertEqual(self.db.selections[rid, H].chosen.source_id, 'NEA_2005_R11j3l_nickel_potassium')
             self.assertFalse(any(x.source.source_id == SID for x in self.db.species_records((rid,))[0].reported))
-        self.assertEqual(self.db.policy.fingerprint, '7a2a7d316094')
+        self.assertEqual(self.db.policy.fingerprint, '4d3bf8cf952c')
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'], 'held_redistribution_rights')
 
     def test_buffered_halide_scope_and_primary_balance(self):
@@ -89,7 +89,7 @@ class NBSBromideIodideTests(unittest.TestCase):
         result = pb.MassBalanceEngine(self.db).calculate_system(system, cfg, pb.TotalMetalConcentration(1e-3))
         np.testing.assert_allclose(result.dissolved_metal_mol_L + 1e-3 * result.precipitated_metal_fraction, 1e-3, rtol=1e-10, atol=1e-15)
         with self.db.connect() as c:
-            self.assertEqual(c.execute('SELECT count(*) FROM ligands').fetchone()[0], 31)
+            self.assertEqual(c.execute('SELECT count(*) FROM ligands').fetchone()[0], 32)
 
 
 if __name__ == '__main__':

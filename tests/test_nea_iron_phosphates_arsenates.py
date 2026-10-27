@@ -88,7 +88,7 @@ class NEAIronPhosphateArsenateTests(unittest.TestCase):
         self.assertEqual({x['source_formula']for x in self.review['held']},{'Fe(PO3)3','Fe(PO3)3·0.128H2O'})
         diagnostic=self.review['phosphate_component_variant_diagnostic']
         self.assertEqual((diagnostic['source_PO4_G_J'],diagnostic['fixed_component_G_J'],diagnostic['source_minus_fixed_G_J']),(-1025491,-1018700,-6791))
-        self.assertEqual(len(self.db.available_ligands()),31)
+        self.assertEqual(len(self.db.available_ligands()),32)
         with closing(self.db.connect())as c:
             self.assertEqual(c.execute("select gibbs_energy_J_mol from ligands where ligand_id='phosphate-po4'").fetchone()[0],-1018700)
             self.assertEqual(c.execute("select count(*)from species where record_id like 'r16d6c-%'and(core_oxygen_count<0 or core_hydrogen_count<0)").fetchone()[0],0)
@@ -99,5 +99,5 @@ class NEAIronPhosphateArsenateTests(unittest.TestCase):
         self.assertEqual(permission['status'],'available_under_OECD_data_terms')
         self.assertEqual(permission['applicable_source_ids'],[SID])
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')
-        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(61,17))
-        self.assertEqual(self.db.policy.fingerprint,'7a2a7d316094')
+        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,17))
+        self.assertEqual(self.db.policy.fingerprint,'4d3bf8cf952c')

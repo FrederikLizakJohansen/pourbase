@@ -578,3 +578,9 @@ record_id = "r16d6d-fe-fe1-042se-beta"
 property = "enthalpy_of_formation"
 source_id = "R16d6d_NEA2020_Fe_Se_Te_main"
 reason = "Prefer the final NEA2020 Piacente-based H over the retained own Gronvold and Svendsen recalculations, for which the review identifies positive/negative biases. Shared ancestry and source confidence intervals remain explicit."
+
+[[overrides]]
+record_id = "r16d6f-fe-nife2o4-trevorite"
+property = "enthalpy_of_formation"
+source_id = "R16d6f_NEA2020_silicate_ferrite"
+reason = "Prefer the final NEA2020 combined nickel-ferrite formation enthalpy over its retained own per-study adjusted calorimetric inputs. This final assessment supplies the H used with the published G/S triplet; shared NiO/hematite ancestry and all alternatives remain explicit."

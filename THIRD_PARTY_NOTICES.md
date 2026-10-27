@@ -2046,3 +2046,18 @@ using these data, include the same acknowledgment requirement in every sublicens
 and require further sublicensees to do the same. Other sources retain their
 separate terms and permission holds. See the
 [source review](docs/sources/nea-iron-selenium-tellurium.md).
+
+
+## R16d6f NEA iron silicate and nickel ferrite data
+
+Credit OECD (2013), Lemire et al., *Chemical Thermodynamics of Iron, Part 1*,
+NEA No. 6355, and OECD (2020), Lemire, Palmer, Taylor and Schlenz,
+*Chemical Thermodynamics of Iron, Part 2*, NEA No. 7499. The Ni2+ buffered
+reference reuses the reviewed OECD (2005) Gamsjäger et al. nickel observation.
+Nine own selected/evaluated observations retain exact source locations and
+scientific qualifications. The [source review](docs/sources/nea-iron-silicates-ferrite.md)
+gives the book URLs and locations (accessed 27 October 2026). The recorded OECD
+clarification and data terms apply, with any source-specific restrictions.
+When sharing or licensing work made using these data, include the same
+acknowledgment requirement in every sublicense and require further sublicensees
+to do the same. Other sources retain their separate terms and permission holds.

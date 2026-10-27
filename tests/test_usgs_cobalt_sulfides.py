@@ -62,10 +62,10 @@ class USGSCobaltSulfideTests(unittest.TestCase):
         self.assertEqual(proof['rights'],'Public Domain')
 
     def test_policy_and_independent_source_holds_remain(self):
-        self.assertEqual(self.db.policy.fingerprint,'7a2a7d316094')
-        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(61,17))
+        self.assertEqual(self.db.policy.fingerprint,'4d3bf8cf952c')
+        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,17))
         self.assertEqual(len(json.loads(self.db.metadata['R16d4c_remaining_source_holds'])),8)
-        self.assertEqual(len(self.db.available_ligands()),31)
+        self.assertEqual(len(self.db.available_ligands()),32)
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')
 

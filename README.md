@@ -4,9 +4,9 @@
 </p>
 
 pourbase is a source-linked database of experimental standard thermochemistry and a Python package
-for calculating Pourbaix diagrams. The bundled SQLite database holds <!-- count:species -->1,758<!-- /count -->
+for calculating Pourbaix diagrams. The bundled SQLite database holds <!-- count:species -->1,760<!-- /count -->
 aqueous, solid, liquid and gas species across <!-- count:systems -->75<!-- /count --> elemental systems, with
-<!-- count:reported -->5,232<!-- /count --> reported values. Every value keeps its citation, its exact location in
+<!-- count:reported -->5,241<!-- /count --> reported values. Every value keeps its citation, its exact location in
 the source, an evidence status, its uncertainty where reported, and every alternative value.
 
 > [!NOTE]
@@ -45,7 +45,7 @@ pH, potential and temperature, or by the share of a pH–potential window where 
 passive or corroding. Click an element to open its system:
 
 - fixed-activity and closed total-metal (mass-balance) diagrams, in ppm, molarity or weight percent,
-  with Davies activity coefficients, <!-- count:ligands -->31<!-- /count --> buffered ligands and water presets (seawater, river water,
+  with Davies activity coefficients, <!-- count:ligands -->32<!-- /count --> buffered ligands and water presets (seawater, river water,
   simulated body fluid, saline);
 - temperatures from 0 to 100 °C, extrapolated from the stored entropies and enthalpies;
 - a probe that reports the stable species, its Gibbs energy, uncertainty and source, and the margin

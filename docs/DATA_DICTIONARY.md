@@ -2039,3 +2039,14 @@ trihydrate's three waters remain explicit. Policy `7a2a7d316094` has 61 override
 and 17 exclusions; the recommendation fingerprint is `f4557b983700eeda`.
 All 31 fixed references remain. See the
 [source review](sources/nea-iron-selenium-tellurium.md).
+
+
+## NEA iron silicates and nickel ferrite: R16d6f
+
+Nine observations add two phases and four missing properties. Fayalite G/H
+preferences follow the original NEA2013 evaluation, with all older alternatives
+retained. Gamma-Fe2SiO4 stays S-only. Nickel ferrite uses the new Ni2+ buffered
+reference, copied from an existing reviewed NEA2005 observation; all 31 earlier
+references remain, giving 32 in total. Its entropy includes a source-qualified
+configurational estimate. Chromite remains external pending a suitable open
+chromium reference. See the [source review](sources/nea-iron-silicates-ferrite.md).
