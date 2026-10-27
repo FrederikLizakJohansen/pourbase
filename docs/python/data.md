@@ -1,8 +1,8 @@
 # Policies and own data
 
-## A different selection policy
+## Another selection policy
 
-Copy the default policy, edit it and calculate with it:
+To use your own rule, copy the default policy, edit it and calculate with it:
 
 ```python
 import pourbase as pb
@@ -15,16 +15,19 @@ for change in pb.compare_policies(pb.open_database(), pb.SelectionPolicy.default
     print(change.record_id, change.property_name, change.first.value, change.second.value)
 ```
 
-The default policy is `src/pourbase/data/selection-policy.toml`; [How values are selected](../data/selection.md)
-explains its keys.
+The default policy is the file `src/pourbase/data/selection-policy.toml`.
+[How values are selected](../data/selection.md) explains its keys.
+[`select`](../reference/selection.md#pourbase.select) gives the recommended value of each species and property
+under a policy, with the reason for the choice.
 
 ## Your own values
 
 ```python
 database = pb.with_user_species(pb.open_database(), "own.csv")   # add to or replace bundled species
-dataset = pb.open_dataset("own.csv")                              # your species alone
+dataset = pb.open_dataset("own.csv")                              # only your species
 calculation = pb.calculate(pb.Scenario("Cu"), database)
 ```
 
-The CSV format is described in [Your own data](../app/own-data.md). User values are marked `user_supplied` in
-every result.
+[Your own data](../app/own-data.md) describes the CSV format. Your values are marked `user_supplied` in the
+results. `open_dataset` also opens another pourbase SQLite file, and
+[`dataset_from_csv`](../reference/user-data.md#pourbase.dataset_from_csv) writes a CSV file as a SQLite dataset.

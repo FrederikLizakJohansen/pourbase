@@ -80,13 +80,18 @@ nav:
       - Overview: app/index.md
       - Periodic table: app/periodic-table.md
       - An element: app/system.md
+      - Settings: app/settings.md
+      - Views: app/views.md
       - Database: app/database.md
       - Selection policy: app/policy.md
       - Your own data: app/own-data.md
+      - Files and export: app/files.md
   - Python:
       - Quick start: python/index.md
       - Analyses: python/analyses.md
+      - Plotting and export: python/plotting.md
       - Policies and own data: python/data.md
+      - Materials Project: python/materials-project.md
       - Command line and agents: python/cli.md
   - The data:
       - How values are selected: data/selection.md
@@ -101,3 +106,6 @@ nav:
       - Analyses: reference/analyses.md
       - Own data: reference/user-data.md
       - Plotting: reference/plotting.md
+      - Materials Project: reference/materials-project.md
+      - Concentrations and waters: reference/conditions.md
+      - Errors: reference/errors.md

@@ -1,52 +1,56 @@
 # Tour
 
 This tour follows iron from the periodic table to the sources behind one of its boundaries. The screenshots are
-made by `docs/screens.py` with the bundled database.
+made with `docs/screens.py` and the bundled database.
 
-## 1 The periodic table
+## The periodic table
 
-The app opens on the periodic table: the stable species of every element at the pH, potential and temperature
-at the top, for a dissolved metal activity of 10⁻⁶. Hovering over an element shows its stable species, the
-energy margin to the next species and the source of its Gibbs energy. Dashed outlines mark elements where some
-species are left out for missing data.
+The app opens on a periodic table. Each tile shows the stable species of that element at the pH, potential and
+temperature set at the top, here pH 7 and 0 V vs SHE, for a dissolved metal activity of 10⁻⁶. When you hover over
+an element, the card at the top of the table shows its stable species, how far below the next species it lies,
+and where its Gibbs energy comes from. A dashed outline means that some species of that element were left out
+because they have no Gibbs energy.
 
-![The periodic table at pH 7 and 0 V, with iron selected](assets/screens/periodic-table.png)
+![The periodic table at pH 7 and 0 V](assets/screens/periodic-table.png#only-light)![The periodic table at pH 7 and 0 V](assets/screens/dark/periodic-table.png#only-dark)
 
-**3D** raises the table into columns as tall as each element's stability margin; drag to rotate. **Sweep**
-plays the table through a range of pH or potential.
+The 3D button turns the table into columns whose height is the stability margin. The Sweep button runs the table
+through a range of pH or potential.
 
-![The same table in 3D](assets/screens/periodic-table-3d.png)
+![The same table in 3D](assets/screens/periodic-table-3d.png#only-light)![The same table in 3D](assets/screens/dark/periodic-table-3d.png#only-dark)
 
-## 2 The iron diagram
+## The iron diagram
 
-Clicking iron opens its system. The settings are on the left, the diagram on the right, and the probe below it
-reports the stable species at the marked point: here hematite at pH 7 and 0 V, with its Gibbs energy,
-uncertainty and source, the next species (FeOOH, only 1.25 kJ mol⁻¹ higher, within the uncertainty of the data)
-and the nearest boundaries.
+Clicking iron opens its diagram. The settings are on the left. Below the diagram, the probe describes the point
+it marks. Here it reports hematite at pH 7 and 0 V, with its Gibbs energy, uncertainty and source. The next
+species, FeOOH, is only 1.25 kJ mol⁻¹ higher, which is within the uncertainty of the data. The probe also gives
+the distance to the nearest boundaries.
 
-![The iron diagram with a probe at pH 7 and 0 V](assets/screens/fe-diagram.png)
+![The iron diagram with a probe at pH 7 and 0 V](assets/screens/fe-diagram.png#only-light)![The iron diagram with a probe at pH 7 and 0 V](assets/screens/dark/fe-diagram.png#only-dark)
 
-The chips above the diagram show what the calculation uses: the system, the model, the data, the selection
-policy, the ligands and how many species are left out. Each chip opens the matching setting.
+The row of chips above the diagram lists what the calculation uses: the element, the model, the data, the
+selection policy, the ligands and the number of species left out. Clicking a chip opens that setting.
 
-## 3 The values behind it
+## The values behind the diagram
 
-**Species** lists every species of the system with its recommended values and every alternative published
-value, with the policy's reason for its choice.
+The Species tab lists the species of the system with their recommended values and the other published values.
+It also gives the reason the policy chose each value.
 
-![Species of the iron system](assets/screens/fe-species.png)
+![Species of the iron system](assets/screens/fe-species.png#only-light)![Species of the iron system](assets/screens/dark/fe-species.png#only-dark)
 
-**Boundaries** gives every boundary as a balanced reaction and an equation, with the sources used.
+The Boundaries tab gives each boundary as a balanced reaction and an equation, with the sources used.
 
-![Boundaries of the iron diagram](assets/screens/fe-boundaries.png)
+![Boundaries of the iron diagram](assets/screens/fe-boundaries.png#only-light)![Boundaries of the iron diagram](assets/screens/dark/fe-boundaries.png#only-dark)
 
-**Sensitivity** shows how far each boundary moves when one recommended value is replaced by an alternative.
+The Sensitivity tab shows where the diagram depends on which published value is used. It draws many selections
+of the eligible values and colors each point by how often its stable species changes. For iron, this happens on
+about 4 % of the diagram, mostly along the magnetite and hydroxide boundaries above pH 8 and near the Fe³⁺
+boundary around pH 2.
 
-![Sensitivity of the iron diagram to alternative values](assets/screens/fe-sensitivity.png)
+![Sensitivity of the iron diagram to alternative values](assets/screens/fe-sensitivity.png#only-light)![Sensitivity of the iron diagram to alternative values](assets/screens/dark/fe-sensitivity.png#only-dark)
 
-## 4 The database and the policy
+## The database and the policy
 
-**Database** browses every species, value and source. **Selection policy** shows the rule that chose the
-recommended values, as editable text; Apply recalculates everything with your version.
+The Database tab lets you browse the tables of the database. The Selection policy tab shows the rule that chose
+the recommended values, as text you can edit. Apply recalculates everything with your version.
 
-![The selection policy tab](assets/screens/selection-policy.png)
+![The selection policy tab](assets/screens/selection-policy.png#only-light)![The selection policy tab](assets/screens/dark/selection-policy.png#only-dark)

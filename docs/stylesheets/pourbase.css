@@ -19,3 +19,6 @@
 .md-typeset h1, .md-typeset h2, .md-typeset h3 { font-weight: 400; }
 .md-typeset table:not([class]) th { font-weight: 400; color: var(--md-default-fg-color--light); }
 .md-typeset img { border: 1px solid var(--md-default-fg-color--lightest); }
+/* Screenshots in the theme of the page: name.png#only-light beside dark/name.png#only-dark. */
+[data-md-color-scheme="default"] img[src$="#only-dark"],
+[data-md-color-scheme="slate"] img[src$="#only-light"] { display: none; }
