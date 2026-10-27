@@ -18,7 +18,7 @@ Every value is therefore stored with what you need to check it:
 - every retained alternative and superseded value in `reported_thermochemistry`, next to the
   recommended value in `selected_thermochemistry`;
 - scientific cautions in `warnings` and the phase and polymorph assignment in `phases`;
-- explicit gaps where no defensible value was found, and six Materials Project estimates kept
+- explicit gaps where no defensible value was found, and <!-- count:fallbacks -->six<!-- /count --> Materials Project estimates kept
   separately in `computational_fallbacks` and used only on request.
 
 Check the cited source for any value your conclusions depend on. The Species tab of the desktop

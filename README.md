@@ -4,9 +4,10 @@
 </p>
 
 pourbase is a source-linked database of experimental standard thermochemistry and a Python package
-for calculating Pourbaix diagrams. The bundled SQLite database holds 1,059 aqueous, solid, liquid and
-gas species across 75 elemental systems. Every value keeps its citation, its exact location in the
-source, an evidence status, its uncertainty where reported, and every alternative value.
+for calculating Pourbaix diagrams. The bundled SQLite database holds <!-- count:species -->1,737<!-- /count -->
+aqueous, solid, liquid and gas species across <!-- count:systems -->75<!-- /count --> elemental systems, with
+<!-- count:reported -->5,176<!-- /count --> reported values. Every value keeps its citation, its exact location in
+the source, an evidence status, its uncertainty where reported, and every alternative value.
 
 > [!NOTE]
 > **A living database.** The data were gathered with agent-guided literature searches (GPT 5.6 Sol,
@@ -14,13 +15,14 @@ source, an evidence status, its uncertainty where reported, and every alternativ
 > can check it before you rely on it. Found an error or a better source? [Help improve the data](CONTRIBUTING.md).
 
 <p align="center">
+  <a href="https://frederiklizakjohansen.github.io/pourbase/">Documentation</a> ·
   <a href="STATISTICS.md">Dataset statistics</a> ·
   <a href="CONTRIBUTING.md">Contributing</a> ·
   <a href="docs/DATA_DICTIONARY.md">Data dictionary</a>
 </p>
 
 <p align="center">
-  <img src="docs/periodic-table.png" alt="The pourbase periodic table: the stable species of every element at pH 0 and 0 V vs SHE" width="900">
+  <img src="docs/assets/screens/periodic-table.png" alt="The pourbase periodic table: the stable species of every element at pH 7 and 0 V vs SHE" width="900">
 </p>
 
 ## Install
@@ -43,7 +45,7 @@ pH, potential and temperature, or by the share of a pH–potential window where 
 passive or corroding. Click an element to open its system:
 
 - fixed-activity and closed total-metal (mass-balance) diagrams, in ppm, molarity or weight percent,
-  with Davies activity coefficients, buffered ligands and water presets (seawater, river water,
+  with Davies activity coefficients, <!-- count:ligands -->31<!-- /count --> buffered ligands and water presets (seawater, river water,
   simulated body fluid, saline);
 - temperatures from 0 to 100 °C, extrapolated from the stored entropies and enthalpies;
 - a probe that reports the stable species, its Gibbs energy, uncertainty and source, and the margin
@@ -83,7 +85,7 @@ pb.Scenario("Zn", mode="mass_balance", concentration=1e-6, concentration_unit="m
             davies_ionic_strength_mol_L=0.01)
 pb.Scenario("Ag", ligands=(pb.LigandActivity("chloride-cl", log10_free_activity=-2),))
 pb.Scenario("Cu", temperature_K=353.15)
-pb.Scenario("Pt", energy_policy="experimental_then_mp")  # fill the six terminal gaps with Materials Project estimates
+pb.Scenario("Pt", energy_policy="experimental_then_mp")  # fill terminal gaps with Materials Project estimates
 ```
 
 Analyses of a calculation:
@@ -144,8 +146,9 @@ The database retains every published value. A selection policy,
 for each species and property at runtime. It ranks sources by evidence class (A international critical
 reviews, B critical compilations, C single-system evaluations, D single experimental papers,
 E estimates, F computed values) and lists every exception with its reason. Values are never averaged,
-and missing values stay visible as evidence gaps. Materials Project estimates are stored separately
-and used only on request.
+and missing values stay visible as evidence gaps. Materials Project estimates for the
+<!-- count:terminal_gaps -->six<!-- /count --> species without a usable published Gibbs energy are stored separately
+and used only on request (`energy_policy="experimental_then_mp"`).
 
 Edit a copy of the policy to calculate with your own rule:
 
@@ -179,13 +182,19 @@ We thank the OECD Nuclear Energy Agency Thermochemical Database Project for conf
 under which pourbase redistributes NEA-TDB selected values. Its selected data are used with
 acknowledgment of the OECD and the Nuclear Energy Agency:
 
-- Gamsjäger, H. et al. *Chemical Thermodynamics of Nickel*. OECD Nuclear Energy Agency, Chemical
-  Thermodynamics Series Volume 6 (2005).
-- Brown, P. L., Curti, E. and Grambow, B., with Ekberg, C. *Chemical Thermodynamics of Zirconium*.
-  OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 8 (2005).
-- Gamsjäger, H., Gajda, T., Sangster, J., Saxena, S. K. and Voigt, W. *Chemical Thermodynamics of
-  Tin*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 12 (2012).
-- Lemire, R. J. et al. *Chemical Thermodynamics of Iron, Part 1*. OECD Nuclear Energy Agency,
-  NEA No. 6355 (2013).
+<!-- nea-volumes -->
+- Grenthe, I., Fuger, J., Konings, R. J. M., Lemire, R. J., Muller, A. B., Nguyen-Trung, C. and Wanner, H. *Chemical Thermodynamics of Uranium*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 1 (1992).
+- Rard, J. A., Rand, M. H., Anderegg, G. and Wanner, H. *Chemical Thermodynamics of Technetium*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 3 (1999).
+- Guillaumont, R., Fanghänel, T., Fuger, J., Grenthe, I., Neck, V., Palmer, D. A. and Rand, M. H. *Update on the Chemical Thermodynamics of Uranium, Neptunium, Plutonium, Americium and Technetium*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 5 (2003).
+- Gamsjäger, H., Bugajski, J., Gajda, T., Lemire, R. J. and Preis, W. *Chemical Thermodynamics of Nickel*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 6 (2005).
+- Olin, Å., Noläng, B., Osadchii, E. G., Öhman, L.-O. and Rosén, E. *Chemical Thermodynamics of Selenium*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 7 (2005).
+- Brown, P. L., Curti, E. and Grambow, B., with Ekberg, C. *Chemical Thermodynamics of Zirconium*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 8 (2005).
+- Rand, M., Fuger, J., Grenthe, I., Neck, V. and Rai, D. *Chemical Thermodynamics of Thorium*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 11 (2008).
+- Gamsjäger, H., Gajda, T., Sangster, J., Saxena, S. K. and Voigt, W. *Chemical Thermodynamics of Tin*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 12 (2012).
+- Lemire, R. J., Berner, U., Musikas, C., Palmer, D. A., Taylor, P. and Tochiyama, O. *Chemical Thermodynamics of Iron, Part 1*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 13a (2013).
+- Lemire, R. J., Palmer, D. A., Taylor, P. and Schlenz, H. *Chemical Thermodynamics of Iron, Part 2*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 13b (2020).
+- Grenthe, I., Gaona, X., Plyasunov, A. V., Rao, L., Runde, W. H., Grambow, B., Konings, R. J. M., Smith, A. L. and Moore, E. E. *Second Update on the Chemical Thermodynamics of Uranium, Neptunium, Plutonium, Americium and Technetium*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 14 (2020).
+- Rand, M., Palmer, D. A., Fuger, J. and Gajda, T. *Chemical Thermodynamics of Selected Ancillary Compounds of Interest to Radioactive Waste Management*. OECD Nuclear Energy Agency, Chemical Thermodynamics Series Volume 15 (2024).
+<!-- /nea-volumes -->
 
 Materials Project data are used under CC BY 4.0 and keep their IDs, versions and attribution.
