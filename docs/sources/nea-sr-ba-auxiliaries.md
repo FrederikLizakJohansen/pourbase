@@ -55,7 +55,7 @@ Credit OECD/NEA and the cited evaluation. Include the same acknowledgment
 requirement in sublicences, and require further sublicensees to do the same.
 The NBS release carries NIST credit, its open licence and warranty notice.
 See [NEA reuse conditions](nea-tdb-reuse.md) and the
-[distributed notices](../../THIRD_PARTY_NOTICES.md).
+[distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 Metadata keys are `R11j3h_NEA_Sr_Ba_review`, `R11j3h_Sr_Ba_observations`
 and `R11j3h_source_and_model_holds`. Original source evidence and the detailed

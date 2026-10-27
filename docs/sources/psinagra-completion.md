@@ -60,7 +60,7 @@ unspecified interval confidence remain explicit.
 
 The [USGS public-domain statement](https://www.usgs.gov/faqs/are-usgs-reportspublications-copyrighted)
 covers USGS-authored data and asks for attribution. USGS and both author
-groups are credited in [distributed notices](../../THIRD_PARTY_NOTICES.md).
+groups are credited in [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 The checked cells have no identified additional third-party ownership
 restriction. Source PDFs, the policy snapshot and their hashes are retained
 as external evidence. Complete publications stay outside distributions.

@@ -70,7 +70,7 @@ OECD and NEA are acknowledged for the Ni2+ input. Their carried terms permit
 use, adaptation and redistribution, including commercially, subject to
 source-specific additional restrictions. Every sublicense of work using these
 data must include the same OECD acknowledgment requirement and require further
-sublicensees to pass it on. See [distributed notices](../../THIRD_PARTY_NOTICES.md)
+sublicensees to pass it on. See [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md)
 and [the source instructions](nea-tdb-reuse.md).
 
 ## Reaction and calculation scope

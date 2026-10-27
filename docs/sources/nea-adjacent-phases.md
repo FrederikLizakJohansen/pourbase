@@ -119,4 +119,4 @@ OECD and the Nuclear Energy Agency are acknowledged using the associated
 review citations. Every sublicense of work using these data must include the
 same OECD acknowledgment requirement and require further sublicensees to
 pass it on. See [the admission instructions](nea-tdb-reuse.md) and
-[distributed notices](../../THIRD_PARTY_NOTICES.md).
+[distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).

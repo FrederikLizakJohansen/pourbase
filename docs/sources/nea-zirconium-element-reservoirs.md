@@ -140,7 +140,7 @@ subject to source-specific additional restrictions. Every sublicense of
 work using these data must include the same OECD acknowledgment requirement
 and require further sublicensees to pass it on. NIST is acknowledged for the
 defined elemental references under its [open licence](https://www.nist.gov/open/license).
-See [distributed notices](../../THIRD_PARTY_NOTICES.md). Private correspondence
+See [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md). Private correspondence
 and complete source publications stay outside the package.
 
 The remaining 16 zirconium holds comprise four disputed source evaluations

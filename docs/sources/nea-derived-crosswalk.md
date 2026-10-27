@@ -89,7 +89,7 @@ The admitted observation uses the clarified OECD terms and original NEA
 citation. OECD and NEA are acknowledged. Every sublicense of work using the
 data must include the same OECD acknowledgment requirement and require
 further sublicensees to pass it on. See [the source instructions](nea-tdb-reuse.md)
-and [distributed notices](../../THIRD_PARTY_NOTICES.md). Independent restricted
+and [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md). Independent restricted
 compilations retain their own permission status.
 
 ## R11l checkpoint — 20 October 2026

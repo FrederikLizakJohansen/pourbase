@@ -45,7 +45,7 @@ further sublicensees to pass it on. The metadata key
 and this batch's scope. Private correspondence, publications, source page
 images and independently copied auxiliary tables remain external.
 See [the source instructions](nea-tdb-reuse.md) and
-[distributed notices](../../THIRD_PARTY_NOTICES.md).
+[distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 The [November 2005 errata](https://www.oecd-nea.org/upload/docs/application/pdf/2020-09/errata_selenium_volume_7_2020-09-02_11-47-23_191.pdf)
 were checked, carrying forward the original release review. The CdSeO4(aq)

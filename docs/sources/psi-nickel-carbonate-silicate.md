@@ -36,7 +36,7 @@ subject to source-specific additional restrictions. Every sublicense of work
 using these data must include the same OECD acknowledgment requirement and
 require further sublicensees to pass it on. Independent auxiliary tables
 remain outside this import. See [the source instructions](nea-tdb-reuse.md)
-and [distributed notices](../../THIRD_PARTY_NOTICES.md).
+and [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 The independent PSI numerical results have their own established
 **individual original numerical facts** reuse basis:

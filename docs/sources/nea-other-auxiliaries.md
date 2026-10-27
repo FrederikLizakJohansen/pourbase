@@ -113,6 +113,6 @@ NEA selections and adaptations use the supplied clarification and OECD data
 terms. Credit OECD/NEA and each cited source. Pass the same acknowledgment
 requirement into sublicences, requiring further sublicensees to do the same.
 Open NBS entries carry NIST credit, its licence and warranty statement.
-See [NEA reuse](nea-tdb-reuse.md) and [distributed notices](../../THIRD_PARTY_NOTICES.md).
+See [NEA reuse](nea-tdb-reuse.md) and [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 Metadata keys also include `R11j3l_NEA_auxiliary_review`,
 `R11j3l_auxiliary_observations` and `R11j3l_source_and_model_holds`.

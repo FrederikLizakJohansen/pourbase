@@ -112,7 +112,7 @@ forward under the written NEA-TDB clarification and
 [OECD data terms](https://www.oecd.org/en/about/terms-conditions.html), subject
 to source-specific additional restrictions. Every sublicense of work using
 these data must include the same OECD acknowledgment requirement and require
-further sublicensees to pass it on. See [distributed notices](../../THIRD_PARTY_NOTICES.md).
+further sublicensees to pass it on. See [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 Private correspondence and complete publications remain outside the package.
 
 Next is the twelve-record mixed-metal review, NEA02g4. The hydride admission

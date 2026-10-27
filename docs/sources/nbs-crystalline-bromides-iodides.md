@@ -78,7 +78,7 @@ Metadata keys are `R16d2a_NBS_halide_source_review`,
 The remaining 90 source rows are tracked separately for the next batch,
 including two rows with no numerical G/H/S value. Completed source reviews,
 NEA permission and downstream acknowledgment requirements carry forward.
-See [distributed notices](../../THIRD_PARTY_NOTICES.md).
+See [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 ## Remaining enthalpy rows: R16d2b
 

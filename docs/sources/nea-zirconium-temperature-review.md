@@ -102,7 +102,7 @@ scope. The PSI criticism is cited in our own words.
 Earlier NEA evaluations retain their OECD attribution and the same
 acknowledgment requirement in sublicenses, including onward propagation by
 further sublicensees. Source documents, permission evidence and retrieval
-responses remain external. See [the notices](../../THIRD_PARTY_NOTICES.md).
+responses remain external. See [the notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 The original-evidence checkpoint is complete. NEA02g4b1 remains open for
 phase-specific thermal data or reversible multi-temperature equilibrium

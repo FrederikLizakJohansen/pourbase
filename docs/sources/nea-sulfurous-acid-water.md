@@ -67,7 +67,7 @@ pass the same acknowledgment requirement into sublicences and require further
 sublicensees to do the same. The water input carries NIST credit, its open
 licence and warranty statement. Source URLs were accessed on 26 October 2026.
 See [reuse instructions](nea-tdb-reuse.md) and
-[distributed notices](../../THIRD_PARTY_NOTICES.md).
+[distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 Metadata keys are `R11j3i1_sulfurous_acid_review`,
 `R11j3i1_water_converted_observations` and `R11j3i1_SO2_water_convention`.

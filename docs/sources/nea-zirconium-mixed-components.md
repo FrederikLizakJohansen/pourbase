@@ -93,7 +93,7 @@ OECD and NEA are acknowledged for their selected/evaluated data under
 `NEA-TDB-OECD-2026-10-14` and the OECD data terms, including source-specific
 additional restrictions. Every sublicense of work using the data must carry
 the same OECD acknowledgment requirement and require further sublicensees
-to pass it on. The [distributed notices](../../THIRD_PARTY_NOTICES.md)
+to pass it on. The [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md)
 also acknowledge NIST under its open licence. Completed source reviews and
 private permission evidence are carried forward. Complete publications and
 Restricted Use correspondence remain outside the distribution.

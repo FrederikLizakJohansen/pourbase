@@ -97,7 +97,7 @@ requires its own numerical verification. Existing implemented reviews carry
 forward. The independent open NBS observations remain eligible.
 
 NIST is acknowledged; the data retain the open-release attribution and
-warranty notice in [distributed notices](../../THIRD_PARTY_NOTICES.md).
+warranty notice in [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 No JANAF, WebBook, SRD 46, commercial CODATA, entire PHREEQC file, complete
 publication or private correspondence is included in the numerical additions.
 Existing OECD attribution and downstream acknowledgment requirements for

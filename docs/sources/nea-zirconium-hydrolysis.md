@@ -116,7 +116,7 @@ subject to source-specific additional restrictions. The completed volume-8
 review is carried forward for these selected numerical evaluations. Every
 sublicense of work using these data must include the same OECD acknowledgment
 requirement and require further sublicensees to pass it on. See
-[distributed notices](../../THIRD_PARTY_NOTICES.md). NIST is acknowledged for
+[distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md). NIST is acknowledged for
 the two reference values under its [open licence](https://www.nist.gov/open/license).
 Private correspondence and complete publications remain outside the package.
 

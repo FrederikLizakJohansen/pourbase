@@ -27,7 +27,7 @@ NEA-TDB data are available under OECD data terms following written clarification
 The metadata key `source_permission_NEA_TDB` records the permission ID,
 evidence hash, terms URL, applicable source IDs and downstream acknowledgment
 requirement. See [the source instructions](sources/nea-tdb-reuse.md) and
-[distributed notices](../THIRD_PARTY_NOTICES.md). Check source-specific
+[distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md). Check source-specific
 additional restrictions; other sources retain their own permission status.
 
 R11b adds 71 NEA selenium observations across 29 species, including 22 new

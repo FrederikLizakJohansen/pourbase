@@ -12,7 +12,7 @@ The applicable terms are [OECD Terms and Conditions, section 3, Data](https://ww
 none, use OECD (year), dataset name, data source, DOI or URL and access date.
 Every sublicense of work created using the data must carry the same OECD
 acknowledgment requirement and require further sublicensees to pass it on.
-[THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md) contains the distributed
+[THIRD_PARTY_NOTICES.md](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md) contains the distributed
 acknowledgment and the review citations. These source terms accompany the
 project's GPL-3.0 software and compilation licence.
 

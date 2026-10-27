@@ -98,7 +98,7 @@ cited numerical facts; no source figure is reproduced.
 
 Completed NEA permission checks carry forward. OECD and NEA acknowledgment,
 the same requirement in sublicenses, and onward propagation to further
-sublicensees remain applicable. See [the notices](../../THIRD_PARTY_NOTICES.md).
+sublicensees remain applicable. See [the notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 The hydride admission hold concerns physical representation; other sources'
 permission holds retain their independent status.
 

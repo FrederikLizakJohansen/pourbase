@@ -42,7 +42,7 @@ permission and source-specific review. OECD credit and the acknowledgment
 requirement must pass through sublicences and further sublicences. The
 existing permission email, terms evidence and errata review are preserved.
 See [the NEA reuse guide](nea-tdb-reuse.md) and
-[distributed notices](../../THIRD_PARTY_NOTICES.md).
+[distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 Values retain 298.15 K, 1 bar, full formula units and the source's quoted
 intervals, approximately 95% confidence. G/H are converted from kJ/mol to

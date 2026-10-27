@@ -71,7 +71,7 @@ selections and internal recalculations. Credit OECD/NEA and the exact source.
 Include the same acknowledgment requirement in sublicences and require further
 sublicensees to do the same. Copied CODATA/Glushko cells and other sources’
 permission holds remain separate. See [NEA reuse](nea-tdb-reuse.md) and
-[distributed notices](../../THIRD_PARTY_NOTICES.md).
+[distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 Metadata keys are `R11j3i_NEA_halogen_sulfur_review`,
 `R11j3i_halogen_sulfur_observations` and `R11j3i_source_and_model_holds`.

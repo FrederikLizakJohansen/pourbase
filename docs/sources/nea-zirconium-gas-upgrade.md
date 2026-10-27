@@ -94,7 +94,7 @@ reuse basis, source-deposit hash and attribution. The existing OECD terms
 continue to govern the earlier NEA evaluations, with the same acknowledgment
 requirement passed to further sublicensees. NEA permission supplies no
 licence for these independent articles. See the
-[distributed notices](../../THIRD_PARTY_NOTICES.md).
+[distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 ## Remaining work
 

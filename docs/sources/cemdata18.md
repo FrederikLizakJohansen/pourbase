@@ -26,7 +26,7 @@ Inherited PSI/Nagra support values, commercial clinker compilations and
 other third-party tables retain separate source requirements. The mirror's
 licence supplies no blanket clearance for those values. Existing OECD
 credit and downstream acknowledgment requirements for NEA inputs continue
-independently. See [the distributed notices](../../THIRD_PARTY_NOTICES.md).
+independently. See [the distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 ## Evidence and physical scope
 

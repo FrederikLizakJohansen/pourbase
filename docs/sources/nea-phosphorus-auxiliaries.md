@@ -73,7 +73,7 @@ The supplied NEA clarification and OECD data terms cover these selected/evaluate
 outputs. Credit OECD/NEA and the exact evaluation; include the same acknowledgment
 requirement in sublicences and require further sublicensees to do the same.
 NIST credit, the open NBS release licence and its warranty notice also apply.
-See [NEA reuse](nea-tdb-reuse.md) and [distributed notices](../../THIRD_PARTY_NOTICES.md).
+See [NEA reuse](nea-tdb-reuse.md) and [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 Copied CODATA/Glushko, the H2SO3 identity question, policy follow-up R11j3f1
 and other independent source/model holds remain separate.
 

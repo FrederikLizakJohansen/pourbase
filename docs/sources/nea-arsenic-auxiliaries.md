@@ -88,7 +88,7 @@ The NEA clarification and OECD data terms cover these selected/evaluated outputs
 Credit OECD/NEA and the exact source. Include the same acknowledgment requirement
 in sublicences and require further sublicensees to do the same. NIST credit, its open
 release licence and warranty notice apply to NBS observations and conversion inputs.
-See [NEA reuse](nea-tdb-reuse.md) and [distributed notices](../../THIRD_PARTY_NOTICES.md).
+See [NEA reuse](nea-tdb-reuse.md) and [distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md).
 
 Metadata keys are `R11j3k_NEA_arsenic_review`, `R11j3k_arsenic_observations`
 and `R11j3k_source_and_model_holds`. Other NBS hydrate/aqueous candidates,

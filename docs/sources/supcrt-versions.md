@@ -100,7 +100,7 @@ they establish no ambient occurrence, kinetics or higher-pressure model.
 
 The [USGS public-domain statement](https://www.usgs.gov/faqs/are-usgs-reportspublications-copyrighted)
 and source review carry forward. USGS and Robie/Hemingway are acknowledged in
-[distributed notices](../../THIRD_PARTY_NOTICES.md). No additional third-party
+[distributed notices](https://github.com/FrederikLizakJohansen/pourbase/blob/main/THIRD_PARTY_NOTICES.md). No additional third-party
 ownership restriction was identified for these author evaluation cells.
 The original report, policy evidence and hashes remain in the external
 review. Complete publications and held native compilations stay outside
