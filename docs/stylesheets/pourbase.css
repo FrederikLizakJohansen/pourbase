@@ -1,0 +1,21 @@
+/* The app's flat style: square corners, the accent of gui/theme.py. */
+:root, [data-md-color-scheme="default"] {
+  --md-primary-fg-color: #3d7fd9;
+  --md-primary-fg-color--light: #6a9de3;
+  --md-primary-fg-color--dark: #2f6bbd;
+  --md-accent-fg-color: #2f6bbd;
+  --md-accent-fg-color--transparent: #3d7fd91a;
+  --md-typeset-a-color: #2f6bbd;
+}
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #2f65ca;
+  --md-primary-fg-color--light: #589df6;
+  --md-primary-fg-color--dark: #2554a8;
+  --md-accent-fg-color: #589df6;
+  --md-accent-fg-color--transparent: #589df61a;
+  --md-typeset-a-color: #7ab3f8;
+}
+*, *::before, *::after { border-radius: 0 !important; }
+.md-typeset h1, .md-typeset h2, .md-typeset h3 { font-weight: 400; }
+.md-typeset table:not([class]) th { font-weight: 400; color: var(--md-default-fg-color--light); }
+.md-typeset img { border: 1px solid var(--md-default-fg-color--lightest); }

@@ -36,6 +36,7 @@ classifiers = [
 materials-project = ["mp-api[contribs]>=0.46"]
 gui = ["pyside6>=6.5", "pyqtgraph>=0.13", "keyring>=24"]
 mcp = ["mcp>=1.10"]
+docs = ["zensical>=0.0.72", "mkdocstrings[python]>=0.26"]   # the documentation site: zensical serve
 
 [project.scripts]
 pourbase = "pourbase.cli:main"

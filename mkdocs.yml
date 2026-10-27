@@ -1,0 +1,103 @@
+site_name: pourbase
+site_description: Source-linked experimental thermochemistry and Pourbaix diagrams, with every value traceable to its source.
+site_url: https://frederiklizakjohansen.github.io/pourbase/
+repo_url: https://github.com/FrederikLizakJohansen/pourbase
+repo_name: pourbase
+edit_uri: edit/main/docs/
+copyright: GNU General Public License, version 3
+
+# Notes for developers and data reviews stay in the repository and out of the site.
+exclude_docs: |
+  screens.py
+  statistics/
+  logo-wordmark*.svg
+
+# The per-source reviews are linked from the data dictionary and stay out of the navigation.
+not_in_nav: |
+  sources/
+
+theme:
+  name: material
+  logo: logo.svg
+  favicon: logo.svg
+  font: false
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle: {icon: material/weather-night, name: Dark}
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle: {icon: material/weather-sunny, name: Light}
+  features:
+    - navigation.sections
+    - navigation.footer
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+
+extra_css:
+  - stylesheets/pourbase.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc: {permalink: true}
+  - pymdownx.details
+  - pymdownx.highlight: {anchor_linenums: true}
+  - pymdownx.superfences
+  - pymdownx.arithmatex: {generic: true}
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: sphinx
+            show_source: false
+            show_root_heading: true
+            show_signature_annotations: true
+            separate_signature: true
+            members_order: source
+            filters: ["!^_"]
+            merge_init_into_class: true
+
+nav:
+  - Home: index.md
+  - Install: install.md
+  - Tour: tour.md
+  - The app:
+      - Overview: app/index.md
+      - Periodic table: app/periodic-table.md
+      - An element: app/system.md
+      - Database: app/database.md
+      - Selection policy: app/policy.md
+      - Your own data: app/own-data.md
+  - Python:
+      - Quick start: python/index.md
+      - Analyses: python/analyses.md
+      - Policies and own data: python/data.md
+      - Command line and agents: python/cli.md
+  - The data:
+      - How values are selected: data/selection.md
+      - Compilations not included: excluded-compilations.md
+      - Temperature trends: TEMPERATURE_TRENDS.md
+      - Check against pymatgen: validation/pymatgen-crosscheck.md
+      - Data dictionary: DATA_DICTIONARY.md
+  - Reference:
+      - Calculation: reference/calculation.md
+      - Database: reference/database.md
+      - Selection policy: reference/selection.md
+      - Analyses: reference/analyses.md
+      - Own data: reference/user-data.md
+      - Plotting: reference/plotting.md
