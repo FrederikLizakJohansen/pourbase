@@ -542,3 +542,21 @@ record_id = "r16d6-fe-fe7s8-4c-pyrrhotite"
 property = "enthalpy_of_formation"
 source_id = "R16d6b_NEA2020_comparison2014"
 reason = "NEA2020 p172 presents this reviewer-standardized 2014 result for comparison only and explicitly leaves it outside the assessment because its Ag2S thermochemical anchor has not been evaluated in the TDB project. Retain the own corrected observation and interval; scientific eligibility remains excluded pending that anchor review."
+
+[[exclusions]]
+record_id = "r16d6c-fe-kankite-nominal"
+property = "gibbs_energy_of_formation"
+source_id = "R16d6c_NEA2020_Fe_P_As_main"
+reason = "NEA2020 p264 footnote reports that the 2012 nominal kankite specimen was X-rayed only at the beginning of calorimetry; later work found spontaneous or cryogenic transformation to layered FeAsO4\u00b72H2O. Preserve the published selected observation on a specimen-qualified record with unresolved phase history. Exclude from recommendations until the exact calorimetric sample/phase correspondence is reconciled. This is a scientific qualification; OECD reuse permission applies."
+
+[[exclusions]]
+record_id = "r16d6c-fe-kankite-nominal"
+property = "enthalpy_of_formation"
+source_id = "R16d6c_NEA2020_Fe_P_As_main"
+reason = "NEA2020 p264 footnote reports that the 2012 nominal kankite specimen was X-rayed only at the beginning of calorimetry; later work found spontaneous or cryogenic transformation to layered FeAsO4\u00b72H2O. Preserve the published selected observation on a specimen-qualified record with unresolved phase history. Exclude from recommendations until the exact calorimetric sample/phase correspondence is reconciled. This is a scientific qualification; OECD reuse permission applies."
+
+[[exclusions]]
+record_id = "r16d6c-fe-kankite-nominal"
+property = "absolute_entropy"
+source_id = "R16d6c_NEA2020_Fe_P_As_main"
+reason = "NEA2020 p264 footnote reports that the 2012 nominal kankite specimen was X-rayed only at the beginning of calorimetry; later work found spontaneous or cryogenic transformation to layered FeAsO4\u00b72H2O. Preserve the published selected observation on a specimen-qualified record with unresolved phase history. Exclude from recommendations until the exact calorimetric sample/phase correspondence is reconciled. This is a scientific qualification; OECD reuse permission applies."

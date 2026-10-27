@@ -71,8 +71,8 @@ class NBSCrystallineSulfideTests(unittest.TestCase):
             self.assertTrue(selection.basis.startswith('override:'))
             self.assertIn('1988',selection.basis)
             self.assertTrue(any(x.source_id==SID for x in selection.candidates))
-        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(58,14))
-        self.assertEqual(self.db.policy.fingerprint,'4ffe2d63a073')
+        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(58,17))
+        self.assertEqual(self.db.policy.fingerprint,'5bbebf8f20e9')
         self.assertEqual(self.review['preference_review']['original_NBS_cells']['preparation_year'],1966)
 
     def test_pyrite_now_has_G_and_H_while_original_entropy_is_retained(self):
