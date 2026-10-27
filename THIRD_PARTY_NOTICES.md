@@ -1929,3 +1929,18 @@ the scientific Pd(II)/disulfide definition; no numerical thermochemistry from
 that article is imported. Earlier OECD/NEA attribution and downstream
 acknowledgment requirements remain applicable to NEA observations.
 See [the source review](docs/sources/nbs-crystalline-sulfides.md).
+
+
+R16d4b adds 48 original NBS sulfide enthalpy/entropy observations from the same
+explicitly open non-SRD [NIST M32124](https://doi.org/10.18434/M32124) release,
+with source formula conversions, complete fractional hydrates and missing Gibbs
+energies retained. Credit Wagman et al. (1982) and NIST. The recorded NIST open
+licence applies; data are distributed without warranty. USGS and Robie and
+Hemingway (1995), [Bulletin2131](https://doi.org/10.3133/b2131), are acknowledged
+for the previously reviewed preferred triplets. Mason (1969),
+[doi:10.1039/J19690001567](https://doi.org/10.1039/J19690001567), and Shirako
+et al. (2014), [doi:10.1021/ic501770g](https://doi.org/10.1021/ic501770g), provide
+chemical-definition context; numerical thermochemistry from those articles is
+outside this import. The OECD/NEA attribution and downstream acknowledgment
+requirement above continue to apply to NEA observations, including the same
+requirement for further sublicensees. Added 26 October2026.

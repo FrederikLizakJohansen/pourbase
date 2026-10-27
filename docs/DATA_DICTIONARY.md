@@ -1931,7 +1931,24 @@ is distinct from formal oxidation, including PdS2 and Na2S2. New source phase
 labels remain; four unresolved phase rows stay external. Seven preferences
 change through the existing family ranking. Three documented overrides retain
 the reviewed later USGS molybdenite triplet; older NBS alternatives remain.
-The current policy has 49 overrides and 13 exclusions, fingerprint
-`586e3da17300`; recommendation fingerprint `8b7deec3f6d62880`. All earlier
+At the R16d4a checkpoint the policy had 49 overrides and 13 exclusions,
+fingerprint `586e3da17300`; recommendation fingerprint `8b7deec3f6d62880`. All earlier
 observations, fixed references and independent source holds remain.
+See [the source review](sources/nbs-crystalline-sulfides.md).
+
+
+## Remaining original NBS sulfide H/S
+
+R16d4b adds 48 observations and 42 source-defined records: 46 enthalpies and
+2 entropies, including six alternatives for existing phases. Forty-two missing
+properties become available; all earlier preferred values remain. Gibbs energy
+stays missing for the new H/S-only records. As2S2 H −142.7 kJ/mol converts to
+−285400 J/mol per stored As4S4. Its published-source discrepancy with USGS is
+explicit. Four documented H rules preserve the previously reviewed coherent
+realgar, wurtzite, marcasite and tungstenite triplets and their source intervals.
+All NBS alternatives remain eligible. Full primary counts, fractional hydrate
+waters and net electron coefficients retain their distinct meanings. Five H/S
+rows need source-phase or formal-state evidence and remain external, along with
+the four Gibbs-bearing phase holds. Current policy: 53 overrides, 13 exclusions,
+fingerprint `544b421b7f1c`; recommendation `f304af9ea86db5bf`.
 See [the source review](sources/nbs-crystalline-sulfides.md).

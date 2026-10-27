@@ -482,3 +482,27 @@ record_id = "r05-mo-mos2-molybdenite"
 property = "absolute_entropy"
 source_id = "R05_completion_USGS1995_r05-mo-mos2-molybdenite_entropy"
 reason = "Prefer the reviewed USGS1995 molybdenite triplet (Bulletin2131 p13/PDF19): H/G cite the revised O'Hare,Lewis,Parkinson1988 fluorine-combustion evaluation, and S cites McBride/Westrum1976 calorimetry,with stated source intervals. The newly retained NBS1982 Table52:Mo p2-201 was prepared1966 and predates these revisions; its H/G differ by about37kJ/mol. Keep the later source-consistent triplet preferred while preserving every older NBS alternative. R16d4a property-history review."
+
+[[overrides]]
+record_id = "r05-as-as4s4-realgar"
+property = "enthalpy_of_formation"
+source_id = "R05_completion_USGS1995_r05-as-as4s4-realgar_hf"
+reason = "Retain the reviewed USGS1995 formation enthalpy and its stated interval with the currently preferred G/S evaluation. The newly retained older NBS H-only alternative has no confidence interval and would introduce a substantial formation-cycle mismatch if substituted into that triplet. Exact original NBS value and formula-unit conversion remain eligible evidence; source-version differences are explicit in the R16d4b review. NBS As2S2 H−142.7kJ/mol converts by2 to−285400J/mol perAs4S4; preferred USGS AsS H−30.9kJ/mol converts by4 to−123600J/mol. The shared nominal NBS1982 ancestry in USGS reference419 does not resolve this source-version discrepancy."
+
+[[overrides]]
+record_id = "r05-zn-zns-wurtzite"
+property = "enthalpy_of_formation"
+source_id = "R05_completion_USGS1995_r05-zn-zns-wurtzite_hf"
+reason = "Retain the reviewed USGS1995 formation enthalpy and its stated interval with the currently preferred G/S evaluation. The newly retained older NBS H-only alternative has no confidence interval and would introduce a substantial formation-cycle mismatch if substituted into that triplet. Exact original NBS value and formula-unit conversion remain eligible evidence; source-version differences are explicit in the R16d4b review."
+
+[[overrides]]
+record_id = "r05-fe-fes2-marcasite"
+property = "enthalpy_of_formation"
+source_id = "R05_completion_USGS1995_r05-fe-fes2-marcasite_hf"
+reason = "Retain the reviewed USGS1995 formation enthalpy and its stated interval with the currently preferred G/S evaluation. The newly retained older NBS H-only alternative has no confidence interval and would introduce a substantial formation-cycle mismatch if substituted into that triplet. Exact original NBS value and formula-unit conversion remain eligible evidence; source-version differences are explicit in the R16d4b review."
+
+[[overrides]]
+record_id = "r05-w-ws2-tungstenite"
+property = "enthalpy_of_formation"
+source_id = "R05_completion_USGS1995_r05-w-ws2-tungstenite_hf"
+reason = "Retain the reviewed USGS1995 formation enthalpy and its stated interval with the currently preferred G/S evaluation. The newly retained older NBS H-only alternative has no confidence interval and would introduce a substantial formation-cycle mismatch if substituted into that triplet. Exact original NBS value and formula-unit conversion remain eligible evidence; source-version differences are explicit in the R16d4b review."

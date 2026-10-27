@@ -50,7 +50,7 @@ published interpretation.
 
 Three documented property overrides keep that later source-consistent triplet
 preferred. All older NBS values remain eligible alternatives. All prior 46
-overrides and 13 exclusions remain; the current policy has 49 overrides and
+overrides and 13 exclusions remain; the R16d4a policy has 49 overrides and
 fingerprint `586e3da17300`. The recommendation fingerprint is `8b7deec3f6d62880`.
 The selector implementation and source-family order are unchanged.
 
@@ -78,3 +78,61 @@ continue in the external plan.
 
 Metadata keys are `R16d4a_NBS_sulfide_source_review`,
 `R16d4a_NBS_sulfide_observations` and `R16d4a_source_and_model_holds`.
+
+
+## Remaining H/S observations: R16d4b
+
+The remaining 53 source rows contain one numeric H or S cell each. This batch
+adds 48 observations from 48 rows: 46 H and two S, with 42 new records and
+six alternatives for existing phases. Forty-two previously missing properties
+become available. All earlier preferred values stay unchanged. The new records
+have no G; they appear in the evidence API and are reported as unavailable for
+calculations when sulfide is enabled. No Gibbs energy is inferred.
+
+Printed NBS Table 20:As, prepared in 1964, p.2-77 (PDF p.85), confirms
+As2S2 H −142.7 kJ/mol. The stored realgar formula is As4S4, so the retained
+alternative is −285400 J/mol. USGS Bulletin 2131 p.11 (PDF p.17) reports
+H −30.9 ±5 kJ/mol per empirical AsS, correctly stored as −123600 ±20000
+J/mol per As4S4. Its reference419 is Wagman et al. (1982); the shared nominal
+ancestry leaves an unresolved published-source discrepancy. Both published
+numbers and their formula conversions are preserved. No independence is assumed.
+
+Four explicit H-only policy rules preserve the current coherent USGS G/H/S
+triplets for realgar, wurtzite, marcasite and tungstenite, including their stated
+intervals. The NBS H alternatives stay eligible. The new rules preserve all prior
+49 overrides and 13 exclusions; the policy now has 53 overrides, fingerprint
+`544b421b7f1c`. Recommendation fingerprint: `f304af9ea86db5bf`.
+NEA SnS2 S and ZrS2 H stay preferred under the existing class ranking.
+
+Full Ni6S5, Ni7S6, In3S4 and In4S5 formula units retain each primary atom.
+Fractional hydrate waters remain explicit, including Na2S·4.5H2O and
+K2S4·0.5H2O. Alkali polysulfides have formal alkali state +1; their net
+S2−-referenced electron coefficient is 2nS/nPrimary. Conventional formal
+states in ordinary sulfides are formula averages, without assigning atomic
+charges to individual sites. In N4S4, the N–S ionic-bond approximation gives
+N(−III), while the balanced sulfide-reference coefficient is +2 per N.
+[Mason (1969)](https://doi.org/10.1039/J19690001567) provides the electronic
+structure context. RuS2 and OsS2 use formal +2 and net coefficient4;
+[Shirako et al. (2014), Table4](https://doi.org/10.1021/ic501770g)
+documents the divalent bulk disulfide definitions. Exact NBS specimen structures
+remain unassigned. These references supply chemical definitions; their numerical
+thermochemistry is outside this import.
+
+Five H/S observations remain external: precipitated NiS needs correspondence
+to the retained polymorphs; IrS2, Re2S7, CeS2 and Ce3S4 need source-specific
+formal-state and bonding/phase evidence. These holds are scientific and remain
+separate from permissions. Together with the four earlier Gibbs-bearing holds,
+the full 91-row source accounts for 147 new observations, three retained
+original-cell links, 17 held numeric cells and 106 source blanks: 273 slots.
+This covers every original source row; the named holds continue as R16d4c.
+
+Validation preserves all earlier SQL rows and choices, all 75 default maps and
+uncertainty masks, 90 buffered sulfide maps, 240 primary balances and 60 thermal
+inventories. Strict coverage stays 53 experimental or 56 with fallbacks.
+Historical request coverage remains 116/131; the six original crystalline G gaps
+remain. The same open non-SRD M32124 reuse evidence, NIST credit and warranty
+statement apply. Independent source/model holds and the OECD/NEA downstream
+acknowledgment requirements carry forward.
+
+Metadata keys are `R16d4b_NBS_sulfide_HS_review`,
+`R16d4b_NBS_sulfide_HS_observations` and `R16d4b_source_and_model_holds`.

@@ -60,7 +60,7 @@ class NEARemainingAncillaryTests(unittest.TestCase):
         self.assertTrue(selection.basis.startswith('override:'))
         candidate = next(c for c in selection.candidates if c.source_id == SID)
         self.assertEqual((candidate.value, candidate.evidence_class), (-1253236, 'A'))
-        self.assertEqual(self.db.policy.fingerprint, '586e3da17300')
+        self.assertEqual(self.db.policy.fingerprint, '544b421b7f1c')
 
     def test_fluorapatite_uses_both_references_and_full_formula_unit(self):
         rid = 'r14e2-ca-fluorapatite'
