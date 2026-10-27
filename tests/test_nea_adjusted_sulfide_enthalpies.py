@@ -104,5 +104,5 @@ class NEAAdjustedSulfideTests(unittest.TestCase):
         self.assertTrue(permission['downstream_acknowledgment_required'])
         self.assertEqual(permission['status'],'available_under_OECD_data_terms')
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')
-        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(58,17))
-        self.assertEqual(self.db.policy.fingerprint,'5bbebf8f20e9')
+        self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(61,17))
+        self.assertEqual(self.db.policy.fingerprint,'7a2a7d316094')

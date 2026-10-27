@@ -61,7 +61,7 @@ class NEA2020VanadateSolidTests(unittest.TestCase):
         review=json.loads(self.db.metadata['R11j3c_NEA2020_vanadate_review'])
         self.assertEqual((review['NEA_own_observations'],review['open_NBS_observations'],review['new_species']),(4,6,2))
         self.assertEqual(len(json.loads(self.db.metadata['R11j3c_vanadate_observations'])),10)
-        self.assertEqual(self.db.policy.fingerprint,'5bbebf8f20e9')
+        self.assertEqual(self.db.policy.fingerprint,'7a2a7d316094')
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
 
 if __name__=='__main__':

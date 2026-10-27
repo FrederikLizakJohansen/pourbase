@@ -560,3 +560,21 @@ record_id = "r16d6c-fe-kankite-nominal"
 property = "absolute_entropy"
 source_id = "R16d6c_NEA2020_Fe_P_As_main"
 reason = "NEA2020 p264 footnote reports that the 2012 nominal kankite specimen was X-rayed only at the beginning of calorimetry; later work found spontaneous or cryogenic transformation to layered FeAsO4\u00b72H2O. Preserve the published selected observation on a specimen-qualified record with unresolved phase history. Exclude from recommendations until the exact calorimetric sample/phase correspondence is reconciled. This is a scientific qualification; OECD reuse permission applies."
+
+[[overrides]]
+record_id = "r10-fe-alpha-fe7se8"
+property = "enthalpy_of_formation"
+source_id = "R16d6d_NEA2020_Fe_Se_Te_main"
+reason = "NEA2020 explicitly revises the older NEA2005 formation enthalpy after reweighting experimental selenidation studies. Prefer the final2020 value with its expanded interval; preserve the older narrower recommendation."
+
+[[overrides]]
+record_id = "r10-fe-fese2-cr"
+property = "absolute_entropy"
+source_id = "R16d6d_NEA2020_Fe_Se_Te_main"
+reason = "NEA2020 corrects the earlier low-temperature calorimetric interpretation for Fe3Se4 impurity and nonstoichiometry. Prefer revised83.5\u00b12 over older86.8\u00b11; retain both and their coupledG/H/S ancestry."
+
+[[overrides]]
+record_id = "r16d6d-fe-fe1-042se-beta"
+property = "enthalpy_of_formation"
+source_id = "R16d6d_NEA2020_Fe_Se_Te_main"
+reason = "Prefer the final NEA2020 Piacente-based H over the retained own Gronvold and Svendsen recalculations, for which the review identifies positive/negative biases. Shared ancestry and source confidence intervals remain explicit."

@@ -2027,3 +2027,15 @@ formal/net-electron coefficients remain explicit; one strengite entropy is a
 source-verified estimate. All prior evidence/choices and31 component references
 remain. Policy5bbebf8f20e9 has58 overrides/17 exclusions; recommendation879bd59b140b9c99.
 See [the source review](sources/nea-iron-phosphates-arsenates.md).
+
+
+## NEA iron selenium and tellurium: R16d6d
+
+Nineteen observations add five species and 12 missing properties. Two unchanged
+entropy cells link to existing evidence. Five preferred properties change under
+the newer evaluation, with every alternative retained. Empirical Fe1.042Se and
+Fe1.111Te units, nominal FeSe1.95, formal and net electron coefficients, and the
+trihydrate's three waters remain explicit. Policy `7a2a7d316094` has 61 overrides
+and 17 exclusions; the recommendation fingerprint is `f4557b983700eeda`.
+All 31 fixed references remain. See the
+[source review](sources/nea-iron-selenium-tellurium.md).

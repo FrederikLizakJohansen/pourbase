@@ -75,7 +75,7 @@ class NEAMetalSeleniumTests(unittest.TestCase):
 
     def test_iron_formation_estimate_has_all_inputs_and_no_invented_total_uncertainty(self):
         record = self.record("r11c-fe-feseo3-aqueous")
-        value = record.reported[0]
+        value = next(row for row in record.reported if row.source.source_id == "pourbase_R11c_FeSeO3_derived_G")
         self.assertEqual(value.value, -442263)
         self.assertEqual(value.status, "source_verified_estimate")
         self.assertIsNone(value.uncertainty)

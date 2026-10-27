@@ -28,11 +28,15 @@ class HeraclesSourceRouteTests(unittest.TestCase):
 
     def test_unselected_mirror_G_and_entropy_proxies_stay_missing(self):
         for rid, properties in [('r10-ru-ruse2-cr', {'absolute_entropy'}),
-                                ('r10-sn-alpha-snse', {'enthalpy_of_formation'}),
-                                ('r10-fe-fese2-cr', {'enthalpy_of_formation', 'absolute_entropy'})]:
+                                ('r10-sn-alpha-snse', {'enthalpy_of_formation'})]:
             record = self.database.species_records((rid,))[0]
             self.assertEqual({r.property for r in record.reported}, properties)
             self.assertIsNone(record.thermochemistry.gibbs_energy_J_mol.value)
+        iron = self.database.species_records(('r10-fe-fese2-cr',))[0]
+        original = [row for row in iron.reported if row.source.source_id == 'NEA2005_R10_Heracles_binary_selenides']
+        self.assertEqual({row.property for row in original}, {'enthalpy_of_formation', 'absolute_entropy'})
+        self.assertEqual(iron.thermochemistry.gibbs_energy_J_mol.value, -111722)
+        self.assertEqual(iron.thermochemistry.gibbs_energy_J_mol.source.source_id, 'R16d6d_NEA2020_Fe_Se_Te_main')
         lanthanum = self.database.species_records(('r10-la-la2se3-cr',))[0]
         self.assertEqual(lanthanum.charge, 0)
         self.assertEqual(lanthanum.thermochemistry.entropy_J_mol_K.value, 202.2)

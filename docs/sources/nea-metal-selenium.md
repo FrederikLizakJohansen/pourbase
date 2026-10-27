@@ -157,3 +157,12 @@ versions and extrapolation functions retain their own review decisions.
 The full candidate/import package, source images, reference history, derivation,
 reaction diagnostics, 42 scenarios and validation reports are saved in the
 external `reaktoro-dataset-review/r11c-metal-selenium` checkpoint.
+
+
+## Later NEA2020 iron selection
+
+The original R11c FeSeO3+ estimate and its complete derivation remain stored.
+R16d6d adds the directly tabulated NEA2020 G of −446544 ± 3048 J/mol to the
+same charged record; it becomes preferred under the policy. The original
+−442263 J/mol observation retains its missing interval and estimate status.
+See the [iron selenium/tellurium review](nea-iron-selenium-tellurium.md).

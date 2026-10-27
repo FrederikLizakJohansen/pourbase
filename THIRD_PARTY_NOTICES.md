@@ -2031,3 +2031,18 @@ using these data,include the same acknowledgment requirement in every sublicense
 and require further sublicensees to do the same. Other sources retain their
 separate terms and permission holds. Full books and private correspondence
 stay external. See [the source review](docs/sources/nea-iron-phosphates-arsenates.md).
+
+
+## R16d6d NEA iron selenium and tellurium data
+
+Credit OECD (2020), *Chemical Thermodynamics of Iron, Part 2*, NEA No. 7499;
+Lemire, R. J.; Palmer, D. A.; Taylor, P.; Schlenz, H.,
+[official source](https://www.oecd-nea.org/upload/docs/application/pdf/2020-03/7499-vol13b-iron.pdf)
+(accessed 27 October 2026). Nineteen own selected/evaluated observations retain
+exact source locations, formula units and scientific qualifications.
+The supplied OECD clarification and recorded data terms apply, with any
+source-specific additional restrictions. When sharing or licensing work made
+using these data, include the same acknowledgment requirement in every sublicense
+and require further sublicensees to do the same. Other sources retain their
+separate terms and permission holds. See the
+[source review](docs/sources/nea-iron-selenium-tellurium.md).
