@@ -1,12 +1,12 @@
 """Diagrams at one fixed potential: solubility against pH and ligand predominance against pH.
 
-:func:`solubility` gives, at each pH, the dissolved metal in equilibrium with the most stable
+``solubility`` gives, at each pH, the dissolved metal in equilibrium with the most stable
 condensed phase (Eqs. 6 and 7 with ideal activities): an aqueous species ``i`` with ``m_i`` metal
 atoms has the activity ``log10 a_i = m_i (G_s - G_i°) / (RT ln 10)``, where ``G_s`` is the
 transformed Gibbs energy of the solid and ``G_i°`` that of the species at unit activity, both per
 mole of metal. It carries ``m_i a_i`` mol/L of metal.
 
-:func:`ligand_predominance` gives the stable species of a fixed-activity diagram over pH and the
+``ligand_predominance`` gives the stable species of a fixed-activity diagram over pH and the
 free activity of one ligand.
 """
 

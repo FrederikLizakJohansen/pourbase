@@ -54,7 +54,7 @@ def water_gibbs_energy_J_mol(reference_J_mol: float, temperature_K: float) -> fl
 
 
 class DatabaseAtTemperature:
-    """A view of a :class:`ThermodynamicDatabase` whose species and water describe temperature T."""
+    """A view of a ``ThermodynamicDatabase`` whose species and water describe temperature T."""
 
     def __init__(self, database, temperature_K: float) -> None:
         if not MINIMUM_K <= temperature_K <= MAXIMUM_K:

@@ -413,7 +413,7 @@ class MetalSystem:
         return not self.missing_gibbs
 
     def require_complete(self) -> None:
-        """Raise :class:`IncompleteSystemError` when a Gibbs energy is missing."""
+        """Raise ``IncompleteSystemError`` when a Gibbs energy is missing."""
         if missing := self.missing_gibbs:
             raise IncompleteSystemError(
                 f"{self.symbol} has {len(missing)} species without a recommended Gibbs "

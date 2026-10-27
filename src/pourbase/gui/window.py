@@ -80,7 +80,7 @@ def coarse_preview(scenario: Scenario) -> Scenario:
 class MainWindow(QMainWindow):
     def __init__(self, symbol: str | None = None, settings: QSettings | None = None,
                  database: Any = None, dataset_name: str | None = None, dataset_path: str | None = None) -> None:
-        """``database`` replaces the bundled data, for example a user dataset from :func:`open_dataset`."""
+        """``database`` replaces the bundled data, for example a user dataset from ``open_dataset``."""
         super().__init__()
         self.dataset_name = dataset_name
         self.dataset_path = dataset_path

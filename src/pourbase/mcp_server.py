@@ -5,7 +5,7 @@
 The server speaks MCP over standard input and output, so any MCP client (Claude Code, Claude
 Desktop, and other agent frameworks) can start it as a subprocess. Every tool returns JSON-ready
 data with record IDs, sources and evidence statuses, so an agent can cite what it reports. The
-tools are plain functions of :class:`Tools` and can be called without MCP; the server needs the
+tools are plain functions of ``Tools`` and can be called without MCP; the server needs the
 optional ``mcp`` dependency (``pip install pourbase[mcp]``).
 """
 

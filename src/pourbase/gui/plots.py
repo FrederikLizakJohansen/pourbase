@@ -30,7 +30,7 @@ LEGEND_PT = 9.0
 
 
 def record_colors(record_ids: list[str]) -> dict[str, QColor]:
-    """Species colors matching :func:`pourbase.plot_diagram` (tab20 over sorted record IDs)."""
+    """Species colors matching ``pourbase.plot_diagram`` (tab20 over sorted record IDs)."""
     palette = colormaps["tab20"]
     return {
         record_id: QColor.fromRgbF(*palette(index % palette.N))
@@ -642,7 +642,7 @@ class DiagramView(pg.PlotWidget):
         self.points_item.setData(spots)
 
     def pick_points(self, done, smooth=lambda: False) -> None:
-        """Collect clicks as ``(pH, U vs SHE)`` points until :meth:`finish_pick` or a double-click, then pass
+        """Collect clicks as ``(pH, U vs SHE)`` points until ``finish_pick`` or a double-click, then pass
         them to ``done``. While picking, the path runs on to the mouse."""
         self._picked: list[tuple[float, float]] = []
         self._pick = (done, smooth)
@@ -663,7 +663,7 @@ class DiagramView(pg.PlotWidget):
         self.viewport().setCursor(Qt.ArrowCursor)
 
     def show_region(self, region) -> None:
-        """Shade a :class:`~pourbase.inverse.StabilityRegion` and outline it, or remove it."""
+        """Shade a ``StabilityRegion`` and outline it, or remove it."""
         if not hasattr(self, "region_image"):
             self.region_image = pg.ImageItem(axisOrder="row-major")
             self.region_image.setZValue(2.5)

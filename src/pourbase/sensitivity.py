@@ -5,7 +5,7 @@ transformed Gibbs energy (Eq. 1) by the same amount, ``(G_alt - G_used) / m_i``,
 the diagram. A selection of eligible values therefore needs no new calculation: the stored
 energies plus one constant per species give the stable species directly.
 
-:func:`selection_sensitivity` draws random selections, one eligible value per species, and reports
+``selection_sensitivity`` draws random selections, one eligible value per species, and reports
 at each grid point the share of selections whose stable species differs from the diagram's. It
 also reports, for each species, the share of the diagram that changes when its value alone is
 replaced by the eligible value farthest from the one in use.
@@ -65,7 +65,7 @@ def selection_sensitivity(
 ) -> SelectionSensitivity:
     """Sensitivity of a fixed-activity ``diagram`` to the choice between eligible Gibbs energies.
 
-    ``selections`` maps ``(record_id, property)`` to the :class:`~pourbase.selection.Selection` of
+    ``selections`` maps ``(record_id, property)`` to the ``Selection`` of
     a policy, for example ``database.selections``. ``classes`` limits the alternatives to some
     evidence classes, such as ``{"A", "B", "C"}``. ``progress(fraction)`` may return False to stop.
     """

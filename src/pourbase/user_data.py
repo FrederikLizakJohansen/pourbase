@@ -193,7 +193,7 @@ class UserSpeciesDatabase(ThermodynamicDatabase):
 
 def with_user_species(database: ThermodynamicDatabase, species: str | Path | Iterable[UserSpecies]
                       ) -> UserSpeciesDatabase:
-    """``database`` with user species from a CSV path or :class:`UserSpecies` objects."""
+    """``database`` with user species from a CSV path or ``UserSpecies`` objects."""
     if isinstance(species, (str, Path)):
         species = read_user_species(species)
     return UserSpeciesDatabase(database, species)
@@ -201,7 +201,7 @@ def with_user_species(database: ThermodynamicDatabase, species: str | Path | Ite
 
 def dataset_from_csv(csv_path: str | Path, output_path: str | Path | None = None,
                      reference: ThermodynamicDatabase | None = None) -> ThermodynamicDatabase:
-    """A database that holds only the species of a CSV file (the format of :func:`read_user_species`).
+    """A database that holds only the species of a CSV file (the format of ``read_user_species``).
 
     The file is written as a SQLite database with the schema of the bundled release, so every part of
     the package and application works with it. Each row becomes the only reported Gibbs energy of its
@@ -277,7 +277,7 @@ def dataset_from_csv(csv_path: str | Path, output_path: str | Path | None = None
 
 
 def open_dataset(path: str | Path) -> ThermodynamicDatabase:
-    """Open a dataset on its own: a pourbase SQLite file, or a CSV of species (see :func:`read_user_species`)."""
+    """Open a dataset on its own: a pourbase SQLite file, or a CSV of species (see ``read_user_species``)."""
     path = Path(path)
     if path.suffix.lower() == ".csv":
         return dataset_from_csv(path)

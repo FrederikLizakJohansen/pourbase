@@ -21,8 +21,8 @@ energy per mole of metal is
 with G_H2O the Gibbs energy of formation of liquid water, mu_L = Delta_f G_L + RT ln a_L the
 chemical potential of the buffered ligand, and a_i the activity of an aqueous species (or the
 fugacity of a gas in bar); solids and liquids have a_i = 1. The stable species at a grid point is
-the one with the lowest G~_i (Eq. 2). :func:`standard_transformed_gibbs_J_mol_metal` evaluates
-Eq. 1 at a_i = 1 and :func:`transformed_gibbs_J_mol_metal` adds the activity term.
+the one with the lowest G~_i (Eq. 2). ``standard_transformed_gibbs_J_mol_metal`` evaluates
+Eq. 1 at a_i = 1 and ``transformed_gibbs_J_mol_metal`` adds the activity term.
 """
 
 

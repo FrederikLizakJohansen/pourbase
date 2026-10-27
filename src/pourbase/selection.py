@@ -1,14 +1,14 @@
 """Selection of recommended values by an editable policy.
 
 Every reported value of a species and property is kept in ``reported_thermochemistry``. A
-:class:`SelectionPolicy` decides which of them is recommended: values with ineligible statuses are
+``SelectionPolicy`` decides which of them is recommended: values with ineligible statuses are
 dropped, the remaining ones are ranked by evidence class and by family within the class, and ties
 are broken by the policy's tie-breaks. Overrides replace the rule for single records, each with a
 reason.
 
 The bundled recommendations are the output of the default policy, ``data/selection-policy.toml``.
-:func:`with_policy` calculates with any other policy without changing the database, and
-:func:`compare_policies` lists every value two policies choose differently.
+``with_policy`` calculates with any other policy without changing the database, and
+``compare_policies`` lists every value two policies choose differently.
 """
 
 from __future__ import annotations

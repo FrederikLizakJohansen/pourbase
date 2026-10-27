@@ -156,7 +156,7 @@ def screen_periodic_table(
     ``ligands`` are buffered ligand reservoirs; their complexes take part for every element that
     forms them. Species without a recommended Gibbs energy are left out unless
     ``allow_incomplete`` is False, which marks such elements as incomplete instead. ``temperature_K``
-    extrapolates the Gibbs energies as in :mod:`pourbase.temperature`.
+    extrapolates the Gibbs energies as in ``pourbase.temperature``.
     """
     from .temperature import at_temperature
 

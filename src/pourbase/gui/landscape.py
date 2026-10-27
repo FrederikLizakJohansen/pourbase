@@ -54,10 +54,10 @@ OUTLINE, EDGE_NORMALS = _outline()
 
 
 class MarginLandscape(QWidget):
-    """Draws the elements of a :class:`PeriodicTableCanvas` as columns; drag to rotate, scroll to zoom.
+    """Draws the elements of a ``PeriodicTableCanvas`` as columns; drag to rotate, scroll to zoom.
 
     ``raise_amount`` runs from 0 (flat, seen from above, tile for tile on the 2D table) to 1 (columns at full
-    height under the chosen camera); :meth:`animate_to` moves it smoothly. Heights move to each new screen over
+    height under the chosen camera); ``animate_to`` moves it smoothly. Heights move to each new screen over
     ``tween_ms``, so a pH or potential sweep shows the columns growing and shrinking.
     """
 

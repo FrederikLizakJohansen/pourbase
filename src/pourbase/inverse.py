@@ -27,7 +27,7 @@ KINDS = {
 
 
 def target_members(species: tuple[ThermodynamicSpecies, ...], target: str) -> np.ndarray:
-    """Boolean mask of the species in ``target``: a kind from :data:`KINDS` or a record ID."""
+    """Boolean mask of the species in ``target``: a kind from ``KINDS`` or a record ID."""
     if target == "immunity":
         return np.array([item.gibbs_status is EvidenceStatus.DEFINED_REFERENCE_STATE and item.is_condensed
                          for item in species])
@@ -112,7 +112,7 @@ def screen_window(database, kind: str, pH: tuple[float, float], U_V: tuple[float
                   min_margin_J_mol: float = 0.0, points: int = 21, **scenario) -> dict[str, WindowResult]:
     """For every element, the share of a pH–potential window where ``kind`` holds.
 
-    ``scenario`` takes :class:`~pourbase.scenario.Scenario` fields such as ``concentration``,
+    ``scenario`` takes ``Scenario`` fields such as ``concentration``,
     ``ligands`` or ``temperature_K``; the diagrams are fixed-activity.
     """
     from .scenario import Mode, Scenario, calculate

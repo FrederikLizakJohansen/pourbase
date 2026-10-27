@@ -113,7 +113,7 @@ def plot_uncertainty(
     """Hatch the points where another species lies within ``confidence_sigma`` combined uncertainties (Eq. 12).
 
     Species without a reported uncertainty take ``assumed_uncertainty_kJ_mol``. Draws on ``ax``, the
-    axes of a diagram plotted with :func:`plot_diagram`, and returns it.
+    axes of a diagram plotted with ``plot_diagram``, and returns it.
     """
     from .uncertainty import stability_uncertainty
 

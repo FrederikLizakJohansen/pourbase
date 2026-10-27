@@ -1,4 +1,4 @@
-"""Public exceptions raised by :mod:`pourbase`."""
+"""Public exceptions raised by ``pourbase``."""
 
 
 class PourbaseError(Exception):

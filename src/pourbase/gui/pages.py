@@ -422,7 +422,7 @@ class SpeciesPage(QSplitter):
 
     def show_calculation(self, calculation: Calculation, records: dict[str, SpeciesRecord],
                          selections: dict | None = None, policy_name: str = "") -> None:
-        """``selections`` maps ``(record_id, property)`` to the active policy's :class:`Selection`."""
+        """``selections`` maps ``(record_id, property)`` to the active policy's ``Selection``."""
         self.records = records
         self.selections, self.policy_name = selections or {}, policy_name
         system = calculation.diagram.system

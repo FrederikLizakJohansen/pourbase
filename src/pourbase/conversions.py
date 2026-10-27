@@ -125,7 +125,7 @@ def convert_concentration(
 def express_concentration(
     symbol: str, molar: float, unit: str, *, solution_density_kg_L: float = 1.0
 ) -> float:
-    """A molar metal concentration expressed in ``unit``; the inverse of :func:`convert_concentration`."""
+    """A molar metal concentration expressed in ``unit``; the inverse of ``convert_concentration``."""
     grams_per_litre = molar * ATOMIC_WEIGHT_G_MOL[symbol]
     values = {
         "log10_molar": math.log10(molar),

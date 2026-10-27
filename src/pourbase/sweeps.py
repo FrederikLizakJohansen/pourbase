@@ -86,7 +86,7 @@ class ConcentrationSweepEngine:
 
         Diagrams are stored without their energy stacks unless ``store_energies``.
         ``progress`` receives the completed fraction; returning False raises
-        :class:`CalculationCancelled`.
+        ``CalculationCancelled``.
         """
         if not math.isfinite(log10_activity_min) or not math.isfinite(log10_activity_max):
             raise ValueError("activity limits must be finite")

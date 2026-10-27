@@ -46,8 +46,8 @@ class Scenario:
     mode; None means ideal. ``activity_overrides`` maps species record IDs, names or
     formulas to their own log10 activity in fixed-activity mode. Species without a recommended
     Gibbs energy are left out and listed in ``Calculation.excluded``; ``allow_incomplete=False``
-    raises :class:`IncompleteSystemError` instead. ``temperature_K`` between 273.15 and 373.15 K
-    extrapolates every Gibbs energy with its entropy of formation (see :mod:`pourbase.temperature`).
+    raises ``IncompleteSystemError`` instead. ``temperature_K`` between 273.15 and 373.15 K
+    extrapolates every Gibbs energy with its entropy of formation (see ``pourbase.temperature``).
     """
 
     symbol: str

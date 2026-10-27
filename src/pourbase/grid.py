@@ -1,10 +1,10 @@
 """pH/U grids, water-stability lines and phase boundaries shared by the engines.
 
 A diagram is evaluated at the centres of a regular pH x U grid. Each grid value is the centre of
-a rectangular cell, and :func:`phase_boundary_segments` draws a line segment along every cell
+a rectangular cell, and ``phase_boundary_segments`` draws a line segment along every cell
 edge that separates two different stable species. The drawn lines therefore follow the exact
 boundaries of Eqs. 3 and 4 to within half a grid step; the equations themselves come from
-:mod:`pourbase.equilibria`. Water is stable between the hydrogen and oxygen lines
+``pourbase.equilibria``. Water is stable between the hydrogen and oxygen lines
 
     E_H2 = -(RT ln 10 / F) pH,    E_O2 = -G_H2O / (2F) - (RT ln 10 / F) pH .           (5)
 """

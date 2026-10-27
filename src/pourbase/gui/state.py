@@ -48,7 +48,7 @@ class LigandSetting:
 
 @dataclass
 class Settings:
-    """Everything the user sets for one system; it builds the library :class:`Scenario`."""
+    """Everything the user sets for one system; it builds the library ``Scenario``."""
 
     symbol: str = "Fe"
     mode: str = Mode.FIXED_ACTIVITY.value

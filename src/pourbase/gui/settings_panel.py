@@ -41,7 +41,7 @@ def _scroll(widget: QWidget) -> QScrollArea:
 
 
 class SettingsPanel(QTabWidget):
-    """Edits :class:`Settings` and :class:`DisplayOptions`.
+    """Edits ``Settings`` and ``DisplayOptions``.
 
     ``changed(reset_range)`` reports a new calculation request; ``displayChanged`` only
     affects drawing; ``probeChanged`` moves the probe.

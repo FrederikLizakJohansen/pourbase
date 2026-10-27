@@ -12,7 +12,7 @@ recovered; a larger width blends in the dissolved species within a few epsilon o
 
 With epsilon = RT the weights of mononuclear dissolved species are their equilibrium fractions,
 since the ratio of two aqueous activities is exp[-(G~_j - G~_i)/RT]; they then reproduce the
-fractions of the closed mass balance (:func:`pourbase.speciation.metal_fraction_grid`) wherever no
+fractions of the closed mass balance (``pourbase.speciation.metal_fraction_grid``) wherever no
 solid precipitates. Other widths display energy differences.
 """
 

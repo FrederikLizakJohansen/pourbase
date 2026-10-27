@@ -20,7 +20,7 @@ If c_T > c_sat the solid precipitates, c_d = c_sat and the precipitated fraction
 1 - c_sat / c_T; otherwise everything is dissolved. The species fractions c_i / c_d are
 exp(-G~_i / RT) / (gamma_i Z) in both cases. The dominant species is the solid where it
 precipitates and the most concentrated aqueous species elsewhere. Activity coefficients gamma_i
-come from :mod:`pourbase.activity_coefficients`. Polynuclear aqueous species and gases are left
+come from ``pourbase.activity_coefficients``. Polynuclear aqueous species and gases are left
 out of the balance.
 """
 
@@ -116,7 +116,7 @@ class MassBalancedPourbaixDiagram:
 
     @property
     def stable_species_index(self) -> IntegerArray:
-        """The dominant species; the name matches :class:`PourbaixDiagram`."""
+        """The dominant species; the name matches ``PourbaixDiagram``."""
         return self.dominant_species_index
 
     @property

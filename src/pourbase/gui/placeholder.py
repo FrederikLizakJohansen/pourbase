@@ -86,7 +86,7 @@ class Placeholder(QWidget):
 
 
 class StackedView(QStackedWidget):
-    """A view paired with a :class:`Placeholder`; ``show_view`` and ``show_message`` switch them."""
+    """A view paired with a ``Placeholder``; ``show_view`` and ``show_message`` switch them."""
 
     def __init__(self, view: QWidget, parent=None) -> None:
         super().__init__(parent)
