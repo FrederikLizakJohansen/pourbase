@@ -1955,3 +1955,18 @@ electron; numerical thermochemistry from the thesis is outside this import.
 The earlier OECD/NEA attribution and downstream acknowledgment requirements,
 including their application to further sublicensees, continue unchanged.
 Added27 October2026.
+
+
+## R16d5a USGS cobalt sulfide selections
+
+Credit Robie, R. A. and Hemingway, B. S. (1995), *Thermodynamic properties of
+minerals and related substances*, US Geological Survey Bulletin2131,
+[doi:10.3133/b2131](https://doi.org/10.3133/b2131), printed p.11. These six
+individual author-selected G/H/S cells use the completed public-domain USGS
+federal-evaluation route. Source-specific experimental ancestry, intervals and
+specimen qualifications are retained. Stuve, Beyer and Brown (1985),
+[US Bureau of Mines RI8994](https://stacks.cdc.gov/view/cdc/10745), is credited
+for the original entropy-column comparison; CDC marks that report Public Domain.
+Full source reports and article tables remain external. Earlier NIST credit
+and OECD/NEA attribution and downstream acknowledgment, including the same
+requirement for further sublicensees, remain applicable. Added27 October2026.

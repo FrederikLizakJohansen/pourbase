@@ -1965,3 +1965,16 @@ values and preferred choices stay. Eight source rows/16 numeric cells retain
 specific phase or bonding holds. Policy `544b421b7f1c` is unchanged;
 recommendation fingerprint is `868726936e6d92c1`.
 See [the source review](sources/nbs-crystalline-sulfides.md).
+
+
+## USGS cobalt sulfide selections: R16d5a
+
+Six original USGS selections add G/H/S for cattierite CoS2 and linnaeite
+Co3S4. All earlier observations and choices remain. Full formula units retain
+one/two Co/S atoms for CoS2 and three/four for Co3S4. The net buffered-S2−
+electron coefficients are4 and8/3 per Co, respectively; formal Co in CoS2
+is+2. Named mineral identities are resolved; exact specimen space groups remain
+unassigned. Source intervals, shared ancestry and specimen qualifications stay
+explicit. Policy `544b421b7f1c` is unchanged; recommendation fingerprint
+`cfe67366d3a4a32d`. The eight NBS source-definition holds remain separate.
+See [the source review](sources/usgs-cobalt-sulfides.md).

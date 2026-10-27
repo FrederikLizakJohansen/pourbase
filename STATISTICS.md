@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 1728 |
+| Species | 1730 |
 | Supported elemental systems | 75 of 118 elements |
-| Recommended Gibbs energies | 1294 (75 %) |
-| Recommended entropies | 1268 (73 %) |
-| Recommended formation enthalpies | 1292 (75 %) |
-| Reported values retained | 5140 |
-| Source records | 1827 (267 distinct citations) |
-| Phase records | 1108 (479 resolved) |
-| Warnings | 2697 |
+| Recommended Gibbs energies | 1296 (75 %) |
+| Recommended entropies | 1270 (73 %) |
+| Recommended formation enthalpies | 1294 (75 %) |
+| Reported values retained | 5146 |
+| Source records | 1828 (267 distinct citations) |
+| Phase records | 1110 (481 resolved) |
+| Warnings | 2701 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 31 |
@@ -23,7 +23,7 @@ Gibbs energies by evidence status:
 
 | Status | Species |
 |---|---|
-| `verified` | 891 |
+| `verified` | 893 |
 | `not_available` | 428 |
 | `source_verified_estimate` | 328 |
 | `defined_reference_state` | 75 |
@@ -33,7 +33,7 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| solid | 964 | 679 | 651 | 870 |
+| solid | 966 | 681 | 653 | 872 |
 | aqueous | 590 | 522 | 445 | 327 |
 | gas | 169 | 90 | 169 | 90 |
 | liquid | 5 | 3 | 3 | 5 |
@@ -42,19 +42,19 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 1728 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 1728 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 5140 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1827 | Full citations, links, locators and access dates |
-| `phases` | 1108 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 2697 | Scientific cautions attached to records |
+| `species` | 1730 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 1730 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 5146 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1828 | Full citations, links, locators and access dates |
+| `phases` | 1110 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 2701 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 31 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 59 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 166 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 169 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -102,7 +102,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Cd | Cadmium (Cd) | 26 | 12 | 12 | 2 | 0 | 19 | 22 | 14 | 34 |
 | Ce | Cerium (Ce) | 19 | 7 | 12 | 0 | 0 | 14 | 11 | 16 | 24 |
 | Cl | Chlorine (Cl) | 12 | 8 | 0 | 4 | 0 | 10 | 12 | 10 | 8 |
-| Co | Cobalt (Co) | 31 | 7 | 21 | 3 | 0 | 18 | 23 | 21 | 51 |
+| Co | Cobalt (Co) | 33 | 7 | 23 | 3 | 0 | 20 | 25 | 23 | 55 |
 | Cr | Chromium (Cr) | 23 | 8 | 13 | 2 | 0 | 10 | 14 | 12 | 36 |
 | Cs | Caesium (Cs) | 18 | 5 | 10 | 3 | 0 | 13 | 16 | 13 | 26 |
 | Cu | Copper (Cu) | 44 | 18 | 23 | 3 | 0 | 32 | 38 | 28 | 76 |
