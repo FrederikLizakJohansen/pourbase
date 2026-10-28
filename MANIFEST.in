@@ -12,3 +12,5 @@ exclude collaborator-*.md permission-emails.md agent-prompt-*.md
 global-exclude __pycache__ *.py[cod]
 
 include docs/database-follow-ups.csv
+include docs/database-species-review.csv
+include scripts/audit_database_representation.py

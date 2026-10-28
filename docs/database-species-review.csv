@@ -1,0 +1,1772 @@
+record_id,symbol,formula_ascii,phase,phase_detail,charge,atom_count,identity_status,representation_errors
+gfe-ag-ag-oh-2-q-1-aqueous-aq,Ag,Ag(OH)2,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-ag-ag-q+0-solid-metal,Ag,Ag,solid,metal,0.0,1.0,not_recorded,0
+gfe-ag-ag-q+1-aqueous-aq,Ag,Ag,aqueous,aqueous,1.0,1.0,not_recorded,0
+gfe-ag-ag2o-q+0-solid-solid,Ag,Ag2O,solid,solid,0.0,3.0,resolved,0
+gfe-ag-ag2o3-q+0-solid-solid,Ag,Ag2O3,solid,solid,0.0,5.0,unresolved,0
+gfe-ag-ag2s-q+0-solid-acanthite,Ag,Ag2S,solid,acanthite,0.0,3.0,resolved,0
+gfe-ag-ag2so4-q+0-solid-solid,Ag,Ag2SO4,solid,solid,0.0,7.0,resolved,0
+gfe-ag-agcl-q+0-aqueous-aq,Ag,AgCl,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+gfe-ag-agcl-q+0-solid-solid,Ag,AgCl,solid,solid,0.0,2.0,resolved,0
+gfe-ag-agcl2-q-1-aqueous-aq,Ag,AgCl2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-ag-agi-q+0-solid-solid,Ag,AgI,solid,solid,0.0,2.0,resolved,0
+gfe-ag-agi2-q-1-aqueous-aq,Ag,AgI2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-ag-agno3-q+0-solid-solid,Ag,AgNO3,solid,solid,0.0,5.0,resolved,0
+gfe-ag-ago-q+0-solid-solid,Ag,AgO,solid,solid,0.0,2.0,ambiguous,0
+gfe-ag-agoh-q+0-aqueous-aq,Ag,AgOH,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-al-al-oh-2-q+1-aqueous-aq,Al,Al(OH)2,aqueous,aqueous,1.0,5.0,aqueous_species_identified,0
+gfe-al-al-oh-3-q+0-aqueous-aq,Al,Al(OH)3,aqueous,aqueous,0.0,7.0,aqueous_species_identified,0
+gfe-al-al-oh-3-q+0-solid-gibbsite,Al,Al(OH)3,solid,gibbsite,0.0,7.0,resolved,0
+gfe-al-al-oh-4-q-1-aqueous-aq,Al,Al(OH)4,aqueous,aqueous,-1.0,9.0,not_recorded,0
+gfe-al-al-q+0-solid-metal,Al,Al,solid,metal,0.0,1.0,not_recorded,0
+gfe-al-al-q+3-aqueous-aq,Al,Al,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-al-al2-so4-3-h2o-18-q+0-solid-aluminum-sulfate-octadecahydrate,Al,Al2(SO4)3(H2O)18,solid,aluminum sulfate octadecahydrate,0.0,71.0,resolved,0
+gfe-al-al2-so4-3-h2o-6-q+0-solid-aluminum-sulfate-hexahydrate,Al,Al2(SO4)3(H2O)6,solid,aluminum sulfate hexahydrate,0.0,35.0,resolved,0
+gfe-al-al2-so4-3-q+0-solid-aluminum-sulfate,Al,Al2(SO4)3,solid,aluminum sulfate,0.0,17.0,resolved,0
+gfe-al-al2o3-q+0-solid-alpha-al2o3-corundum,Al,Al2O3,solid,alpha-Al2O3 (corundum),0.0,5.0,resolved,0
+gfe-al-alh3sio4-q+2-aqueous-aq,Al,AlH3SiO4,aqueous,aqueous,2.0,9.0,aqueous_species_identified,0
+gfe-al-aloh-q+2-aqueous-aq,Al,AlOH,aqueous,aqueous,2.0,3.0,aqueous_species_identified,0
+gfe-al-alooh-q+0-solid-boehmite,Al,AlOOH,solid,boehmite,0.0,4.0,resolved,0
+gfe-al-alooh-q+0-solid-diaspore,Al,AlOOH,solid,diaspore,0.0,4.0,resolved,0
+gfe-as-as-q+0-solid-alpha-gray-metallic,As,As,solid,alpha gray metallic,0.0,1.0,not_recorded,0
+gfe-as-as2o5-q+0-solid-crystalline,As,As2O5,solid,crystalline,0.0,7.0,resolved,0
+gfe-as-as4o6-q+0-solid-octahedral,As,As4O6,solid,octahedral,0.0,10.0,resolved,0
+gfe-as-aso-q+1-aqueous-aq,As,AsO,aqueous,aqueous,1.0,2.0,not_recorded,0
+gfe-as-aso4-q-3-aqueous-aq,As,AsO4,aqueous,aqueous,-3.0,5.0,not_recorded,0
+gfe-as-h2aso3-q-1-aqueous-aq,As,H2AsO3,aqueous,aqueous,-1.0,6.0,not_recorded,0
+gfe-as-h2aso4-q-1-aqueous-aq,As,H2AsO4,aqueous,aqueous,-1.0,7.0,not_recorded,0
+gfe-as-h3aso3-q+0-aqueous-aq,As,H3AsO3,aqueous,aqueous,0.0,7.0,not_recorded,0
+gfe-as-h3aso4-q+0-aqueous-aq,As,H3AsO4,aqueous,aqueous,0.0,8.0,not_recorded,0
+gfe-as-haso4-q-2-aqueous-aq,As,HAsO4,aqueous,aqueous,-2.0,6.0,not_recorded,0
+gfe-au-au-cn-2-q-1-aqueous-aq,Au,Au(CN)2,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-au-au-oh-2-q-1-aqueous-aq,Au,Au(OH)2,aqueous,aqueous,-1.0,5.0,aqueous_species_identified,0
+gfe-au-au-q+0-solid-metal,Au,Au,solid,metal,0.0,1.0,not_recorded,0
+gfe-au-au-q+3-aqueous-aq,Au,Au,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-au-au2o3-q+0-solid-solid,Au,Au2O3,solid,solid,0.0,5.0,unresolved,0
+gfe-au-aucl-q+0-aqueous-aq,Au,AuCl,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+gfe-au-aui2-q-1-aqueous-aq,Au,AuI2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-au-aui4-q-1-aqueous-aq,Au,AuI4,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-au-auo3-q-3-aqueous-aq,Au,AuO3,aqueous,aqueous,-3.0,4.0,not_recorded,0
+gfe-au-h2auo3-q-1-aqueous-aq,Au,H2AuO3,aqueous,aqueous,-1.0,6.0,not_recorded,0
+gfe-au-h3auo3-q+0-aqueous-aq-nbs-au-oh-3-notation,Au,H3AuO3,aqueous,aqueous hydroxo complex,0.0,7.0,not_recorded,0
+gfe-au-hauo3-q-2-aqueous-aq,Au,HAuO3,aqueous,aqueous,-2.0,5.0,not_recorded,0
+gfe-b-b-oh-4-q-1-aqueous-aq,B,B(OH)4,aqueous,aqueous,-1.0,9.0,not_recorded,0
+gfe-b-b-q+0-solid-crystalline,B,B,solid,crystalline,0.0,1.0,not_recorded,0
+gfe-b-b2o3-q+0-solid-crystalline,B,B2O3,solid,crystalline,0.0,5.0,resolved,0
+gfe-b-bh4-q-1-aqueous-aq,B,BH4,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-b-h3bo3-q+0-aqueous-aq,B,H3BO3,aqueous,aqueous,0.0,7.0,not_recorded,0
+gfe-ba-ba-oh-2-q+0-solid-solid,Ba,Ba(OH)2,solid,solid,0.0,5.0,resolved,0
+gfe-ba-ba-q+0-solid-metal,Ba,Ba,solid,metal,0.0,1.0,not_recorded,0
+gfe-ba-ba-q+2-aqueous-aq,Ba,Ba,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-ba-baoh-q+1-aqueous-aq,Ba,BaOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-ba-baso4-q+0-solid-barite,Ba,BaSO4,solid,barite,0.0,6.0,resolved,0
+gfe-be-be-oh-2-q+0-solid-solid,Be,Be(OH)2,solid,solid,0.0,5.0,unresolved,0
+gfe-be-be-q+0-solid-metal,Be,Be,solid,metal,0.0,1.0,not_recorded,0
+gfe-be-be-q+2-aqueous-aq,Be,Be,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-be-beo-q+0-solid-alpha-beo-hexagonal-wurtzite,Be,BeO,solid,"alpha-BeO, hexagonal wurtzite",0.0,2.0,resolved,0
+gfe-be-beo2-q-2-aqueous-aq,Be,BeO2,aqueous,aqueous,-2.0,3.0,not_recorded,0
+gfe-bi-bi-q+0-solid-crystalline,Bi,Bi,solid,crystalline,0.0,1.0,not_recorded,0
+gfe-bi-bi-q+3-aqueous-aq,Bi,Bi,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-bi-bi2o3-q+0-solid-crystalline,Bi,Bi2O3,solid,crystalline,0.0,5.0,resolved,0
+gfe-bi-bio-q+1-aqueous-aq,Bi,BiO,aqueous,aqueous,1.0,2.0,not_recorded,0
+gfe-bi-bioh-q+2-aqueous-aq,Bi,BiOH,aqueous,aqueous,2.0,3.0,not_recorded,0
+gfe-bi-biooh-q+0-solid-crystalline,Bi,BiOOH,solid,crystalline,0.0,4.0,ambiguous,0
+gfe-br-br-q-1-aqueous-aq,Br,Br,aqueous,aqueous,-1.0,1.0,not_recorded,0
+gfe-br-br2-q+0-liquid-elemental,Br,Br2,liquid,elemental,0.0,2.0,not_recorded,0
+gfe-br-br3-q-1-aqueous-aq,Br,Br3,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-br-bro-q-1-aqueous-aq,Br,BrO,aqueous,aqueous,-1.0,2.0,not_recorded,0
+gfe-br-bro3-q-1-aqueous-aq,Br,BrO3,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-br-bro4-q-1-aqueous-aq,Br,BrO4,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-br-hbro-q+0-aqueous-aq,Br,HBrO,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-c-c-q+0-solid-graphite,C,C,solid,graphite,0.0,1.0,resolved,0
+gfe-c-ch4-q+0-aqueous-aq,C,CH4,aqueous,aqueous,0.0,5.0,not_recorded,0
+gfe-c-ch4-q+0-gas-g,C,CH4,gas,gas,0.0,5.0,not_recorded,0
+gfe-c-co2-q+0-aqueous-aq,C,CO2,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-c-co2-q+0-gas-g,C,CO2,gas,gas,0.0,3.0,not_recorded,0
+gfe-c-co3-q-2-aqueous-aq,C,CO3,aqueous,aqueous,-2.0,4.0,not_recorded,0
+gfe-c-hco3-q-1-aqueous-aq,C,HCO3,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-ca-ca-oh-2-q+0-solid-portlandite,Ca,Ca(OH)2,solid,portlandite,0.0,5.0,resolved,0
+gfe-ca-ca-q+0-solid-metal,Ca,Ca,solid,metal,0.0,1.0,not_recorded,0
+gfe-ca-ca-q+2-aqueous-aq,Ca,Ca,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-ca-cacl-q+1-aqueous-aq,Ca,CaCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+gfe-ca-cacl2-q+0-aqueous-aq,Ca,CaCl2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+gfe-ca-caco3-q+0-aqueous-aq,Ca,CaCO3,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+gfe-ca-cah3sio4-q+1-aqueous-aq,Ca,CaH3SiO4,aqueous,aqueous,1.0,9.0,aqueous_species_identified,0
+gfe-ca-cahco3-q+1-aqueous-aq,Ca,CaHCO3,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-ca-caoh-q+1-aqueous-aq,Ca,CaOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-ca-caso4-h2o-0-5-q+0-solid-macrocrystalline-alpha-calcium-sulfate-hemihydrate,Ca,CaSO4(H2O)0.5,solid,macrocrystalline alpha calcium sulfate hemihydrate,0.0,7.5,resolved,0
+gfe-ca-caso4-h2o-0-5-q+0-solid-microcrystalline-beta-calcium-sulfate-hemihydrate,Ca,CaSO4(H2O)0.5,solid,microcrystalline beta calcium sulfate hemihydrate,0.0,7.5,resolved,0
+gfe-ca-caso4-h2o-2-q+0-solid-gypsum,Ca,CaSO4(H2O)2,solid,gypsum,0.0,12.0,resolved,0
+gfe-ca-caso4-q+0-solid-anhydrite,Ca,CaSO4,solid,anhydrite,0.0,6.0,resolved,0
+gfe-ca-caso4-q+0-solid-soluble-alpha-anhydrous-calcium-sulfate,Ca,CaSO4,solid,soluble alpha anhydrous calcium sulfate,0.0,6.0,resolved,0
+gfe-ca-caso4-q+0-solid-soluble-beta-anhydrous-calcium-sulfate,Ca,CaSO4,solid,soluble beta anhydrous calcium sulfate,0.0,6.0,resolved,0
+gfe-cd-cd-oh-2-q+0-aqueous-aq,Cd,Cd(OH)2,aqueous,aqueous,0.0,5.0,not_recorded,0
+gfe-cd-cd-oh-2-q+0-solid-precipitated-beta,Cd,Cd(OH)2,solid,precipitated beta,0.0,5.0,resolved,0
+gfe-cd-cd-oh-3-q-1-aqueous-aq,Cd,Cd(OH)3,aqueous,aqueous,-1.0,7.0,not_recorded,0
+gfe-cd-cd-oh-4-q-2-aqueous-aq,Cd,Cd(OH)4,aqueous,aqueous,-2.0,9.0,not_recorded,0
+gfe-cd-cd-q+0-solid-gamma-metal,Cd,Cd,solid,gamma metal,0.0,1.0,not_recorded,0
+gfe-cd-cd-q+2-aqueous-aq,Cd,Cd,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-cd-cdo-q+0-solid-rocksalt,Cd,CdO,solid,rocksalt,0.0,2.0,resolved,0
+gfe-cd-cdo2-q-2-aqueous-aq,Cd,CdO2,aqueous,aqueous,-2.0,3.0,not_recorded,0
+gfe-cd-cdoh-q+1-aqueous-aq,Cd,CdOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-ce-ce-q+0-solid-metal,Ce,Ce,solid,metal,0.0,1.0,not_recorded,0
+gfe-ce-ce-q+3-aqueous-aq,Ce,Ce,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-ce-ce-q+4-aqueous-aq,Ce,Ce,aqueous,aqueous,4.0,1.0,not_recorded,0
+gfe-ce-ce2o3-q+0-solid-a-type,Ce,Ce2O3,solid,A-type,0.0,5.0,resolved,0
+gfe-ce-cecl-q+2-aqueous-aq,Ce,CeCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-ce-cecl2-q+1-aqueous-aq,Ce,CeCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-ce-cef-q+2-aqueous-aq,Ce,CeF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-ce-cef3-h2o-q+0-solid-rare-earth-trifluoride-monohydrate,Ce,CeF3(H2O),solid,rare-earth trifluoride monohydrate,0.0,7.0,resolved,0
+gfe-ce-cef3-q+0-solid-crystalline-rare-earth-trifluoride,Ce,CeF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-ce-ceo2-q+0-solid-fluorite,Ce,CeO2,solid,fluorite,0.0,3.0,resolved,0
+gfe-ce-ceso4-q+1-aqueous-aq,Ce,CeSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-cl-cl-q-1-aqueous-aq,Cl,Cl,aqueous,aqueous,-1.0,1.0,not_recorded,0
+gfe-cl-cl2-q+0-gas-g,Cl,Cl2,gas,gas,0.0,2.0,not_recorded,0
+gfe-cl-clo-q-1-aqueous-aq,Cl,ClO,aqueous,aqueous,-1.0,2.0,not_recorded,0
+gfe-cl-clo2-q+0-aqueous-aq,Cl,ClO2,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-cl-clo2-q-1-aqueous-aq,Cl,ClO2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-cl-clo3-q-1-aqueous-aq,Cl,ClO3,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-cl-clo4-q-1-aqueous-aq,Cl,ClO4,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-cl-hclo-q+0-aqueous-aq,Cl,HClO,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-cl-hclo2-q+0-aqueous-aq,Cl,HClO2,aqueous,aqueous,0.0,4.0,not_recorded,0
+gfe-co-co-oh-2-q+0-solid-s,Co,Co(OH)2,solid,(s),0.0,5.0,resolved,0
+gfe-co-co-q+0-solid-metal,Co,Co,solid,metal,0.0,1.0,not_recorded,0
+gfe-co-co-q+2-aqueous-aq,Co,Co,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-co-co3o4-q+0-solid-solid,Co,Co3O4,solid,solid,0.0,7.0,resolved,0
+gfe-co-co4-so4-oh-6-q+0-solid-basic-cobalt-sulfate,Co,Co4(SO4)(OH)6,solid,basic cobalt sulfate,0.0,21.0,resolved,0
+gfe-co-coo-q+0-solid-cubic-rocksalt-298-15-k,Co,CoO,solid,cubic rocksalt,0.0,2.0,resolved,0
+gfe-co-coooh-q+0-solid-solid,Co,CoOOH,solid,solid,0.0,4.0,unresolved,0
+gfe-co-coso4-h2o-6-q+0-solid-cobalt-sulfate-hexahydrate,Co,CoSO4(H2O)6,solid,cobalt sulfate hexahydrate,0.0,24.0,resolved,0
+gfe-co-coso4-h2o-7-q+0-solid-cobalt-sulfate-heptahydrate,Co,CoSO4(H2O)7,solid,cobalt sulfate heptahydrate,0.0,27.0,resolved,0
+gfe-co-coso4-q+0-solid-cobalt-sulfate,Co,CoSO4,solid,cobalt sulfate,0.0,6.0,resolved,0
+gfe-co-hcoo2-q-1-aqueous-aq,Co,HCoO2,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-cr-cr-q+0-solid-metal,Cr,Cr,solid,metal,0.0,1.0,not_recorded,0
+gfe-cr-cr-q+2-aqueous-aq,Cr,Cr,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-cr-cr-q+3-aqueous-aq,Cr,Cr,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-cr-cr2o3-q+0-solid-solid,Cr,Cr2O3,solid,solid,0.0,5.0,resolved,0
+gfe-cr-cro4-q-2-aqueous-aq,Cr,CrO4,aqueous,aqueous,-2.0,5.0,not_recorded,0
+gfe-cr-croh-q+2-aqueous-aq,Cr,CrOH,aqueous,aqueous,2.0,3.0,not_recorded,0
+gfe-cr-hcro4-q-1-aqueous-aq,Cr,HCrO4,aqueous,aqueous,-1.0,6.0,not_recorded,0
+gfe-cs-cs-q+0-solid-metal,Cs,Cs,solid,metal,0.0,1.0,not_recorded,0
+gfe-cs-cs-q+1-aqueous-aq,Cs,Cs,aqueous,aqueous,1.0,1.0,not_recorded,0
+gfe-cu-cu-oh-2-q-1-aqueous-aq,Cu,Cu(OH)2,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-cu-cu-oh-4-q-2-aqueous-aq,Cu,Cu(OH)4,aqueous,aqueous,-2.0,9.0,not_recorded,0
+gfe-cu-cu-oh-q+0-aqueous-aq,Cu,Cu(OH),aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+gfe-cu-cu-q+0-solid-metal,Cu,Cu,solid,metal,0.0,1.0,not_recorded,0
+gfe-cu-cu-q+1-aqueous-aq,Cu,Cu,aqueous,aqueous,1.0,1.0,not_recorded,0
+gfe-cu-cu-q+2-aqueous-aq,Cu,Cu,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-cu-cu2o-q+0-solid-cuprite,Cu,Cu2O,solid,cuprite,0.0,3.0,resolved,0
+gfe-cu-cu3-so4-oh-4-q+0-solid-antlerite,Cu,Cu3(SO4)(OH)4,solid,antlerite,0.0,16.0,resolved,0
+gfe-cu-cu4-so4-oh-6-h2o-q+0-solid-langite,Cu,Cu4(SO4)(OH)6(H2O),solid,langite,0.0,24.0,resolved,0
+gfe-cu-cu4-so4-oh-6-q+0-solid-brochantite,Cu,Cu4(SO4)(OH)6,solid,brochantite,0.0,21.0,resolved,0
+gfe-cu-cucl-q+0-aqueous-aq,Cu,CuCl,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+gfe-cu-cucl2-q-1-aqueous-aq,Cu,CuCl2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-cu-cucl3-q-2-aqueous-aq,Cu,CuCl3,aqueous,aqueous,-2.0,4.0,aqueous_species_identified,0
+gfe-cu-cucl4-q-3-aqueous-aq,Cu,CuCl4,aqueous,aqueous,-3.0,5.0,aqueous_species_identified,0
+gfe-cu-cui-q+0-solid-solid,Cu,CuI,solid,solid,0.0,2.0,resolved,0
+gfe-cu-cuo-q+0-solid-tenorite,Cu,CuO,solid,tenorite,0.0,2.0,resolved,0
+gfe-cu-cuso4-h2o-3-q+0-solid-copper-sulfate-trihydrate,Cu,CuSO4(H2O)3,solid,copper sulfate trihydrate,0.0,15.0,resolved,0
+gfe-cu-cuso4-h2o-5-q+0-solid-chalcanthite,Cu,CuSO4(H2O)5,solid,chalcanthite,0.0,21.0,resolved,0
+gfe-cu-cuso4-h2o-q+0-solid-copper-sulfate-monohydrate,Cu,CuSO4(H2O),solid,copper sulfate monohydrate,0.0,9.0,resolved,0
+gfe-cu-cuso4-q+0-solid-chalcocyanite,Cu,CuSO4,solid,chalcocyanite,0.0,6.0,resolved,0
+gfe-dy-dy-q+0-solid-crystalline-metal,Dy,Dy,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-dy-dy-q+3-aqueous-aq,Dy,Dy,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-dy-dy2o3-q+0-solid-crystalline,Dy,Dy2O3,solid,crystalline,0.0,5.0,resolved,0
+gfe-dy-dycl-q+2-aqueous-aq,Dy,DyCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-dy-dycl2-q+1-aqueous-aq,Dy,DyCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-dy-dyf-q+2-aqueous-aq,Dy,DyF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-dy-dyf3-q+0-solid-crystalline-rare-earth-trifluoride,Dy,DyF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-dy-dyso4-q+1-aqueous-aq,Dy,DySO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-er-er-q+0-solid-crystalline-metal,Er,Er,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-er-er-q+3-aqueous-aq,Er,Er,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-er-er2o3-q+0-solid-crystalline,Er,Er2O3,solid,crystalline,0.0,5.0,resolved,0
+gfe-er-ercl-q+2-aqueous-aq,Er,ErCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-er-ercl2-q+1-aqueous-aq,Er,ErCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-er-erf-q+2-aqueous-aq,Er,ErF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-er-erf3-q+0-solid-crystalline-rare-earth-trifluoride,Er,ErF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-er-erso4-q+1-aqueous-aq,Er,ErSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-eu-eu-oh-3-q+0-solid-crystalline,Eu,Eu(OH)3,solid,crystalline,0.0,7.0,resolved,0
+gfe-eu-eu-q+0-solid-crystalline-metal,Eu,Eu,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-eu-eu-q+2-aqueous-aq,Eu,Eu,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-eu-eu-q+3-aqueous-aq,Eu,Eu,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-eu-eu2o3-q+0-solid-monoclinic,Eu,Eu2O3,solid,monoclinic,0.0,5.0,resolved,0
+gfe-eu-eu3o4-q+0-solid-crystalline,Eu,Eu3O4,solid,crystalline,0.0,7.0,resolved,0
+gfe-eu-eucl-q+2-aqueous-aq,Eu,EuCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-eu-eucl2-q+1-aqueous-aq,Eu,EuCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-eu-euf-q+2-aqueous-aq,Eu,EuF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-eu-euf3-h2o-q+0-solid-rare-earth-trifluoride-monohydrate,Eu,EuF3(H2O),solid,rare-earth trifluoride monohydrate,0.0,7.0,resolved,0
+gfe-eu-euf3-q+0-solid-crystalline-trifluoride,Eu,EuF3,solid,crystalline trifluoride; polymorph unspecified,0.0,4.0,phase_identity_incomplete,0
+gfe-eu-euo-q+0-solid-crystalline,Eu,EuO,solid,crystalline,0.0,2.0,resolved,0
+gfe-eu-euso4-q+1-aqueous-aq,Eu,EuSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-f-f-q-1-aqueous-aq,F,F,aqueous,aqueous,-1.0,1.0,not_recorded,0
+gfe-f-f2-q+0-gas-g,F,F2,gas,gas,0.0,2.0,not_recorded,0
+gfe-f-hf-q+0-aqueous-aq,F,HF,aqueous,aqueous,0.0,2.0,not_recorded,0
+gfe-f-hf2-q-1-aqueous-aq,F,HF2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-fe-fe-oh-2-q+0-solid-amakinite,Fe,Fe(OH)2,solid,"amakinite, characterized crystalline sample",0.0,5.0,resolved,0
+gfe-fe-fe-oh-2-q+1-aqueous-aq,Fe,Fe(OH)2,aqueous,aqueous,1.0,5.0,not_recorded,0
+gfe-fe-fe-oh-3-q+0-solid-ferrihydrite-2-line,Fe,Fe(OH)3,solid,"2-line ferrihydrite, nominal Fe(OH)3",0.0,7.0,resolved,0
+gfe-fe-fe-oh-3-q+0-solid-ferrihydrite-6-line,Fe,Fe(OH)3,solid,"6-line ferrihydrite, nominal Fe(OH)3",0.0,7.0,resolved,0
+gfe-fe-fe-oh-4-q-2-aqueous-aq,Fe,Fe(OH)4,aqueous,"(aq), infinite-dilution molal state",-2.0,9.0,aqueous_species_identified,0
+gfe-fe-fe-q+0-solid-metal,Fe,Fe,solid,metal,0.0,1.0,not_recorded,0
+gfe-fe-fe-q+2-aqueous-aq,Fe,Fe,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-fe-fe-q+3-aqueous-aq,Fe,Fe,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-fe-fe2-oh-2-q+4-aqueous-aq,Fe,Fe2(OH)2,aqueous,aqueous,4.0,6.0,not_recorded,0
+gfe-fe-fe2-so4-3-q+0-solid-ferric-sulfate,Fe,Fe2(SO4)3,solid,ferric sulfate,0.0,17.0,resolved,0
+gfe-fe-fe2o3-q+0-solid-hematite,Fe,Fe2O3,solid,hematite,0.0,5.0,resolved,0
+gfe-fe-fe3o4-q+0-solid-magnetite,Fe,Fe3O4,solid,magnetite,0.0,7.0,resolved,0
+gfe-fe-feo-q+0-solid-wustite-stoichiometric-endmember,Fe,FeO,solid,wustite stoichiometric endmember,0.0,2.0,resolved,0
+gfe-fe-feo2-q-1-aqueous-aq,Fe,FeO2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-fe-feo4-q-2-aqueous-aq,Fe,FeO4,aqueous,aqueous,-2.0,5.0,not_recorded,0
+gfe-fe-feoh-q+1-aqueous-aq,Fe,FeOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-fe-feoh-q+2-aqueous-aq,Fe,FeOH,aqueous,aqueous,2.0,3.0,not_recorded,0
+gfe-fe-feooh-q+0-solid-goethite,Fe,FeOOH,solid,goethite,0.0,4.0,resolved,0
+gfe-fe-feso4-h2o-4-q+0-solid-ferrous-sulfate-tetrahydrate,Fe,FeSO4(H2O)4,solid,ferrous sulfate tetrahydrate,0.0,18.0,resolved,0
+gfe-fe-feso4-h2o-7-q+0-solid-melanterite,Fe,FeSO4(H2O)7,solid,melanterite,0.0,27.0,resolved,0
+gfe-fe-feso4-h2o-q+0-solid-szomolnokite,Fe,FeSO4(H2O),solid,szomolnokite,0.0,9.0,resolved,0
+gfe-fe-feso4-q+0-solid-ferrous-sulfate,Fe,FeSO4,solid,ferrous sulfate,0.0,6.0,resolved,0
+gfe-fe-hfeo2-q-1-aqueous-aq,Fe,HFeO2,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-ga-ga-oh-3-q+0-solid-solid,Ga,Ga(OH)3,solid,solid,0.0,7.0,unresolved,0
+gfe-ga-ga-oh-4-q-1-aqueous-aq,Ga,Ga(OH)4,aqueous,aqueous,-1.0,9.0,not_recorded,0
+gfe-ga-ga-q+0-solid-metal,Ga,Ga,solid,metal,0.0,1.0,not_recorded,0
+gfe-ga-ga-q+3-aqueous-aq,Ga,Ga,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-ga-ga2o3-q+0-solid-beta-ga2o3-historical-nbs-structure-label,Ga,Ga2O3,solid,beta-Ga2O3,0.0,5.0,resolved,0
+gfe-ga-gao3-q-3-aqueous-aq,Ga,GaO3,aqueous,aqueous,-3.0,4.0,not_recorded,0
+gfe-ga-gaoh-q+2-aqueous-aq,Ga,GaOH,aqueous,aqueous,2.0,3.0,not_recorded,0
+gfe-gd-gd-q+0-solid-crystalline-metal,Gd,Gd,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-gd-gd-q+3-aqueous-aq,Gd,Gd,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-gd-gd2o3-q+0-solid-b-type-monoclinic,Gd,Gd2O3,solid,B-type monoclinic,0.0,5.0,resolved,0
+gfe-gd-gdcl-q+2-aqueous-aq,Gd,GdCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-gd-gdcl2-q+1-aqueous-aq,Gd,GdCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-gd-gdf-q+2-aqueous-aq,Gd,GdF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-gd-gdf3-h2o-q+0-solid-rare-earth-trifluoride-monohydrate,Gd,GdF3(H2O),solid,rare-earth trifluoride monohydrate,0.0,7.0,resolved,0
+gfe-gd-gdf3-q+0-solid-crystalline-rare-earth-trifluoride,Gd,GdF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-gd-gdso4-q+1-aqueous-aq,Gd,GdSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-ge-ge-q+0-solid-crystalline,Ge,Ge,solid,crystalline,0.0,1.0,not_recorded,0
+gfe-ge-geo-q+0-solid-brown-crystalline,Ge,GeO,solid,brown crystalline,0.0,2.0,ambiguous,0
+gfe-ge-geo2-q+0-solid-hexagonal,Ge,GeO2,solid,hexagonal,0.0,3.0,resolved,0
+gfe-ge-hgeo3-q-1-aqueous-aq,Ge,HGeO3,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-hf-hf-q+0-solid-metal,Hf,Hf,solid,metal,0.0,1.0,not_recorded,0
+gfe-hf-hf-q+4-aqueous-aq,Hf,Hf,aqueous,aqueous,4.0,1.0,not_recorded,0
+gfe-hf-hfo-q+2-aqueous-aq,Hf,HfO,aqueous,aqueous,2.0,2.0,not_recorded,0
+gfe-hf-hfo2-q+0-aqueous-aq,Hf,HfO2,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-hf-hfo2-q+0-solid-monoclinic,Hf,HfO2,solid,monoclinic,0.0,3.0,resolved,0
+gfe-hf-hfoh-q+3-aqueous-aq,Hf,HfOH,aqueous,aqueous,3.0,3.0,not_recorded,0
+gfe-hf-hhfo2-q+1-aqueous-aq,Hf,HHfO2,aqueous,aqueous,1.0,4.0,not_recorded,0
+gfe-hf-hhfo3-q-1-aqueous-aq,Hf,HHfO3,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-hg-hg-oh-2-q+0-aqueous-aq,Hg,Hg(OH)2,aqueous,aqueous,0.0,5.0,not_recorded,0
+gfe-hg-hg-q+0-aqueous-aq,Hg,Hg,aqueous,aqueous,0.0,1.0,not_recorded,0
+gfe-hg-hg-q+0-gas-g,Hg,Hg,gas,gas,0.0,1.0,not_recorded,0
+gfe-hg-hg-q+0-liquid-metal,Hg,Hg,liquid,metal,0.0,1.0,not_recorded,0
+gfe-hg-hg-q+2-aqueous-aq,Hg,Hg,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-hg-hg2-q+2-aqueous-aq,Hg,Hg2,aqueous,aqueous,2.0,2.0,not_recorded,0
+gfe-hg-hgo-q+0-solid-orthorhombic-montroydite,Hg,HgO,solid,orthorhombic montroydite,0.0,2.0,resolved,0
+gfe-hg-hgoh-q+1-aqueous-aq,Hg,HgOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-hg-hhgo2-q-1-aqueous-aq,Hg,HHgO2,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-ho-ho-q+0-solid-crystalline-metal,Ho,Ho,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-ho-ho-q+3-aqueous-aq,Ho,Ho,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-ho-ho2o3-q+0-solid-crystalline,Ho,Ho2O3,solid,crystalline,0.0,5.0,resolved,0
+gfe-ho-hocl-q+2-aqueous-aq,Ho,HoCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-ho-hocl2-q+1-aqueous-aq,Ho,HoCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-ho-hof-q+2-aqueous-aq,Ho,HoF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-ho-hof3-q+0-solid-crystalline-rare-earth-trifluoride,Ho,HoF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-ho-hoso4-q+1-aqueous-aq,Ho,HoSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-i-hio-q+0-aqueous-aq,I,HIO,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-i-hio3-q+0-aqueous-aq,I,HIO3,aqueous,aqueous,0.0,5.0,not_recorded,0
+gfe-i-i-q-1-aqueous-aq,I,I,aqueous,aqueous,-1.0,1.0,not_recorded,0
+gfe-i-i2-q+0-solid-crystalline,I,I2,solid,crystalline,0.0,2.0,not_recorded,0
+gfe-i-i2oh-q-1-aqueous-aq,I,I2OH,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-i-i3-q-1-aqueous-aq,I,I3,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-i-io-q-1-aqueous-aq,I,IO,aqueous,aqueous,-1.0,2.0,not_recorded,0
+gfe-i-io3-q-1-aqueous-aq,I,IO3,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-i-io4-q-1-aqueous-aq,I,IO4,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-in-in-oh-3-q+0-solid-solid,In,In(OH)3,solid,solid,0.0,7.0,unresolved,0
+gfe-in-in-oh-4-q-1-aqueous-aq,In,In(OH)4,aqueous,aqueous,-1.0,9.0,not_recorded,0
+gfe-in-in-q+0-solid-metal,In,In,solid,metal,0.0,1.0,not_recorded,0
+gfe-in-in-q+1-aqueous-aq,In,In,aqueous,aqueous,1.0,1.0,not_recorded,0
+gfe-in-in-q+3-aqueous-aq,In,In,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-in-in2o3-q+0-solid-crystalline-in2o3-polymorph-not-assigned,In,In2O3,solid,"crystalline In2O3, polymorph not assigned",0.0,5.0,resolved,0
+gfe-in-inoh-q+2-aqueous-aq,In,InOH,aqueous,aqueous,2.0,3.0,not_recorded,0
+gfe-ir-ir-q+0-solid-metal,Ir,Ir,solid,metal,0.0,1.0,not_recorded,0
+gfe-ir-ir-q+3-aqueous-aq,Ir,Ir,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-ir-iro2-q+0-solid-rutile,Ir,IrO2,solid,rutile,0.0,3.0,resolved,0
+gfe-k-k-q+0-solid-metal,K,K,solid,metal,0.0,1.0,not_recorded,0
+gfe-k-k-q+1-aqueous-aq,K,K,aqueous,aqueous,1.0,1.0,not_recorded,0
+gfe-k-k2so4-q+0-solid-arcanite,K,K2SO4,solid,arcanite,0.0,7.0,resolved,0
+gfe-k-kal-oh-4-q+0-aqueous-aq,K,KAl(OH)4,aqueous,aqueous,0.0,10.0,aqueous_species_identified,0
+gfe-k-kcl-q+0-aqueous-aq,K,KCl,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+gfe-k-kco3-q-1-aqueous-aq,K,KCO3,aqueous,aqueous,-1.0,5.0,aqueous_species_identified,0
+gfe-k-khco3-q+0-aqueous-aq,K,KHCO3,aqueous,aqueous,0.0,6.0,aqueous_species_identified,0
+gfe-k-ko2-q+0-solid-crystalline-ko2-polymorph-not-assigned,K,KO2,solid,"crystalline KO2, polymorph not assigned",0.0,3.0,resolved,0
+gfe-k-koh-q+0-aqueous-aq,K,KOH,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+gfe-la-la-oh-3-q+0-solid-hexagonal-ucl3-type,La,La(OH)3,solid,hexagonal UCl3-type,0.0,7.0,resolved,0
+gfe-la-la-q+0-solid-crystalline-metal,La,La,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-la-la-q+3-aqueous-aq,La,La,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-la-la2-co3-3-q+0-solid-nbs-cr,La,La2(CO3)3,solid,anhydrous crystalline carbonate,0.0,14.0,resolved,0
+gfe-la-la2o3-q+0-solid-crystalline,La,La2O3,solid,crystalline,0.0,5.0,resolved,0
+gfe-la-lacl-q+2-aqueous-aq,La,LaCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-la-lacl2-q+1-aqueous-aq,La,LaCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-la-laf-q+2-aqueous-aq,La,LaF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-la-laf3-h2o-q+0-solid-rare-earth-trifluoride-monohydrate,La,LaF3(H2O),solid,rare-earth trifluoride monohydrate,0.0,7.0,resolved,0
+gfe-la-laf3-q+0-solid-crystalline-rare-earth-trifluoride,La,LaF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-la-laso4-q+1-aqueous-aq,La,LaSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-li-li-q+0-solid-metal,Li,Li,solid,metal,0.0,1.0,not_recorded,0
+gfe-li-li-q+1-aqueous-aq,Li,Li,aqueous,aqueous,1.0,1.0,not_recorded,0
+gfe-li-lioh-q+0-aqueous-undissociated-aqueous-standard-state-ao,Li,LiOH,aqueous,undissociated aqueous standard state (ao),0.0,3.0,not_recorded,0
+gfe-lu-lu-q+0-solid-crystalline-metal,Lu,Lu,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-lu-lu-q+3-aqueous-aq,Lu,Lu,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-lu-lu2o3-q+0-solid-crystalline,Lu,Lu2O3,solid,crystalline,0.0,5.0,resolved,0
+gfe-lu-lucl-q+2-aqueous-aq,Lu,LuCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-lu-lucl2-q+1-aqueous-aq,Lu,LuCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-lu-luf-q+2-aqueous-aq,Lu,LuF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-lu-luf3-q+0-solid-crystalline-rare-earth-trifluoride,Lu,LuF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-lu-luso4-q+1-aqueous-aq,Lu,LuSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-mg-mg-oh-2-q+0-solid-brucite,Mg,Mg(OH)2,solid,brucite,0.0,5.0,resolved,0
+gfe-mg-mg-q+0-solid-metal,Mg,Mg,solid,metal,0.0,1.0,not_recorded,0
+gfe-mg-mg-q+2-aqueous-aq,Mg,Mg,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-mg-mgcl-q+1-aqueous-aq,Mg,MgCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+gfe-mg-mgcl2-q+0-aqueous-aq,Mg,MgCl2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+gfe-mg-mgco3-q+0-aqueous-aq,Mg,MgCO3,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+gfe-mg-mgh3sio4-q+1-aqueous-aq,Mg,MgH3SiO4,aqueous,aqueous,1.0,9.0,aqueous_species_identified,0
+gfe-mg-mghco3-q+1-aqueous-aq,Mg,MgHCO3,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-mg-mgoh-q+1-aqueous-aq,Mg,MgOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-mg-mgso4-h2o-2-q+0-solid-magnesium-sulfate-dihydrate,Mg,MgSO4(H2O)2,solid,magnesium sulfate dihydrate,0.0,12.0,resolved,0
+gfe-mg-mgso4-h2o-4-q+0-solid-magnesium-sulfate-tetrahydrate,Mg,MgSO4(H2O)4,solid,magnesium sulfate tetrahydrate,0.0,18.0,resolved,0
+gfe-mg-mgso4-h2o-6-q+0-solid-magnesium-sulfate-hexahydrate,Mg,MgSO4(H2O)6,solid,magnesium sulfate hexahydrate,0.0,24.0,resolved,0
+gfe-mg-mgso4-h2o-7-q+0-solid-epsomite,Mg,MgSO4(H2O)7,solid,epsomite,0.0,27.0,resolved,0
+gfe-mg-mgso4-h2o-q+0-solid-magnesium-sulfate-monohydrate,Mg,MgSO4(H2O),solid,magnesium sulfate monohydrate,0.0,9.0,resolved,0
+gfe-mg-mgso4-q+0-solid-magnesium-sulfate,Mg,MgSO4,solid,magnesium sulfate,0.0,6.0,resolved,0
+gfe-mn-hmno2-q-1-aqueous-aq,Mn,HMnO2,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-mn-mn-oh-2-q+0-solid-pyrochroite,Mn,Mn(OH)2,solid,pyrochroite,0.0,5.0,resolved,0
+gfe-mn-mn-q+0-solid-metal,Mn,Mn,solid,metal,0.0,1.0,not_recorded,0
+gfe-mn-mn-q+2-aqueous-aq,Mn,Mn,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-mn-mn2o3-q+0-solid-solid,Mn,Mn2O3,solid,solid,0.0,5.0,resolved,0
+gfe-mn-mn3o4-q+0-solid-hausmannite,Mn,Mn3O4,solid,hausmannite,0.0,7.0,resolved,0
+gfe-mn-mno2-q+0-solid-solid,Mn,MnO2,solid,solid,0.0,3.0,resolved,0
+gfe-mn-mno4-q-1-aqueous-aq,Mn,MnO4,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-mn-mno4-q-2-aqueous-aq,Mn,MnO4,aqueous,aqueous,-2.0,5.0,not_recorded,0
+gfe-mn-mnoh-q+1-aqueous-aq,Mn,MnOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-mn-mnso4-h2o-4-q+0-solid-manganese-sulfate-tetrahydrate,Mn,MnSO4(H2O)4,solid,manganese sulfate tetrahydrate,0.0,18.0,resolved,0
+gfe-mn-mnso4-h2o-5-q+0-solid-manganese-sulfate-pentahydrate,Mn,MnSO4(H2O)5,solid,manganese sulfate pentahydrate,0.0,21.0,resolved,0
+gfe-mn-mnso4-h2o-7-q+0-solid-manganese-sulfate-heptahydrate,Mn,MnSO4(H2O)7,solid,manganese sulfate heptahydrate,0.0,27.0,resolved,0
+gfe-mn-mnso4-h2o-q+0-solid-manganese-sulfate-alpha-monohydrate,Mn,MnSO4(H2O),solid,manganese sulfate alpha monohydrate,0.0,9.0,resolved,0
+gfe-mn-mnso4-q+0-solid-manganese-sulfate,Mn,MnSO4,solid,manganese sulfate,0.0,6.0,resolved,0
+gfe-mo-mo-q+0-solid-metal,Mo,Mo,solid,metal,0.0,1.0,not_recorded,0
+gfe-mo-moo2-q+0-solid-solid,Mo,MoO2,solid,solid,0.0,3.0,resolved,0
+gfe-mo-moo3-q+0-solid-solid,Mo,MoO3,solid,solid,0.0,4.0,resolved,0
+gfe-mo-moo4-q-2-aqueous-aq,Mo,MoO4,aqueous,aqueous,-2.0,5.0,not_recorded,0
+gfe-n-n2-q+0-aqueous-aq,N,N2,aqueous,aqueous,0.0,2.0,not_recorded,0
+gfe-n-n2-q+0-gas-g,N,N2,gas,gas,0.0,2.0,not_recorded,0
+gfe-n-n2o-q+0-gas-g,N,N2O,gas,gas,0.0,3.0,not_recorded,0
+gfe-n-nh3-q+0-aqueous-aq,N,NH3,aqueous,aqueous,0.0,4.0,not_recorded,0
+gfe-n-nh4-q+1-aqueous-aq,N,NH4,aqueous,aqueous,1.0,5.0,not_recorded,0
+gfe-n-no-q+0-gas-g,N,NO,gas,gas,0.0,2.0,not_recorded,0
+gfe-n-no2-q-1-aqueous-aq,N,NO2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-n-no3-q-1-aqueous-aq,N,NO3,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-na-na-q+0-solid-metal,Na,Na,solid,metal,0.0,1.0,not_recorded,0
+gfe-na-na-q+1-aqueous-aq,Na,Na,aqueous,aqueous,1.0,1.0,not_recorded,0
+gfe-na-na2so4-h2o-10-q+0-solid-mirabilite,Na,Na2SO4(H2O)10,solid,mirabilite,0.0,37.0,resolved,0
+gfe-na-na2so4-q+0-solid-thenardite-phase-v-orthorhombic,Na,Na2SO4,solid,thenardite phase V orthorhombic,0.0,7.0,resolved,0
+gfe-na-naal-oh-4-q+0-aqueous-aq,Na,NaAl(OH)4,aqueous,aqueous,0.0,10.0,aqueous_species_identified,0
+gfe-na-nacl-q+0-aqueous-aq,Na,NaCl,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+gfe-na-naco3-q-1-aqueous-aq,Na,NaCO3,aqueous,aqueous,-1.0,5.0,aqueous_species_identified,0
+gfe-na-nah3sio4-q+0-aqueous-aq,Na,NaH3SiO4,aqueous,aqueous,0.0,9.0,aqueous_species_identified,0
+gfe-na-nahco3-q+0-aqueous-aq,Na,NaHCO3,aqueous,aqueous,0.0,6.0,aqueous_species_identified,0
+gfe-na-naoh-q+0-aqueous-aq,Na,NaOH,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+gfe-nb-hnbo3-q+0-aqueous-aq,Nb,HNbO3,aqueous,aqueous,0.0,5.0,not_recorded,0
+gfe-nb-nb-oh-4-q+1-aqueous-aqueous-ionic-strength-1,Nb,Nb(OH)4,aqueous,"aqueous, ionic strength 1",1.0,9.0,not_recorded,0
+gfe-nb-nb-oh-5-q+0-aqueous-aqueous-ionic-strength-1,Nb,Nb(OH)5,aqueous,"aqueous, ionic strength 1",0.0,11.0,not_recorded,0
+gfe-nb-nb-q+0-solid-metal,Nb,Nb,solid,metal,0.0,1.0,not_recorded,0
+gfe-nb-nbo-q+0-solid-vacancy-ordered-cubic,Nb,NbO,solid,vacancy-ordered cubic,0.0,2.0,resolved,0
+gfe-nb-nbo2-q+0-solid-alpha-distorted-rutile,Nb,NbO2,solid,"alpha, distorted rutile",0.0,3.0,resolved,0
+gfe-nb-nbo3-q-1-aqueous-aqueous-ionic-strength-1,Nb,NbO3,aqueous,"aqueous, ionic strength 1",-1.0,4.0,not_recorded,0
+gfe-nd-nd-oh-3-q+0-solid-hexagonal-ucl3-type,Nd,Nd(OH)3,solid,hexagonal UCl3-type,0.0,7.0,resolved,0
+gfe-nd-nd-q+0-solid-crystalline-metal,Nd,Nd,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-nd-nd-q+3-aqueous-aq,Nd,Nd,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-nd-nd2-co3-3-q+0-solid-nbs-cr,Nd,Nd2(CO3)3,solid,anhydrous crystalline carbonate,0.0,14.0,resolved,0
+gfe-nd-nd2o3-q+0-solid-hexagonal,Nd,Nd2O3,solid,hexagonal,0.0,5.0,resolved,0
+gfe-nd-ndcl-q+2-aqueous-aq,Nd,NdCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-nd-ndcl2-q+1-aqueous-aq,Nd,NdCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-nd-ndf-q+2-aqueous-aq,Nd,NdF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-nd-ndf3-h2o-q+0-solid-rare-earth-trifluoride-monohydrate,Nd,NdF3(H2O),solid,rare-earth trifluoride monohydrate,0.0,7.0,resolved,0
+gfe-nd-ndf3-q+0-solid-crystalline-rare-earth-trifluoride,Nd,NdF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-nd-ndso4-q+1-aqueous-aq,Nd,NdSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-ni-hnio2-q-1-aqueous-aq,Ni,HNiO2,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-ni-ni-oh-2-q+0-aqueous-aq,Ni,Ni(OH)2,aqueous,"(aq), neutral hydroxide; infinite-dilution molal state",0.0,5.0,aqueous_species_identified,0
+gfe-ni-ni-oh-2-q+0-solid-s,Ni,Ni(OH)2,solid,(s),0.0,5.0,resolved,0
+gfe-ni-ni-q+0-solid-metal,Ni,Ni,solid,metal,0.0,1.0,not_recorded,0
+gfe-ni-ni-q+2-aqueous-aq,Ni,Ni,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-ni-ni4-so4-oh-6-q+0-solid-basic-nickel-sulfate,Ni,Ni4(SO4)(OH)6,solid,basic nickel sulfate,0.0,21.0,resolved,0
+gfe-ni-nio-q+0-solid-bunsenite-average-cubic-rocksalt-at-298-15-k,Ni,NiO,solid,bunsenite (average cubic rocksalt),0.0,2.0,resolved,0
+gfe-ni-nio2-q+0-solid-solid,Ni,NiO2,solid,solid,0.0,3.0,unresolved,0
+gfe-ni-niooh-q+0-solid-s,Ni,NiOOH,solid,(s),0.0,4.0,resolved,0
+gfe-ni-niso4-h2o-4-q+0-solid-nickel-sulfate-tetrahydrate,Ni,NiSO4(H2O)4,solid,nickel sulfate tetrahydrate,0.0,18.0,resolved,0
+gfe-ni-niso4-h2o-6-q+0-solid-nickel-sulfate-beta-blue-monoclinic-hexahydrate,Ni,NiSO4(H2O)6,solid,nickel sulfate beta blue monoclinic hexahydrate,0.0,24.0,resolved,0
+gfe-ni-niso4-h2o-6-q+0-solid-retgersite-alpha-green-tetragonal,Ni,NiSO4(H2O)6,solid,retgersite alpha green tetragonal,0.0,24.0,resolved,0
+gfe-ni-niso4-h2o-7-q+0-solid-morenosite,Ni,NiSO4(H2O)7,solid,morenosite,0.0,27.0,resolved,0
+gfe-ni-niso4-q+0-solid-nickelous-sulfate,Ni,NiSO4,solid,nickelous sulfate,0.0,6.0,resolved,0
+gfe-os-hoso5-q-1-aqueous-aq,Os,HOsO5,aqueous,aqueous,-1.0,7.0,not_recorded,0
+gfe-os-os-oh-4-q+0-solid-amorphous,Os,Os(OH)4,solid,amorphous,0.0,9.0,ambiguous,0
+gfe-os-os-q+0-solid-metal,Os,Os,solid,metal,0.0,1.0,not_recorded,0
+gfe-os-oso2-q+0-solid-rutile,Os,OsO2,solid,rutile,0.0,3.0,resolved,0
+gfe-os-oso4-q+0-aqueous-aq,Os,OsO4,aqueous,aqueous,0.0,5.0,not_recorded,0
+gfe-os-oso4-q+0-gas-g,Os,OsO4,gas,gas,0.0,5.0,not_recorded,0
+gfe-os-oso4-q+0-solid-monoclinic-lower-g-nbs-crystalline-form,Os,OsO4,solid,monoclinic (lower-G crystalline form),0.0,5.0,resolved,0
+gfe-p-h2po3-q-1-aqueous-aq,P,H2PO3,aqueous,aqueous,-1.0,6.0,not_recorded,0
+gfe-p-h2po4-q-1-aqueous-aq,P,H2PO4,aqueous,aqueous,-1.0,7.0,not_recorded,0
+gfe-p-h3po4-q+0-aqueous-aq,P,H3PO4,aqueous,aqueous,0.0,8.0,not_recorded,0
+gfe-p-hpo3-q-2-aqueous-aq,P,HPO3,aqueous,aqueous,-2.0,5.0,not_recorded,0
+gfe-p-hpo4-q-2-aqueous-aq,P,HPO4,aqueous,aqueous,-2.0,6.0,not_recorded,0
+gfe-p-p-q+0-solid-white-crystalline,P,P,solid,white crystalline,0.0,1.0,not_recorded,0
+gfe-p-p4o10-q+0-solid-hexagonal,P,P4O10,solid,hexagonal,0.0,14.0,resolved,0
+gfe-p-ph3-q+0-aqueous-aq,P,PH3,aqueous,aqueous,0.0,4.0,not_recorded,0
+gfe-p-po4-q-3-aqueous-aq,P,PO4,aqueous,aqueous,-3.0,5.0,not_recorded,0
+gfe-pb-hpbo2-q-1-aqueous-aq,Pb,HPbO2,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-pb-pb-no3-2-q+0-solid-solid,Pb,Pb(NO3)2,solid,solid,0.0,9.0,resolved,0
+gfe-pb-pb-q+0-solid-metal,Pb,Pb,solid,metal,0.0,1.0,not_recorded,0
+gfe-pb-pb-q+2-aqueous-aq,Pb,Pb,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-pb-pb3o4-q+0-solid-minium,Pb,Pb3O4,solid,minium,0.0,7.0,resolved,0
+gfe-pb-pbcl2-q+0-solid-cotunnite,Pb,PbCl2,solid,cotunnite; orthorhombic crystals,0.0,3.0,resolved,0
+gfe-pb-pbi2-q+0-solid-solid,Pb,PbI2,solid,solid,0.0,3.0,ambiguous,0
+gfe-pb-pbo-q+0-solid-litharge,Pb,PbO,solid,litharge,0.0,2.0,resolved,0
+gfe-pb-pbo2-q+0-solid-plattnerite,Pb,PbO2,solid,plattnerite,0.0,3.0,resolved,0
+gfe-pb-pboh-q+1-aqueous-aq,Pb,PbOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-pb-pbs-q+0-solid-galena,Pb,PbS,solid,galena; cubic crystals,0.0,2.0,resolved,0
+gfe-pb-pbso4-q+0-solid-anglesite,Pb,PbSO4,solid,anglesite,0.0,6.0,resolved,0
+gfe-pd-pd-q+0-solid-metal,Pd,Pd,solid,metal,0.0,1.0,not_recorded,0
+gfe-pd-pd-q+2-aqueous-aq,Pd,Pd,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-pd-pdo-q+0-solid-solid,Pd,PdO,solid,solid,0.0,2.0,resolved,0
+gfe-pd-pdo2-q+0-solid-solid,Pd,PdO2,solid,solid,0.0,3.0,unresolved,0
+gfe-pr-pr-oh-2-q+1-aqueous-aq,Pr,Pr(OH)2,aqueous,aqueous,1.0,5.0,not_recorded,0
+gfe-pr-pr-oh-3-q+0-solid-crystalline,Pr,Pr(OH)3,solid,crystalline,0.0,7.0,resolved,0
+gfe-pr-pr-q+0-solid-crystalline-metal,Pr,Pr,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-pr-pr-q+3-aqueous-aq,Pr,Pr,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-pr-pr2-co3-3-q+0-solid-nbs-cr,Pr,Pr2(CO3)3,solid,anhydrous crystalline carbonate,0.0,14.0,resolved,0
+gfe-pr-prcl-q+2-aqueous-aq,Pr,PrCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-pr-prcl2-q+1-aqueous-aq,Pr,PrCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-pr-prf-q+2-aqueous-aq,Pr,PrF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-pr-prf3-h2o-q+0-solid-rare-earth-trifluoride-monohydrate,Pr,PrF3(H2O),solid,rare-earth trifluoride monohydrate,0.0,7.0,resolved,0
+gfe-pr-prf3-q+0-solid-crystalline-rare-earth-trifluoride,Pr,PrF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-pr-proh-q+2-aqueous-aq,Pr,PrOH,aqueous,aqueous,2.0,3.0,not_recorded,0
+gfe-pr-prso4-q+1-aqueous-aq,Pr,PrSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-pt-pt-q+0-solid-metal,Pt,Pt,solid,metal,0.0,1.0,not_recorded,0
+gfe-pt-pt-q+2-aqueous-aq,Pt,Pt,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-pt-pto-q+0-solid-solid,Pt,PtO,solid,solid,0.0,2.0,unresolved,0
+gfe-pt-pto2-q+0-solid-solid,Pt,PtO2,solid,solid,0.0,3.0,unresolved,0
+gfe-rb-rb-q+0-solid-metal,Rb,Rb,solid,metal,0.0,1.0,not_recorded,0
+gfe-rb-rb-q+1-aqueous-aq,Rb,Rb,aqueous,aqueous,1.0,1.0,not_recorded,0
+gfe-re-re-q+0-solid-metal,Re,Re,solid,metal,0.0,1.0,not_recorded,0
+gfe-re-reo2-q+0-solid-solid,Re,ReO2,solid,solid,0.0,3.0,resolved,0
+gfe-re-reo3-q+0-solid-solid,Re,ReO3,solid,solid,0.0,4.0,resolved,0
+gfe-re-reo4-q-1-aqueous-aq,Re,ReO4,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-rh-rh-q+0-solid-metal,Rh,Rh,solid,metal,0.0,1.0,not_recorded,0
+gfe-rh-rh-q+2-aqueous-aq,Rh,Rh,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-rh-rh-q+3-aqueous-aq,Rh,Rh,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-rh-rh2o3-q+0-solid-beta-rh2o3-corundum,Rh,Rh2O3,solid,"beta-Rh2O3, corundum",0.0,5.0,resolved,0
+gfe-rh-rho-q+0-aqueous-aq,Rh,RhO,aqueous,aqueous,0.0,2.0,not_recorded,0
+gfe-rh-rho-q+1-aqueous-aq,Rh,RhO,aqueous,aqueous,1.0,2.0,not_recorded,0
+gfe-rh-rho2-q+0-solid-rutile,Rh,RhO2,solid,rutile,0.0,3.0,resolved,0
+gfe-rh-rhoh-q+1-aqueous-aq,Rh,RhOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-rh-rhoh-q+2-aqueous-aq,Rh,RhOH,aqueous,aqueous,2.0,3.0,not_recorded,0
+gfe-ru-ru-q+0-solid-metal,Ru,Ru,solid,metal,0.0,1.0,not_recorded,0
+gfe-ru-ru-q+2-aqueous-aq,Ru,Ru,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-ru-ru-q+3-aqueous-aq,Ru,Ru,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-ru-ruo2-q+0-solid-rutile,Ru,RuO2,solid,rutile,0.0,3.0,resolved,0
+gfe-ru-ruo4-q+0-solid-crystalline-dimorphic,Ru,RuO4,solid,crystalline-dimorphic,0.0,5.0,ambiguous,0
+gfe-s-h2s-q+0-aqueous-aq,S,H2S,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-s-hs-q-1-aqueous-aq,S,HS,aqueous,aqueous,-1.0,2.0,not_recorded,0
+gfe-s-hso3-q-1-aqueous-aq,S,HSO3,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-s-hso4-q-1-aqueous-aq,S,HSO4,aqueous,aqueous,-1.0,6.0,not_recorded,0
+gfe-s-hso5-q-1-aqueous-aq,S,HSO5,aqueous,aqueous,-1.0,7.0,not_recorded,0
+gfe-s-s-q+0-solid-rhombic,S,S,solid,rhombic,0.0,1.0,not_recorded,0
+gfe-s-s-q-2-aqueous-aq,S,S,aqueous,aqueous,-2.0,1.0,not_recorded,0
+gfe-s-so2-q+0-aqueous-aq,S,SO2,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-s-so3-q-2-aqueous-aq,S,SO3,aqueous,aqueous,-2.0,4.0,not_recorded,0
+gfe-s-so4-q-2-aqueous-aq,S,SO4,aqueous,aqueous,-2.0,5.0,not_recorded,0
+gfe-sb-sb-oh-3-q+0-aqueous-aq,Sb,Sb(OH)3,aqueous,aqueous,0.0,7.0,not_recorded,0
+gfe-sb-sb-q+0-solid-crystalline-iii,Sb,Sb,solid,crystalline III,0.0,1.0,not_recorded,0
+gfe-sb-sb2o4-q+0-solid-crystalline,Sb,Sb2O4,solid,crystalline,0.0,6.0,resolved,0
+gfe-sb-sb2o5-q+0-solid-crystalline,Sb,Sb2O5,solid,crystalline,0.0,7.0,resolved,0
+gfe-sb-sb4o6-q+0-solid-cubic-ii,Sb,Sb4O6,solid,cubic II,0.0,10.0,resolved,0
+gfe-sb-sbo-q+1-aqueous-aq,Sb,SbO,aqueous,aqueous,1.0,2.0,not_recorded,0
+gfe-sb-sbo2-q-1-aqueous-aq,Sb,SbO2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-sc-hsco2-q+0-aqueous-aq,Sc,HScO2,aqueous,aqueous,0.0,4.0,not_recorded,0
+gfe-sc-sc-oh-3-q+0-solid-crystalline-polymorph-unresolved,Sc,Sc(OH)3,solid,"crystalline, polymorph unresolved",0.0,7.0,resolved,0
+gfe-sc-sc-q+0-solid-metal,Sc,Sc,solid,metal,0.0,1.0,not_recorded,0
+gfe-sc-sc-q+3-aqueous-aq,Sc,Sc,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-sc-sc2o3-q+0-solid-cubic-bixbyite,Sc,Sc2O3,solid,cubic bixbyite,0.0,5.0,resolved,0
+gfe-sc-sco-q+1-aqueous-aq,Sc,ScO,aqueous,aqueous,1.0,2.0,not_recorded,0
+gfe-sc-sco2-q-1-aqueous-aq,Sc,ScO2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-sc-scoh-q+2-aqueous-aq,Sc,ScOH,aqueous,aqueous,2.0,3.0,not_recorded,0
+gfe-se-h2se-q+0-aqueous-aq,Se,H2Se,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-se-hse-q-1-aqueous-aq,Se,HSe,aqueous,aqueous,-1.0,2.0,not_recorded,0
+gfe-se-hseo3-q-1-aqueous-aq,Se,HSeO3,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-se-hseo4-q-1-aqueous-aq,Se,HSeO4,aqueous,aqueous,-1.0,6.0,not_recorded,0
+gfe-se-se-q+0-solid-hexagonal-black,Se,Se,solid,hexagonal black,0.0,1.0,resolved,0
+gfe-se-seo3-q-2-aqueous-aq,Se,SeO3,aqueous,aqueous,-2.0,4.0,not_recorded,0
+gfe-se-seo4-q-2-aqueous-aq,Se,SeO4,aqueous,aqueous,-2.0,5.0,not_recorded,0
+gfe-si-h3sio4-q-1-aqueous-aq,Si,H3SiO4,aqueous,aqueous,-1.0,8.0,aqueous_species_identified,0
+gfe-si-h4sio4-q+0-aqueous-aq,Si,H4SiO4,aqueous,aqueous,0.0,9.0,not_recorded,0
+gfe-si-hsi-oh-6-q-1-aqueous-aq,Si,HSi(OH)6,aqueous,aqueous,-1.0,14.0,not_recorded,0
+gfe-si-si-q+0-solid-crystalline,Si,Si,solid,crystalline,0.0,1.0,not_recorded,0
+gfe-si-sio2-q+0-solid-alpha-quartz,Si,SiO2,solid,alpha quartz,0.0,3.0,resolved,0
+gfe-sm-sm-q+0-solid-crystalline-metal,Sm,Sm,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-sm-sm-q+2-aqueous-aq,Sm,Sm,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-sm-sm-q+3-aqueous-aq,Sm,Sm,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-sm-sm2-co3-3-q+0-solid-nbs-cr,Sm,Sm2(CO3)3,solid,anhydrous crystalline carbonate,0.0,14.0,resolved,0
+gfe-sm-sm2o3-q+0-solid-monoclinic,Sm,Sm2O3,solid,monoclinic,0.0,5.0,resolved,0
+gfe-sm-smcl-q+2-aqueous-aq,Sm,SmCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-sm-smcl2-q+1-aqueous-aq,Sm,SmCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-sm-smf-q+2-aqueous-aq,Sm,SmF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-sm-smf3-h2o-q+0-solid-rare-earth-trifluoride-monohydrate,Sm,SmF3(H2O),solid,rare-earth trifluoride monohydrate,0.0,7.0,resolved,0
+gfe-sm-smf3-q+0-solid-crystalline-rare-earth-trifluoride,Sm,SmF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-sm-smso4-q+1-aqueous-aq,Sm,SmSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-sn-hsno2-q-1-aqueous-aq,Sn,HSnO2,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-sn-sn-oh-6-q-2-aqueous-aq,Sn,Sn(OH)6,aqueous,aqueous,-2.0,13.0,not_recorded,0
+gfe-sn-sn-q+0-solid-metal,Sn,Sn,solid,metal,0.0,1.0,not_recorded,0
+gfe-sn-sn-q+2-aqueous-aq,Sn,Sn,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-sn-sno-q+0-solid-romarchite,Sn,SnO,solid,romarchite,0.0,2.0,resolved,0
+gfe-sn-sno2-q+0-solid-cassiterite,Sn,SnO2,solid,cassiterite,0.0,3.0,resolved,0
+gfe-sn-snoh-q+1-aqueous-aq,Sn,SnOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-sr-sr-oh-2-q+0-solid-solid,Sr,Sr(OH)2,solid,solid,0.0,5.0,resolved,0
+gfe-sr-sr-q+0-solid-metal,Sr,Sr,solid,metal,0.0,1.0,not_recorded,0
+gfe-sr-sr-q+2-aqueous-aq,Sr,Sr,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-sr-sroh-q+1-aqueous-aq,Sr,SrOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-sr-srso4-q+0-solid-celestite,Sr,SrSO4,solid,celestite,0.0,6.0,resolved,0
+gfe-ta-ta-oh-4-q+1-aqueous-aq,Ta,Ta(OH)4,aqueous,aqueous,1.0,9.0,not_recorded,0
+gfe-ta-ta-oh-5-q+0-aqueous-aq,Ta,Ta(OH)5,aqueous,aqueous,0.0,11.0,not_recorded,0
+gfe-ta-ta-q+0-solid-metal,Ta,Ta,solid,metal,0.0,1.0,not_recorded,0
+gfe-ta-ta2o5-q+0-solid-solid,Ta,Ta2O5,solid,solid,0.0,7.0,ambiguous,0
+gfe-tb-tb-q+0-solid-crystalline-metal,Tb,Tb,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-tb-tb-q+3-aqueous-aq,Tb,Tb,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-tb-tb2-co3-3-q+0-solid-nbs-cr,Tb,Tb2(CO3)3,solid,anhydrous crystalline carbonate,0.0,14.0,resolved,0
+gfe-tb-tb2o3-q+0-solid-c-type-cubic-bixbyite,Tb,Tb2O3,solid,C-type cubic bixbyite,0.0,5.0,resolved,0
+gfe-tb-tbcl-q+2-aqueous-aq,Tb,TbCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-tb-tbcl2-q+1-aqueous-aq,Tb,TbCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-tb-tbf-q+2-aqueous-aq,Tb,TbF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-tb-tbf3-q+0-solid-crystalline-rare-earth-trifluoride,Tb,TbF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-tb-tbso4-q+1-aqueous-aq,Tb,TbSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-te-h2teo3-q+0-aqueous-aq,Te,H2TeO3,aqueous,aqueous,0.0,6.0,not_recorded,0
+gfe-te-te-oh-3-q+1-aqueous-aq,Te,Te(OH)3,aqueous,aqueous,1.0,7.0,not_recorded,0
+gfe-te-te-q+0-solid-crystalline,Te,Te,solid,crystalline,0.0,1.0,not_recorded,0
+gfe-te-teo2-q+0-solid-crystalline,Te,TeO2,solid,crystalline,0.0,3.0,ambiguous,0
+gfe-ti-ti-q+0-solid-metal,Ti,Ti,solid,metal,0.0,1.0,not_recorded,0
+gfe-ti-ti-q+2-aqueous-aq,Ti,Ti,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-ti-ti-q+3-aqueous-aq,Ti,Ti,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-ti-ti2o3-q+0-solid-alpha-ti2o3-corundum,Ti,Ti2O3,solid,alpha-Ti2O3 (corundum),0.0,5.0,resolved,0
+gfe-ti-tih2-q+0-solid-delta-tih2-cubic-near-298-15-k,Ti,TiH2,solid,delta-TiH2 (cubic),0.0,3.0,resolved,0
+gfe-ti-tio-q+0-solid-alpha-tio-vacancy-ordered-monoclinic,Ti,TiO,solid,"alpha-TiO, vacancy-ordered monoclinic",0.0,2.0,resolved,0
+gfe-ti-tio2-q+0-solid-rutile,Ti,TiO2,solid,rutile,0.0,3.0,resolved,0
+gfe-tl-tl-oh-2-q+1-aqueous-aq,Tl,Tl(OH)2,aqueous,aqueous,1.0,5.0,not_recorded,0
+gfe-tl-tl-q+0-solid-crystalline,Tl,Tl,solid,crystalline,0.0,1.0,not_recorded,0
+gfe-tl-tl-q+1-aqueous-aq,Tl,Tl,aqueous,aqueous,1.0,1.0,not_recorded,0
+gfe-tl-tl-q+3-aqueous-aq,Tl,Tl,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-tl-tl2o-q+0-solid-crystalline,Tl,Tl2O,solid,crystalline,0.0,3.0,resolved,0
+gfe-tl-tl2o3-q+0-solid-crystalline,Tl,Tl2O3,solid,crystalline,0.0,5.0,resolved,0
+gfe-tl-tloh-q+0-aqueous-aq,Tl,TlOH,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-tl-tloh-q+0-solid-crystalline,Tl,TlOH,solid,crystalline,0.0,3.0,resolved,0
+gfe-tl-tloh-q+2-aqueous-aq,Tl,TlOH,aqueous,aqueous,2.0,3.0,not_recorded,0
+gfe-tm-tm-q+0-solid-crystalline-metal,Tm,Tm,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-tm-tm-q+3-aqueous-aq,Tm,Tm,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-tm-tm2o3-q+0-solid-crystalline,Tm,Tm2O3,solid,crystalline,0.0,5.0,resolved,0
+gfe-tm-tmcl-q+2-aqueous-aq,Tm,TmCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-tm-tmcl2-q+1-aqueous-aq,Tm,TmCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-tm-tmf-q+2-aqueous-aq,Tm,TmF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-tm-tmf3-q+0-solid-crystalline-rare-earth-trifluoride,Tm,TmF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-tm-tmso4-q+1-aqueous-aq,Tm,TmSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-v-h3v2o7-q-1-aqueous-aq,V,H3V2O7,aqueous,aqueous,-1.0,12.0,not_recorded,0
+gfe-v-hv2o7-q-3-aqueous-aq,V,HV2O7,aqueous,aqueous,-3.0,10.0,not_recorded,0
+gfe-v-hvo4-q-2-aqueous-aq,V,HVO4,aqueous,aqueous,-2.0,6.0,not_recorded,0
+gfe-v-v-q+0-solid-metal,V,V,solid,metal,0.0,1.0,not_recorded,0
+gfe-v-v-q+2-aqueous-aq,V,V,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-v-v-q+3-aqueous-aq,V,V,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-v-v2o3-q+0-solid-v2o3-ii-corundum,V,V2O3,solid,V2O3-II (corundum),0.0,5.0,resolved,0
+gfe-v-v2o5-q+0-solid-solid,V,V2O5,solid,solid,0.0,7.0,resolved,0
+gfe-v-v3o5-q+0-solid-room-temperature-monoclinic-v3o5,V,V3O5,solid,room-temperature monoclinic V3O5,0.0,8.0,resolved,0
+gfe-v-vo-q+2-aqueous-aq,V,VO,aqueous,aqueous,2.0,2.0,not_recorded,0
+gfe-v-vo2-q+0-solid-m1-monoclinic,V,VO2,solid,M1 monoclinic,0.0,3.0,resolved,0
+gfe-v-vo2-q+1-aqueous-aq,V,VO2,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-v-vo3-q-1-aqueous-aq,V,VO3,aqueous,aqueous,-1.0,4.0,not_recorded,0
+gfe-v-vo4-q-3-aqueous-aq,V,VO4,aqueous,aqueous,-3.0,5.0,not_recorded,0
+gfe-w-w-q+0-solid-metal,W,W,solid,metal,0.0,1.0,not_recorded,0
+gfe-w-wo2-q+0-solid-solid,W,WO2,solid,solid,0.0,3.0,resolved,0
+gfe-w-wo3-q+0-solid-solid,W,WO3,solid,solid,0.0,4.0,resolved,0
+gfe-w-wo4-q-2-aqueous-aq,W,WO4,aqueous,aqueous,-2.0,5.0,not_recorded,0
+gfe-y-hyo2-q+0-aqueous-aq,Y,HYO2,aqueous,aqueous,0.0,4.0,not_recorded,0
+gfe-y-y-q+0-solid-metal,Y,Y,solid,metal,0.0,1.0,not_recorded,0
+gfe-y-y-q+3-aqueous-aq,Y,Y,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-y-y2-co3-3-q+0-solid-nbs-cr,Y,Y2(CO3)3,solid,anhydrous crystalline carbonate,0.0,14.0,resolved,0
+gfe-y-y2o3-q+0-solid-cubic-bixbyite,Y,Y2O3,solid,cubic bixbyite,0.0,5.0,resolved,0
+gfe-y-yf-q+2-aqueous-aq,Y,YF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-y-yf2-q+1-aqueous-aq,Y,YF2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-y-yo-q+1-aqueous-aq,Y,YO,aqueous,aqueous,1.0,2.0,not_recorded,0
+gfe-y-yo2-q-1-aqueous-aq,Y,YO2,aqueous,aqueous,-1.0,3.0,not_recorded,0
+gfe-y-yoh-q+2-aqueous-aq,Y,YOH,aqueous,aqueous,2.0,3.0,not_recorded,0
+gfe-y-yso4-q+1-aqueous-aq,Y,YSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-yb-yb-q+0-solid-crystalline-metal,Yb,Yb,solid,crystalline metal,0.0,1.0,not_recorded,0
+gfe-yb-yb-q+2-aqueous-aq,Yb,Yb,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-yb-yb-q+3-aqueous-aq,Yb,Yb,aqueous,aqueous,3.0,1.0,not_recorded,0
+gfe-yb-yb2o3-q+0-solid-crystalline,Yb,Yb2O3,solid,crystalline,0.0,5.0,resolved,0
+gfe-yb-ybcl-q+2-aqueous-aq,Yb,YbCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-yb-ybcl2-q+1-aqueous-aq,Yb,YbCl2,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+gfe-yb-ybf-q+2-aqueous-aq,Yb,YbF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+gfe-yb-ybf3-q+0-solid-crystalline-rare-earth-trifluoride,Yb,YbF3,solid,crystalline rare-earth trifluoride,0.0,4.0,resolved,0
+gfe-yb-ybso4-q+1-aqueous-aq,Yb,YbSO4,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+gfe-zn-zn-oh-2-q+0-aqueous-aq,Zn,Zn(OH)2,aqueous,aqueous,0.0,5.0,not_recorded,0
+gfe-zn-zn-oh-2-q+0-solid-s,Zn,Zn(OH)2,solid,(s),0.0,5.0,resolved,0
+gfe-zn-zn-oh-3-q-1-aqueous-aq,Zn,Zn(OH)3,aqueous,aqueous,-1.0,7.0,not_recorded,0
+gfe-zn-zn-oh-4-q-2-aqueous-aq,Zn,Zn(OH)4,aqueous,aqueous,-2.0,9.0,not_recorded,0
+gfe-zn-zn-q+0-solid-metal,Zn,Zn,solid,metal,0.0,1.0,not_recorded,0
+gfe-zn-zn-q+2-aqueous-aq,Zn,Zn,aqueous,aqueous,2.0,1.0,not_recorded,0
+gfe-zn-zn2-so4-oh-2-q+0-solid-basic-zinc-sulfate,Zn,Zn2(SO4)(OH)2,solid,basic zinc sulfate,0.0,11.0,resolved,0
+gfe-zn-zn3o-so4-2-q+0-solid-zinc-oxysulfate,Zn,Zn3O(SO4)2,solid,zinc oxysulfate,0.0,14.0,resolved,0
+gfe-zn-zncl-q+1-aqueous-aq,Zn,ZnCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+gfe-zn-zncl2-q+0-aqueous-aq,Zn,ZnCl2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+gfe-zn-zncl3-q-1-aqueous-aq,Zn,ZnCl3,aqueous,aqueous,-1.0,4.0,aqueous_species_identified,0
+gfe-zn-zncl4-q-2-aqueous-aq,Zn,ZnCl4,aqueous,aqueous,-2.0,5.0,aqueous_species_identified,0
+gfe-zn-zno-q+0-solid-zincite,Zn,ZnO,solid,zincite,0.0,2.0,resolved,0
+gfe-zn-znoh-q+1-aqueous-aq,Zn,ZnOH,aqueous,aqueous,1.0,3.0,not_recorded,0
+gfe-zn-znso4-h2o-6-q+0-solid-bianchite,Zn,ZnSO4(H2O)6,solid,bianchite,0.0,24.0,resolved,0
+gfe-zn-znso4-h2o-7-q+0-solid-goslarite,Zn,ZnSO4(H2O)7,solid,goslarite,0.0,27.0,resolved,0
+gfe-zn-znso4-h2o-q+0-solid-zinc-sulfate-monohydrate,Zn,ZnSO4(H2O),solid,zinc sulfate monohydrate,0.0,9.0,resolved,0
+gfe-zn-znso4-q+0-solid-zinkosite,Zn,ZnSO4,solid,zinkosite,0.0,6.0,resolved,0
+gfe-zr-hzro2-q+1-aqueous-aq,Zr,HZrO2,aqueous,aqueous,1.0,4.0,not_recorded,0
+gfe-zr-hzro3-q-1-aqueous-aq,Zr,HZrO3,aqueous,aqueous,-1.0,5.0,not_recorded,0
+gfe-zr-zr-q+0-solid-metal,Zr,Zr,solid,metal,0.0,1.0,not_recorded,0
+gfe-zr-zr-q+4-aqueous-aq,Zr,Zr,aqueous,aqueous,4.0,1.0,not_recorded,0
+gfe-zr-zrh2-q+0-solid-epsilon-hydride,Zr,ZrH2,solid,epsilon hydride,0.0,3.0,resolved,0
+gfe-zr-zro-q+2-aqueous-aq,Zr,ZrO,aqueous,aqueous,2.0,2.0,not_recorded,0
+gfe-zr-zro2-q+0-aqueous-aq,Zr,ZrO2,aqueous,aqueous,0.0,3.0,not_recorded,0
+gfe-zr-zro2-q+0-solid-monoclinic,Zr,ZrO2,solid,monoclinic,0.0,3.0,resolved,0
+gfe-zr-zroh-q+3-aqueous-aq,Zr,ZrOH,aqueous,aqueous,3.0,3.0,not_recorded,0
+nea-ni-ni2oh-q+3-aq,Ni,Ni2OH,aqueous,"(aq), infinite-dilution molal standard state",3.0,4.0,not_recorded,0
+nea-ni-ni4-oh-4-q+4-aq,Ni,Ni4(OH)4,aqueous,"(aq), infinite-dilution molal standard state",4.0,12.0,not_recorded,0
+nea-sn-sn-oh-4-q+0-aq,Sn,Sn(OH)4,aqueous,"(aq), infinite-dilution molal standard state",0.0,9.0,not_recorded,0
+nea-sn-sn-oh-5-q-1-aq,Sn,Sn(OH)5,aqueous,"(aq), infinite-dilution molal standard state",-1.0,11.0,not_recorded,0
+nea-sn-sn-q+4-aq,Sn,Sn,aqueous,"(aq), infinite-dilution molal standard state",4.0,1.0,not_recorded,0
+nea-sn-sn3-oh-4-q+2-aq,Sn,Sn3(OH)4,aqueous,"(aq), infinite-dilution molal standard state",2.0,11.0,not_recorded,0
+nea02a-fe-fe2-so4-3-h2o-5-ferric-sulfate-pentahydrate,Fe,Fe2(SO4)3(H2O)5,solid,ferric sulfate pentahydrate,0.0,32.0,resolved,0
+nea02a-fe-fe2o3-maghemite,Fe,Fe2O3,solid,maghemite,0.0,5.0,resolved,0
+nea02a-fe-febr2-crystalline-bromide,Fe,FeBr2,solid,crystalline bromide,0.0,3.0,resolved,0
+nea02a-fe-febr3-crystalline-tribromide,Fe,FeBr3,solid,crystalline tribromide,0.0,4.0,resolved,0
+nea02a-fe-fecl2-crystalline-chloride,Fe,FeCl2,solid,crystalline chloride,0.0,3.0,resolved,0
+nea02a-fe-fecl2-h2o-2-chloride-dihydrate,Fe,FeCl2(H2O)2,solid,chloride dihydrate,0.0,9.0,resolved,0
+nea02a-fe-fecl2-h2o-4-chloride-tetrahydrate,Fe,FeCl2(H2O)4,solid,chloride tetrahydrate,0.0,15.0,resolved,0
+nea02a-fe-fecl2-h2o-chloride-monohydrate,Fe,FeCl2(H2O),solid,chloride monohydrate,0.0,6.0,resolved,0
+nea02a-fe-fecl3-h2o-2-5-chloride-hemipentahydrate,Fe,FeCl3(H2O)2.5,solid,chloride hemipentahydrate,0.0,11.5,resolved,0
+nea02a-fe-fecl3-h2o-2-chloride-dihydrate,Fe,FeCl3(H2O)2,solid,chloride dihydrate,0.0,10.0,resolved,0
+nea02a-fe-fecl3-h2o-3-5-chloride-hemiheptahydrate,Fe,FeCl3(H2O)3.5,solid,chloride hemiheptahydrate,0.0,14.5,resolved,0
+nea02a-fe-fecl3-h2o-6-chloride-hexahydrate,Fe,FeCl3(H2O)6,solid,chloride hexahydrate,0.0,22.0,resolved,0
+nea02a-fe-fef2-crystalline-fluoride,Fe,FeF2,solid,crystalline fluoride,0.0,3.0,resolved,0
+nea02a-fe-fef3-crystalline-trifluoride,Fe,FeF3,solid,crystalline trifluoride,0.0,4.0,resolved,0
+nea02a-fe-fei2-crystalline-iodide,Fe,FeI2,solid,crystalline iodide,0.0,3.0,resolved,0
+nea02a-fe-feocl-crystalline-oxychloride,Fe,FeOCl,solid,crystalline oxychloride,0.0,3.0,resolved,0
+nea02a-fe-feooh-lepidocrocite,Fe,FeOOH,solid,lepidocrocite,0.0,4.0,resolved,0
+nea02a-fe-fes-mackinawite,Fe,FeS,solid,mackinawite,0.0,2.0,resolved,0
+nea02a-fe-h3o-fe3-so4-2-oh-6-hydronium-jarosite,Fe,(H3O)Fe3(SO4)2(OH)6,solid,hydronium jarosite,0.0,29.0,resolved,0
+nea02a-ni-ni-no3-2-h2o-2-nitrate-dihydrate,Ni,Ni(NO3)2(H2O)2,solid,nitrate dihydrate,0.0,15.0,resolved,0
+nea02a-ni-ni-no3-2-h2o-4-nitrate-tetrahydrate,Ni,Ni(NO3)2(H2O)4,solid,nitrate tetrahydrate,0.0,21.0,resolved,0
+nea02a-ni-ni-no3-2-h2o-6-nitrate-hexahydrate,Ni,Ni(NO3)2(H2O)6,solid,nitrate hexahydrate,0.0,27.0,resolved,0
+nea02a-ni-ni3s2-crystalline-nickel-subsulfide,Ni,Ni3S2,solid,crystalline nickel subsulfide,0.0,5.0,resolved,0
+nea02a-ni-ni9s8-crystalline-nickel-sulfide,Ni,Ni9S8,solid,crystalline nickel sulfide,0.0,17.0,resolved,0
+nea02a-ni-nibr2-crystalline-bromide,Ni,NiBr2,solid,crystalline bromide,0.0,3.0,resolved,0
+nea02a-ni-nicl2-crystalline-chloride,Ni,NiCl2,solid,crystalline chloride,0.0,3.0,resolved,0
+nea02a-ni-nicl2-h2o-2-chloride-dihydrate,Ni,NiCl2(H2O)2,solid,chloride dihydrate,0.0,9.0,resolved,0
+nea02a-ni-nicl2-h2o-4-chloride-tetrahydrate,Ni,NiCl2(H2O)4,solid,chloride tetrahydrate,0.0,15.0,resolved,0
+nea02a-ni-nicl2-h2o-6-chloride-hexahydrate,Ni,NiCl2(H2O)6,solid,chloride hexahydrate,0.0,21.0,resolved,0
+nea02a-ni-nico3-gaspeite,Ni,NiCO3,solid,gaspeite,0.0,5.0,resolved,0
+nea02a-ni-nico3-h2o-5-5-carbonate-hemiundecahydrate,Ni,NiCO3(H2O)5.5,solid,carbonate hemiundecahydrate,0.0,21.5,resolved,0
+nea02a-ni-nif2-crystalline-fluoride,Ni,NiF2,solid,crystalline fluoride,0.0,3.0,resolved,0
+nea02a-ni-nii2-crystalline-iodide,Ni,NiI2,solid,crystalline iodide,0.0,3.0,resolved,0
+nea02a-ni-nis-alpha-nickel-sulfide,Ni,NiS,solid,alpha nickel sulfide,0.0,2.0,resolved,0
+nea02a-ni-nis-millerite,Ni,NiS,solid,millerite,0.0,2.0,resolved,0
+nea02a-ni-nis2-crystalline-disulfide,Ni,NiS2,solid,crystalline disulfide,0.0,3.0,resolved,0
+nea02a-sn-sn-alpha-grey-tin,Sn,Sn,solid,alpha grey tin,0.0,1.0,resolved,0
+nea02a-sn-sn21cl16-oh-14o6-crystalline-basic-tin-chloride,Sn,Sn21Cl16(OH)14O6,solid,crystalline basic tin chloride,0.0,71.0,resolved,0
+nea02a-sn-sn2s3-crystalline-mixed-valence-tin-sulfide,Sn,Sn2S3,solid,crystalline mixed-valence tin sulfide,0.0,5.0,resolved,0
+nea02a-sn-sn3-oh-2oso4-crystalline-basic-tin-sulfate,Sn,Sn3(OH)2OSO4,solid,crystalline basic tin sulfate,0.0,13.0,resolved,0
+nea02a-sn-snbr2-crystalline-bromide,Sn,SnBr2,solid,crystalline bromide,0.0,3.0,resolved,0
+nea02a-sn-snbr4-crystalline-tetrabromide,Sn,SnBr4,solid,crystalline tetrabromide,0.0,5.0,resolved,0
+nea02a-sn-sncl2-crystalline-chloride,Sn,SnCl2,solid,crystalline chloride,0.0,3.0,resolved,0
+nea02a-sn-sncl2-h2o-2-chloride-dihydrate,Sn,SnCl2(H2O)2,solid,chloride dihydrate,0.0,9.0,resolved,0
+nea02a-sn-snf2-crystalline-fluoride,Sn,SnF2,solid,crystalline fluoride,0.0,3.0,resolved,0
+nea02a-sn-sni2-crystalline-iodide,Sn,SnI2,solid,crystalline iodide,0.0,3.0,resolved,0
+nea02a-sn-sni4-crystalline-tetraiodide,Sn,SnI4,solid,crystalline tetraiodide,0.0,5.0,resolved,0
+nea02a-sn-sno2-amorphous-tin-dioxide,Sn,SnO2,solid,amorphous tin dioxide,0.0,3.0,resolved,0
+nea02b-fe-fe0-932o-wustite-fixed-composition,Fe,Fe0.932O,solid,"wüstite, fixed Fe0.932O composition",0.0,1.932,resolved,0
+nea02c-fe-fe-co3-2-q-2-aqueous,Fe,Fe(CO3)2,aqueous,aqueous,-2.0,9.0,not_recorded,0
+nea02c-fe-fe-co3-3-q-3-aqueous,Fe,Fe(CO3)3,aqueous,aqueous,-3.0,13.0,not_recorded,0
+nea02c-fe-fe-oh-co3-q+0-aqueous,Fe,Fe(OH)CO3,aqueous,aqueous,0.0,7.0,not_recorded,0
+nea02c-fe-fe-so4-2-q-1-aqueous,Fe,Fe(SO4)2,aqueous,aqueous,-1.0,11.0,not_recorded,0
+nea02c-fe-fecl2-q+1-aqueous,Fe,FeCl2,aqueous,aqueous,1.0,3.0,not_recorded,0
+nea02c-fe-fecl3-q+0-aqueous,Fe,FeCl3,aqueous,aqueous,0.0,4.0,not_recorded,0
+nea02c-fe-fecl4-q-1-aqueous,Fe,FeCl4,aqueous,aqueous,-1.0,5.0,not_recorded,0
+nea02c-fe-feco3-q+0-aqueous,Fe,FeCO3,aqueous,aqueous,0.0,5.0,not_recorded,0
+nea02c-fe-feso4-q+0-aqueous,Fe,FeSO4,aqueous,aqueous,0.0,6.0,not_recorded,0
+nea02c-fe-feso4-q+1-aqueous,Fe,FeSO4,aqueous,aqueous,1.0,6.0,not_recorded,0
+nea02c-ni-hnip2o7-q-1-aqueous,Ni,HNiP2O7,aqueous,aqueous,-1.0,11.0,not_recorded,0
+nea02c-ni-ni-cn-4-q-2-aqueous,Ni,Ni(CN)4,aqueous,aqueous,-2.0,9.0,not_recorded,0
+nea02c-ni-ni-cn-5-q-3-aqueous,Ni,Ni(CN)5,aqueous,aqueous,-3.0,11.0,not_recorded,0
+nea02c-ni-ni-scn-2-q+0-aqueous,Ni,Ni(SCN)2,aqueous,aqueous,0.0,7.0,not_recorded,0
+nea02c-ni-ni-scn-3-q-1-aqueous,Ni,Ni(SCN)3,aqueous,aqueous,-1.0,10.0,not_recorded,0
+nea02c-ni-nico3-q+0-aqueous,Ni,NiCO3,aqueous,aqueous,0.0,5.0,not_recorded,0
+nea02c-ni-nihaso4-q+0-aqueous,Ni,NiHAsO4,aqueous,aqueous,0.0,7.0,not_recorded,0
+nea02c-ni-nihpo4-q+0-aqueous,Ni,NiHPO4,aqueous,aqueous,0.0,7.0,not_recorded,0
+nea02c-ni-nihs-q+1-aqueous,Ni,NiHS,aqueous,aqueous,1.0,3.0,not_recorded,0
+nea02c-ni-nino3-q+1-aqueous,Ni,NiNO3,aqueous,aqueous,1.0,5.0,not_recorded,0
+nea02c-ni-nip2o7-q-2-aqueous,Ni,NiP2O7,aqueous,aqueous,-2.0,10.0,not_recorded,0
+nea02c-ni-niscn-q+1-aqueous,Ni,NiSCN,aqueous,aqueous,1.0,4.0,not_recorded,0
+nea02c-ni-niso4-q+0-aqueous,Ni,NiSO4,aqueous,aqueous,0.0,6.0,not_recorded,0
+nea02c-sn-sn-no3-2-q+0-aqueous,Sn,Sn(NO3)2,aqueous,aqueous,0.0,9.0,not_recorded,0
+nea02c-sn-snbr-q+1-aqueous,Sn,SnBr,aqueous,aqueous,1.0,2.0,not_recorded,0
+nea02c-sn-snbr2-q+0-aqueous,Sn,SnBr2,aqueous,aqueous,0.0,3.0,not_recorded,0
+nea02c-sn-snbr2-q+0-gas,Sn,SnBr2,gas,molecular gas,0.0,3.0,not_recorded,0
+nea02c-sn-snbr3-q-1-aqueous,Sn,SnBr3,aqueous,aqueous,-1.0,4.0,not_recorded,0
+nea02c-sn-snbr4-q+0-gas,Sn,SnBr4,gas,molecular gas,0.0,5.0,not_recorded,0
+nea02c-sn-sncl-q+1-aqueous,Sn,SnCl,aqueous,aqueous,1.0,2.0,not_recorded,0
+nea02c-sn-sncl2-q+0-aqueous,Sn,SnCl2,aqueous,aqueous,0.0,3.0,not_recorded,0
+nea02c-sn-sncl2-q+0-gas,Sn,SnCl2,gas,molecular gas,0.0,3.0,not_recorded,0
+nea02c-sn-sncl3-q-1-aqueous,Sn,SnCl3,aqueous,aqueous,-1.0,4.0,not_recorded,0
+nea02c-sn-sncl4-q+0-gas,Sn,SnCl4,gas,molecular gas,0.0,5.0,not_recorded,0
+nea02c-sn-sncl4-q+0-liquid,Sn,SnCl4,liquid,pure liquid,0.0,5.0,not_recorded,0
+nea02c-sn-sncl4-q-2-aqueous,Sn,SnCl4,aqueous,aqueous,-2.0,5.0,not_recorded,0
+nea02c-sn-snf-q+1-aqueous,Sn,SnF,aqueous,aqueous,1.0,2.0,not_recorded,0
+nea02c-sn-snf2-q+0-aqueous,Sn,SnF2,aqueous,aqueous,0.0,3.0,not_recorded,0
+nea02c-sn-snf2-q+0-gas,Sn,SnF2,gas,molecular gas,0.0,3.0,not_recorded,0
+nea02c-sn-snf3-q-1-aqueous,Sn,SnF3,aqueous,aqueous,-1.0,4.0,not_recorded,0
+nea02c-sn-sni2-q+0-gas,Sn,SnI2,gas,molecular gas,0.0,3.0,not_recorded,0
+nea02c-sn-sni4-q+0-gas,Sn,SnI4,gas,molecular gas,0.0,5.0,not_recorded,0
+nea02c-sn-snno3-q+1-aqueous,Sn,SnNO3,aqueous,aqueous,1.0,5.0,not_recorded,0
+nea02c-sn-snscn-q+1-aqueous,Sn,SnSCN,aqueous,aqueous,1.0,4.0,not_recorded,0
+nea02c-sn-snso4-q+0-aqueous,Sn,SnSO4,aqueous,aqueous,0.0,6.0,not_recorded,0
+nea02d-zr-alpha-zr-haso4-2-q+0-solid,Zr,Zr(HAsO4)2,solid,alpha crystalline,0.0,13.0,resolved,0
+nea02d-zr-alpha-zr-hpo4-2-q+0-solid,Zr,Zr(HPO4)2,solid,alpha crystalline,0.0,13.0,resolved,0
+nea02d-zr-beta-zr-haso4-2-q+0-solid,Zr,Zr(HAsO4)2,solid,beta crystalline,0.0,13.0,resolved,0
+nea02d-zr-beta-zr-hpo4-2-q+0-solid,Zr,Zr(HPO4)2,solid,beta crystalline,0.0,13.0,resolved,0
+nea02d-zr-beta-zrf4-q+0-solid,Zr,ZrF4,solid,beta crystalline,0.0,5.0,resolved,0
+nea02d-zr-zr-co3-4-4-q-4-aqueous,Zr,Zr(CO3)4,aqueous,aqueous,-4.0,17.0,not_recorded,0
+nea02d-zr-zr-haso4-2-h2o-cr-q+0-solid,Zr,Zr(HAsO4)2(H2O),solid,crystalline Zr(HAsO4)2(H2O),0.0,16.0,resolved,0
+nea02d-zr-zr-hpo4-2-2h2o-cr-q+0-solid,Zr,Zr(HPO4)2(H2O)2,solid,crystalline Zr(HPO4)2(H2O)2,0.0,19.0,resolved,0
+nea02d-zr-zr-hpo4-2-h2o-cr-q+0-solid,Zr,Zr(HPO4)2(H2O),solid,crystalline Zr(HPO4)2(H2O),0.0,16.0,resolved,0
+nea02d-zr-zr-no3-2-2-q+2-aqueous,Zr,Zr(NO3)2,aqueous,aqueous,2.0,9.0,not_recorded,0
+nea02d-zr-zr-oh-6-2-q-2-aqueous,Zr,Zr(OH)6,aqueous,aqueous,-2.0,13.0,not_recorded,0
+nea02d-zr-zr-so3-2-cr-q+0-solid,Zr,Zr(SO3)2,solid,crystalline Zr(SO3)2,0.0,9.0,resolved,0
+nea02d-zr-zr-so4-2-4h2o-cr-q+0-solid,Zr,Zr(SO4)2(H2O)4,solid,crystalline Zr(SO4)2(H2O)4,0.0,23.0,resolved,0
+nea02d-zr-zr-so4-2-aq-q+0-aqueous,Zr,Zr(SO4)2,aqueous,aqueous,0.0,11.0,not_recorded,0
+nea02d-zr-zr-so4-2-cr-q+0-solid,Zr,Zr(SO4)2,solid,crystalline Zr(SO4)2,0.0,11.0,resolved,0
+nea02d-zr-zr-so4-3-2-q-2-aqueous,Zr,Zr(SO4)3,aqueous,aqueous,-2.0,16.0,not_recorded,0
+nea02d-zr-zr3-oh-4-8-q+8-aqueous,Zr,Zr3(OH)4,aqueous,aqueous,8.0,11.0,not_recorded,0
+nea02d-zr-zr3-oh-9-3-q+3-aqueous,Zr,Zr3(OH)9,aqueous,aqueous,3.0,21.0,not_recorded,0
+nea02d-zr-zr4-oh-15-q+1-aqueous,Zr,Zr4(OH)15,aqueous,aqueous,1.0,34.0,not_recorded,0
+nea02d-zr-zr4-oh-16-aq-q+0-aqueous,Zr,Zr4(OH)16,aqueous,aqueous,0.0,36.0,not_recorded,0
+nea02d-zr-zr4-oh-8-8-q+8-aqueous,Zr,Zr4(OH)8,aqueous,aqueous,8.0,20.0,not_recorded,0
+nea02d-zr-zrbr-cr-q+0-solid,Zr,ZrBr,solid,crystalline ZrBr,0.0,2.0,resolved,0
+nea02d-zr-zrbr-g-q+0-gas,Zr,ZrBr,gas,molecular gas,0.0,2.0,not_recorded,0
+nea02d-zr-zrbr2-cr-q+0-solid,Zr,ZrBr2,solid,crystalline ZrBr2,0.0,3.0,resolved,0
+nea02d-zr-zrbr2-g-q+0-gas,Zr,ZrBr2,gas,molecular gas,0.0,3.0,not_recorded,0
+nea02d-zr-zrbr3-cr-q+0-solid,Zr,ZrBr3,solid,crystalline ZrBr3,0.0,4.0,resolved,0
+nea02d-zr-zrbr3-g-q+0-gas,Zr,ZrBr3,gas,molecular gas,0.0,4.0,not_recorded,0
+nea02d-zr-zrbr4-cr-q+0-solid,Zr,ZrBr4,solid,crystalline ZrBr4,0.0,5.0,resolved,0
+nea02d-zr-zrbr4-g-q+0-gas,Zr,ZrBr4,gas,molecular gas,0.0,5.0,not_recorded,0
+nea02d-zr-zrcl-cr-q+0-solid,Zr,ZrCl,solid,crystalline ZrCl,0.0,2.0,resolved,0
+nea02d-zr-zrcl-g-q+0-gas,Zr,ZrCl,gas,molecular gas,0.0,2.0,not_recorded,0
+nea02d-zr-zrcl2-2-q+2-aqueous,Zr,ZrCl2,aqueous,aqueous,2.0,3.0,not_recorded,0
+nea02d-zr-zrcl2-cr-q+0-solid,Zr,ZrCl2,solid,crystalline ZrCl2,0.0,3.0,resolved,0
+nea02d-zr-zrcl2-g-q+0-gas,Zr,ZrCl2,gas,molecular gas,0.0,3.0,not_recorded,0
+nea02d-zr-zrcl3-cr-q+0-solid,Zr,ZrCl3,solid,crystalline ZrCl3,0.0,4.0,resolved,0
+nea02d-zr-zrcl3-g-q+0-gas,Zr,ZrCl3,gas,molecular gas,0.0,4.0,not_recorded,0
+nea02d-zr-zrcl3-q+3-aqueous,Zr,ZrCl,aqueous,aqueous,3.0,2.0,not_recorded,0
+nea02d-zr-zrcl4-cr-q+0-solid,Zr,ZrCl4,solid,crystalline ZrCl4,0.0,5.0,resolved,0
+nea02d-zr-zrcl4-g-q+0-gas,Zr,ZrCl4,gas,molecular gas,0.0,5.0,not_recorded,0
+nea02d-zr-zrf-g-q+0-gas,Zr,ZrF,gas,molecular gas,0.0,2.0,not_recorded,0
+nea02d-zr-zrf2-2-q+2-aqueous,Zr,ZrF2,aqueous,aqueous,2.0,3.0,not_recorded,0
+nea02d-zr-zrf2-g-q+0-gas,Zr,ZrF2,gas,molecular gas,0.0,3.0,not_recorded,0
+nea02d-zr-zrf3-g-q+0-gas,Zr,ZrF3,gas,molecular gas,0.0,4.0,not_recorded,0
+nea02d-zr-zrf3-q+1-aqueous,Zr,ZrF3,aqueous,aqueous,1.0,4.0,not_recorded,0
+nea02d-zr-zrf3-q+3-aqueous,Zr,ZrF,aqueous,aqueous,3.0,2.0,not_recorded,0
+nea02d-zr-zrf4-aq-q+0-aqueous,Zr,ZrF4,aqueous,aqueous,0.0,5.0,not_recorded,0
+nea02d-zr-zrf4-g-q+0-gas,Zr,ZrF4,gas,molecular gas,0.0,5.0,not_recorded,0
+nea02d-zr-zrf4-l-q+0-liquid,Zr,ZrF4,liquid,pure liquid,0.0,5.0,not_recorded,0
+nea02d-zr-zrf5-q-1-aqueous,Zr,ZrF5,aqueous,aqueous,-1.0,6.0,not_recorded,0
+nea02d-zr-zrf6-2-q-2-aqueous,Zr,ZrF6,aqueous,aqueous,-2.0,7.0,not_recorded,0
+nea02d-zr-zri-cr-q+0-solid,Zr,ZrI,solid,crystalline ZrI,0.0,2.0,resolved,0
+nea02d-zr-zri-g-q+0-gas,Zr,ZrI,gas,molecular gas,0.0,2.0,not_recorded,0
+nea02d-zr-zri2-cr-q+0-solid,Zr,ZrI2,solid,crystalline ZrI2,0.0,3.0,resolved,0
+nea02d-zr-zri2-g-q+0-gas,Zr,ZrI2,gas,molecular gas,0.0,3.0,not_recorded,0
+nea02d-zr-zri3-cr-q+0-solid,Zr,ZrI3,solid,crystalline ZrI3,0.0,4.0,resolved,0
+nea02d-zr-zri3-g-q+0-gas,Zr,ZrI3,gas,molecular gas,0.0,4.0,not_recorded,0
+nea02d-zr-zri4-cr-q+0-solid,Zr,ZrI4,solid,crystalline ZrI4,0.0,5.0,resolved,0
+nea02d-zr-zri4-g-q+0-gas,Zr,ZrI4,gas,molecular gas,0.0,5.0,not_recorded,0
+nea02d-zr-zrno3-3-q+3-aqueous,Zr,ZrNO3,aqueous,aqueous,3.0,5.0,not_recorded,0
+nea02d-zr-zrp2o7-cr-q+0-solid,Zr,ZrP2O7,solid,crystalline ZrP2O7,0.0,10.0,resolved,0
+nea02d-zr-zrs2-cr-q+0-solid,Zr,ZrS2,solid,crystalline ZrS2,0.0,3.0,resolved,0
+nea02d-zr-zrs3-cr-q+0-solid,Zr,ZrS3,solid,crystalline ZrS3,0.0,4.0,resolved,0
+nea02d-zr-zrso4-2-q+2-aqueous,Zr,ZrSO4,aqueous,aqueous,2.0,6.0,not_recorded,0
+nea02f-ni-gas,Ni,Ni,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+nea02f-ni-liquid,Ni,Ni,liquid,supercooled liquid,0.0,1.0,not_recorded,0
+nea02f-sn-stannane-gas,Sn,SnH4,gas,molecular ideal gas,0.0,5.0,not_recorded,0
+nea02g1-zr-gas,Zr,Zr,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+nea02g1-zr-selenite,Zr,Zr(SeO3)2,solid,crystalline zirconium selenite,0.0,9.0,resolved,0
+nea02g1-zr-zircon,Zr,ZrSiO4,solid,zircon,0.0,6.0,resolved,0
+nea02g2-zr-carbide,Zr,ZrC,solid,crystalline fixed-composition ZrC,0.0,2.0,resolved,0
+nea02g2-zr-ditelluride,Zr,ZrTe2,solid,crystalline fixed-composition ZrTe2,0.0,3.0,resolved,0
+nea02g2-zr-nitride,Zr,ZrN,solid,crystalline fixed-composition ZrN,0.0,2.0,resolved,0
+nea02g2-zr-telluride-1p843,Zr,ZrTe1.843,solid,crystalline fixed-composition ZrTe1.843,0.0,2.843,resolved,0
+nea02g2-zr-telluride-5-4,Zr,Zr5Te4,solid,crystalline fixed-composition Zr5Te4,0.0,9.0,resolved,0
+nea02g2-zr-tellurite,Zr,ZrTe3O8,solid,crystalline fixed-composition ZrTe3O8,0.0,12.0,resolved,0
+nea02g3-zr-dioxide-gas,Zr,ZrO2,gas,ideal gas,0.0,3.0,not_recorded,0
+nea02g3-zr-monoxide-gas,Zr,ZrO,gas,ideal gas,0.0,2.0,not_recorded,0
+nea02g3-zr-sulfide-1p5,Zr,ZrS1.5,solid,fixed-composition crystalline ZrS1.5,0.0,2.5,resolved,0
+nea02g4-zr-ca3-silicate,Zr,Ca3ZrSi2O9,solid,fixed-composition Ca3ZrSi2O9,0.0,15.0,resolved,0
+nea02g4-zr-cs-silicate,Zr,Cs2ZrSi2O7,solid,fixed-composition Cs2ZrSi2O7,0.0,12.0,resolved,0
+nea02g4-zr-elpidite,Zr,Na2ZrSi6O15(H2O)3,solid,fixed-composition Na2ZrSi6O15(H2O)3,0.0,33.0,resolved,0
+nea02g4-zr-na-catapleiite,Zr,Na2ZrSi3O9(H2O)2,solid,fixed-composition Na2ZrSi3O9(H2O)2,0.0,21.0,resolved,0
+nea02g4-zr-na-disilicate,Zr,Na2ZrSi2O7,solid,fixed-composition Na2ZrSi2O7,0.0,12.0,resolved,0
+nea02g4-zr-na-silicate,Zr,Na2ZrSiO5,solid,fixed-composition Na2ZrSiO5,0.0,9.0,resolved,0
+nea02g4-zr-nasicon-phosphate,Zr,NaZr2P3O12,solid,fixed-composition NaZr2P3O12,0.0,18.0,resolved,0
+nea02g4-zr-nasicon-silicate,Zr,Na4Zr2Si3O12,solid,fixed-composition Na4Zr2Si3O12,0.0,21.0,resolved,0
+nea02g4-zr-sr-silicate,Zr,SrZrSi2O7,solid,fixed-composition SrZrSi2O7,0.0,11.0,resolved,0
+nea02g4-zr-sr6-silicate,Zr,Sr6ZrSi5O18,solid,fixed-composition Sr6ZrSi5O18,0.0,30.0,resolved,0
+nea02g4-zr-vlasovite,Zr,Na2ZrSi4O11,solid,fixed-composition Na2ZrSi4O11,0.0,18.0,resolved,0
+r05-al-alpo4-berlinite,Al,AlPO4,solid,berlinite,0.0,6.0,resolved,0
+r05-as-as4s4-realgar,As,As4S4,solid,realgar,0.0,8.0,resolved,0
+r05-ca-ca3-po4-2-whitlockite-ideal-beta-calcium-phosphate,Ca,Ca3(PO4)2,solid,whitlockite ideal beta calcium phosphate,0.0,13.0,resolved,0
+r05-ca-ca5-po4-3oh-hydroxyapatite,Ca,Ca5(PO4)3OH,solid,hydroxyapatite,0.0,22.0,resolved,0
+r05-ce-ceoh-aqueous-monohydroxo-complex,Ce,CeOH,aqueous,aqueous monohydroxo complex,2.0,3.0,not_recorded,0
+r05-ce-cepo4-monazite-ce,Ce,CePO4,solid,monazite-Ce,0.0,6.0,resolved,0
+r05-cu-cu2s-chalcocite,Cu,Cu2S,solid,chalcocite,0.0,3.0,resolved,0
+r05-cu-cus-covellite,Cu,CuS,solid,covellite,0.0,2.0,resolved,0
+r05-fe-fecl3-molysite,Fe,FeCl3,solid,molysite,0.0,4.0,resolved,0
+r05-fe-fes-troilite,Fe,FeS,solid,troilite,0.0,2.0,resolved,0
+r05-fe-fes2-marcasite,Fe,FeS2,solid,marcasite,0.0,3.0,resolved,0
+r05-fe-fes2-pyrite,Fe,FeS2,solid,pyrite,0.0,3.0,resolved,0
+r05-gd-gdoh-aqueous-monohydroxo-complex,Gd,GdOH,aqueous,aqueous monohydroxo complex,2.0,3.0,not_recorded,0
+r05-gd-gdpo4-monazite-gd,Gd,GdPO4,solid,monazite-Gd,0.0,6.0,resolved,0
+r05-ho-hooh-aqueous-monohydroxo-complex,Ho,HoOH,aqueous,aqueous monohydroxo complex,2.0,3.0,not_recorded,0
+r05-ho-hopo4-xenotime-ho,Ho,HoPO4,solid,xenotime-Ho,0.0,6.0,resolved,0
+r05-lu-luoh-aqueous-monohydroxo-complex,Lu,LuOH,aqueous,aqueous monohydroxo complex,2.0,3.0,not_recorded,0
+r05-lu-lupo4-xenotime-lu,Lu,LuPO4,solid,xenotime-Lu,0.0,6.0,resolved,0
+r05-mo-mos2-molybdenite,Mo,MoS2,solid,molybdenite,0.0,3.0,resolved,0
+r05-na-na2co3h2o-thermonatrite,Na,Na2CO3H2O,solid,thermonatrite,0.0,9.0,resolved,0
+r05-na-na2o-disodium-monoxide,Na,Na2O,solid,disodium monoxide,0.0,3.0,resolved,0
+r05-na-nacl-halite,Na,NaCl,solid,halite,0.0,2.0,resolved,0
+r05-na-naf-villiaumite,Na,NaF,solid,villiaumite,0.0,2.0,resolved,0
+r05-sm-smoh-aqueous-monohydroxo-complex,Sm,SmOH,aqueous,aqueous monohydroxo complex,2.0,3.0,not_recorded,0
+r05-sm-smpo4-monazite-sm,Sm,SmPO4,solid,monazite-Sm,0.0,6.0,resolved,0
+r05-sn-sns-herzenbergite,Sn,SnS,solid,herzenbergite,0.0,2.0,resolved,0
+r05-sn-sns2-berndtite,Sn,SnS2,solid,berndtite,0.0,3.0,resolved,0
+r05-tb-tboh-aqueous-monohydroxo-complex,Tb,TbOH,aqueous,aqueous monohydroxo complex,2.0,3.0,not_recorded,0
+r05-tb-tbpo4-xenotime-tb,Tb,TbPO4,solid,xenotime-Tb,0.0,6.0,resolved,0
+r05-tm-tmoh-aqueous-monohydroxo-complex,Tm,TmOH,aqueous,aqueous monohydroxo complex,2.0,3.0,not_recorded,0
+r05-tm-tmpo4-xenotime-tm,Tm,TmPO4,solid,xenotime-Tm,0.0,6.0,resolved,0
+r05-w-ws2-tungstenite,W,WS2,solid,tungstenite,0.0,3.0,resolved,0
+r05-zn-znco3-smithsonite,Zn,ZnCO3,solid,smithsonite,0.0,5.0,resolved,0
+r05-zn-zns-sphalerite,Zn,ZnS,solid,sphalerite,0.0,2.0,resolved,0
+r05-zn-zns-wurtzite,Zn,ZnS,solid,wurtzite,0.0,2.0,resolved,0
+r06-ag-agc2o6-q-3-aq,Ag,AgC2O6,aqueous,aqueous,-3.0,9.0,aqueous_species_identified,0
+r06-ag-agcl3-q-2-aq,Ag,AgCl3,aqueous,aqueous,-2.0,4.0,aqueous_species_identified,0
+r06-ag-agcl4-q-3-aq,Ag,AgCl4,aqueous,aqueous,-3.0,5.0,aqueous_species_identified,0
+r06-ag-agco3-q-1-aq,Ag,AgCO3,aqueous,aqueous,-1.0,5.0,aqueous_species_identified,0
+r06-ag-agf-q+0-aq,Ag,AgF,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-ag-agno3-q+0-aq,Ag,AgNO3,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+r06-au-aucl2-q-1-aq,Au,AuCl2,aqueous,aqueous,-1.0,3.0,aqueous_species_identified,0
+r06-au-aucl3-q-2-aq,Au,AuCl3,aqueous,aqueous,-2.0,4.0,aqueous_species_identified,0
+r06-au-aucl4-q-1-aq,Au,AuCl4,aqueous,aqueous,-1.0,5.0,aqueous_species_identified,0
+r06-ba-bacl-q+1-aq,Ba,BaCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-ba-baco3-q+0-aq,Ba,BaCO3,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+r06-ba-baf-q+1-aq,Ba,BaF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-be-be-oh-2-q+0-aq,Be,Be(OH)2,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+r06-be-be-oh-3-q-1-aq,Be,Be(OH)3,aqueous,aqueous,-1.0,7.0,aqueous_species_identified,0
+r06-be-becl-q+1-aq,Be,BeCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-be-becl2-q+0-aq,Be,BeCl2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-be-bef-q+1-aq,Be,BeF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-be-bef2-q+0-aq,Be,BeF2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-be-bef3-q-1-aq,Be,BeF3,aqueous,aqueous,-1.0,4.0,aqueous_species_identified,0
+r06-be-bef4-q-2-aq,Be,BeF4,aqueous,aqueous,-2.0,5.0,aqueous_species_identified,0
+r06-be-beoh-q+1-aq,Be,BeOH,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+r06-bi-bi-oh-3-q+0-aq,Bi,Bi(OH)3,aqueous,aqueous,0.0,7.0,aqueous_species_identified,0
+r06-bi-bi-oh-4-q-1-aq,Bi,Bi(OH)4,aqueous,aqueous,-1.0,9.0,aqueous_species_identified,0
+r06-ca-caf-q+1-aq,Ca,CaF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-ca-cao4s-q+0-aq,Ca,CaO4S,aqueous,aqueous,0.0,6.0,aqueous_species_identified,0
+r06-cd-cdcl-q+1-aq,Cd,CdCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-cd-cdcl2-q+0-aq,Cd,CdCl2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-cd-cdcl3-q-1-aq,Cd,CdCl3,aqueous,aqueous,-1.0,4.0,aqueous_species_identified,0
+r06-cd-cdcl4-q-2-aq,Cd,CdCl4,aqueous,aqueous,-2.0,5.0,aqueous_species_identified,0
+r06-cd-cdf-q+1-aq,Cd,CdF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-cd-cdf2-q+0-aq,Cd,CdF2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-co-co-oh-2-q+0-aq,Co,Co(OH)2,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+r06-co-co-oh-4-q-2-aq,Co,Co(OH)4,aqueous,aqueous,-2.0,9.0,aqueous_species_identified,0
+r06-co-cocl-q+1-aq,Co,CoCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-co-cof-q+1-aq,Co,CoF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-co-cooh-q+1-aq,Co,CoOH,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+r06-cr-cr-oh-2-q+1-aq,Cr,Cr(OH)2,aqueous,aqueous,1.0,5.0,aqueous_species_identified,0
+r06-cr-cr-oh-3-q+0-aq,Cr,Cr(OH)3,aqueous,aqueous,0.0,7.0,aqueous_species_identified,0
+r06-cr-cr-oh-4-q-1-aq,Cr,Cr(OH)4,aqueous,aqueous,-1.0,9.0,aqueous_species_identified,0
+r06-cs-csbr-q+0-aq,Cs,CsBr,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-cs-cscl-q+0-aq,Cs,CsCl,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-cs-csi-q+0-aq,Cs,CsI,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-cs-csoh-q+0-aq,Cs,CsOH,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-cu-cu-oh-2-q+0-aq,Cu,Cu(OH)2,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+r06-cu-cucl-q+1-aq,Cu,CuCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-cu-cucl2-q+0-aq,Cu,CuCl2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-cu-cucl3-q-1-aq,Cu,CuCl3,aqueous,aqueous,-1.0,4.0,aqueous_species_identified,0
+r06-cu-cucl4-q-2-aq,Cu,CuCl4,aqueous,aqueous,-2.0,5.0,aqueous_species_identified,0
+r06-cu-cuf-q+1-aq,Cu,CuF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-cu-cuoh-q+1-aq,Cu,CuOH,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+r06-fe-fe-oh-2-q+0-aq,Fe,Fe(OH)2,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+r06-fe-fe-oh-3-q+0-aq,Fe,Fe(OH)3,aqueous,aqueous,0.0,7.0,aqueous_species_identified,0
+r06-fe-fecl-q+1-aq,Fe,FeCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-fe-fecl-q+2-aq,Fe,FeCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+r06-fe-fecl2-q+0-aq,Fe,FeCl2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-fe-fef-q+1-aq,Fe,FeF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-fe-fef-q+2-aq,Fe,FeF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+r06-ga-ga-oh-2-q+1-aq,Ga,Ga(OH)2,aqueous,aqueous,1.0,5.0,aqueous_species_identified,0
+r06-ga-ga-oh-3-q+0-aq,Ga,Ga(OH)3,aqueous,aqueous,0.0,7.0,aqueous_species_identified,0
+r06-hg-hgcl-q+1-aq,Hg,HgCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-hg-hgcl2-q+0-aq,Hg,HgCl2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-hg-hgcl3-q-1-aq,Hg,HgCl3,aqueous,aqueous,-1.0,4.0,aqueous_species_identified,0
+r06-hg-hgcl4-q-2-aq,Hg,HgCl4,aqueous,aqueous,-2.0,5.0,aqueous_species_identified,0
+r06-hg-hgf-q+1-aq,Hg,HgF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-in-in-oh-3-q+0-aq,In,In(OH)3,aqueous,aqueous,0.0,7.0,aqueous_species_identified,0
+r06-in-incl-q+2-aq,In,InCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+r06-in-inf-q+2-aq,In,InF,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+r06-k-kbr-q+0-aq,K,KBr,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-k-kho4s-q+0-aq,K,KHO4S,aqueous,aqueous,0.0,7.0,aqueous_species_identified,0
+r06-k-ki-q+0-aq,K,KI,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-k-ko4s-q-1-aq,K,KO4S,aqueous,aqueous,-1.0,6.0,aqueous_species_identified,0
+r06-li-licl-q+0-aq,Li,LiCl,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-mg-mgf-q+1-aq,Mg,MgF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-mn-mn-oh-2-q+0-aq,Mn,Mn(OH)2,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+r06-mn-mn-oh-4-q-2-aq,Mn,Mn(OH)4,aqueous,aqueous,-2.0,9.0,aqueous_species_identified,0
+r06-mn-mncl-q+1-aq,Mn,MnCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-mn-mnf-q+1-aq,Mn,MnF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-mn-mno4s-q+0-aq,Mn,MnO4S,aqueous,aqueous,0.0,6.0,aqueous_species_identified,0
+r06-na-nabr-q+0-aq,Na,NaBr,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-na-naf-q+0-aq,Na,NaF,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-na-nai-q+0-aq,Na,NaI,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-ni-ni-oh-4-q-2-aq,Ni,Ni(OH)4,aqueous,aqueous,-2.0,9.0,aqueous_species_identified,0
+r06-ni-nicl-q+1-aq,Ni,NiCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-ni-nif-q+1-aq,Ni,NiF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-ni-nioh-q+1-aq,Ni,NiOH,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+r06-pb-pb-oh-2-q+0-aq,Pb,Pb(OH)2,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+r06-pb-pbcl-q+1-aq,Pb,PbCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-pb-pbcl2-q+0-aq,Pb,PbCl2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-pb-pbcl3-q-1-aq,Pb,PbCl3,aqueous,aqueous,-1.0,4.0,aqueous_species_identified,0
+r06-pb-pbcl4-q-2-aq,Pb,PbCl4,aqueous,aqueous,-2.0,5.0,aqueous_species_identified,0
+r06-pb-pbf-q+1-aq,Pb,PbF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-pb-pbf2-q+0-aq,Pb,PbF2,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-rb-rbbr-q+0-aq,Rb,RbBr,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-rb-rbcl-q+0-aq,Rb,RbCl,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-rb-rbf-q+0-aq,Rb,RbF,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-rb-rbi-q+0-aq,Rb,RbI,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-rb-rboh-q+0-aq,Rb,RbOH,aqueous,aqueous,0.0,3.0,aqueous_species_identified,0
+r06-sn-sn-oh-2-q+0-aq,Sn,Sn(OH)2,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+r06-sr-srcl-q+1-aq,Sr,SrCl,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-sr-srco3-q+0-aq,Sr,SrCO3,aqueous,aqueous,0.0,5.0,aqueous_species_identified,0
+r06-sr-srf-q+1-aq,Sr,SrF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-tl-tl-oh-3-q+0-aq,Tl,Tl(OH)3,aqueous,aqueous,0.0,7.0,aqueous_species_identified,0
+r06-tl-tl-oh-4-q-1-aq,Tl,Tl(OH)4,aqueous,aqueous,-1.0,9.0,aqueous_species_identified,0
+r06-tl-tlcl-q+0-aq,Tl,TlCl,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-tl-tlcl-q+2-aq,Tl,TlCl,aqueous,aqueous,2.0,2.0,aqueous_species_identified,0
+r06-tl-tlf-q+0-aq,Tl,TlF,aqueous,aqueous,0.0,2.0,aqueous_species_identified,0
+r06-v-v-oh-3-q+1-aq,V,V(OH)3,aqueous,aqueous,1.0,7.0,aqueous_species_identified,0
+r06-v-vo-q+1-aq,V,VO,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r06-v-voh-q+1-aq,V,VOH,aqueous,aqueous,1.0,3.0,aqueous_species_identified,0
+r06-v-voh-q+2-aq,V,VOH,aqueous,aqueous,2.0,3.0,aqueous_species_identified,0
+r06-zn-znf-q+1-aq,Zn,ZnF,aqueous,aqueous,1.0,2.0,aqueous_species_identified,0
+r07-ba-baco3-witherite,Ba,BaCO3,solid,witherite,0.0,5.0,resolved,0
+r07-ba-bahco3-q+1-aq,Ba,BaHCO3,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+r07-ca-caco3-aragonite,Ca,CaCO3,solid,aragonite,0.0,5.0,resolved,0
+r07-ca-caco3-calcite,Ca,CaCO3,solid,calcite,0.0,5.0,resolved,0
+r07-ca-caco3-vaterite,Ca,CaCO3,solid,vaterite,0.0,5.0,resolved,0
+r07-fe-feco3-siderite,Fe,FeCO3,solid,siderite,0.0,5.0,resolved,0
+r07-mg-artinite,Mg,Mg2(CO3)(OH)2(H2O)3,solid,artinite,0.0,19.0,resolved,0
+r07-mg-basic-carbonate-four-mg-trihydrate,Mg,Mg4(CO3)3(OH)2(H2O)3,solid,"basic magnesium carbonate, four-Mg trihydrate",0.0,29.0,reported_composition_disputed,0
+r07-mg-hydromagnesite,Mg,Mg5(CO3)4(OH)2(H2O)4,solid,hydromagnesite,0.0,37.0,resolved,0
+r07-mg-lansfordite,Mg,MgCO3(H2O)5,solid,lansfordite,0.0,20.0,resolved,0
+r07-mg-magnesite,Mg,MgCO3,solid,magnesite,0.0,5.0,resolved,0
+r07-mg-nesquehonite,Mg,MgCO3(H2O)3,solid,nesquehonite,0.0,14.0,resolved,0
+r07-mn-mnco3-rhodochrosite,Mn,MnCO3,solid,rhodochrosite,0.0,5.0,resolved,0
+r07-sr-srco3-strontianite,Sr,SrCO3,solid,strontianite,0.0,5.0,resolved,0
+r07-sr-srhco3-q+1-aq,Sr,SrHCO3,aqueous,aqueous,1.0,6.0,aqueous_species_identified,0
+r08-ag-atom-q+1-gas,Ag,Ag,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-ag-atom-q-0-gas,Ag,Ag,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-ag-atom-q-1-gas,Ag,Ag,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-al-atom-q+1-gas,Al,Al,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-al-atom-q-0-gas,Al,Al,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-b-atom-q+1-gas,B,B,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-b-atom-q-0-gas,B,B,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-b-atom-q-1-gas,B,B,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-ba-atom-q+1-gas,Ba,Ba,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-ba-atom-q-0-gas,Ba,Ba,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-be-atom-q+1-gas,Be,Be,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-be-atom-q+2-gas,Be,Be,gas,monatomic ideal gas,2.0,1.0,not_recorded,0
+r08-be-atom-q-0-gas,Be,Be,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-br-atom-q+1-gas,Br,Br,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-br-atom-q-0-gas,Br,Br,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-br-atom-q-1-gas,Br,Br,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-c-atom-q+1-gas,C,C,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-c-atom-q-0-gas,C,C,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-c-atom-q-1-gas,C,C,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-ca-atom-q+1-gas,Ca,Ca,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-ca-atom-q-0-gas,Ca,Ca,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-cd-atom-q+1-gas,Cd,Cd,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-cd-atom-q-0-gas,Cd,Cd,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-cl-atom-q+1-gas,Cl,Cl,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-cl-atom-q-0-gas,Cl,Cl,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-cl-atom-q-1-gas,Cl,Cl,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-co-atom-q+1-gas,Co,Co,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-co-atom-q-0-gas,Co,Co,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-co-atom-q-1-gas,Co,Co,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-cr-atom-q+1-gas,Cr,Cr,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-cr-atom-q-1-gas,Cr,Cr,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-cs-atom-q+1-gas,Cs,Cs,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-cs-atom-q-0-gas,Cs,Cs,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-cs-atom-q-1-gas,Cs,Cs,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-cu-atom-q+1-gas,Cu,Cu,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-cu-atom-q-0-gas,Cu,Cu,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-cu-atom-q-1-gas,Cu,Cu,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-f-atom-q+1-gas,F,F,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-f-atom-q-0-gas,F,F,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-f-atom-q-1-gas,F,F,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-fe-atom-q+1-gas,Fe,Fe,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-fe-atom-q-0-gas,Fe,Fe,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-fe-atom-q-1-gas,Fe,Fe,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-fe-fe0-947o-wustite,Fe,Fe0.947O,solid,nominal Fe0.947O wustite (metastable at 298.15 K),0.0,1.947,resolved,0
+r08-ga-atom-q+1-gas,Ga,Ga,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-ga-atom-q-0-gas,Ga,Ga,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-ge-atom-q+1-gas,Ge,Ge,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-ge-atom-q-0-gas,Ge,Ge,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-ge-atom-q-1-gas,Ge,Ge,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-hg-atom-q+1-gas,Hg,Hg,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-i-atom-q+1-gas,I,I,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-i-atom-q-0-gas,I,I,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-i-atom-q-1-gas,I,I,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-in-atom-q+1-gas,In,In,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-in-atom-q-0-gas,In,In,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-k-atom-q+1-gas,K,K,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-k-atom-q-0-gas,K,K,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-k-atom-q-1-gas,K,K,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-li-atom-q+1-gas,Li,Li,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-li-atom-q-0-gas,Li,Li,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-li-atom-q-1-gas,Li,Li,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-mg-atom-q+1-gas,Mg,Mg,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-mg-atom-q-0-gas,Mg,Mg,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-mn-atom-q+1-gas,Mn,Mn,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-mn-atom-q-0-gas,Mn,Mn,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-mo-atom-q+1-gas,Mo,Mo,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-mo-atom-q-0-gas,Mo,Mo,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-mo-atom-q-1-gas,Mo,Mo,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-n-atom-q+1-gas,N,N,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-n-atom-q-0-gas,N,N,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-na-atom-q+1-gas,Na,Na,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-na-atom-q-0-gas,Na,Na,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-na-atom-q-1-gas,Na,Na,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-nb-atom-q+1-gas,Nb,Nb,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-nb-atom-q-0-gas,Nb,Nb,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-nb-atom-q-1-gas,Nb,Nb,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-ni-atom-q+1-gas,Ni,Ni,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-ni-atom-q-1-gas,Ni,Ni,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-p-atom-q+1-gas,P,P,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-p-atom-q-0-gas,P,P,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-p-atom-q-1-gas,P,P,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-pb-atom-q+1-gas,Pb,Pb,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-pb-atom-q-0-gas,Pb,Pb,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-pb-atom-q-1-gas,Pb,Pb,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-rb-atom-q+1-gas,Rb,Rb,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-rb-atom-q-0-gas,Rb,Rb,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-rb-atom-q-1-gas,Rb,Rb,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-s-atom-q+1-gas,S,S,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-s-atom-q-0-gas,S,S,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-s-atom-q-1-gas,S,S,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-sc-atom-q+1-gas,Sc,Sc,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-sc-atom-q-0-gas,Sc,Sc,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-sc-atom-q-1-gas,Sc,Sc,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-si-atom-q+1-gas,Si,Si,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-si-atom-q-0-gas,Si,Si,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-sn-atom-q+1-gas,Sn,Sn,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-sn-atom-q-0-gas,Sn,Sn,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-sn-atom-q-1-gas,Sn,Sn,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-sr-atom-q+1-gas,Sr,Sr,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-sr-atom-q-0-gas,Sr,Sr,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-ta-atom-q+1-gas,Ta,Ta,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-ta-atom-q-0-gas,Ta,Ta,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-ta-atom-q-1-gas,Ta,Ta,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-ti-atom-q+1-gas,Ti,Ti,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-ti-atom-q-0-gas,Ti,Ti,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-ti-atom-q-1-gas,Ti,Ti,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-v-atom-q+1-gas,V,V,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-v-atom-q-0-gas,V,V,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-v-atom-q-1-gas,V,V,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-w-atom-q+1-gas,W,W,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-w-atom-q-0-gas,W,W,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-w-atom-q-1-gas,W,W,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r08-zn-atom-q+1-gas,Zn,Zn,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-zn-atom-q-0-gas,Zn,Zn,gas,monatomic ideal gas,0.0,1.0,not_recorded,0
+r08-zr-atom-q+1-gas,Zr,Zr,gas,monatomic ideal gas,1.0,1.0,not_recorded,0
+r08-zr-atom-q-1-gas,Zr,Zr,gas,monatomic ideal gas,-1.0,1.0,not_recorded,0
+r09-al-aloham,Al,Al(OH)3,solid,amorphous aluminium hydroxide,0.0,7.0,resolved,0
+r09-al-alohmic,Al,Al(OH)3,solid,microcrystalline aluminium hydroxide,0.0,7.0,resolved,0
+r09-al-c2ah7-5,Al,Ca2Al2(OH)10(H2O)2.5,solid,C2AH7.5,0.0,31.5,resolved,0
+r09-al-c3ah6,Al,Ca3Al2O6(H2O)6,solid,C3AH6,0.0,29.0,resolved,0
+r09-al-c3as0-41h5-18,Al,Ca3Al2O6(SiO2)0.41(H2O)5.18,solid,C3AS0.41H5.18,0.0,27.77,resolved,0
+r09-al-c3as0-84h4-32,Al,(AlAlO3)[Ca3O3(SiO2)0.84(H2O)4.32],solid,C3AS0.84H4.32,0.0,26.48,resolved,0
+r09-al-c4aclh10,Al,Ca4Al2Cl2(OH)12(H2O)4,solid,C4AClH10,0.0,44.0,resolved,0
+r09-al-c4ah11,Al,Ca4Al2(OH)14(H2O)4,solid,C4AH11,0.0,46.0,resolved,0
+r09-al-c4ah13,Al,Ca4Al2(OH)14(H2O)6,solid,C4AH13,0.0,52.0,resolved,0
+r09-al-c4ah19,Al,Ca4Al2(OH)14(H2O)12,solid,C4AH19,0.0,70.0,resolved,0
+r09-al-c4asclh12,Al,Ca4Al2Cl(SO4)0.5(OH)12(H2O)6,solid,C4AsClH12,0.0,51.5,resolved,0
+r09-al-cah10,Al,CaOAl2O3(H2O)10,solid,CAH10,0.0,37.0,resolved,0
+r09-al-chabazite,Al,Ca(Al2Si4)O12(H2O)6,solid,chabazite,0.0,37.0,resolved,0
+r09-al-ettringite,Al,Ca6Al2(SO4)3(OH)12(H2O)26,solid,ettringite,0.0,125.0,resolved,0
+r09-al-ettringite13,Al,Ca6Al2(SO4)3(OH)12(H2O)7,solid,amorphous metaettringite; desorption branch; ettringite13,0.0,68.0,resolved,0
+r09-al-ettringite30,Al,Ca6Al2(SO4)3(OH)12(H2O)24,solid,ettringite30,0.0,119.0,resolved,0
+r09-al-ettringite9,Al,Ca6Al2(SO4)3(OH)12(H2O)3,solid,amorphous metaettringite; desorption branch; ettringite9,0.0,56.0,resolved,0
+r09-al-hemicarbonat10-5,Al,(CaO)3Al2O3(CaCO3)0.5(CaO2H2)0.5(H2O)10,solid,hemicarbonat10.5,0.0,46.0,resolved,0
+r09-al-hemicarbonate,Al,(CaO)3Al2O3(CaCO3)0.5(CaO2H2)0.5(H2O)11.5,solid,hemicarbonate,0.0,50.5,resolved,0
+r09-al-hemicarbonate9,Al,(CaO)3Al2O3(CaCO3)0.5(CaO2H2)0.5(H2O)8.5,solid,hemicarbonate9,0.0,41.5,resolved,0
+r09-al-monocarbonate,Al,Ca4Al2CO9(H2O)11,solid,monocarbonate,0.0,49.0,resolved,0
+r09-al-monocarbonate9,Al,Ca4Al2CO9(H2O)9,solid,monocarbonate9,0.0,43.0,resolved,0
+r09-al-mononitrate,Al,Ca4Al2(OH)12N2O6(H2O)4,solid,mononitrate,0.0,50.0,resolved,0
+r09-al-monosulphate10-5,Al,Ca4Al2SO10(H2O)10.5,solid,monosulphate10.5,0.0,48.5,resolved,0
+r09-al-monosulphate12,Al,Ca4Al2SO10(H2O)12,solid,monosulphate12,0.0,53.0,resolved,0
+r09-al-monosulphate14,Al,Ca4Al2SO10(H2O)14,solid,monosulphate14,0.0,59.0,resolved,0
+r09-al-monosulphate16,Al,Ca4Al2SO10(H2O)16,solid,monosulphate16,0.0,65.0,resolved,0
+r09-al-monosulphate9,Al,Ca4Al2SO10(H2O)9,solid,monosulphate9,0.0,44.0,resolved,0
+r09-al-natrolite,Al,Na2(Al2Si3)O10(H2O)2,solid,natrolite,0.0,23.0,resolved,0
+r09-al-straetlingite,Al,Ca2Al2SiO7(H2O)8,solid,straetlingite,0.0,36.0,resolved,0
+r09-al-straetlingite5-5,Al,Ca2Al2SiO7(H2O)5.5,solid,straetlingite5.5,0.0,28.5,resolved,0
+r09-al-straetlingite7,Al,Ca2Al2SiO7(H2O)7,solid,straetlingite7,0.0,33.0,resolved,0
+r09-al-tricarboalu,Al,Ca6Al2(CO3)3(OH)12(H2O)26,solid,tricarboalu,0.0,122.0,resolved,0
+r09-al-zeolitep-ca,Al,Ca(Al2Si2)O8(H2O)4.5,solid,zeoliteP_Ca,0.0,26.5,resolved,0
+r09-al-zeolitex,Al,Na2(Al2Si2.5)O9(H2O)6.2,solid,zeoliteX,0.0,34.1,resolved,0
+r09-al-zeolitey,Al,Na2(Al2Si4)O12(H2O)8,solid,zeoliteY,0.0,44.0,resolved,0
+r09-ca-thaumasite,Ca,(CaSiO3)(CaSO4)(CaCO3)(H2O)15,solid,thaumasite,0.0,61.0,resolved,0
+r09-fe-c3afs0-84h4-32,Fe,(AlFeO3)[Ca3O3(SiO2)0.84(H2O)4.32],solid,C3AFS0.84H4.32,0.0,26.48,resolved,0
+r09-fe-c3fh6,Fe,Ca3Fe2O6(H2O)6,solid,C3FH6,0.0,29.0,resolved,0
+r09-fe-c3fs0-84h4-32,Fe,(FeFeO3)[Ca3O3(SiO2)0.84(H2O)4.32],solid,C3FS0.84H4.32,0.0,26.48,resolved,0
+r09-fe-c3fs1-34h3-32,Fe,Ca3Fe2O6(SiO2)1.34(H2O)3.32,solid,C3FS1.34H3.32,0.0,24.98,resolved,0
+r09-fe-c4fh13,Fe,Ca4Fe2(OH)14(H2O)6,solid,C4FH13,0.0,52.0,resolved,0
+r09-fe-fe-ettringite,Fe,Ca6Fe2(SO4)3(OH)12(H2O)26,solid,Fe-ettringite,0.0,125.0,resolved,0
+r09-fe-fe-friedel-original,Fe,Ca4Fe2Cl2(OH)12(H2O)4,solid,Fe-Friedel-original,0.0,44.0,resolved,0
+r09-fe-fe-hemicarbonate,Fe,Ca3O3Fe2O3(CaCO3)0.5(CaO2H2)0.5(H2O)9.5,solid,Fe-hemicarbonate,0.0,44.5,resolved,0
+r09-fe-fe-monosulphate,Fe,Ca4Fe2SO10(H2O)12,solid,Fe-monosulphate,0.0,53.0,resolved,0
+r09-fe-femonocarbonate,Fe,Ca4O4Fe2O3CO2(H2O)12,solid,Femonocarbonate,0.0,52.0,resolved,0
+r09-fe-feoohmic,Fe,FeOOH,solid,microcrystalline iron oxyhydroxide,0.0,4.0,resolved,0
+r09-k-syngenite,K,K2Ca(SO4)2H2O,solid,syngenite,0.0,16.0,resolved,0
+r09-mg-m075sh,Mg,Mg1.5Si2O5.5(H2O)2.5,solid,M075SH,0.0,16.5,resolved,0
+r09-mg-m15sh,Mg,Mg1.5SiO3.5(H2O)2.5,solid,M15SH,0.0,13.5,resolved,0
+r09-mg-mg3alc0-5oh,Mg,Mg3Al(OH)8(CO3)0.5(H2O)2.5,solid,Mg3AlC0.5OH,0.0,29.5,resolved,0
+r09-si-amor-sl,Si,SiO2,solid,Amor-Sl,0.0,3.0,resolved,0
+r10-bi-bi2se3-cr,Bi,Bi2Se3,solid,Bi2Se3(cr),0.0,5.0,resolved,0
+r10-bi-bise-g,Bi,BiSe,gas,BiSe(g),0.0,2.0,not_recorded,0
+r10-cd-alpha-cdse,Cd,CdSe,solid,alpha-CdSe,0.0,2.0,resolved,0
+r10-cu-alpha-cuse,Cu,CuSe,solid,alpha-CuSe,0.0,2.0,resolved,0
+r10-cu-beta-cuse,Cu,CuSe,solid,beta-CuSe,0.0,2.0,resolved,0
+r10-fe-alpha-fe7se8,Fe,Fe7Se8,solid,alpha-Fe7Se8,0.0,15.0,resolved,0
+r10-fe-fese2-cr,Fe,FeSe2,solid,FeSe2(cr),0.0,3.0,resolved,0
+r10-fe-gamma-fe3se4,Fe,Fe3Se4,solid,gamma-Fe3Se4,0.0,7.0,resolved,0
+r10-ga-gase-cr,Ga,GaSe,solid,GaSe(cr),0.0,2.0,resolved,0
+r10-ge-gese-cr,Ge,GeSe,solid,GeSe(cr),0.0,2.0,resolved,0
+r10-ge-gese-g,Ge,GeSe,gas,GeSe(g),0.0,2.0,not_recorded,0
+r10-ge-gese2-cr,Ge,GeSe2,solid,GeSe2(cr),0.0,3.0,resolved,0
+r10-hg-alpha-hgse,Hg,HgSe,solid,alpha-HgSe,0.0,2.0,resolved,0
+r10-in-alpha-in2se3,In,In2Se3,solid,alpha-In2Se3,0.0,5.0,resolved,0
+r10-la-la2se3-cr,La,La2Se3,solid,La2Se3(cr),0.0,5.0,resolved,0
+r10-ni-nise2-cr,Ni,NiSe2,solid,NiSe2(cr),0.0,3.0,resolved,0
+r10-pb-pbse-cr,Pb,PbSe,solid,PbSe(cr),0.0,2.0,resolved,0
+r10-pb-pbse-g,Pb,PbSe,gas,PbSe(g),0.0,2.0,not_recorded,0
+r10-pd-pd4se-cr,Pd,Pd4Se,solid,Pd4Se(cr),0.0,5.0,resolved,0
+r10-ru-ruse2-cr,Ru,RuSe2,solid,RuSe2(cr),0.0,3.0,resolved,0
+r10-ru-rute2-2024-emf,Ru,RuTe2,solid,nominal crystalline RuTe2 (polymorph unspecified),0.0,3.0,unresolved,0
+r10-sb-sb2se3-cr,Sb,Sb2Se3,solid,Sb2Se3(cr),0.0,5.0,resolved,0
+r10-sn-alpha-snse,Sn,SnSe,solid,alpha-SnSe,0.0,2.0,resolved,0
+r10-sn-snse-g,Sn,SnSe,gas,SnSe(g),0.0,2.0,not_recorded,0
+r10-zn-alpha-znse,Zn,ZnSe,solid,alpha-ZnSe,0.0,2.0,resolved,0
+r11-se-h2se-g-gas,Se,H2Se,gas,molecular gas,0.0,3.0,not_recorded,0
+r11-se-h2seo3-aq-aqueous,Se,H2SeO3,aqueous,aqueous,0.0,6.0,not_recorded,0
+r11-se-h2seo3-cr-solid,Se,H2SeO3,solid,crystalline H2SeO3,0.0,6.0,resolved,0
+r11-se-h2seo4-cr-solid,Se,H2SeO4,solid,crystalline H2SeO4,0.0,7.0,resolved,0
+r11-se-se-g-gas,Se,Se,gas,molecular gas,0.0,1.0,not_recorded,0
+r11-se-se-mono-solid,Se,Se,solid,metastable monoclinic,0.0,1.0,resolved,0
+r11-se-se2-2-aqueous,Se,Se2,aqueous,aqueous,-2.0,2.0,not_recorded,0
+r11-se-se2-aqueous,Se,Se,aqueous,aqueous,-2.0,1.0,not_recorded,0
+r11-se-se2-g-gas,Se,Se2,gas,molecular gas,0.0,2.0,not_recorded,0
+r11-se-se2o5-cr-solid,Se,Se2O5,solid,crystalline Se2O5,0.0,7.0,resolved,0
+r11-se-se3-2-aqueous,Se,Se3,aqueous,aqueous,-2.0,3.0,not_recorded,0
+r11-se-se3-g-gas,Se,Se3,gas,molecular gas,0.0,3.0,not_recorded,0
+r11-se-se4-2-aqueous,Se,Se4,aqueous,aqueous,-2.0,4.0,not_recorded,0
+r11-se-se4-g-gas,Se,Se4,gas,molecular gas,0.0,4.0,not_recorded,0
+r11-se-se5-g-gas,Se,Se5,gas,molecular gas,0.0,5.0,not_recorded,0
+r11-se-se6-g-gas,Se,Se6,gas,molecular gas,0.0,6.0,not_recorded,0
+r11-se-se7-g-gas,Se,Se7,gas,molecular gas,0.0,7.0,not_recorded,0
+r11-se-se8-g-gas,Se,Se8,gas,molecular gas,0.0,8.0,not_recorded,0
+r11-se-seo-g-gas,Se,SeO,gas,molecular gas,0.0,2.0,not_recorded,0
+r11-se-seo2-cr-solid,Se,SeO2,solid,crystalline SeO2,0.0,3.0,resolved,0
+r11-se-seo2-g-gas,Se,SeO2,gas,molecular gas,0.0,3.0,not_recorded,0
+r11-se-seo3-cr-solid,Se,SeO3,solid,crystalline SeO3,0.0,4.0,resolved,0
+r11c-ba-baseo3-solid,Ba,BaSeO3,solid,crystalline BaSeO₃,0.0,5.0,resolved,0
+r11c-ba-baseo4-solid,Ba,BaSeO4,solid,crystalline BaSeO₄,0.0,6.0,resolved,0
+r11c-ca-caseo3-h2o-solid,Ca,CaSeO3(H2O),solid,crystalline CaSeO₃·H₂O,0.0,8.0,resolved,0
+r11c-ca-caseo4-aqueous,Ca,CaSeO4,aqueous,aqueous,0.0,6.0,not_recorded,0
+r11c-fe-feseo3-aqueous,Fe,FeSeO3,aqueous,aqueous,1.0,5.0,not_recorded,0
+r11c-mg-mgseo3-h2o-6-solid,Mg,MgSeO3(H2O)6,solid,crystalline MgSeO₃·6H₂O,0.0,23.0,resolved,0
+r11c-mg-mgseo4-aqueous,Mg,MgSeO4,aqueous,aqueous,0.0,6.0,not_recorded,0
+r11c-mn-mnseo3-h2o-2-solid,Mn,MnSeO3(H2O)2,solid,crystalline MnSeO₃·2H₂O,0.0,11.0,resolved,0
+r11c-mn-mnseo4-aqueous,Mn,MnSeO4,aqueous,aqueous,0.0,6.0,not_recorded,0
+r11c-ni-ni-secn-2-aqueous,Ni,Ni(SeCN)2,aqueous,aqueous,0.0,7.0,not_recorded,0
+r11c-ni-nisecn-aqueous,Ni,NiSeCN,aqueous,aqueous,1.0,4.0,not_recorded,0
+r11c-ni-niseo3-h2o-2-solid,Ni,NiSeO3(H2O)2,solid,crystalline NiSeO₃·2H₂O,0.0,11.0,resolved,0
+r11c-ni-niseo4-aqueous,Ni,NiSeO4,aqueous,aqueous,0.0,6.0,not_recorded,0
+r11c-sr-srseo3-solid,Sr,SrSeO3,solid,crystalline SrSeO₃,0.0,5.0,resolved,0
+r11d-ni-ni-hs-2-aqueous,Ni,Ni(HS)2,aqueous,aqueous,0.0,5.0,not_recorded,0
+r11e-ni-ni3-aso4-2-h2o-8-annabergite,Ni,Ni3(AsO4)2(H2O)8,solid,"annabergite, crystalline octahydrate",0.0,37.0,resolved,0
+r11e-ni-nih3sio4-aqueous,Ni,NiH3SiO4,aqueous,aqueous,1.0,9.0,not_recorded,0
+r11e-ni-nihco3-aqueous,Ni,NiHCO3,aqueous,aqueous,1.0,6.0,not_recorded,0
+r11f-sn-casn-oh-6-burtite,Sn,CaSn(OH)6,solid,"burtite, synthetic crystalline nominal endmember",0.0,14.0,resolved,0
+r11g-pd-pd-nh3-1-q+2-aqueous,Pd,Pd(NH3),aqueous,aqueous solution ensemble,2.0,5.0,not_recorded,0
+r11g-pd-pd-nh3-2-q+2-aqueous,Pd,Pd(NH3)2,aqueous,aqueous solution ensemble,2.0,9.0,not_recorded,0
+r11g-pd-pd-nh3-3-q+2-aqueous,Pd,Pd(NH3)3,aqueous,aqueous solution ensemble,2.0,13.0,not_recorded,0
+r11g-pd-pd-nh3-4-q+2-aqueous,Pd,Pd(NH3)4,aqueous,aqueous solution ensemble,2.0,17.0,not_recorded,0
+r11g-pd-pd-oh-2-aqueous,Pd,Pd(OH)2,aqueous,aqueous,0.0,5.0,not_recorded,0
+r11g-pd-pd-oh-3-q-1-aqueous,Pd,Pd(OH)3,aqueous,aqueous,-1.0,7.0,not_recorded,0
+r11h-eu-euh3sio4-q+2-aqueous,Eu,EuH3SiO4,aqueous,aqueous monosilicate complex,2.0,9.0,not_recorded,0
+r11h-eu-euohco3-crystalline,Eu,EuOHCO3,solid,crystalline europium hydroxycarbonate; polymorph unspecified,0.0,7.0,resolved,0
+r11j-ca-cah2sio4-q+0-aqueous,Ca,CaH2SiO4,aqueous,aqueous monosilicate complex,0.0,8.0,not_recorded,0
+r11j-fe-feh3sio4-q+2-aqueous,Fe,FeH3SiO4,aqueous,aqueous monosilicate complex,2.0,9.0,not_recorded,0
+r11j-mg-mgh2sio4-q+0-aqueous,Mg,MgH2SiO4,aqueous,aqueous monosilicate complex,0.0,8.0,not_recorded,0
+r11j-si-h2sio4-q-2-aqueous,Si,H2SiO4,aqueous,aqueous monomeric silicate,-2.0,7.0,not_recorded,0
+r11j-si-h4si4o12-q-4-aqueous,Si,H4Si4O12,aqueous,aqueous tetrasilicate,-4.0,20.0,not_recorded,0
+r11j3b-ba-bao-crystalline,Ba,BaO,solid,crystalline oxide; exact structure unspecified,0.0,2.0,unresolved,0
+r11j3b-sr-sro-crystalline,Sr,SrO,solid,crystalline oxide; exact structure unspecified,0.0,2.0,unresolved,0
+r11j3c-v-cav2o6-crystalline,V,Ca(VO3)2,solid,crystalline vanadate; exact structure unspecified,0.0,9.0,unresolved,0
+r11j3c-v-navo3-crystalline,V,NaVO3,solid,crystalline vanadate; exact structure unspecified,0.0,5.0,unresolved,0
+r11j3d-v-mg2v2o7-crystalline,V,Mg2V2O7,solid,magnesium pyrovanadate (structure unspecified),0.0,11.0,unresolved,0
+r11j3e-b-cab2o4-crystalline,B,CaB2O4,solid,crystalline borate; exact structure unspecified,0.0,7.0,unresolved,0
+r11j3e-b-nabo2-crystalline,B,NaBO2,solid,crystalline borate; exact structure unspecified,0.0,4.0,unresolved,0
+r11j3h-sr-nitrate-crystalline,Sr,Sr(NO3)2,solid,crystalline strontium nitrate; exact structure unspecified,0.0,9.0,unresolved,0
+r11j3j-p-h2p2o7-q-2-aqueous,P,H2P2O7,aqueous,aqueous diphosphate species,-2.0,11.0,not_recorded,0
+r11j3j-p-h3p2o7-q-1-aqueous,P,H3P2O7,aqueous,aqueous diphosphate species,-1.0,12.0,not_recorded,0
+r11j3j-p-h4p2o7-q-0-aqueous,P,H4P2O7,aqueous,aqueous diphosphate species,0.0,13.0,not_recorded,0
+r11j3j-p-red-amorphous,P,P,solid,amorphous red; relative to crystalline white phosphorus,0.0,1.0,unresolved,0
+r11j3k-as-as2o5-trimer-pentahydrate,As,(As2O5)3(H2O)5,solid,crystalline trimer arsenic pentoxide pentahydrate,0.0,36.0,unresolved,0
+r11j3k-as-as4o6-gas,As,As4O6,gas,"molecular As4O6 gas, full four-As formula",0.0,10.0,not_recorded,0
+r11j3k-as-as4o6-monoclinic,As,As4O6,solid,monoclinic arsenic trioxide,0.0,10.0,unresolved,0
+r11j3l-c-hcn-gas,C,HCN,gas,gas,0.0,3.0,not_recorded,0
+r11j3l-k-kbr-crystalline,K,KBr,solid,solid; polymorph unspecified,0.0,2.0,unresolved,0
+r11j3l-k-ki-crystalline,K,KI,solid,solid; polymorph unspecified,0.0,2.0,unresolved,0
+r11j3l-na-nano3-crystalline,Na,NaNO3,solid,solid; polymorph unspecified,0.0,5.0,unresolved,0
+r11j3l-s-scn-q-1-aqueous,S,SCN,aqueous,solid; polymorph unspecified,-1.0,3.0,not_recorded,0
+r11k-p-hp2o7-q-3-aqueous,P,HP2O7,aqueous,aqueous diphosphate ion,-3.0,10.0,not_recorded,0
+r11k-p-p2o7-q-4-aqueous,P,P2O7,aqueous,aqueous diphosphate ion,-4.0,9.0,not_recorded,0
+r11l-al-alf5-q-2-aqueous,Al,AlF5,aqueous,aqueous fluoride complex,-2.0,6.0,not_recorded,0
+r11l-al-alf6-q-3-aqueous,Al,AlF6,aqueous,aqueous fluoride complex,-3.0,7.0,not_recorded,0
+r11l-c-cn-q-1-aqueous,C,CN,aqueous,"aqueous standard state, N2 gas reservoir required",-1.0,2.0,not_recorded,0
+r11l-c-hcn-aqueous,C,HCN,aqueous,"aqueous standard state, N2 gas reservoir required",0.0,3.0,not_recorded,0
+r11l-nb-nb2o5-high-temperature,Nb,Nb2O5,solid,high-temperature form,0.0,7.0,unresolved,0
+r11l-ra-ra-metal,Ra,Ra,solid,elemental crystalline reference,0.0,1.0,unresolved,0
+r11l-ra-ra-q+2-aqueous,Ra,Ra,aqueous,aqueous infinite-dilution standard state,2.0,1.0,not_recorded,0
+r11l-ra-raco3-crystalline-estimate,Ra,RaCO3,solid,crystalline endmember (structure unspecified),0.0,5.0,unresolved,0
+r11l-ra-raoh-q+1-aqueous,Ra,RaOH,aqueous,aqueous hydrolysis ion,1.0,3.0,not_recorded,0
+r11l-ra-raso4-crystalline,Ra,RaSO4,solid,"crystalline sulfate, structure unspecified",0.0,6.0,unresolved,0
+r11m-mn-mnco3-precipitated,Mn,MnCO3,solid,precipitated rhodochrosite,0.0,5.0,phase_identity_incomplete,0
+r11n-nb-nb-oh-4-q+1-infinite-dilution,Nb,Nb(OH)4,aqueous,aqueous; infinite dilution,1.0,9.0,not_recorded,0
+r11n-nb-nb-oh-6-q-1-infinite-dilution,Nb,Nb(OH)6,aqueous,aqueous; infinite dilution,-1.0,13.0,not_recorded,0
+r11n-nb-nb-oh-7-q-2-infinite-dilution,Nb,Nb(OH)7,aqueous,aqueous; infinite dilution,-2.0,15.0,not_recorded,0
+r11u-nb-h0-nb6o19-q-8-aqueous,Nb,Nb6O19,aqueous,aqueous hexaniobate Lindqvist cluster,-8.0,25.0,not_recorded,0
+r11u-nb-h1-nb6o19-q-7-aqueous,Nb,HNb6O19,aqueous,aqueous hexaniobate Lindqvist cluster,-7.0,26.0,not_recorded,0
+r11u-nb-h2-nb6o19-q-6-aqueous,Nb,H2Nb6O19,aqueous,aqueous hexaniobate Lindqvist cluster,-6.0,27.0,not_recorded,0
+r11u-nb-h3-nb6o19-q-5-aqueous,Nb,H3Nb6O19,aqueous,aqueous hexaniobate Lindqvist cluster,-5.0,28.0,not_recorded,0
+r11v-al-kaolinite,Al,Al2Si2O5(OH)4,solid,Kaolinite crystal; distinct from dickite and halloysite,0.0,17.0,resolved,0
+r11v-mg-dolomite-ordered,Mg,CaMg(CO3)2,solid,Ordered rhombohedral dolomite crystal,0.0,10.0,resolved,0
+r12-al-andalusite,Al,Al2SiO5,solid,Andalusite,0.0,8.0,resolved,0
+r12-al-dickite,Al,Al2Si2O5(OH)4,solid,Dickite,0.0,17.0,resolved,0
+r12-al-halloysite,Al,Al2Si2O5(OH)4,solid,Halloysite,0.0,17.0,resolved,0
+r12-al-jadeite,Al,NaAlSi2O6,solid,Jadeite,0.0,10.0,resolved,0
+r12-al-kyanite,Al,Al2SiO5,solid,Kyanite,0.0,8.0,resolved,0
+r12-al-pyrophyllite,Al,Al2Si4O10(OH)2,solid,Pyrophyllite,0.0,20.0,resolved,0
+r12-al-sillimanite,Al,Al2SiO5,solid,Sillimanite,0.0,8.0,resolved,0
+r12-be-phenakite,Be,Be2SiO4,solid,Phenakite,0.0,7.0,resolved,0
+r12-ca-wollastonite,Ca,CaSiO3,solid,Wollastonite,0.0,5.0,resolved,0
+r12-co-cobalt-olivine,Co,Co2SiO4,solid,Cobalt-olivine,0.0,7.0,resolved,0
+r12-fe-fayalite,Fe,Fe2SiO4,solid,Fayalite,0.0,7.0,resolved,0
+r12-fe-ferrosilite,Fe,FeSiO3,solid,Ferrosilite,0.0,5.0,resolved,0
+r12-fe-hedenbergite,Fe,CaFeSi2O6,solid,Hedenbergite,0.0,10.0,resolved,0
+r12-mg-clinoenstatite,Mg,MgSiO3,solid,Clinoenstatite,0.0,5.0,resolved,0
+r12-mg-diopside,Mg,CaMgSi2O6,solid,Diopside,0.0,10.0,resolved,0
+r12-mg-enstatite,Mg,MgSiO3,solid,Enstatite,0.0,5.0,resolved,0
+r12-mg-forsterite,Mg,Mg2SiO4,solid,Forsterite,0.0,7.0,resolved,0
+r12-mg-talc,Mg,Mg3Si4O10(OH)2,solid,Talc,0.0,21.0,resolved,0
+r12-mn-rhodonite,Mn,MnSiO3,solid,Rhodonite,0.0,5.0,resolved,0
+r12-mn-tephroite,Mn,Mn2SiO4,solid,Tephroite,0.0,7.0,resolved,0
+r12-ni-liebenbergite,Ni,Ni2SiO4,solid,Liebenbergite,0.0,7.0,resolved,0
+r12-ni-ni2sio4-spinel,Ni,Ni2SiO4,solid,Ni2SiO4-spinel,0.0,7.0,resolved,0
+r12-si-coesite,Si,SiO2,solid,Coesite,0.0,3.0,resolved,0
+r12-si-stishovite,Si,SiO2,solid,Stishovite,0.0,3.0,resolved,0
+r12-zn-willemite,Zn,Zn2SiO4,solid,Willemite,0.0,7.0,resolved,0
+r13-ca-nbs-record12054,Ca,Na2Ca(SO4)2,solid,crystalline; polymorph unspecified,0.0,13.0,unresolved,0
+r13-ca-nbs-record9215,Ca,CaCl2,solid,Hydrophilite,0.0,3.0,resolved,0
+r13-ca-nbs-record9242,Ca,CaCl2(H2O),solid,crystalline hydrate; polymorph unspecified,0.0,6.0,unresolved,0
+r13-ca-nbs-record9243,Ca,CaCl2(H2O)2,solid,crystalline hydrate; polymorph unspecified,0.0,9.0,unresolved,0
+r13-ca-nbs-record9244,Ca,CaCl2(H2O)4,solid,crystalline hydrate; polymorph unspecified,0.0,15.0,unresolved,0
+r13-ca-nbs-record9245,Ca,CaCl2(H2O)6,solid,crystalline hydrate; polymorph unspecified,0.0,21.0,unresolved,0
+r13-k-nbs-record12202,K,KCl,solid,Sylvite,0.0,2.0,resolved,0
+r13-mg-nbs-record8880,Mg,MgCl2,solid,Chloromagnesite,0.0,3.0,resolved,0
+r13-mg-nbs-record8906,Mg,MgCl2(H2O),solid,crystalline hydrate; polymorph unspecified,0.0,6.0,unresolved,0
+r13-mg-nbs-record8907,Mg,MgCl2(H2O)2,solid,crystalline hydrate; polymorph unspecified,0.0,9.0,unresolved,0
+r13-mg-nbs-record8908,Mg,MgCl2(H2O)4,solid,crystalline hydrate; polymorph unspecified,0.0,15.0,unresolved,0
+r13-mg-nbs-record8909,Mg,MgCl2(H2O)6,solid,crystalline hydrate; polymorph unspecified,0.0,21.0,unresolved,0
+r14-b-borax,B,Na2B4O7(H2O)10,solid,crystalline Na2B4O7(H2O)10,0.0,43.0,resolved,0
+r14-ca-calcium-dihydrogen-phosphate-monohydrate,Ca,Ca(H2PO4)2(H2O),solid,crystalline Ca(H2PO4)2(H2O),0.0,18.0,resolved,0
+r14-k-potassium-bicarbonate,K,KHCO3,solid,crystalline KHCO3,0.0,6.0,resolved,0
+r14-k-potassium-carbonate,K,K2CO3,solid,crystalline K2CO3,0.0,6.0,resolved,0
+r14-na-sodium-bicarbonate,Na,NaHCO3,solid,crystalline NaHCO3,0.0,6.0,resolved,0
+r14-na-sodium-carbonate,Na,Na2CO3,solid,crystalline Na2CO3,0.0,6.0,resolved,0
+r14e-al-bayerite,Al,Al(OH)3,solid,bayerite,0.0,7.0,resolved,0
+r14e-mg-alpha-sulfate,Mg,MgSO4,solid,alpha-MgSO4,0.0,6.0,resolved,0
+r14e-mg-beta-sulfate,Mg,MgSO4,solid,beta-MgSO4,0.0,6.0,resolved,0
+r14e-mg-sulfate-aqueous,Mg,MgSO4,aqueous,aqueous,0.0,6.0,not_recorded,0
+r14e2-b-colemanite,B,CaB3O4(OH)3(H2O),solid,colemanite,0.0,17.0,resolved,0
+r14e2-b-inyoite,B,CaB3O3(OH)5(H2O)4,solid,inyoite,0.0,29.0,resolved,0
+r14e2-ca-fluorapatite,Ca,Ca5(PO4)3F,solid,fluorapatite,0.0,21.0,resolved,0
+r14e2-mg-chrysotile,Mg,Mg3Si2O5(OH)4,solid,chrysotile,0.0,18.0,resolved,0
+r14e2-si-cristobalite,Si,SiO2,solid,cristobalite,0.0,3.0,resolved,0
+r14e2-si-h3si3o9-q-3-cyclic-aqueous,Si,H3Si3O9,aqueous,aqueous cyclic trisilicate,-3.0,15.0,not_recorded,0
+r14e2-si-h4si2o7-q-2-aqueous,Si,H4Si2O7,aqueous,aqueous disilicate,-2.0,13.0,not_recorded,0
+r14e2-si-h5si2o7-q-1-aqueous,Si,H5Si2O7,aqueous,aqueous disilicate,-1.0,14.0,not_recorded,0
+r14e2-si-h5si3o10-q-3-linear-aqueous,Si,H5Si3O10,aqueous,aqueous linear trisilicate,-3.0,18.0,not_recorded,0
+r14e2-si-h5si4o12-q-3-aqueous,Si,H5Si4O12,aqueous,aqueous tetrasilicate (connectivity unspecified),-3.0,21.0,not_recorded,0
+r14e2-si-tridymite-s-i,Si,SiO2,solid,tridymite S-I,0.0,3.0,resolved,0
+r14e2-si-vitreous,Si,SiO2,solid,vitreous glass,0.0,3.0,resolved,0
+r15-ag-aghs-aqueous,Ag,AgHS,aqueous,aqueous hydrosulfide complex,0.0,3.0,not_recorded,0
+r15-ag-aghs2-aqueous,Ag,Ag(HS)2,aqueous,aqueous hydrosulfide complex,-1.0,5.0,not_recorded,0
+r15-au-auhs-aqueous,Au,AuHS,aqueous,aqueous hydrosulfide complex,0.0,3.0,not_recorded,0
+r15-au-auhs2-aqueous,Au,Au(HS)2,aqueous,aqueous hydrosulfide complex,-1.0,5.0,not_recorded,0
+r15-cu-cuhs-aqueous,Cu,CuHS,aqueous,aqueous hydrosulfide complex,0.0,3.0,not_recorded,0
+r15-cu-cuhs2-aqueous,Cu,Cu(HS)2,aqueous,aqueous hydrosulfide complex,-1.0,5.0,not_recorded,0
+r15-zn-znhs2-aqueous,Zn,Zn(HS)2,aqueous,aqueous hydrosulfide complex,0.0,5.0,not_recorded,0
+r15-zn-znhs3-aqueous,Zn,Zn(HS)3,aqueous,aqueous hydrosulfide complex,-1.0,7.0,not_recorded,0
+r15-zn-zns-hs-aqueous,Zn,ZnS(HS),aqueous,aqueous sulfide/hydrosulfide complex,-1.0,4.0,not_recorded,0
+r16-cd-nbs-record4326,Cd,CdCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16-cd-nbs-record4341,Cd,CdCl2(H2O),solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16-cd-nbs-record4342,Cd,CdCl2(H2O)2.5,solid,crystalline; polymorph unspecified,0.0,10.5,unresolved,0
+r16-co-nbs-record5492,Co,CoCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16-co-nbs-record5513,Co,CoCl2(H2O),solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16-co-nbs-record5514,Co,CoCl2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16-co-nbs-record5515,Co,CoCl2(H2O)6,solid,crystalline; polymorph unspecified,0.0,21.0,unresolved,0
+r16-cu-nbs-record4786,Cu,CuCl,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16-cu-nbs-record4789,Cu,CuCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16-cu-nbs-record4816,Cu,CuCl2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16-mn-nbs-record6313,Mn,MnCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16-mn-nbs-record6325,Mn,MnCl2(H2O),solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16-mn-nbs-record6326,Mn,MnCl2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16-mn-nbs-record6327,Mn,MnCl2(H2O)4,solid,crystalline; polymorph unspecified,0.0,15.0,unresolved,0
+r16-zn-nbs-record4043,Zn,ZnCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-al-nbs-record3608,Al,AlCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-al-nbs-record3635,Al,AlCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-au-nbs-record5236,Au,AuCl,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d1-au-nbs-record5239,Au,AuCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-au-nbs-record5241,Au,AuCl3(H2O)2,solid,crystalline; polymorph unspecified,0.0,10.0,unresolved,0
+r16d1-ba-nbs-record9958,Ba,BaCl,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d1-ba-nbs-record9961,Ba,BaCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-ba-nbs-record9991,Ba,BaCl2(H2O),solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d1-ba-nbs-record9992,Ba,BaCl2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16d1-be-nbs-record8777,Be,BeCl2,solid,crystalline; α,0.0,3.0,unresolved,0
+r16d1-be-nbs-record8781,Be,BeCl2(H2O)4,solid,crystalline; polymorph unspecified,0.0,15.0,unresolved,0
+r16d1-bi-nbs-record1605,Bi,BiCl,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d1-bi-nbs-record1608,Bi,BiCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-ce-nbs-record8076,Ce,CeCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-ce-nbs-record8100,Ce,CeCl3(H2O)7,solid,crystalline; polymorph unspecified,0.0,25.0,unresolved,0
+r16d1-cr-nbs-record6547,Cr,CrCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-cr-nbs-record6550,Cr,CrCl2(H2O)2,solid,crystalline; light green,0.0,9.0,unresolved,0
+r16d1-cr-nbs-record6551,Cr,CrCl2(H2O)3,solid,crystalline; pale blue,0.0,12.0,unresolved,0
+r16d1-cr-nbs-record6552,Cr,CrCl2(H2O)4,solid,crystalline; dark blue,0.0,15.0,unresolved,0
+r16d1-cr-nbs-record6553,Cr,CrCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-cs-nbs-record13974,Cs,CsCl,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d1-dy-nbs-record7585,Dy,DyCl3,solid,crystalline; β,0.0,4.0,unresolved,0
+r16d1-dy-nbs-record7609,Dy,DyCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-er-nbs-record7461,Er,ErCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-er-nbs-record7474,Er,ErCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-eu-nbs-record7785,Eu,EuCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-eu-nbs-record7789,Eu,EuCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-eu-nbs-record7795,Eu,EuCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-ga-nbs-record3772,Ga,GaCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-gd-nbs-record7713,Gd,GdCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-gd-nbs-record7738,Gd,GdCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-hf-nbs-record7132,Hf,HfCl4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d1-hg-nbs-record4594,Hg,HgCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-ho-nbs-record7512,Ho,HoCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-ho-nbs-record7546,Ho,HoCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-i-nbs-record491,I,ICl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-in-nbs-record3848,In,InCl,solid,crystalline; II,0.0,2.0,unresolved,0
+r16d1-in-nbs-record3851,In,InCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-ir-nbs-record6252,Ir,IrCl,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d1-ir-nbs-record6253,Ir,IrCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-la-nbs-record8179,La,LaCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-la-nbs-record8213,La,LaCl3(H2O)7,solid,crystalline; polymorph unspecified,0.0,25.0,unresolved,0
+r16d1-li-nbs-record10316,Li,LiCl,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d1-li-nbs-record10367,Li,LiCl(H2O),solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d1-li-nbs-record10368,Li,LiCl(H2O)2,solid,crystalline; polymorph unspecified,0.0,8.0,unresolved,0
+r16d1-li-nbs-record10369,Li,LiCl(H2O)3,solid,crystalline; polymorph unspecified,0.0,11.0,unresolved,0
+r16d1-lu-nbs-record7291,Lu,LuCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-lu-nbs-record7294,Lu,LuCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-mo-nbs-record6675,Mo,MoCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-mo-nbs-record6676,Mo,MoCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-mo-nbs-record6677,Mo,MoCl4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d1-mo-nbs-record6679,Mo,MoCl5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d1-nb-nbs-record6891,Nb,NbCl4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d1-nb-nbs-record6893,Nb,NbCl5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d1-nd-nbs-record7907,Nd,NdCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-nd-nbs-record7908,Nd,NdCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-nd-nbs-record7932,Nd,NdCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-os-nbs-record6278,Os,OsCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-os-nbs-record6279,Os,OsCl4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d1-p-nbs-record1377,P,PCl5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d1-pd-nbs-record6057,Pd,PdCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-pr-nbs-record7991,Pr,PrCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-pr-nbs-record8023,Pr,PrCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-pr-nbs-record8024,Pr,PrCl3(H2O)7,solid,crystalline; polymorph unspecified,0.0,25.0,unresolved,0
+r16d1-pt-nbs-record6151,Pt,PtCl,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d1-pt-nbs-record6152,Pt,PtCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-pt-nbs-record6154,Pt,PtCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-pt-nbs-record6156,Pt,PtCl4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d1-pt-nbs-record6158,Pt,PtCl4(H2O)5,solid,crystalline; polymorph unspecified,0.0,20.0,unresolved,0
+r16d1-ra-nbs-record10250,Ra,RaCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-ra-nbs-record10252,Ra,RaCl2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16d1-rb-nbs-record13483,Rb,RbCl,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d1-re-nbs-record6471,Re,ReCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-re-nbs-record6472,Re,ReCl5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d1-rh-nbs-record6107,Rh,RhCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-ru-nbs-record6130,Ru,RuCl3,solid,crystalline; black,0.0,4.0,unresolved,0
+r16d1-sb-nbs-record1556,Sb,SbCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-sc-nbs-record7176,Sc,ScCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-sc-nbs-record7178,Sc,ScCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-se-nbs-record778,Se,SeCl4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d1-sm-nbs-record7836,Sm,SmCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-sm-nbs-record7837,Sm,SmCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-sm-nbs-record7859,Sm,SmCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-sr-nbs-record9656,Sr,SrCl2,solid,crystalline; α,0.0,3.0,unresolved,0
+r16d1-sr-nbs-record9680,Sr,SrCl2(H2O),solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d1-sr-nbs-record9681,Sr,SrCl2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16d1-sr-nbs-record9682,Sr,SrCl2(H2O)6,solid,crystalline; polymorph unspecified,0.0,21.0,unresolved,0
+r16d1-ta-nbs-record6933,Ta,TaCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-ta-nbs-record6934,Ta,TaCl4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d1-ta-nbs-record6936,Ta,TaCl5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d1-tb-nbs-record7646,Tb,TbCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-tb-nbs-record7678,Tb,TbCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-te-nbs-record812,Te,TeCl4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d1-ti-nbs-record6978,Ti,TiCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-ti-nbs-record6979,Ti,TiCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-tl-nbs-record3938,Tl,TlCl,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d1-tl-nbs-record3946,Tl,TlCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-tl-nbs-record3950,Tl,TlCl3(H2O)4,solid,crystalline; polymorph unspecified,0.0,16.0,unresolved,0
+r16d1-tm-nbs-record7407,Tm,TmCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-tm-nbs-record7431,Tm,TmCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-v-nbs-record6818,V,VCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-v-nbs-record6820,V,VCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-w-nbs-record6735,W,WCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-w-nbs-record6736,W,WCl4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d1-w-nbs-record6738,W,WCl5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d1-w-nbs-record6740,W,WCl6,solid,crystalline; α,0.0,7.0,unresolved,0
+r16d1-y-nbs-record7231,Y,YCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-y-nbs-record7235,Y,YCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d1-yb-nbs-record7330,Yb,YbCl2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d1-yb-nbs-record7331,Yb,YbCl3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d1-yb-nbs-record7365,Yb,YbCl3(H2O)6,solid,crystalline; polymorph unspecified,0.0,22.0,unresolved,0
+r16d2a-ag-nbs-record5086,Ag,AgBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-al-nbs-record3652,Al,AlI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2a-as-nbs-record1503,As,AsI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2a-ba-nbs-record10011,Ba,BaBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-ba-nbs-record10028,Ba,BaBr2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16d2a-bi-nbs-record1622,Bi,BiI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2a-c-nbs-record1879,C,CBr4,solid,crystalline; monoclinic,0.0,5.0,unresolved,0
+r16d2a-ca-nbs-record9283,Ca,CaBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-ca-nbs-record9298,Ca,CaBr2(H2O)6,solid,crystalline; polymorph unspecified,0.0,21.0,unresolved,0
+r16d2a-ca-nbs-record9303,Ca,CaI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-cd-nbs-record4357,Cd,CdBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-cd-nbs-record4375,Cd,CdBr2(H2O)4,solid,crystalline; polymorph unspecified,0.0,15.0,unresolved,0
+r16d2a-cd-nbs-record4379,Cd,CdI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-cs-nbs-record14039,Cs,CsBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-cs-nbs-record14049,Cs,CsBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2a-cs-nbs-record14060,Cs,CsI,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-cs-nbs-record14074,Cs,CsI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2a-cs-nbs-record14076,Cs,CsI4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2a-cu-nbs-record4826,Cu,CuBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-ga-nbs-record3777,Ga,GaBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2a-ge-nbs-record3070,Ge,GeI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-ge-nbs-record3072,Ge,GeI4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2a-hg-nbs-record4603,Hg,HgBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-hg-nbs-record4618,Hg,HgI2,solid,crystalline; red,0.0,3.0,unresolved,0
+r16d2a-in-nbs-record3854,In,InBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-in-nbs-record3859,In,InI,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-li-nbs-record10407,Li,LiBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-li-nbs-record10435,Li,LiBr(H2O),solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2a-li-nbs-record10436,Li,LiBr(H2O)2,solid,crystalline; polymorph unspecified,0.0,8.0,unresolved,0
+r16d2a-li-nbs-record10439,Li,LiI,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-li-nbs-record10456,Li,LiI(H2O),solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2a-li-nbs-record10457,Li,LiI(H2O)2,solid,crystalline; polymorph unspecified,0.0,8.0,unresolved,0
+r16d2a-li-nbs-record10458,Li,LiI(H2O)3,solid,crystalline; polymorph unspecified,0.0,11.0,unresolved,0
+r16d2a-mg-nbs-record8955,Mg,MgBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-mg-nbs-record8974,Mg,MgBr2(H2O)6,solid,crystalline; polymorph unspecified,0.0,21.0,unresolved,0
+r16d2a-mg-nbs-record8975,Mg,MgI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-na-nbs-record10920,Na,NaBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-na-nbs-record10956,Na,NaBr(H2O)2,solid,crystalline; polymorph unspecified,0.0,8.0,unresolved,0
+r16d2a-na-nbs-record10987,Na,NaI,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-na-nbs-record11029,Na,NaI(H2O)2,solid,crystalline; polymorph unspecified,0.0,8.0,unresolved,0
+r16d2a-pb-nbs-record3256,Pb,PbBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-pd-nbs-record6067,Pd,PdI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-rb-nbs-record13508,Rb,RbBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-rb-nbs-record13525,Rb,RbI,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-rb-nbs-record13535,Rb,RbI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2a-sb-nbs-record1564,Sb,SbBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2a-sr-nbs-record9722,Sr,SrBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-sr-nbs-record9738,Sr,SrBr2(H2O),solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d2a-sr-nbs-record9739,Sr,SrBr2(H2O)6,solid,crystalline; polymorph unspecified,0.0,21.0,unresolved,0
+r16d2a-ti-nbs-record6998,Ti,TiBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2a-ti-nbs-record6999,Ti,TiBr4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2a-ti-nbs-record7005,Ti,TiI4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2a-tl-nbs-record3955,Tl,TlBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-tl-nbs-record3975,Tl,TlI,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2a-zn-nbs-record4096,Zn,ZnBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2a-zn-nbs-record4100,Zn,ZnBr2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16d2a-zn-nbs-record4104,Zn,ZnI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-al-nbs-record3640,Al,AlBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-as-nbs-record1501,As,AsBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-au-nbs-record5247,Au,AuBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2b-au-nbs-record5249,Au,AuBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-au-nbs-record5254,Au,AuI,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2b-ba-nbs-record10027,Ba,BaBr2(H2O),solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d2b-ba-nbs-record10039,Ba,BaI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-ba-nbs-record10042,Ba,BaI2(H2O),solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d2b-ba-nbs-record10043,Ba,BaI2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16d2b-ba-nbs-record10044,Ba,BaI2(H2O)2.5,solid,crystalline; polymorph unspecified,0.0,10.5,unresolved,0
+r16d2b-ba-nbs-record10045,Ba,BaI2(H2O)7,solid,crystalline; polymorph unspecified,0.0,24.0,unresolved,0
+r16d2b-be-nbs-record8787,Be,BeBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-be-nbs-record8789,Be,BeI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-ca-nbs-record9307,Ca,CaI2(H2O)8,solid,crystalline; polymorph unspecified,0.0,27.0,unresolved,0
+r16d2b-ce-nbs-record8104,Ce,CeI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-co-nbs-record5528,Co,CoBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-co-nbs-record5531,Co,CoBr2(H2O)6,solid,crystalline; polymorph unspecified,0.0,21.0,unresolved,0
+r16d2b-co-nbs-record5532,Co,CoI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-cr-nbs-record6569,Cr,CrBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-cr-nbs-record6577,Cr,CrI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-cr-nbs-record6580,Cr,CrI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-cu-nbs-record4828,Cu,CuBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-cu-nbs-record4830,Cu,CuBr2(H2O)4,solid,crystalline; polymorph unspecified,0.0,15.0,unresolved,0
+r16d2b-dy-nbs-record7614,Dy,DyI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-er-nbs-record7479,Er,ErI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-ga-nbs-record3781,Ga,GaI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-gd-nbs-record7744,Gd,GdI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-ho-nbs-record7550,Ho,HoI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-i-nbs-record493,I,IBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2b-in-nbs-record3856,In,InBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-k-nbs-record12381,K,KI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-la-nbs-record8217,La,LaI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-lu-nbs-record7299,Lu,LuI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-mn-nbs-record6330,Mn,MnBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-mn-nbs-record6332,Mn,MnBr2(H2O),solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d2b-mn-nbs-record6333,Mn,MnBr2(H2O)4,solid,crystalline; polymorph unspecified,0.0,15.0,unresolved,0
+r16d2b-mn-nbs-record6336,Mn,MnI2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16d2b-mn-nbs-record6337,Mn,MnI2(H2O)4,solid,crystalline; polymorph unspecified,0.0,15.0,unresolved,0
+r16d2b-mo-nbs-record6686,Mo,MoBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-mo-nbs-record6687,Mo,MoBr4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2b-na-nbs-record11030,Na,NaI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-nb-nbs-record6898,Nb,NbBr5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d2b-nb-nbs-record6901,Nb,NbI5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d2b-nd-nbs-record7936,Nd,NdI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-ni-nbs-record5339,Ni,NiBr2(H2O)3,solid,crystalline; polymorph unspecified,0.0,12.0,unresolved,0
+r16d2b-p-nbs-record1388,P,PBr5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d2b-p-nbs-record1392,P,PI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-pd-nbs-record6063,Pd,PdBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-pr-nbs-record8029,Pr,PrI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-pt-nbs-record6170,Pt,PtBr,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d2b-pt-nbs-record6171,Pt,PtBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-pt-nbs-record6172,Pt,PtBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-pt-nbs-record6174,Pt,PtBr4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2b-pt-nbs-record6180,Pt,PtI4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2b-rb-nbs-record13514,Rb,RbBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-re-nbs-record6478,Re,ReBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-ru-nbs-record6134,Ru,RuBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-ru-nbs-record6135,Ru,RuI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-sb-nbs-record1567,Sb,SbI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-sc-nbs-record7184,Sc,ScBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-si-nbs-record2977,Si,SiI4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2b-sm-nbs-record7863,Sm,SmI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-sn-nbs-record3152,Sn,SnBr4(H2O)8,solid,crystalline; polymorph unspecified,0.0,29.0,unresolved,0
+r16d2b-sr-nbs-record9744,Sr,SrI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-sr-nbs-record9747,Sr,SrI2(H2O),solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d2b-sr-nbs-record9748,Sr,SrI2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16d2b-sr-nbs-record9749,Sr,SrI2(H2O)6,solid,crystalline; polymorph unspecified,0.0,21.0,unresolved,0
+r16d2b-ta-nbs-record6939,Ta,TaBr5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d2b-te-nbs-record813,Te,TeBr4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d2b-ti-nbs-record6997,Ti,TiBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-ti-nbs-record7003,Ti,TiI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-tl-nbs-record3966,Tl,TlBr3(H2O)4,solid,crystalline; polymorph unspecified,0.0,16.0,unresolved,0
+r16d2b-tm-nbs-record7433,Tm,TmI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-v-nbs-record6829,V,VBr2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-v-nbs-record6831,V,VBr3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-v-nbs-record6835,V,VI2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d2b-v-nbs-record6837,V,VI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d2b-w-nbs-record6747,W,WBr5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d2b-w-nbs-record6749,W,WBr6,solid,crystalline; polymorph unspecified,0.0,7.0,unresolved,0
+r16d2b-y-nbs-record7243,Y,YI3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d3a-ag-nbs-record5069,Ag,AgF(H2O)2,solid,crystalline; polymorph unspecified,0.0,8.0,unresolved,0
+r16d3a-ag-nbs-record5070,Ag,AgF(H2O)4,solid,crystalline; polymorph unspecified,0.0,14.0,unresolved,0
+r16d3a-al-nbs-record3596,Al,AlF3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d3a-ba-nbs-record9955,Ba,BaF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3a-be-nbs-record8762,Be,BeF2,solid,"crystalline; α, quartz",0.0,3.0,unresolved,0
+r16d3a-ca-nbs-record9211,Ca,CaF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3a-cd-nbs-record4323,Cd,CdF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3a-co-nbs-record5489,Co,CoF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3a-cr-nbs-record6543,Cr,CrF3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d3a-cs-nbs-record13964,Cs,CsF,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d3a-cu-nbs-record4785,Cu,CuF2(H2O)2,solid,crystalline; polymorph unspecified,0.0,9.0,unresolved,0
+r16d3a-ga-nbs-record3769,Ga,GaF3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d3a-hf-nbs-record7130,Hf,HfF4,solid,crystalline; monoclinic,0.0,5.0,unresolved,0
+r16d3a-ir-nbs-record6250,Ir,IrF6,solid,crystalline; polymorph unspecified,0.0,7.0,unresolved,0
+r16d3a-k-nbs-record12151,K,KF,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d3a-k-nbs-record12190,K,KF(H2O)2,solid,crystalline; polymorph unspecified,0.0,8.0,unresolved,0
+r16d3a-li-nbs-record10304,Li,LiF,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d3a-mg-nbs-record8877,Mg,MgF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3a-nb-nbs-record6885,Nb,NbF5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d3a-ni-nbs-record5305,Ni,NiF2(H2O)4,solid,crystalline; polymorph unspecified,0.0,15.0,unresolved,0
+r16d3a-pb-nbs-record3236,Pb,PbF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3a-sc-nbs-record7170,Sc,ScF3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d3a-sr-nbs-record9653,Sr,SrF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3a-y-nbs-record7225,Y,YF3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d3a-zn-nbs-record4040,Zn,ZnF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3b-ag-nbs-record5056,Ag,AgF,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d3b-ag-nbs-record5071,Ag,AgF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3b-au-nbs-record5235,Au,AuF3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d3b-be-nbs-record8763,Be,BeF2,solid,"crystalline; β, cristobalite",0.0,3.0,unresolved,0
+r16d3b-co-nbs-record5491,Co,CoF3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d3b-cr-nbs-record6541,Cr,CrF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3b-cr-nbs-record6544,Cr,CrF4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d3b-cs-nbs-record13970,Cs,CsF(H2O)1.5,solid,crystalline; polymorph unspecified,0.0,6.5,unresolved,0
+r16d3b-cu-nbs-record4784,Cu,CuF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3b-mn-nbs-record6309,Mn,MnF2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d3b-os-nbs-record6276,Os,OsF6,solid,crystalline; cubic,0.0,7.0,unresolved,0
+r16d3b-pb-nbs-record3239,Pb,PbF4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d3b-pt-nbs-record6149,Pt,PtF6,solid,crystalline; cubic,0.0,7.0,unresolved,0
+r16d3b-rb-nbs-record13458,Rb,RbF,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d3b-rb-nbs-record13479,Rb,RbF(H2O)1.5,solid,crystalline; polymorph unspecified,0.0,6.5,unresolved,0
+r16d3b-ru-nbs-record6128,Ru,RuF5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d3b-sb-nbs-record1549,Sb,SbF3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d3b-ta-nbs-record6928,Ta,TaF5,solid,crystalline; polymorph unspecified,0.0,6.0,unresolved,0
+r16d3b-tl-nbs-record3931,Tl,TlF,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d3b-v-nbs-record6814,V,VF3,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d3b-v-nbs-record6815,V,VF4,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d3b-zr-nbs-record7064,Zr,ZrF4(H2O),solid,crystalline; polymorph unspecified,0.0,8.0,unresolved,0
+r16d3b-zr-nbs-record7065,Zr,ZrF4(H2O)3,solid,crystalline; polymorph unspecified,0.0,14.0,unresolved,0
+r16d4a-as-nbs-record1506,As,As2S3,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4a-ba-nbs-record10052,Ba,BaS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-bi-nbs-record1625,Bi,Bi2S3,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4a-ca-nbs-record9314,Ca,CaS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-cd-nbs-record4401,Cd,CdS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-ce-nbs-record8107,Ce,CeS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-fe-nbs-record5914,Fe,Fe7S8,solid,crystalline; sulphur-rich pyrrhotite,0.0,15.0,unresolved,0
+r16d4a-ge-nbs-record3076,Ge,GeS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-hg-nbs-record4633,Hg,HgS,solid,crystalline; red,0.0,2.0,unresolved,0
+r16d4a-hg-nbs-record4634,Hg,HgS,solid,crystalline; black,0.0,2.0,unresolved,0
+r16d4a-in-nbs-record3863,In,InS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-in-nbs-record3866,In,In2S3,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4a-k-nbs-record12422,K,K2S,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4a-la-nbs-record8219,La,LaS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-mg-nbs-record8986,Mg,MgS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-mn-nbs-record6339,Mn,MnS,solid,crystalline; green,0.0,2.0,unresolved,0
+r16d4a-na-nbs-record11062,Na,Na2S,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4a-na-nbs-record11078,Na,Na2S2,solid,crystalline; polymorph unspecified,0.0,4.0,unresolved,0
+r16d4a-nd-nbs-record7939,Nd,Nd2S3,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4a-pd-nbs-record6070,Pd,PdS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-pd-nbs-record6071,Pd,PdS2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4a-pd-nbs-record6072,Pd,Pd4S,solid,crystalline; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4a-pt-nbs-record6182,Pt,PtS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-pt-nbs-record6183,Pt,PtS2,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4a-sb-nbs-record1569,Sb,Sb2S3,solid,crystalline; black,0.0,5.0,unresolved,0
+r16d4a-sr-nbs-record9754,Sr,SrS,solid,crystalline; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4a-tl-nbs-record3984,Tl,Tl2S,solid,crystalline; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4b-al-nbs-record3658,Al,Al2S3,solid,solid; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4b-b-nbs-record3469,B,B2S3,solid,solid; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4b-be-nbs-record8791,Be,BeS,solid,solid; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4b-ce-nbs-record8112,Ce,Ce2S3,solid,solid; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4b-co-nbs-record5537,Co,CoS,solid,solid; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4b-co-nbs-record5538,Co,Co2S3,solid,solid; precipitated,0.0,5.0,unresolved,0
+r16d4b-cs-nbs-record14099,Cs,Cs2S,solid,solid; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4b-ge-nbs-record3078,Ge,GeS2,solid,solid; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4b-in-nbs-record3867,In,In3S4,solid,solid; polymorph unspecified,0.0,7.0,unresolved,0
+r16d4b-in-nbs-record3868,In,In4S5,solid,solid; polymorph unspecified,0.0,9.0,unresolved,0
+r16d4b-ir-nbs-record6257,Ir,Ir2S3,solid,solid; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4b-k-nbs-record12431,K,K2S(H2O)2,solid,solid; polymorph unspecified,0.0,9.0,unresolved,0
+r16d4b-k-nbs-record12432,K,K2S(H2O)5,solid,solid; polymorph unspecified,0.0,18.0,unresolved,0
+r16d4b-k-nbs-record12433,K,K2S2,solid,solid; polymorph unspecified,0.0,4.0,unresolved,0
+r16d4b-k-nbs-record12436,K,K2S3,solid,solid; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4b-k-nbs-record12439,K,K2S4,solid,solid; polymorph unspecified,0.0,6.0,unresolved,0
+r16d4b-k-nbs-record12443,K,K2S4(H2O)0.5,solid,solid; polymorph unspecified,0.0,7.5,unresolved,0
+r16d4b-k-nbs-record12444,K,K2S4(H2O)2,solid,solid; polymorph unspecified,0.0,12.0,unresolved,0
+r16d4b-k-nbs-record12445,K,K2S5,solid,solid; polymorph unspecified,0.0,7.0,unresolved,0
+r16d4b-k-nbs-record12447,K,K2S6,solid,solid; polymorph unspecified,0.0,8.0,unresolved,0
+r16d4b-la-nbs-record8221,La,La2S3,solid,solid; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4b-li-nbs-record10463,Li,Li2S,solid,solid; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4b-li-nbs-record10465,Li,Li2S2,solid,solid; polymorph unspecified,0.0,4.0,unresolved,0
+r16d4b-mo-nbs-record6692,Mo,Mo2S3,solid,solid; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4b-n-nbs-record1183,N,N4S4,solid,solid; polymorph unspecified,0.0,8.0,unresolved,0
+r16d4b-na-nbs-record11075,Na,Na2S(H2O)4.5,solid,solid; polymorph unspecified,0.0,16.5,unresolved,0
+r16d4b-na-nbs-record11076,Na,Na2S(H2O)5,solid,solid; polymorph unspecified,0.0,18.0,unresolved,0
+r16d4b-na-nbs-record11077,Na,Na2S(H2O)9,solid,solid; polymorph unspecified,0.0,30.0,unresolved,0
+r16d4b-na-nbs-record11081,Na,Na2S3,solid,solid; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4b-na-nbs-record11084,Na,Na2S4,solid,solid; polymorph unspecified,0.0,6.0,unresolved,0
+r16d4b-na-nbs-record11088,Na,Na2S5,solid,solid; polymorph unspecified,0.0,7.0,unresolved,0
+r16d4b-ni-nbs-record5346,Ni,Ni6S5,solid,solid; polymorph unspecified,0.0,11.0,unresolved,0
+r16d4b-ni-nbs-record5347,Ni,Ni7S6,solid,solid; polymorph unspecified,0.0,13.0,unresolved,0
+r16d4b-os-nbs-record6281,Os,OsS2,solid,solid; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4b-p-nbs-record1396,P,P2S3,solid,solid; polymorph unspecified,0.0,5.0,unresolved,0
+r16d4b-rb-nbs-record13553,Rb,Rb2S,solid,solid; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4b-re-nbs-record6480,Re,ReS2,solid,solid; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4b-ru-nbs-record6136,Ru,RuS2,solid,solid; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4b-si-nbs-record2980,Si,SiS2,solid,solid; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4b-ta-nbs-record6941,Ta,TaS2,solid,solid; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4b-ti-nbs-record7008,Ti,TiS,solid,solid; polymorph unspecified,0.0,2.0,unresolved,0
+r16d4b-ti-nbs-record7010,Ti,TiS2,solid,solid; polymorph unspecified,0.0,3.0,unresolved,0
+r16d4c-ce-nbs-record8113,Ce,Ce3S4,solid,solid; structure unspecified,0.0,7.0,unresolved,0
+r16d5a-co-co3s4-linnaeite,Co,Co3S4,solid,linnaeite,0.0,7.0,resolved,0
+r16d5a-co-cos2-cattierite,Co,CoS2,solid,cattierite,0.0,3.0,resolved,0
+r16d5b-cu-anilite-usgs1995,Cu,Cu1.75S,solid,anilite (nominal Cu1.75S),0.0,2.75,resolved,0
+r16d5b-cu-digenite-usgs1995,Cu,Cu1.80S,solid,digenite (nominal Cu1.80S),0.0,2.8,resolved,0
+r16d5b-cu-djurleite-usgs1995,Cu,Cu1.95S,solid,djurleite (nominal Cu1.95S),0.0,2.95,resolved,0
+r16d6-fe-fe11s12-6c-pyrrhotite,Fe,Fe11S12,solid,6C pyrrhotite (nominal phase),0.0,23.0,resolved,0
+r16d6-fe-fe3s4-greigite,Fe,Fe3S4,solid,greigite (nominal phase),0.0,7.0,resolved,0
+r16d6-fe-fe7s8-4c-pyrrhotite,Fe,Fe7S8,solid,4C pyrrhotite (nominal phase),0.0,15.0,resolved,0
+r16d6-fe-fe9s10-5c-pyrrhotite,Fe,Fe9S10,solid,5C pyrrhotite (nominal phase),0.0,19.0,resolved,0
+r16d6b-fe-fe7s8-3c-pyrrhotite,Fe,Fe7S8,solid,3C pyrrhotite,0.0,15.0,resolved,0
+r16d6b-fe-fes-quenched-1964,Fe,FeS,solid,Quenched nominalFeS;orderingunresolved,0.0,2.0,unresolved,0
+r16d6c-fe-fe2p2o7-cr,Fe,Fe2P2O7,solid,Fe(II) pyrophosphate,0.0,11.0,unresolved,0
+r16d6c-fe-fe3-p2o7-2-cr,Fe,Fe3(P2O7)2,solid,mixed-valence pyrophosphate,0.0,21.0,unresolved,0
+r16d6c-fe-fe3po7-cr,Fe,Fe3PO7,solid,oxyphosphate,0.0,11.0,unresolved,0
+r16d6c-fe-fe4-arsenate-trihydrate,Fe,Fe4(AsO4)4(H2O)3,solid,crystalline hydrate,0.0,33.0,resolved,0
+r16d6c-fe-fe4-p2o7-3-cr,Fe,Fe4(P2O7)3,solid,Fe(III) pyrophosphate,0.0,31.0,unresolved,0
+r16d6c-fe-feaso4-cr,Fe,FeAsO4,solid,anhydrous arsenate,0.0,6.0,unresolved,0
+r16d6c-fe-feh2po4-plus,Fe,FeH2PO4,aqueous,Fe(II) dihydrogenphosphate aqueous,1.0,8.0,not_recorded,0
+r16d6c-fe-fehpo4-aq,Fe,FeHPO4,aqueous,Fe(II) hydrogenphosphate aqueous,0.0,7.0,not_recorded,0
+r16d6c-fe-fepo4-trigonal,Fe,FePO4,solid,trigonal phosphate,0.0,6.0,resolved,0
+r16d6c-fe-kankite-nominal,Fe,FeAsO4(H2O)3.5,solid,kankite,0.0,16.5,unresolved,0
+r16d6c-fe-parascorodite,Fe,FeAsO4(H2O)2,solid,parascorodite,0.0,12.0,resolved,0
+r16d6c-fe-scorodite,Fe,FeAsO4(H2O)2,solid,scorodite,0.0,12.0,resolved,0
+r16d6c-fe-strengite,Fe,FePO4(H2O)2,solid,orthorhombic dihydrate,0.0,12.0,resolved,0
+r16d6c-fe-vivianite,Fe,Fe3(PO4)2(H2O)8,solid,vivianite,0.0,37.0,resolved,0
+r16d6d-fe-fe1-042se-beta,Fe,Fe1.042Se,solid,tetragonal beta iron monoselenide,0.0,2.042,resolved,0
+r16d6d-fe-fe1-111te-beta,Fe,Fe1.111Te,solid,tetragonal beta iron monotelluride,0.0,2.1109999999999998,resolved,0
+r16d6d-fe-fe2-selenite-trihydrate,Fe,Fe2(SeO3)3(H2O)3,solid,rhombohedral iron(III) selenite trihydrate,0.0,23.0,resolved,0
+r16d6d-fe-fese1-95,Fe,FeSe1.95,solid,"selenium-deficient marcasite-type iron diselenide, FeSe1.95",0.0,2.95,resolved,0
+r16d6d-fe-fete2-epsilon,Fe,FeTe2,solid,epsilon iron ditelluride (frohbergite),0.0,3.0,resolved,0
+r16d6f-fe-gamma-fe2sio4,Fe,Fe2SiO4,solid,"gammaFe2SiO4, high-pressure spinel form metastable at1bar",0.0,7.0,resolved,0
+r16d6f-fe-nife2o4-trevorite,Fe,NiFe2O4,solid,trevorite (nickel ferrite spinel),0.0,7.0,resolved,0
+r16d6g-fe-fe-scn2-plus,Fe,Fe(SCN)2,aqueous,aqueous,1.0,7.0,not_recorded,0
+r16d6g-fe-fecn6-minus3,Fe,Fe(CN)6,aqueous,aqueous,-3.0,13.0,not_recorded,0
+r16d6g-fe-fecn6-minus4,Fe,Fe(CN)6,aqueous,aqueous,-4.0,13.0,not_recorded,0
+r16d6g-fe-fescn-plus2,Fe,FeSCN,aqueous,aqueous,2.0,4.0,not_recorded,0
+r16d6g-fe-h2fecn6-minus2,Fe,H2Fe(CN)6,aqueous,aqueous,-2.0,15.0,not_recorded,0
+r16d6g-fe-hfecn6-minus3,Fe,HFe(CN)6,aqueous,aqueous,-3.0,14.0,not_recorded,0
+r16d6g-fe-k3fecn6-cr,Fe,K3Fe(CN)6,solid,crystalline; polymorph unspecified,0.0,16.0,unresolved,0
+r16d6g-fe-k4fecn6-anhydrous,Fe,K4Fe(CN)6,solid,crystalline; polymorph unspecified,0.0,17.0,unresolved,0
+r16d6g-fe-k4fecn6-trihydrate,Fe,K4Fe(CN)6(H2O)3,solid,solid monoclinic,0.0,26.0,resolved,0
+r16d6g-fe-kfecn6-minus2,Fe,KFe(CN)6,aqueous,aqueous,-2.0,14.0,not_recorded,0
+r16d6g-fe-kfecn6-minus3,Fe,KFe(CN)6,aqueous,aqueous,-3.0,14.0,not_recorded,0

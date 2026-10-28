@@ -13,7 +13,7 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 | Recommended formation enthalpies | 1352 (76 %) |
 | Reported values retained | 5297 |
 | Source records | 1839 (266 distinct citations) |
-| Phase records | 1141 (503 resolved) |
+| Phase records | 1141 (491 resolved) |
 | Warnings | 2755 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
@@ -54,7 +54,7 @@ Species by phase:
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 33 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 64 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 197 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 198 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 

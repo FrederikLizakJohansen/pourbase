@@ -3,6 +3,10 @@
 `src/pourbase/data/pourbase.sqlite` is the database distributed with this publication. All
 thermochemical quantities use one formula unit as the molar basis.
 
+The [species representation contract and review](database-representation.md)
+specify which columns use controlled values, numbers, identifiers, concise labels
+or provenance text. The accompanying CSV records the checks for every species.
+
 | Table | Contents |
 |---|---|
 | `metadata` | Dataset version, database role, reference temperature, pressure, and water Gibbs energy |

@@ -171,7 +171,8 @@ def collect_statistics() -> dict[str, Any]:
             "phase_records": scalar(connection, "SELECT COUNT(*) FROM phases"),
             "resolved_phase_records": scalar(
                 connection,
-                "SELECT COUNT(*) FROM phases WHERE identity_status LIKE 'resolved%'",
+                "SELECT COUNT(*) FROM phases p JOIN species s USING(record_id) "
+                "WHERE p.identity_status='resolved' AND s.phase='solid'",
             ),
             "mp_matches": scalar(
                 connection, "SELECT COUNT(*) FROM materials_project_matches"
