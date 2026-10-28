@@ -13,7 +13,7 @@ a species, stored with its source, the place in the source, any reported uncerta
 |---|---|
 | verified | Checked against the stated location in the cited source |
 | source-verified estimate | A published estimate, correlation or derived value; its basis was checked against the source |
-| accepted | A formation enthalpy taken from a compilation without the same level of checking |
+| accepted | A formation enthalpy or absolute entropy taken from a compilation without the same level of checking |
 | defined reference state | A value fixed by convention, such as ΔfG° = 0 for an element in its standard state |
 | superseded source value | Replaced by a later edition or erratum of the same source; kept, but never selected |
 | terminal evidence gap | A search that found no defensible value for that species and property |

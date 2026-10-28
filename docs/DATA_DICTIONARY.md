@@ -236,7 +236,8 @@ These holds carry the original values and source locations for later review.
   enthalpy whose source locator and warning describe the derivation and reference properties.
 - `terminal_evidence_gap`: the source investigation did not establish a defensible value for the
   exact species, phase, and reference state.
-- `accepted`: an admitted formation enthalpy.
+- `accepted`: a formation enthalpy or an absolute entropy taken from a published compilation without a
+  separate check against the cited table.
 - `not_available`: no admitted value is present for the property.
 
 The file stores evidence only. `reported_thermochemistry` holds every reported value with its
