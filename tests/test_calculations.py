@@ -366,21 +366,22 @@ class SelectionPolicyTests(unittest.TestCase):
             if not item.basis.startswith("override"):
                 self.assertEqual(self.policy.rank_of(item.chosen.family), best, item.record_id)
         contested = [item for item in self.selection.values()
-                     if {"NBS Tables", "NIST-JANAF"} <= {candidate.family for candidate in item.candidates}
+                     if {"NBS Tables", "Robie & Hemingway"} <= {candidate.family for candidate in item.candidates}
+                     and not item.basis.startswith("override")
                      and min(self.policy.rank_of(candidate.family)[0] for candidate in item.candidates)
                      == self.policy.rank_of("NBS Tables")[0]]
         self.assertTrue(contested)
         self.assertTrue(all(item.chosen.family == "NBS Tables" for item in contested))
 
     def test_reordering_families_changes_the_selection_and_the_energies(self) -> None:
-        janaf_first = self.policy.with_family_order(
-            "B", ["NIST-JANAF", "NBS Tables", "NBS Technical Notes", "Robie & Hemingway", "Miron"])
-        changes = pb.compare_policies(self.database, self.policy, janaf_first, ("gibbs_energy_of_formation",))
+        robie_first = self.policy.with_family_order(
+            "B", ["Robie & Hemingway", "NBS Tables", "NBS Technical Notes", "Miron"])
+        changes = pb.compare_policies(self.database, self.policy, robie_first, ("gibbs_energy_of_formation",))
         self.assertTrue(changes)
-        self.assertTrue(all(change.second.family == "NIST-JANAF" for change in changes))
+        self.assertTrue(all(change.second.family == "Robie & Hemingway" for change in changes))
         change = changes[0]
         symbol = self.database._rows("SELECT symbol FROM species WHERE record_id = ?", (change.record_id,))[0][0]
-        species = {item.record_id: item for item in pb.with_policy(self.database, janaf_first)
+        species = {item.record_id: item for item in pb.with_policy(self.database, robie_first)
                    .load_system(symbol).species}
         self.assertEqual(species[change.record_id].gibbs_energy_J_mol, change.second.value)
 
@@ -437,7 +438,7 @@ class SensitivityAndSourcesTests(unittest.TestCase):
         self.assertAlmostEqual(result.unfixed_fraction, 0.256, delta=0.01)
         critical = pb.selection_sensitivity(pb.calculate(pb.Scenario("Fe"), database).diagram, database.selections,
                                             samples=300, classes={"A", "B", "C"})
-        self.assertAlmostEqual(critical.unfixed_fraction, 0.020, delta=0.005)
+        self.assertAlmostEqual(critical.unfixed_fraction, 0.014, delta=0.005)
 
     def test_diagram_sources_group_publications(self) -> None:
         from pourbase.citations import diagram_sources, to_bibtex

@@ -20,42 +20,42 @@
   "methods": {
     "enthalpy": {
       "GGA_GGA+U": {
-        "count": 99,
-        "mean_signed_error_eV_atom": -0.12803970389957503,
-        "mean_absolute_error_eV_atom": 0.15451351652630788,
-        "root_mean_square_error_eV_atom": 0.2091356893229107
+        "count": 97,
+        "mean_signed_error_eV_atom": -0.12989093187643475,
+        "mean_absolute_error_eV_atom": 0.15707969567727775,
+        "root_mean_square_error_eV_atom": 0.2114330069468314
       },
       "GGA_GGA+U_R2SCAN": {
-        "count": 99,
-        "mean_signed_error_eV_atom": -0.12934904937704425,
-        "mean_absolute_error_eV_atom": 0.15122842464433656,
-        "root_mean_square_error_eV_atom": 0.20675627520317486
+        "count": 97,
+        "mean_signed_error_eV_atom": -0.13134475664038095,
+        "mean_absolute_error_eV_atom": 0.1538741274289033,
+        "root_mean_square_error_eV_atom": 0.20903382415514807
       },
       "r2SCAN": {
-        "count": 90,
-        "mean_signed_error_eV_atom": 0.012932346045115534,
-        "mean_absolute_error_eV_atom": 0.08509941235162069,
-        "root_mean_square_error_eV_atom": 0.1072121009308779
+        "count": 89,
+        "mean_signed_error_eV_atom": 0.011477861261708784,
+        "mean_absolute_error_eV_atom": 0.08508682339819192,
+        "root_mean_square_error_eV_atom": 0.10753107754143865
       }
     },
     "gibbs": {
       "GGA_GGA+U": {
-        "count": 103,
-        "mean_signed_error_eV_atom": -0.3003111588901863,
-        "mean_absolute_error_eV_atom": 0.3072123172945248,
-        "root_mean_square_error_eV_atom": 0.3472813052540559
+        "count": 99,
+        "mean_signed_error_eV_atom": -0.3071057157603144,
+        "mean_absolute_error_eV_atom": 0.3096070354045636,
+        "root_mean_square_error_eV_atom": 0.3505778945051441
       },
       "GGA_GGA+U_R2SCAN": {
-        "count": 103,
-        "mean_signed_error_eV_atom": -0.30148961190508267,
-        "mean_absolute_error_eV_atom": 0.3067186818702401,
-        "root_mean_square_error_eV_atom": 0.34672832540659454
+        "count": 99,
+        "mean_signed_error_eV_atom": -0.3084567523044322,
+        "mean_absolute_error_eV_atom": 0.3092184243828809,
+        "root_mean_square_error_eV_atom": 0.350070079027175
       },
       "r2SCAN": {
-        "count": 93,
-        "mean_signed_error_eV_atom": -0.15887119118138496,
-        "mean_absolute_error_eV_atom": 0.17078422926515235,
-        "root_mean_square_error_eV_atom": 0.19825191934488665
+        "count": 90,
+        "mean_signed_error_eV_atom": -0.16225249494942937,
+        "mean_absolute_error_eV_atom": 0.17328923787437628,
+        "root_mean_square_error_eV_atom": 0.20055414127573246
       }
     }
   },

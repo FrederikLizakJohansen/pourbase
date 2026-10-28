@@ -85,7 +85,7 @@ class NEAArsenicAuxiliaryTests(unittest.TestCase):
         self.assertEqual(len(json.loads(self.db.metadata['R11j3k_arsenic_observations'])),46)
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
         self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,18))
-        self.assertEqual(self.db.policy.fingerprint,'4b21643c5aa9')
+        self.assertEqual(self.db.policy.fingerprint,'4c1df55bbeff')
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')
 
 if __name__=='__main__':

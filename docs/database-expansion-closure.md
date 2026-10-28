@@ -37,3 +37,10 @@ Closure means this finite delivery, its release checks and documentation are
 complete. It does not claim that every native value is reusable or that all
 follow-up research has been resolved. The former 16/18 headline count records
 review coverage; it is not a forecast of remaining effort.
+
+On 28 October 2026, a separately scoped
+[JANAF redistribution review and conditional replacement plan](sources/nist-janaf-redistribution.md)
+checked the published rights position and measured the remaining dependencies.
+It records the independently sourced release chosen after the unanswered NIST
+request, the archived observations and the remaining scientific gaps. The
+separate release preserves this expansion round's closure.

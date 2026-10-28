@@ -80,7 +80,7 @@ class NEASolidTests(unittest.TestCase):
         ))
         self.assertEqual(wustite.formula_ascii, "Fe0.932O")
         self.assertEqual(endpoint.formula_ascii, "FeO")
-        self.assertEqual(endpoint.thermochemistry.gibbs_energy_J_mol.value, -251429)
+        self.assertIsNone(endpoint.thermochemistry.gibbs_energy_J_mol.value)
         for value, expected, interval in (
             (wustite.thermochemistry.gibbs_energy_J_mol, -244593, 1906),
             (wustite.thermochemistry.formation_enthalpy_J_mol, -265800, 1900),

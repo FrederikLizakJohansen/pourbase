@@ -219,13 +219,13 @@ class WindowTests(WindowTestCase):
 
         window = self.window
         text = pb.SelectionPolicy.default().source_text.replace(
-            'families = ["NBS Tables", "NBS Technical Notes", "NIST-JANAF"',
-            'families = ["NIST-JANAF", "NBS Tables", "NBS Technical Notes"').replace(
-            'name = "pourbase default"', 'name = "JANAF first"')
+            'families = ["NBS Tables", "NBS Technical Notes", "Robie & Hemingway"',
+            'families = ["Robie & Hemingway", "NBS Tables", "NBS Technical Notes"').replace(
+            'name = "pourbase default"', 'name = "USGS first"')
         text += ('\n[[overrides]]\nrecord_id = "gfe-fe-fe2o3-q+0-solid-hematite"\n'
-                 'property = "gibbs_energy_of_formation"\nsource_id = "NIST_JANAF_Fe-030"\n'
-                 'reason = "Test selects the retained JANAF hematite evaluation"\n')
-        path = os.path.join(self.directory.name, "janaf-first.toml")
+                 'property = "gibbs_energy_of_formation"\nsource_id = "NBS_PDR_M32124_retained_nist-037-nbs-5809"\n'
+                 'reason = "Test selects the open NBS hematite evaluation"\n')
+        path = os.path.join(self.directory.name, "usgs-first.toml")
         with open(path, "w", encoding="utf-8") as handle:
             handle.write(text)
         self.open("Fe")
@@ -234,15 +234,15 @@ class WindowTests(WindowTestCase):
                              if item.record_id == hematite).gibbs_energy_J_mol
         self.assertTrue(window.load_policy(path))
         species = {item.record_id: item for item in window.calculation.diagram.system.species}
-        self.assertEqual(species[hematite].gibbs_energy_J_mol, -743523.0)
-        self.assertNotEqual(default_value, -743523.0)
+        self.assertEqual(species[hematite].gibbs_energy_J_mol, -742200.0)
+        self.assertNotEqual(default_value, -742200.0)
         window.views.setCurrentWidget(window.species_page)
         self.app.processEvents()
         row = next(index for index in range(window.species_page.table.rowCount())
                    if window.species_page.table.item(index, window.species_page.RECORD).text() == hematite)
         window.species_page.table.selectRow(row)
-        self.assertIn("JANAF first", window.species_page.details.toPlainText())
-        self.assertIn("Test selects the retained JANAF hematite evaluation",
+        self.assertIn("USGS first", window.species_page.details.toPlainText())
+        self.assertIn("Test selects the open NBS hematite evaluation",
                       window.species_page.details.toPlainText())
         self.assertTrue(window.load_policy(None))
         species = {item.record_id: item for item in window.calculation.diagram.system.species}
@@ -750,7 +750,7 @@ class WindowTests(WindowTestCase):
         window = self.window
         window.pages.setCurrentWidget(window.database_page)
         window.database_page.tables.setCurrentText("sources")
-        window.database_page.filter.setText("JANAF")
+        window.database_page.filter.setText("NBS Tables")
         self.assertGreater(window.database_page.proxy.rowCount(), 0)
         window.database_page.filter.setText("")
         window.database_page.tables.setCurrentText("selected_thermochemistry")
@@ -761,11 +761,11 @@ class WindowTests(WindowTestCase):
         import pourbase as pb
 
         window = self.window
-        policy = os.path.join(self.directory.name, "janaf.toml")
+        policy = os.path.join(self.directory.name, "usgs.toml")
         with open(policy, "w", encoding="utf-8") as handle:
             handle.write(pb.SelectionPolicy.default().source_text.replace(
-                'families = ["NBS Tables", "NBS Technical Notes", "NIST-JANAF"',
-                'families = ["NIST-JANAF", "NBS Tables", "NBS Technical Notes"'))
+                'families = ["NBS Tables", "NBS Technical Notes", "Robie & Hemingway"',
+                'families = ["Robie & Hemingway", "NBS Tables", "NBS Technical Notes"'))
         own = os.path.join(self.directory.name, "own-fe.csv")
         with open(own, "w", encoding="utf-8") as handle:
             handle.write("symbol,species,formula,charge,phase,gibbs_energy_kJ_mol,uncertainty_kJ_mol,citation,replaces\n"
@@ -791,8 +791,8 @@ class WindowTests(WindowTestCase):
         from pourbase.gui.policy_compare import PolicyComparisonDialog
 
         policy = pb.SelectionPolicy.default().with_family_order(
-            "B", ["NIST-JANAF", "NBS Tables", "NBS Technical Notes", "Robie & Hemingway", "Miron"])
-        dialog = PolicyComparisonDialog(self.window.database, policy, "janaf.toml")
+            "B", ["Robie & Hemingway", "NBS Tables", "NBS Technical Notes", "Miron"])
+        dialog = PolicyComparisonDialog(self.window.database, policy, "usgs.toml")
         expected = pb.compare_policies(self.window.database, pb.SelectionPolicy.default(), policy)
         self.assertEqual(dialog.table.rowCount(), len(expected))
         self.assertGreater(len(expected), 0)

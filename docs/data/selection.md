@@ -30,7 +30,7 @@ The default policy is the file `selection-policy.toml` in the package. It ranks 
 | Class | Sources |
 |---|---|
 | A | International critical reviews (NEA-TDB) |
-| B | Critical compilations and internally consistent datasets (NBS Tables, NBS Technical Notes, NIST-JANAF, Robie & Hemingway, Miron) |
+| B | Critical compilations and internally consistent datasets (NBS Tables, NBS Technical Notes, Robie & Hemingway, Miron) |
 | C | Critical evaluations of one element or system (IUPAC standard potentials, US Bureau of Mines) |
 | D | Single peer-reviewed experimental papers |
 | E | Estimates, then predictive correlations (Shock and Sverjensky) |

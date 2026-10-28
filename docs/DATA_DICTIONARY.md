@@ -7,6 +7,15 @@ The [species representation contract and review](database-representation.md)
 specify which columns use controlled values, numbers, identifiers, concise labels
 or provenance text. The accompanying CSV records the checks for every species.
 
+The [28 October JANAF release review](sources/nist-janaf-redistribution.md)
+archives 100 directly sourced observations and 54 superseded source-less rounded
+representations privately. All independently eligible alternatives remain.
+The policy now selects the existing USGS plattnerite triplet and original
+alpha-TiO entropy. Thirteen properties on five species remain unavailable,
+with explicit warnings and their completed source/phase reviews. No source
+permission is inferred from the unanswered NIST request. The older dated
+review descriptions below retain their historical scope.
+
 | Table | Contents |
 |---|---|
 | `metadata` | Dataset version, database role, reference temperature, pressure, and water Gibbs energy |
@@ -283,11 +292,11 @@ constrained estimates. A preferred triplet assembled from these outputs does
 not establish a thermodynamically consistent joint model. Warnings describe
 these dependencies, and existing aqueous-ion preferences remain in place.
 
-Verified NBS fallback observations and the USGS plattnerite evaluation are retained as
-alternatives that the default policy does not recommend. Each has a property-specific source record
-containing the exact table or CSV locator, standard state and reuse attribution. The existing
-preferred fields supply calculations. Reported USGS uncertainty intervals retain their source
-interpretation; they are not assigned an independent one-sigma convention or covariance.
+Verified NBS observations and the USGS plattnerite evaluation remain available
+to the selection policy, with property-specific table or CSV locators, standard
+states and reuse attribution. The USGS plattnerite triplet supplies the current
+recommendations after JANAF archival. Reported USGS uncertainty intervals retain
+their source interpretation, with no inferred covariance or one-sigma convention.
 
 VO₂ retains seven alternative federal evaluations: G/H/S from the open NBS PDR
 release and NBS Technical Note 270-5 (1971), Table 54(2), plus the entropy
@@ -347,13 +356,13 @@ pending an α/β polymorph assignment. Djamali's (2009) original α-phase calori
 provides a further enthalpy candidate whose extrapolation and auxiliary numerical
 inputs still require verification.
 
-The preferred JANAF entropy has an estimated origin: its source describes additive
-cation/anion entropy constants. That limitation is now explicit in a warning;
-the existing value, status and source ID are preserved. Powers and Blalock's
+The archived JANAF entropy has an estimated origin: its source describes additive
+cation/anion entropy constants. Its source evidence remains in the private archive;
+Ba(OH)₂ currently has no selected G/H/S triplet. Powers and Blalock's
 original ORNL-1653 calorimetry supplies high-temperature heat-content increments
 and heat capacities. Those quantities remain distinct from the requested
 298.15 K formation properties and absolute entropy. This review admits zero
-numerical observations and preserves all earlier observations and preferences.
+numerical observations. Its independent source and specimen holds remain in force.
 
 ## Retained aqueous research evaluations
 

@@ -70,7 +70,7 @@ class NEAPhosphorusAuxiliaryTests(unittest.TestCase):
         self.assertEqual((review['source_cells'],review['new_observations'],review['new_species'],review['original_NEA_observations'],review['independent_open_NBS_observations'],review['previously_retained_cells_linked']),(14,19,4,9,10,5))
         self.assertEqual(len(json.loads(self.db.metadata['R11j3j_phosphorus_observations'])),19)
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
-        self.assertEqual(self.db.policy.fingerprint,'4b21643c5aa9')
+        self.assertEqual(self.db.policy.fingerprint,'4c1df55bbeff')
 
 if __name__=='__main__':
     unittest.main()

@@ -37,7 +37,7 @@ class NEAOxideEvaluationHistoryTests(unittest.TestCase):
                     original=next(x for x in selection.candidates if x.source_id==SID)
                     self.assertEqual((original.year,later.year),(1992,2020))
                     self.assertNotEqual(original.value,later.value)
-        self.assertEqual(self.db.policy.fingerprint,'4b21643c5aa9')
+        self.assertEqual(self.db.policy.fingerprint,'4c1df55bbeff')
 
     def test_recency_view_and_reviewed_default_agree_on_the_independent_revision(self):
         policy=replace(self.db.policy,tie_breaks=('element_consistency','stated_uncertainty','recency','original_publication'),source_text='')
@@ -46,7 +46,7 @@ class NEAOxideEvaluationHistoryTests(unittest.TestCase):
             for prop in [G,S]:
                 self.assertEqual(view.selections[rid,prop].chosen.source_id,LATER)
             self.assertEqual(view.selections[rid,H].chosen.source_id,SID)
-        self.assertEqual(self.db.policy.fingerprint,'4b21643c5aa9')
+        self.assertEqual(self.db.policy.fingerprint,'4c1df55bbeff')
 
     def test_revised_same_source_entropy_drives_thermal_model(self):
         rid='r11j3b-ba-bao-crystalline'

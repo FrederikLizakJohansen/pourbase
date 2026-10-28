@@ -45,7 +45,7 @@ families = ["NEA-TDB"]
 [[classes]]
 name = "B"
 description = "Critical compilations and internally consistent datasets"
-families = ["NBS Tables", "NBS Technical Notes", "NIST-JANAF", "Robie & Hemingway", "Miron"]
+families = ["NBS Tables", "NBS Technical Notes", "Robie & Hemingway", "Miron"]
 
 [[classes]]
 name = "C"
@@ -76,7 +76,6 @@ families = ["Materials Project"]
 "NEA-TDB" = ["Nuclear Energy Agency"]
 "NBS Tables" = ["NBS Tables of Chemical Thermodynamic Properties"]
 "NBS Technical Notes" = ["NBS Technical Note", "Selected Values of Chemical Thermodynamic Properties"]
-"NIST-JANAF" = ["JANAF"]
 "Robie & Hemingway" = ["Robie, R. A. and Hemingway"]
 "Miron" = ["Miron, G. D."]
 "IUPAC standard potentials" = ["Standard Potentials in Aqueous Solution"]

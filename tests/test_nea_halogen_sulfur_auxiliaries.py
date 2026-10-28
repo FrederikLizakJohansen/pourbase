@@ -68,7 +68,7 @@ class NEAHalogenSulfurAuxiliaryTests(unittest.TestCase):
         self.assertEqual(review['scientific_identity_holds'][0]['source_label'],'H2SO3(aq)')
         self.assertEqual(len(json.loads(self.db.metadata['R11j3i_halogen_sulfur_observations'])),21)
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
-        self.assertEqual(self.db.policy.fingerprint,'4b21643c5aa9')
+        self.assertEqual(self.db.policy.fingerprint,'4c1df55bbeff')
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')
 
 if __name__=='__main__':

@@ -63,7 +63,7 @@ class NBSHalideEnthalpyTests(unittest.TestCase):
             rid = x['record_id']
             self.assertNotEqual(self.db.selections[rid, H].chosen.source_id, SID)
             self.assertTrue(any(r.source.source_id == SID for r in self.db.species_records((rid,))[0].reported))
-        self.assertEqual(self.db.policy.fingerprint, '4b21643c5aa9')
+        self.assertEqual(self.db.policy.fingerprint, '4c1df55bbeff')
         with self.db.connect() as c:
             self.assertEqual(c.execute('SELECT count(*) FROM ligands').fetchone()[0], 33)
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])

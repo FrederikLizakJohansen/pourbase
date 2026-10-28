@@ -36,8 +36,9 @@ NBS_TABLES = ("Wagman, D. D. et al. (1982). The NBS Tables of Chemical Thermodyn
 # NBS Tables with errata: H2(g), O2(g), H2O(l), J/(mol K).
 ENTROPY_H2, ENTROPY_O2, ENTROPY_WATER = 130.684, 205.138, 69.91
 WATER_FORMATION_ENTROPY = ENTROPY_WATER - ENTROPY_H2 - ENTROPY_O2 / 2
-# heat capacities at 298.15 K, J/(mol K) (Chase 1998, NIST-JANAF Tables): H2O(l), H2(g), O2(g)
-WATER_FORMATION_HEAT_CAPACITY = 75.351 - 28.836 - 29.376 / 2
+# NBS Tables with errata, Cp at 298.15 K/1 bar, J/(mol K): H2O(l), H2(g), O2(g).
+# PDR M32124 CSV logical records 41, 27, 15; zero-based column 11.
+WATER_FORMATION_HEAT_CAPACITY = 75.291 - 28.824 - 29.355 / 2
 ASSUMED_HEAT_CAPACITY = {"aqueous": 300.0, "other": 50.0}
 
 

@@ -23,9 +23,16 @@ class TemperatureTests(unittest.TestCase):
         np.testing.assert_array_equal(base.diagram.stable_species_index,
                                       pb.calculate(pb.Scenario("Fe", temperature_K=298.15)).diagram.stable_species_index)
 
-    def test_water_follows_the_steam_tables(self) -> None:
-        # NIST-JANAF: ΔfG°(H2O, l) = -225.160 kJ/mol at 373.15 K; the database holds -237.129 at 298.15 K
-        self.assertAlmostEqual(water_gibbs_energy_J_mol(-237129.0, 373.15) / 1000, -225.16, delta=0.05)
+    def test_water_reference_slope_and_curvature_follow_open_NBS_data(self) -> None:
+        # PDR M32124, H2O(l)/H2(g)/O2(g), 298.15 K: thermodynamic derivatives
+        # independently check the formation entropy and heat capacity conventions.
+        base, temperature, step = -237129.0, 298.15, 0.5
+        self.assertEqual(water_gibbs_energy_J_mol(base, temperature), base)
+        upper = water_gibbs_energy_J_mol(base, temperature + step)
+        lower = water_gibbs_energy_J_mol(base, temperature - step)
+        self.assertAlmostEqual((upper - lower) / (2 * step), 163.343, delta=0.001)
+        heat_capacity = -temperature * (upper - 2 * base + lower) / step ** 2
+        self.assertAlmostEqual(heat_capacity, 31.7895, delta=0.001)
 
     def test_gibbs_energies_shift_by_the_entropy_of_formation(self) -> None:
         view = DatabaseAtTemperature(self.database, 348.15)

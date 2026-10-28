@@ -440,14 +440,26 @@ reevaluations and native database evaluations retain separate ancestry reviews.
   Bulletin 672, p. 300; source lineage for enthalpy and low-temperature entropy.
   <https://stacks.cdc.gov/view/cdc/219421>
 
-## NIST Standard Reference Data
+## NIST Standard Reference Data and independently open alternatives
 
-Values from the NIST-JANAF Thermochemical Tables (SRD 13) and the NIST Chemistry WebBook (SRD 69)
-are NIST Standard Reference Data, © U.S. Secretary of Commerce on behalf of the United States of
-America. Cite the exact source attached to each field.
+The 28 October 2026 release omits 100 directly sourced JANAF observations and
+54 superseded source-less rounded representations linked to them. Their evidence
+is preserved privately. The original NIST request remains unanswered; this
+release uses independently reviewed routes and records 13 missing properties
+across five species. It adds no permission grant or new experimental observation.
+The earlier WebBook-derived nitrogen observations were already replaced.
 
-- <https://janaf.nist.gov/>
-- <https://webbook.nist.gov/chemistry/>
+Three water-temperature heat-capacity inputs now use Wagman et al. (1982),
+*The NBS Tables of Chemical Thermodynamic Properties*, open NIST PDR
+<https://doi.org/10.18434/M32124>, CSV logical records 41, 27 and 15,
+zero-based column 11, for H2O(l), H2(g) and O2(g), at 298.15 K and 1 bar.
+NIST is acknowledged under <https://www.nist.gov/open/license>; the data are
+distributed without warranty. Pourbase adapts these inputs into its water
+formation-heat-capacity approximation. This source selection was changed on
+28 October 2026. All existing NEA/OECD attribution and downstream acknowledgment
+requirements continue independently.
+
+See [the JANAF source review](docs/sources/nist-janaf-redistribution.md).
 
 ## Other scientific sources
 
