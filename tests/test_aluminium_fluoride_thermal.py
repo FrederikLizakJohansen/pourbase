@@ -51,7 +51,7 @@ class AluminiumFluorideThermalTests(unittest.TestCase):
             ion = next(s for s in at_temperature(self.db, t).load_system('Al').species
                        if s.record_id == AL)
             # The new G/S share a source; that S precedes H from another source.
-            formation_entropy = -334 - 28.33 + 3 * 130.680 / 2
+            formation_entropy = -334 - 28.33 + 3 * 130.684 / 2
             expected = -488824 - (t - 298.15) * formation_entropy
             self.assertEqual(at_temperature(self.db, t).formation_entropies()[AL][1],
                              'S°, source of ΔfG°')

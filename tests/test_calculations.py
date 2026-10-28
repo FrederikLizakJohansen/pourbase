@@ -374,7 +374,7 @@ class SelectionPolicyTests(unittest.TestCase):
 
     def test_reordering_families_changes_the_selection_and_the_energies(self) -> None:
         janaf_first = self.policy.with_family_order(
-            "B", ["NIST-JANAF", "NBS Tables", "NBS Technical Notes", "Robie & Hemingway", "Miron", "NIST WebBook"])
+            "B", ["NIST-JANAF", "NBS Tables", "NBS Technical Notes", "Robie & Hemingway", "Miron"])
         changes = pb.compare_policies(self.database, self.policy, janaf_first, ("gibbs_energy_of_formation",))
         self.assertTrue(changes)
         self.assertTrue(all(change.second.family == "NIST-JANAF" for change in changes))

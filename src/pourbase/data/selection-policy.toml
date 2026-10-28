@@ -40,12 +40,12 @@ tie_breaks = ["element_consistency", "original_publication", "stated_uncertainty
 [[classes]]
 name = "A"
 description = "International critical reviews"
-families = ["CODATA", "NEA-TDB"]
+families = ["NEA-TDB"]
 
 [[classes]]
 name = "B"
 description = "Critical compilations and internally consistent datasets"
-families = ["NBS Tables", "NBS Technical Notes", "NIST-JANAF", "Robie & Hemingway", "Miron", "NIST WebBook"]
+families = ["NBS Tables", "NBS Technical Notes", "NIST-JANAF", "Robie & Hemingway", "Miron"]
 
 [[classes]]
 name = "C"
@@ -73,12 +73,10 @@ families = ["Materials Project"]
 # or "experimental papers" otherwise.
 # These patterns classify sources; they don't change any reported numbers.
 [families]
-"CODATA" = ["CODATA"]
 "NEA-TDB" = ["Nuclear Energy Agency"]
 "NBS Tables" = ["NBS Tables of Chemical Thermodynamic Properties"]
 "NBS Technical Notes" = ["NBS Technical Note", "Selected Values of Chemical Thermodynamic Properties"]
 "NIST-JANAF" = ["JANAF"]
-"NIST WebBook" = ["WebBook"]
 "Robie & Hemingway" = ["Robie, R. A. and Hemingway"]
 "Miron" = ["Miron, G. D."]
 "IUPAC standard potentials" = ["Standard Potentials in Aqueous Solution"]

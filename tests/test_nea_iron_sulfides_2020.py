@@ -97,4 +97,4 @@ class NEAIronSulfideTests(unittest.TestCase):
         self.assertFalse(permission['source_specific_additional_restrictions_found'])
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')
         self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,18))
-        self.assertEqual(self.db.policy.fingerprint,'7d50a722bdbb')
+        self.assertEqual(self.db.policy.fingerprint,'4b21643c5aa9')

@@ -50,7 +50,7 @@ class NBSCeriumSulfideTests(unittest.TestCase):
         self.assertEqual({r['logical_record']for r in self.review['remaining_source_holds']},{4838,5105,5106,5343,5344,6256,6481,8109})
         self.assertEqual(self.review['source_research']['Ag2S']['decision'],'carry_completed_R05_review')
         self.assertEqual(self.review['source_research']['Re2S7']['doi'],'10.1021/cm034467v')
-        self.assertEqual(self.db.policy.fingerprint,'7d50a722bdbb')
+        self.assertEqual(self.db.policy.fingerprint,'4b21643c5aa9')
         self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,18))
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
         self.assertEqual(json.loads(self.db.metadata['R16_Thermoddem_rights_review'])['rights']['bulk_data_status'],'held_redistribution_rights')

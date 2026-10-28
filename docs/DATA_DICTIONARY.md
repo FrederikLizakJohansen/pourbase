@@ -132,8 +132,9 @@ unchanged policy. Every earlier numerical observation is preserved.
 The NEA02a continuation reviews all 103 solid rows in the three selected
 Table III-1 sets (printed pp. 44–47), adding 158 observations and 48 species.
 It fills 115 properties and changes 42 earlier selections under the same
-policy. One added beta-Sn entropy remains an alternative to the selected
-CODATA evaluation. Four previously retained NEA phase triplets are linked
+policy. The added beta-Sn entropy is now selected after the separately cited
+CODATA observation was removed in the [reference-state corrections](sources/reference-state-corrections.md).
+Four previously retained NEA phase triplets are linked
 without duplication. Thirty rows retain chemistry or identity holds, and
 three have selected heat capacity only; their complete evidence stays in the
 external ledger.
@@ -229,7 +230,7 @@ These holds carry the original values and source locations for later review.
 
 ## Thermochemical status
 
-- `defined_reference_state`: an elemental standard state with formation energy zero by definition.
+- `defined_reference_state`: an elemental standard state with formation Gibbs energy or formation enthalpy zero by definition. Nonzero absolute entropies retain their source evidence status.
 - `verified`: a recommended value supported by the cited source.
 - `source_verified_estimate`: a published or evaluated estimate, including a derived formation
   enthalpy whose source locator and warning describe the derivation and reference properties.

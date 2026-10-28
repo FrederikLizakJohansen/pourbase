@@ -495,6 +495,17 @@ The nitrogen estimates use Sander's CC BY 4.0 publisher supplement, traced to Re
 for independent verification; the immediate source is Sander's licensed transcription.
 Pourbase fitted the source points and converted to a molal basis on 5 October 2026. Source
 locators and warnings retain the nominal-pressure treatment and entropy convention.
+These retained estimates became the default dissolved-N2 triplet on 28 October 2026,
+when the three legacy WebBook-derived observations were removed. Attribution to Rolf
+Sander and the publication accompanies the adapted values. Licence:
+<https://creativecommons.org/licenses/by/4.0/>.
+
+The same correction removed the directly cited CODATA white-tin entropy. The existing
+NEA tin evaluation supplies the selected entropy under its OECD conditions below.
+Elemental formation enthalpy zeros added by convention are cited to the existing IUPAC
+reference-state definition. The temperature code uses H2(g), O2(g) and H2O(l) entropies
+from the open NBS digitization, <https://doi.org/10.18434/M32124>; NIST is acknowledged,
+and its release carries no warranty. Other sources retain their separate reuse decisions.
 
 - González-Siso, M. R. et al. (2018), *Radiochimica Acta* 106, 31–45, section 4.3, pp. 38–39.
   <https://doi.org/10.1515/ract-2017-2762>

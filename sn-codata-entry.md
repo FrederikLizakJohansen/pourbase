@@ -1,5 +1,9 @@
 # Sn(cr) entropy cited to the CODATA Key Values
 
+The findings below describe the original correction request. Implementation on
+28 October 2026 is recorded in the checklist at the end and in
+[the source review](docs/sources/reference-state-corrections.md).
+
 pourbase does not redistribute the CODATA Key Values (Cox, Wagman and Medvedev 1989): it is a
 commercially published compilation, and its values are excluded where they reappear, such as the bold
 entries of NEA tables (see `docs/excluded-compilations.md` and `THIRD_PARTY_NOTICES.md`). One record
@@ -90,3 +94,35 @@ inconsistently across properties:
 The paper's status table (`paper/generated/status-table.tex`, written by
 `paper/scripts/generate_paper_assets.py`) regenerates from the database, so no paper edit is needed
 after the data change.
+
+## Resolution checklist
+
+- [x] Remove the directly cited Sn CODATA observation and unused source. Select
+  the existing NEA entropy, 51.18 ± 0.08 J/(mol K), and redirect the old rounded
+  observation's supersession link to it.
+- [x] Confirm that no source citation contains `CODATA Key Values` and that no
+  observation link depends on the removed value ID.
+- [x] Replace the temperature module's entropy constants and citation with the
+  open NBS values; regenerate temperature statistics.
+- [x] Remove CODATA and NIST WebBook from the default policy. Comparison against
+  the previous policy on the corrected database changes zero selections.
+- [x] Keep the Barner/Scheuerman experimental citation separate from its Materials
+  Project transcription locator. No default recommendation is classified as MP.
+- [x] Remove the three restricted WebBook-derived N2 observations and unused source.
+  Select the already retained CC BY 4.0 Sander/NBS triplet, whose absolute entropy
+  includes the gas reference. Preserve the other open alternatives and estimate warnings.
+- [x] Relabel the 73 remaining nonzero reference-state entropies as source values:
+  71 accepted and two verified by matching retained verified observations.
+- [x] Record zero formation enthalpy by convention for all 75 elemental standard
+  states: relabel 40 existing zeros, retain two defined zeros and add 33 missing ones.
+- [x] Regenerate database statistics and update intentional count, selection and
+  temperature expectations. The database has 1,771 species and 5,297 observations;
+  the additional enthalpy zeros are defined conventions, separate from measurements.
+- [x] Complete the final full tests, paper sensitivity outputs, proof and release checks:
+  580 tests pass, strict Zensical build reports no issues, the full sensitivity run
+  uses 200 samples per mode across 75 systems, and the private 56-page paper proof
+  compiles in three LuaLaTeX passes. Wheel/source packaging and installed-wheel checks pass.
+
+The optional Ag source-ID rename remains cosmetic and deferred; its actual citation
+already identifies the NBS Tables. This correction keeps the completed expansion
+round closed and carries forward other source reviews and permission holds.

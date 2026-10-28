@@ -620,7 +620,7 @@ class WindowTests(WindowTestCase):
         from pourbase.gui.policy_compare import PolicyComparisonDialog
 
         policy = pb.SelectionPolicy.default().with_family_order(
-            "B", ["NIST-JANAF", "NBS Tables", "NBS Technical Notes", "Robie & Hemingway", "Miron", "NIST WebBook"])
+            "B", ["NIST-JANAF", "NBS Tables", "NBS Technical Notes", "Robie & Hemingway", "Miron"])
         dialog = PolicyComparisonDialog(self.window.database, policy, "janaf.toml")
         expected = pb.compare_policies(self.window.database, pb.SelectionPolicy.default(), policy)
         self.assertEqual(dialog.table.rowCount(), len(expected))

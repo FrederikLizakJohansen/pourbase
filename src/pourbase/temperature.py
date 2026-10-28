@@ -30,10 +30,11 @@ from .models import EvidenceStatus, ExclusionReason, MetalSystem, ReferenceState
 
 T0 = 298.15
 MINIMUM_K, MAXIMUM_K = 273.15, 373.15
-CODATA = ("Cox, J. D., Wagman, D. D. and Medvedev, V. A. (1989). CODATA Key Values for Thermodynamics. "
-          "Hemisphere, New York.")
-# CODATA key values (Cox et al. 1989), J/(mol K)
-ENTROPY_H2, ENTROPY_O2, ENTROPY_WATER = 130.680, 205.152, 69.95
+NBS_TABLES = ("Wagman, D. D. et al. (1982). The NBS Tables of Chemical Thermodynamic Properties. "
+              "Journal of Physical and Chemical Reference Data 11, Supplement 2. "
+              "Open digitization with errata: https://doi.org/10.18434/M32124.")
+# NBS Tables with errata: H2(g), O2(g), H2O(l), J/(mol K).
+ENTROPY_H2, ENTROPY_O2, ENTROPY_WATER = 130.684, 205.138, 69.91
 WATER_FORMATION_ENTROPY = ENTROPY_WATER - ENTROPY_H2 - ENTROPY_O2 / 2
 # heat capacities at 298.15 K, J/(mol K) (Chase 1998, NIST-JANAF Tables): H2O(l), H2(g), O2(g)
 WATER_FORMATION_HEAT_CAPACITY = 75.351 - 28.836 - 29.376 / 2

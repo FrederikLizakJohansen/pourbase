@@ -67,7 +67,7 @@ class NEA2020AuxiliaryOxideTests(unittest.TestCase):
         review=json.loads(self.db.metadata['R11j3b_NEA2020_oxide_review'])
         self.assertEqual((review['NEA_own_observations'],review['open_NBS_observations'],review['new_species']),(4,6,2))
         self.assertEqual(len(json.loads(self.db.metadata['R11j3b_oxide_observations'])),10)
-        self.assertEqual(self.db.policy.fingerprint,'7d50a722bdbb')
+        self.assertEqual(self.db.policy.fingerprint,'4b21643c5aa9')
         self.assertTrue(json.loads(self.db.metadata['source_permission_NEA_TDB'])['downstream_acknowledgment_required'])
         self.assertIn('CsCl',review['source_and_model_holds']['other_NEAsolids'])
 

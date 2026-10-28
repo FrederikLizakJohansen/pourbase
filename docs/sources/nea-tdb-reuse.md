@@ -109,8 +109,9 @@ iron (13a), nickel (6) and tin (12) reviews have explicit dispositions:
 triplets, 30 chemistry/identity holds and three heat-capacity-only rows.
 The batch adds **158 observations and 48 species**, fills **115 properties**
 and changes **42 earlier selections** under the unchanged policy. The added
-beta-Sn entropy remains an alternative to the higher-ranked CODATA selection.
-All earlier numerical evidence and all 28 historical NEA request selections
+beta-Sn entropy became the selected value when the separately cited CODATA
+observation was removed in the [reference-state corrections](reference-state-corrections.md).
+All other numerical evidence and all 28 historical NEA request selections
 are preserved.
 
 Totals after NEA02a are **854 species /2,837 observations /74 systems**, with

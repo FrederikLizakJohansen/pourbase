@@ -81,7 +81,7 @@ class NBSSulfideThermalTests(unittest.TestCase):
             self.assertEqual((selection.chosen.value,selection.chosen.evidence_class),(value,'A'))
             self.assertNotEqual(selection.chosen.source_id,SID)
         self.assertEqual((len(self.db.policy.overrides),len(self.db.policy.exclusions)),(62,18))
-        self.assertEqual(self.db.policy.fingerprint,'7d50a722bdbb')
+        self.assertEqual(self.db.policy.fingerprint,'4b21643c5aa9')
 
     def test_source_holds_and_independent_reuse_conditions_carry_forward(self):
         holds=self.review['source_phase_held_rows']
