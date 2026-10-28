@@ -1,0 +1,48 @@
+candidate,name,primary_reference,secondary_reference,record_id,G_decision,H_decision,S_decision,added_observations,reason
+1,Pd(HS)4-2,LBP25,NA,chnosz-initial-pd-hs4-q-2,added,not_reported,added,2,
+2,Pt(HS)4-2,LBP25,NA,chnosz-initial-pt-hs4-q-2,added,not_reported,added,2,
+3,CdCl+,HB24,BZA10,r06-cd-cdcl-q+1-aq,held,not_reported,held,0,"Original Bazarkina et al.(2010),Table4,p175: all G and first three S explicitly reprint Archer1998; exact upstream source and reuse remain held. Appendix E2 cites a different 2010 article. Fourth-complex S is explicitly a new author correlation estimate."
+4,CdCl2,HB24,BZA10,r06-cd-cdcl2-q+0-aq,held,not_reported,held,0,"Original Bazarkina et al.(2010),Table4,p175: all G and first three S explicitly reprint Archer1998; exact upstream source and reuse remain held. Appendix E2 cites a different 2010 article. Fourth-complex S is explicitly a new author correlation estimate."
+5,CdCl3-,HB24,BZA10,r06-cd-cdcl3-q-1-aq,held,not_reported,held,0,"Original Bazarkina et al.(2010),Table4,p175: all G and first three S explicitly reprint Archer1998; exact upstream source and reuse remain held. Appendix E2 cites a different 2010 article. Fourth-complex S is explicitly a new author correlation estimate."
+6,CdCl4-2,HB24,BZA10,r06-cd-cdcl4-q-2-aq,held,not_reported,added,1,"Original Bazarkina et al.(2010),Table4,p175: all G and first three S explicitly reprint Archer1998; exact upstream source and reuse remain held. Appendix E2 cites a different 2010 article. Fourth-complex S is explicitly a new author correlation estimate."
+7,GaOH+2,HB24,Bla17.1,,held,held,held,0,Thermoddem original-source redistribution hold carried forward; original thermochemical and gallium-entropy provenance still separate.
+8,Ga(OH)2+,HB24,Bla17.1,,held,held,held,0,Thermoddem original-source redistribution hold carried forward; original thermochemical and gallium-entropy provenance still separate.
+9,Ga(OH)3,HB24,Bla17.1,,held,held,held,0,Thermoddem original-source redistribution hold carried forward; original thermochemical and gallium-entropy provenance still separate.
+10,Ga(OH)4-,HB24,Bla17.1,,held,held,held,0,Thermoddem original-source redistribution hold carried forward; original thermochemical and gallium-entropy provenance still separate.
+11,GaSO4+,HB24,HB24.1,chnosz-initial-gaso4,added,added,added,3,
+12,Ga(SO4)2-,HB24,HB24.1,chnosz-initial-ga-so4-2,added,added,added,3,
+13,Ge(OH)4,HB24,PS98.1,chnosz-initial-ge-oh4-aq,added,added,added,3,Open author-selected compilation verified against original Appendix E2 cells; upstream evaluations explicitly cited. No new claim of original-article table verification. Model-fitted Ge aqueous/oxide values retain class E; direct GeS/alpha-GeS2 source evaluations retain their publication status.
+14,GeO(OH)3-,HB24,PS98.1,gfe-ge-hgeo3-q-1-aqueous-aq,added,added,added,3,Open author-selected compilation verified against original Appendix E2 cells; upstream evaluations explicitly cited. No new claim of original-article table verification. Model-fitted Ge aqueous/oxide values retain class E; direct GeS/alpha-GeS2 source evaluations retain their publication status.
+15,InCl+2,HB24,BS23,r06-in-incl-q+2-aq,added,added,same-evaluation-rounded-alternative-already-retained,2,
+16,InCl2+,HB24,BS23,chnosz-initial-incl2,added,added,added,3,
+17,InCl3,HB24,BS23,chnosz-initial-incl3,added,added,added,3,
+18,InF+2,HB24,BS23,r06-in-inf-q+2-aq,added,added,same-evaluation-rounded-alternative-already-retained,2,
+19,InF2+,HB24,BS23,chnosz-initial-inf2,added,added,added,3,
+20,InF3,HB24,BS23,chnosz-initial-inf3,added,added,added,3,
+21,InF4-,HB24,BS23,chnosz-initial-inf4,added,added,added,3,
+22,InSO4+,HB24,HB24.2,chnosz-initial-inso4,added,added,added,3,
+23,In(SO4)2-,HB24,HB24.2,chnosz-initial-in-so4-2,added,added,added,3,
+24,InHS+2,HB24,BS23,chnosz-initial-inhs-2,added,added,added,3,
+25,In(HS)2+,HB24,BS23,chnosz-initial-in-hs-2,added,added,added,3,
+26,cadmium,HB24,RH95.9,gfe-cd-cd-q+0-solid-gamma-metal,duplicate-defined-reference,duplicate-defined-reference,added,1,
+27,monteponite,HB24,Bla17,,held,held,held,0,Thermoddem original-source redistribution hold carried forward; CC BY appendix and GPL CHNOSZ do not resolve identified BRGM rights.
+28,Cd(OH)2,HB24,Bla17,,held,held,held,0,Thermoddem original-source redistribution hold carried forward; CC BY appendix and GPL CHNOSZ do not resolve identified BRGM rights.
+29,greenockite,HB24,RH95.9,chnosz-initial-cd-greenockite,added,added,added,3,
+30,CdSO4,HB24,Bla17,,held,held,held,0,Thermoddem original-source redistribution hold carried forward; CC BY appendix and GPL CHNOSZ do not resolve identified BRGM rights.
+31,otavite,HB24,Bla17,,held,held,held,0,Thermoddem original-source redistribution hold carried forward; CC BY appendix and GPL CHNOSZ do not resolve identified BRGM rights.
+32,gallium,HB24,Pan82,,held,held,held,0,"Original USBM672 specifies 1 atm, not this dataset’s 1 bar; exact values checked where text-readable; retain external pending justified reference-state reconciliation."
+33,Ga2O3,HB24,Pan82,,held,held,held,0,"Original USBM672 specifies 1 atm, not this dataset’s 1 bar; exact values checked where text-readable; retain external pending justified reference-state reconciliation."
+34,GaOOH,HB24,Bla17,,held,held,held,0,Thermoddem original-source redistribution hold carried forward; CC BY appendix and GPL CHNOSZ do not resolve identified BRGM rights.
+35,GaS,HB24,PMW87.1,,held,held,held,0,Original USBM689 specimen and standard-state cells require scan verification; no automatic adoption of the CHNOSZ 1-bar interpretation.
+36,Ga2S3,HB24,BKK77.2,,not_reported,held,held,0,Inherited Barin/Knacke/Kubaschewski commercial compilation; no compatible original-data redistribution grant identified. Appendix reference key is inconsistent.
+37,germanium,HB24,RH95.9,,duplicate,duplicate,duplicate,0,Same standard-state G/H and identical S=31.09 already retained; no duplicate rounded/reprinted reference-state rows.
+38,GeO2 (hex),HB24,PS98,gfe-ge-geo2-q+0-solid-hexagonal,added,added,added,3,Open author-selected compilation verified against original Appendix E2 cells; upstream evaluations explicitly cited. No new claim of original-article table verification. Model-fitted Ge aqueous/oxide values retain class E; direct GeS/alpha-GeS2 source evaluations retain their publication status.
+39,argutite,HB24,PS98,chnosz-initial-ge-argutite,added,added,added,3,Open author-selected compilation verified against original Appendix E2 cells; upstream evaluations explicitly cited. No new claim of original-article table verification. Model-fitted Ge aqueous/oxide values retain class E; direct GeS/alpha-GeS2 source evaluations retain their publication status.
+40,GeS,HB24,OC95,r16d4a-ge-nbs-record3076,added,added,added,3,Open author-selected compilation verified against original Appendix E2 cells; upstream evaluations explicitly cited. No new claim of original-article table verification. Model-fitted Ge aqueous/oxide values retain class E; direct GeS/alpha-GeS2 source evaluations retain their publication status.
+41,GeS2,HB24,NRK74.1,,held,held,held,0,Inherited Naumov/Ryzhenko/Khodakovsky handbook translation; original numerical and specimen provenance not established in this review.
+42,GeS2 (alpha),HB24,MMO+11,chnosz-initial-ge-alpha-ges2,not_reported,added,added,2,Open author-selected compilation verified against original Appendix E2 cells; upstream evaluations explicitly cited. No new claim of original-article table verification. Model-fitted Ge aqueous/oxide values retain class E; direct GeS/alpha-GeS2 source evaluations retain their publication status.
+43,indium,HB24,Pan82,,held,held,held,0,"Original USBM672 specifies 1 atm, not this dataset’s 1 bar; exact values checked where text-readable; retain external pending justified reference-state reconciliation."
+44,In2O3,HB24,Pan82,,held,held,held,0,"Original USBM672 specifies 1 atm, not this dataset’s 1 bar; exact values checked where text-readable; retain external pending justified reference-state reconciliation."
+45,InS,HB24,PMW87.1,,held,held,held,0,Original USBM689 specimen and standard-state cells require scan verification; no automatic adoption of the CHNOSZ 1-bar interpretation.
+46,In2S3,HB24,PMW87.1,,held,held,held,0,Original USBM689 specimen and standard-state cells require scan verification; no automatic adoption of the CHNOSZ 1-bar interpretation.
+47,In2(SO4)3,HB24,BKK77.2,,not_reported,held,held,0,Inherited Barin/Knacke/Kubaschewski commercial compilation; no compatible original-data redistribution grant identified. Appendix reference key is inconsistent.

@@ -1,5 +1,44 @@
 # Third-party data and attribution
 
+## CHNOSZ and the first 47-record follow-up
+
+Jeffrey Dick and CHNOSZ contributors are acknowledged for CHNOSZ 2.3.0,
+https://cran.r-project.org/package=CHNOSZ, and its OBIGT database,
+https://chnosz.net/vignettes/OBIGT.html. The package is GPL-3 licensed;
+the GPLv3 licence accompanies pourbase in LICENSE. Pourbase selects
+observations, converts calories to joules, maps chemical identities and
+normalizes one Ge water equivalent. The separately credited OBIGT 2025
+indium enthalpy correction is retained. These are adaptations in pourbase;
+no endorsement by CHNOSZ or the data authors is implied.
+
+Huston, D. L. and Bastrakov, E. (2024), *Germanium, indium, gallium and cadmium
+in zinc ores: a mineral system approach*, Australian Journal of Earth
+Sciences 71, 1125–1155, https://doi.org/10.1080/08120099.2024.2423772,
+Electronic Appendix E2; Geoscience Australia dataset,
+https://doi.org/10.26186/148619. Copyright Commonwealth of Australia
+(Geoscience Australia) 2024. Released under Creative Commons Attribution4.0,
+https://creativecommons.org/licenses/by/4.0/. The author-selected source
+ancestry and predictive methods remain in observation locators. G/S and
+eligible Ga H follow the original appendix; eleven In H values follow the
+published CHNOSZ correction. Original upstream article copyright and
+identified compilation holds remain separate.
+
+Laskar, C., Bazarkina, E. F. and Pokrovski, G. S. (2025), *The role of sulfur in
+palladium transport and fractionation from platinum by hydrothermal fluids*,
+Geochimica et Cosmochimica Acta 406, 134–147,
+https://doi.org/10.1016/j.gca.2024.12.019. Author-deposited workbook,
+https://doi.org/10.17632/v52mgp7mmm.1, CC BY 4.0,
+https://creativecommons.org/licenses/by/4.0/. Pourbase selects Table 4 G/S
+for Pd/Pt tetrahydrosulfide and converts cal to J. Missing H and uncertainty
+remain explicit.
+
+Robie, R. A. and Hemingway, B. S. (1995), US Geological Survey Bulletin 2131,
+https://doi.org/10.3133/b2131, Table 2, p. 4 and p. 11, supplies independently
+verified public-domain Cd entropy and greenockite G/H/S. USGS is
+acknowledged. Existing OECD acknowledgment and downstream sublicense
+requirements remain applicable to the separately retained NEA sulfur
+reference. See [the source review](docs/sources/chnosz-first-batch.md).
+
 ## R10 Heracles original-source routes and binary selenides
 
 OECD and the Nuclear Energy Agency are acknowledged for 57 selected

@@ -7,6 +7,14 @@ The [species representation contract and review](database-representation.md)
 specify which columns use controlled values, numbers, identifiers, concise labels
 or provenance text. The accompanying CSV records the checks for every species.
 
+The [28 October CHNOSZ follow-up](sources/chnosz-first-batch.md) adds
+63 observations and 17 species from a finite 47-record review. The database
+now has 1,788 species and 5,206 observations; the unchanged default policy
+selects 1,340 G, 1,310 S and 1,366 H values. Original CC BY data, CHNOSZ
+corrections and USGS public-domain evaluations retain their own attribution.
+All earlier evidence remains; unresolved source and reference-state holds
+are listed in the [candidate decisions](sources/chnosz-first-batch.csv).
+
 The [28 October JANAF release review](sources/nist-janaf-redistribution.md)
 archives 100 directly sourced observations and 54 superseded source-less rounded
 representations privately. All independently eligible alternatives remain.

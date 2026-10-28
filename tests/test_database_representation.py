@@ -17,7 +17,7 @@ from audit_database_representation import audit_database, formula_counts  # noqa
 class DatabaseRepresentationTests(unittest.TestCase):
     def test_all_species_and_observations_follow_the_field_contract(self):
         report = audit_database(ROOT / "src/pourbase/data/pourbase.sqlite")
-        self.assertEqual(report["species_checked"], 1771)
+        self.assertEqual(report["species_checked"], 1788)
         self.assertEqual(report["errors"], 0, report["findings"])
         self.assertEqual(len(report["species"]), report["counts"]["species"])
 

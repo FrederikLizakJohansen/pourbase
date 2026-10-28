@@ -6,15 +6,15 @@ pourbase dataset 1.0.0, generated from the bundled database by `scripts/dataset_
 
 | | |
 |---|---|
-| Species | 1771 |
+| Species | 1788 |
 | Supported elemental systems | 75 of 118 elements |
-| Recommended Gibbs energies | 1322 (75 %) |
-| Recommended entropies | 1292 (73 %) |
-| Recommended formation enthalpies | 1348 (76 %) |
-| Reported values retained | 5143 |
-| Source records | 1790 (265 distinct citations) |
-| Phase records | 1141 (491 resolved) |
-| Warnings | 2757 |
+| Recommended Gibbs energies | 1340 (75 %) |
+| Recommended entropies | 1310 (73 %) |
+| Recommended formation enthalpies | 1366 (76 %) |
+| Reported values retained | 5206 |
+| Source records | 1795 (270 distinct citations) |
+| Phase records | 1144 (491 resolved) |
+| Warnings | 2778 |
 | Materials Project matches | 105 phases, 299 energy rows |
 | Materials Project fallback estimates | 6 |
 | Ligands | 33 |
@@ -23,9 +23,9 @@ Gibbs energies by evidence status:
 
 | Status | Species |
 |---|---|
-| `verified` | 921 |
-| `not_available` | 443 |
-| `source_verified_estimate` | 326 |
+| `verified` | 922 |
+| `not_available` | 442 |
+| `source_verified_estimate` | 343 |
 | `defined_reference_state` | 75 |
 | `terminal_evidence_gap` | 6 |
 
@@ -33,8 +33,8 @@ Species by phase:
 
 | Phase | Species | Gibbs | Entropy | Enthalpy |
 |---|---|---|---|---|
-| solid | 997 | 697 | 671 | 921 |
-| aqueous | 600 | 532 | 449 | 332 |
+| solid | 1000 | 699 | 674 | 924 |
+| aqueous | 614 | 548 | 464 | 347 |
 | gas | 169 | 90 | 169 | 90 |
 | liquid | 5 | 3 | 3 | 5 |
 
@@ -42,19 +42,19 @@ Species by phase:
 
 | Table | Rows | Contents |
 |---|---|---|
-| `species` | 1771 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
-| `selected_thermochemistry` | 1771 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
-| `reported_thermochemistry` | 5143 | Every retained reported value, recommended or not, with supersession links |
-| `sources` | 1790 | Full citations, links, locators and access dates |
-| `phases` | 1141 | Phase identity, candidate polymorphs, space group and evidence |
-| `warnings` | 2757 | Scientific cautions attached to records |
+| `species` | 1788 | Formula, charge, phase, composition, oxidation state and reaction coefficients |
+| `selected_thermochemistry` | 1788 | Derived by the selection policy: one recommended Gibbs energy, entropy and enthalpy per species |
+| `reported_thermochemistry` | 5206 | Every retained reported value, recommended or not, with supersession links |
+| `sources` | 1795 | Full citations, links, locators and access dates |
+| `phases` | 1144 | Phase identity, candidate polymorphs, space group and evidence |
+| `warnings` | 2778 | Scientific cautions attached to records |
 | `computational_fallbacks` | 6 | Opt-in Materials Project 300 K estimates for missing solid Gibbs energies |
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
 | `ligands` | 33 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 64 | Additional independent buffered references per species, beyond the first ligand |
-| `metadata` | 199 | Dataset version, reference conditions, schema version and value policy |
+| `metadata` | 200 | Dataset version, reference conditions, schema version and value policy |
 
 [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) defines every column, unit and join.
 
@@ -99,7 +99,7 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Br | Bromine (Br) | 10 | 6 | 0 | 3 | 1 | 8 | 10 | 8 | 7 |
 | C | Carbon (C) | 14 | 6 | 2 | 6 | 0 | 12 | 14 | 12 | 21 |
 | Ca | Calcium (Ca) | 43 | 11 | 30 | 2 | 0 | 36 | 35 | 39 | 91 |
-| Cd | Cadmium (Cd) | 26 | 12 | 12 | 2 | 0 | 19 | 22 | 14 | 34 |
+| Cd | Cadmium (Cd) | 27 | 12 | 13 | 2 | 0 | 20 | 23 | 15 | 34 |
 | Ce | Cerium (Ce) | 19 | 7 | 12 | 0 | 0 | 14 | 11 | 16 | 24 |
 | Cl | Chlorine (Cl) | 12 | 8 | 0 | 4 | 0 | 10 | 12 | 10 | 8 |
 | Co | Cobalt (Co) | 33 | 7 | 23 | 3 | 0 | 20 | 25 | 24 | 55 |
@@ -111,14 +111,14 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Eu | Europium (Eu) | 18 | 7 | 11 | 0 | 0 | 15 | 11 | 14 | 22 |
 | F | Fluorine (F) | 7 | 3 | 0 | 4 | 0 | 5 | 7 | 5 | 9 |
 | Fe | Iron (Fe) | 127 | 39 | 85 | 3 | 0 | 101 | 88 | 85 | 183 |
-| Ga | Gallium (Ga) | 16 | 6 | 8 | 2 | 0 | 11 | 14 | 9 | 27 |
+| Ga | Gallium (Ga) | 18 | 8 | 8 | 2 | 0 | 13 | 16 | 11 | 29 |
 | Gd | Gadolinium (Gd) | 14 | 6 | 8 | 0 | 0 | 11 | 7 | 10 | 17 |
-| Ge | Germanium (Ge) | 14 | 1 | 9 | 4 | 0 | 11 | 12 | 11 | 17 |
+| Ge | Germanium (Ge) | 17 | 2 | 11 | 4 | 0 | 13 | 16 | 15 | 23 |
 | Hf | Hafnium (Hf) | 10 | 6 | 4 | 0 | 0 | 10 | 10 | 10 | 19 |
 | Hg | Mercury (Hg) | 21 | 11 | 7 | 2 | 1 | 15 | 21 | 14 | 30 |
 | Ho | Holmium (Ho) | 13 | 6 | 7 | 0 | 0 | 11 | 8 | 11 | 17 |
 | I | Iodine (I) | 14 | 8 | 3 | 3 | 0 | 11 | 12 | 11 | 12 |
-| In | Indium (In) | 22 | 7 | 13 | 2 | 0 | 11 | 15 | 14 | 36 |
+| In | Indium (In) | 31 | 16 | 13 | 2 | 0 | 22 | 24 | 25 | 47 |
 | Ir | Iridium (Ir) | 7 | 1 | 6 | 0 | 0 | 4 | 3 | 6 | 9 |
 | K | Potassium (K) | 35 | 10 | 22 | 3 | 0 | 22 | 23 | 31 | 71 |
 | La | Lanthanum (La) | 17 | 5 | 12 | 0 | 0 | 12 | 10 | 13 | 22 |
@@ -135,9 +135,9 @@ The experimental Fe diagram at log₁₀ a = -6 and the official Materials Proje
 | Os | Osmium (Os) | 11 | 2 | 8 | 1 | 0 | 7 | 6 | 8 | 16 |
 | P | Phosphorus (P) | 22 | 12 | 7 | 3 | 0 | 15 | 15 | 18 | 27 |
 | Pb | Lead (Pb) | 27 | 10 | 13 | 4 | 0 | 22 | 25 | 21 | 56 |
-| Pd | Palladium (Pd) | 17 | 7 | 10 | 0 | 0 | 13 | 8 | 8 | 20 |
+| Pd | Palladium (Pd) | 18 | 8 | 10 | 0 | 0 | 14 | 9 | 8 | 21 |
 | Pr | Praseodymium (Pr) | 16 | 7 | 9 | 0 | 0 | 10 | 5 | 11 | 23 |
-| Pt | Platinum (Pt) | 17 | 1 | 16 | 0 | 0 | 4 | 5 | 13 | 33 |
+| Pt | Platinum (Pt) | 18 | 2 | 16 | 0 | 0 | 5 | 6 | 13 | 34 |
 | Ra | Radium (Ra) | 7 | 2 | 5 | 0 | 0 | 6 | 7 | 6 | 20 |
 | Rb | Rubidium (Rb) | 18 | 6 | 9 | 3 | 0 | 11 | 14 | 14 | 29 |
 | Re | Rhenium (Re) | 8 | 1 | 7 | 0 | 0 | 5 | 5 | 7 | 8 |
