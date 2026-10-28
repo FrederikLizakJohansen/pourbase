@@ -41,6 +41,32 @@ def segments(text: str) -> list[tuple[str, str]]:
 
 
 SUBSCRIPT_DIGITS = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+SUPERSCRIPT_CHARGE = str.maketrans("0123456789+-", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻")
+
+
+def composition_text(formula_ascii: str, charge: float = 0.0) -> str:
+    """The complete stored composition with subscripts and a separate ionic charge."""
+    formula = re.sub(r"(?<=[A-Za-z)\]])\d+(?:\.\d+)?",
+                     lambda match: match.group().translate(SUBSCRIPT_DIGITS), formula_ascii)
+    if charge:
+        magnitude = "" if abs(charge) == 1 else f"{abs(charge):g}"
+        formula += (magnitude + ("+" if charge > 0 else "-")).translate(SUPERSCRIPT_CHARGE)
+    return formula
+
+
+def species_label(formula_ascii: str, charge: float, phase: str) -> str:
+    """Composition and phase identity for search results and record headings."""
+    phase = phase.strip()
+    if phase.startswith("(") and phase.endswith(")"):
+        phase = phase[1:-1]
+    composition = composition_text(formula_ascii, charge)
+    return f"{composition} — {phase}" if phase else composition
+
+
+def species_composition(species) -> str:
+    """Composition of a database species; comparison-only plot entries retain their label."""
+    formula = getattr(species, "formula_ascii", None)
+    return composition_text(formula, species.charge) if formula else species.species
 
 
 def pretty_formula(text: str) -> str:
@@ -69,7 +95,8 @@ def to_html(text: str, base_pt: float = 9.0) -> str:
 
 def phase_label(species) -> str:
     """Phase description without surrounding parentheses, e.g. "aq" or "hematite"."""
-    return (species.phase_detail or species.phase).strip().strip("()")
+    text = (species.phase_detail or species.phase).strip()
+    return text[1:-1] if text.startswith("(") and text.endswith(")") else text
 
 
 def formula_width(text: str, font: QFont) -> float:

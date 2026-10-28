@@ -22,7 +22,7 @@ from ..plotting import plot_uncertainty
 from ..speciation import dissolved_blend_weights, plot_speciation_profile
 from ..uncertainty import stability_uncertainty
 from .figure_export import install_export_menu
-from .formula import phase_label, to_html
+from .formula import phase_label, species_composition, to_html
 from .scales import axis_label, from_scale, nernst_slope_V, resample, to_scale
 
 LABEL_PT = 9.0
@@ -477,8 +477,8 @@ class DiagramView(pg.PlotWidget):
         species = self._species[int(grid[row, column])]
         x_name, y_name = (name.split(" (")[0] for name in self._axes)
         return (
-            f"{x_name} {x:.2f}, {y_name} {y:+.3f}: {to_html(species.species)} "
-            f"({phase_label(species)})"
+            f"{x_name} {x:.2f}, {y_name} {y:+.3f}: {to_html(species_composition(species))} "
+            f"({to_html(phase_label(species))})"
         )
 
     def show_overlay(self, diagram: Any | None, options: DisplayOptions) -> None:

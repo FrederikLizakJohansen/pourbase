@@ -41,6 +41,7 @@ from .context_bar import ACCENT, NEUTRAL, WARNING, ContextBar, power_of_ten
 from .credentials import storage_description
 from .dft import DftController
 from .fixed_potential import FixedPotentialPage
+from .formula import composition_text, species_label
 from .history import History
 from .materials import matched_colors, phase_views, pretty_label
 from .mp_page import MaterialsProjectPage
@@ -1561,14 +1562,18 @@ class MainWindow(QMainWindow):
         for symbol, name in self.systems.items():
             entries.append(Entry("Element", name, "Element: open its diagram", normalize(f"{name} {symbol} element"),
                                  lambda symbol=symbol: self.open_element(symbol)))
-        rows = database._rows("SELECT record_id, symbol, species, formula_ascii, phase, phase_detail FROM species")
+        rows = database._rows("SELECT record_id, symbol, species, formula_ascii, charge, phase, phase_detail FROM species")
         names = {}
         for row in rows:
             system = self.system_name(row["symbol"])
-            detail = f"Species in {system}: {(row['phase_detail'] or row['phase']).strip('()')}"
-            names[row["record_id"]] = (row["species"], row["symbol"])
-            entries.append(Entry("Species", row["species"], detail,
-                                 normalize(f"{row['species']} {row['formula_ascii']} {row['phase_detail']} {system} "
+            title = species_label(row["formula_ascii"], row["charge"], row["phase_detail"] or row["phase"])
+            detail = f"{system} · {row['phase']}"
+            if row["species"] not in (row["formula_ascii"], composition_text(row["formula_ascii"], row["charge"]),
+                                      row["phase_detail"]):
+                detail += f" · Alias: {row['species']}"
+            names[row["record_id"]] = (title, row["symbol"])
+            entries.append(Entry("Species", title, detail,
+                                 normalize(f"{title} {row['species']} {row['formula_ascii']} {row['phase_detail']} {row['phase']} {system} "
                                            f"{row['record_id']}"),
                                  lambda record=row["record_id"], symbol=row["symbol"]: self.show_species(symbol, record)))
         pairs = []

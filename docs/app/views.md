@@ -16,12 +16,14 @@ The Species view lists the species of the system.
 
 | Column | Shows |
 |---|---|
-| Species, Phase | The name and phase. The color swatch is the species' color in the diagram |
+| Composition | The complete chemical formula, including the charge of an ion |
+| State | Solid, aqueous, gas or liquid |
+| Phase name | The mineral, polymorph or other phase description, such as gibbsite or microcrystalline aluminium hydroxide |
 | Ligand | The ligand of a complex |
 | Status | The status of the recommended Gibbs energy, or why the species is left out |
 | Class | The evidence class (A–F) of the source of the recommended value |
 | Spread (kJ/mol) | The range of the eligible Gibbs energies, marked when it is larger than the policy's review threshold |
-| Stable | Whether the species is stable anywhere in the diagram |
+| Stable | Whether the species is stable anywhere in the diagram; the swatch matches its diagram color |
 | Warnings | The number of notes on the record |
 | Record ID | The identifier in the database |
 
@@ -30,6 +32,11 @@ and the absolute entropy, it gives the recommended value with its status, eviden
 and the reason the policy chose it. Below that are the other reported values with their status and source, with
 the ineligible ones marked. The record ends with the phase identity, any Materials Project estimate and the notes.
 Species that were left out are listed with the reason.
+
+Record headings and Search show the composition together with the phase name, for example
+**Al(OH)₃ — gibbsite**. Different phases keep separate records even when their compositions match.
+Dataset shorthand such as `AlOHmic` appears as an alias in the details and remains searchable.
+Preparation history, fitting methods and model limits remain in the evidence and notes.
 
 ## Boundaries
 

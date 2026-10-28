@@ -31,7 +31,7 @@ from ..speciation import speciation_profile
 from ..uncertainty import StabilityMargin
 from .diagram_tools import PathPanel, PointsPanel, RegionPanel, reaction_html
 from .figure_export import install_export_menu
-from .formula import formula_delegate, phase_label, to_html
+from .formula import composition_text, formula_delegate, phase_label, species_composition, species_label, to_html
 from .placeholder import StackedView
 from .plots import (
     LABEL_PT, DiagramView, DisplayOptions, PhaseStripView, SpeciationView, apply_plot_theme, record_colors,
@@ -302,7 +302,7 @@ class DiagramPage(StackedView):
         scale = self.display.potential_scale
         scaled = (f", {float(to_scale(probe.U_V, probe.pH, scale)):+.3f} V vs {html.escape(scale)}"
                   if scale != "SHE" else "")
-        header = (f'<div style="font-size:13pt">{to_html(species.species, 13)}'
+        header = (f'<div style="font-size:13pt">{to_html(species_composition(species), 13)}'
                   f'&nbsp;<span style="color:{muted}; font-size:10pt">{html.escape(phase_label(species))}</span></div>'
                   f'<div style="color:{muted}">Stable at pH {probe.pH:.2f}, U {probe.U_V:+.3f} V vs SHE{scaled}</div>')
 
@@ -392,9 +392,9 @@ class DiagramPage(StackedView):
 class SpeciesPage(QSplitter):
     """Every species of the system with its full evidence record."""
 
-    COLUMNS = ["Species", "Phase", "Ligand", "ΔfG° (kJ/mol)", "±", "Status", "Class", "Spread (kJ/mol)", "Stable",
+    COLUMNS = ["Composition", "State", "Phase name", "Ligand", "ΔfG° (kJ/mol)", "±", "Status", "Class", "Spread (kJ/mol)", "Stable",
                "Warnings", "Record ID"]
-    STATUS, SPREAD, STABLE, RECORD = 5, 7, 8, 10
+    ENERGY, STATUS, SPREAD, STABLE, RECORD = 4, 6, 8, 9, 11
     PROPERTIES = (("Gibbs energy of formation", "gibbs_energy_of_formation", "gibbs_energy_J_mol", "kJ/mol", 1000),
                   ("Formation enthalpy", "enthalpy_of_formation", "formation_enthalpy_J_mol", "kJ/mol", 1000),
                   ("Absolute entropy", "absolute_entropy", "entropy_J_mol_K", "J/(mol K)", 1))
@@ -463,8 +463,11 @@ class SpeciesPage(QSplitter):
             spread = selection.spread_J_mol if selection and len(selection.candidates) > 1 else None
             flagged = bool(selection and selection.needs_review)
             ligand = ligand_of.get(record_id)
+            composition = composition_text(record.formula_ascii, record.charge)
+            phase = phase_label(record)
             values = [
-                record.species, record.phase_detail or record.phase, ligand_names.get(ligand, ligand or ""),
+                composition, record.phase, phase if phase != record.phase else "",
+                ligand_names.get(ligand, ligand or ""),
                 kilojoules(energy if energy is not None else gibbs.value), kilojoules(gibbs.uncertainty),
                 hold_label(status, record), selection.chosen.evidence_class if selection else "",
                 kilojoules(spread) if spread is not None else "",
@@ -472,8 +475,11 @@ class SpeciesPage(QSplitter):
             ]
             for column, value in enumerate(values):
                 cell = QTableWidgetItem(value)
-                if column in (3, self.SPREAD) and value:
+                if column in (self.ENERGY, self.SPREAD) and value:
                     cell.setData(Qt.EditRole, float(value))
+                if column == 0:
+                    cell.setToolTip(f"{species_label(record.formula_ascii, record.charge, phase)}\n"
+                                    f"Recorded name: {record.species}")
                 if column == self.SPREAD and flagged:
                     cell.setForeground(QColor("#b26a00"))
                     cell.setToolTip(f"The eligible values differ by more than the policy's review threshold "
@@ -505,8 +511,12 @@ class SpeciesPage(QSplitter):
         record = self.records.get(self.table.item(selected[0].row(), self.RECORD).text()) if selected else None
         if record is None:
             return
-        parts = [f"<div style='font-size:13pt'>{to_html(record.species, 13)} <small>({html.escape((record.phase_detail or record.phase).strip('()'))})"
-                 f"</small></div><code>{record.record_id}</code>"]
+        composition = composition_text(record.formula_ascii, record.charge)
+        phase = phase_label(record)
+        parts = [f"<div style='font-size:13pt'>{to_html(species_label(record.formula_ascii, record.charge, phase), 13)}"
+                 f"</div><p><small>State: {html.escape(record.phase)}</small><br><code>{record.record_id}</code></p>"]
+        if record.species not in (composition, phase, record.formula_ascii):
+            parts.append(f"<p>Alias: {html.escape(record.species)}</p>")
         thermo = record.thermochemistry
         for label, property_name, attribute, unit, divisor in self.PROPERTIES:
             value = getattr(thermo, attribute)
@@ -520,8 +530,8 @@ class SpeciesPage(QSplitter):
                          f"{origin}"
                          + (", the eligible sources differ by more than the review threshold" if selection.needs_review
                             else "") + "</small>")
-                source = next((item.source for item in record.reported if item.source
-                               and item.source.source_id == chosen.source_id), value.source)
+                source = next((item.source for item in record.reported if item.value_id == chosen.value_id),
+                              value.source)
                 parts.append(f"<p>{label}: {text} <i>({html.escape(status_label(chosen.status))})</i>"
                              f"<br>{source_html(source)}{basis}</p>")
                 continue

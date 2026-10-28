@@ -54,6 +54,27 @@ class StateTests(unittest.TestCase):
 
 
 @unittest.skipIf(QApplication is None, "PySide6 is not installed")
+class SpeciesLabelTests(unittest.TestCase):
+    def test_composition_preserves_ionic_charge_and_fractional_formula_units(self):
+        from pourbase.gui.formula import composition_text
+
+        self.assertEqual(composition_text("Al(OH)3"), "Al(OH)₃")
+        self.assertEqual(composition_text("Al", 3), "Al³⁺")
+        self.assertEqual(composition_text("Fe(CN)6", -4), "Fe(CN)₆⁴⁻")
+        self.assertEqual(composition_text("Fe0.932O"), "Fe₀.₉₃₂O")
+        self.assertEqual(composition_text("CaSO4(H2O)0.5"), "CaSO₄(H₂O)₀.₅")
+
+    def test_phase_parentheses_and_distinct_identities_are_preserved(self):
+        from types import SimpleNamespace
+        from pourbase.gui.formula import phase_label, species_label
+
+        phase = "bunsenite (average cubic rocksalt)"
+        self.assertEqual(phase_label(SimpleNamespace(phase_detail=phase, phase="solid")), phase)
+        self.assertEqual(species_label("Al(OH)3", 0, "gibbsite"), "Al(OH)₃ — gibbsite")
+        self.assertEqual(species_label("Al(OH)3", 0, "bayerite"), "Al(OH)₃ — bayerite")
+
+
+@unittest.skipIf(QApplication is None, "PySide6 is not installed")
 class ScaleAndSessionTests(unittest.TestCase):
     """Potential scales and session files, without Qt widgets."""
 
@@ -542,7 +563,7 @@ class WindowTests(WindowTestCase):
         self.open("Fe")
         entries = window._search_entries()
         self.assertEqual(rank(entries, "copper")[0].title, "Copper (Cu)")
-        self.assertEqual(rank(entries, "fe2o3")[0].title, "Fe₂O₃")
+        self.assertEqual(rank(entries, "fe2o3")[0].title, "Fe₂O₃ — hematite")
         self.assertEqual(rank(entries, "robie")[0].kind, "Source")
         self.assertEqual(rank(entries, "export figure")[0].kind, "Command")
         species = next(entry for entry in rank(entries, "cuprite") if entry.kind == "Species")
@@ -551,7 +572,37 @@ class WindowTests(WindowTestCase):
                   and window.calculation.diagram.stable_species_index.shape
                   == (window.settings.U_points, window.settings.pH_points))
         table = window.species_page.table
-        self.assertEqual(table.item(table.currentRow(), 1).text(), "cuprite")
+        self.assertEqual(table.item(table.currentRow(), 2).text(), "cuprite")
+        self.open("Fe")
+
+    def test_species_show_composition_state_and_phase_with_searchable_aliases(self) -> None:
+        from pourbase.gui.search import rank
+
+        window = self.window
+        self.open("Al")
+        window.views.setCurrentWidget(window.species_page)
+        self.app.processEvents()
+        page = window.species_page
+        phases = {
+            "gfe-al-al-oh-3-q+0-solid-gibbsite": "gibbsite",
+            "r14e-al-bayerite": "bayerite",
+            "r09-al-alohmic": "microcrystalline aluminium hydroxide",
+        }
+        for record_id, phase in phases.items():
+            row = next(i for i in range(page.table.rowCount())
+                       if page.table.item(i, page.RECORD).text() == record_id)
+            self.assertEqual([page.table.item(row, i).text() for i in range(3)],
+                             ["Al(OH)₃", "solid", phase])
+        page.table.selectRow(row)
+        details = page.details.toPlainText()
+        self.assertIn("Al(OH)3 — microcrystalline aluminium hydroxide", details)
+        self.assertIn("Alias: AlOHmic", details)
+        self.assertIn("19-month", details)
+        for column in ("formation Gibbs energy", "formation enthalpy", "absolute entropy S"):
+            self.assertEqual(details.count(f'"column": "{column}"'), 1)
+        match = rank(window._search_entries(), "alohmic")[0]
+        self.assertEqual(match.title, "Al(OH)₃ — microcrystalline aluminium hydroxide")
+        self.assertIn("AlOHmic", match.detail)
         self.open("Fe")
 
     def test_sweep_runs_in_the_background_and_is_cached(self) -> None:

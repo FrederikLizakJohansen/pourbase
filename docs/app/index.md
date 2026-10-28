@@ -16,6 +16,8 @@ The window has four tabs. The last two are tinted because they configure the dat
 
 The search field at the top right (Ctrl+K, or Tools → Search…) finds elements, species, sources and menu
 commands. Picking a species opens its element, and picking a command runs it.
+Species results show the composition and phase name together. You can search by
+formula, mineral name or an alias such as `AlOHmic`.
 
 ![Searching for hematite](../assets/screens/search.png#only-light)![Searching for hematite](../assets/screens/dark/search.png#only-dark)
 
