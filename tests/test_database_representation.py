@@ -57,11 +57,13 @@ class DatabaseRepresentationTests(unittest.TestCase):
                                    "WHERE value_id='gfe-sn-sn-q+0-solid-metal:gf:preferred'")
                 connection.execute("UPDATE sources SET locator='{} trailing prose' "
                                    "WHERE source_id='IUPAC_Gold_Book_R05233'")
+                connection.execute("UPDATE ligands SET name='Free chloride' WHERE ligand_id='chloride-cl'")
             before = path.read_bytes()
             report = audit_database(path)
             fields = {(row["table"], row["field"]) for row in report["findings"]}
             self.assertTrue({("species", "atom_count"), ("species", "phase"),
-                             ("reported_thermochemistry", "unit"), ("sources", "locator")} <= fields)
+                             ("reported_thermochemistry", "unit"), ("sources", "locator"),
+                             ("ligands", "name")} <= fields)
             tin = next(row for row in report["species"] if row["record_id"] == "gfe-sn-sn-q+0-solid-metal")
             self.assertGreaterEqual(tin["representation_errors"], 3)
             self.assertEqual(path.read_bytes(), before)

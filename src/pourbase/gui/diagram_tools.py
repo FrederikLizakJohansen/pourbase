@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (
 from ..inverse import KINDS
 from ..measurements import MeasuredPoint, PointAssessment
 from ..paths import PhasePath
-from .formula import formula_delegate, to_html
+from .formula import composition_text, formula_delegate, to_html
 from .plots import PhaseStripView, apply_plot_theme, record_colors
 from .scales import REFERENCE_ELECTRODES_V, from_scale
 
@@ -26,9 +26,7 @@ ELECTRODE_ALIASES = {"she": "SHE", "nhe": "SHE", "rhe": "RHE", "sce": "SCE (sat.
 def reaction_html(reaction: str, database) -> str:
     """A reaction with ligand IDs written as their formulas, e.g. ``chloride-cl`` as Cl⁻."""
     for ligand in database.available_ligands():
-        name = ligand.name
-        symbol = name[name.find("(") + 1:-1] if name.endswith(")") and "(" in name else ligand.formula_ascii
-        reaction = reaction.replace(ligand.ligand_id, symbol)
+        reaction = reaction.replace(ligand.ligand_id, composition_text(ligand.formula_ascii, ligand.charge))
     return to_html(reaction).replace(" e-", " e⁻")
 
 

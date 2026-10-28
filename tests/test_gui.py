@@ -73,6 +73,17 @@ class SpeciesLabelTests(unittest.TestCase):
         self.assertEqual(species_label("Al(OH)3", 0, "gibbsite"), "Al(OH)₃ — gibbsite")
         self.assertEqual(species_label("Al(OH)3", 0, "bayerite"), "Al(OH)₃ — bayerite")
 
+    def test_reaction_formulas_come_from_composition_and_charge(self):
+        from PySide6.QtGui import QTextDocument
+        import pourbase as pb
+        from pourbase.gui.diagram_tools import reaction_html
+
+        document = QTextDocument()
+        document.setHtml(reaction_html("nitrogen-n2-gas + nickel-ni2 + silica-sio2-component",
+                                       pb.ThermodynamicDatabase.bundled()))
+        text = document.toPlainText()
+        self.assertEqual(text, "N2 + Ni2+ + SiO2")
+
 
 @unittest.skipIf(QApplication is None, "PySide6 is not installed")
 class ScaleAndSessionTests(unittest.TestCase):
@@ -291,6 +302,40 @@ class WindowTests(WindowTestCase):
         rows["chloride-cl"].enabled.setChecked(True)
         window.recalculate()
         self.assertTrue({"AgCl", "AgCl₂⁻"} & {item.species for item in window.calculation.stable_species})
+
+    def test_component_names_and_activity_explanations_preserve_saved_settings(self) -> None:
+        window = self.window
+        rows = window.panel.ligands.rows
+        expected = {"ammonia-nh3": "Ammonia (NH₃)", "calcium-ca2": "Calcium (Ca²⁺)",
+                    "chloride-cl": "Chloride (Cl⁻)", "phosphate-po4": "Orthophosphate (PO₄³⁻)",
+                    "nickel-ni2": "Nickel (Ni²⁺)", "potassium-k": "Potassium (K⁺)"}
+        for key, label in expected.items():
+            self.assertEqual(rows[key].enabled.text(), label)
+        for key in ("carbon-graphite", "elemental-te-cr", "nitrogen-n2-gas"):
+            self.assertIn("reservoir", rows[key].enabled.text())
+        for key in ("ammonia-nh3", "carbon-graphite", "nitrogen-n2-gas"):
+            row = rows[key]
+            old = row.setting
+            setting = LigandSetting(enabled=True, log10_free_activity=0.0)
+            row.set_setting(setting)
+            self.assertEqual(row.mode.currentData(), "free")
+            self.assertEqual(row.setting.activity(key), setting.activity(key))
+            self.assertTrue(row.value.toolTip())
+            if key == "ammonia-nh3":
+                self.assertIn("unbound", row.mode.toolTip())
+                pool = LigandSetting(enabled=True, mode="total", total_unbound_mol_L=.03,
+                                     use_pKa=True, acid_pKa=9.25)
+                row.set_setting(pool)
+                self.assertEqual(row.mode.currentData(), "total")
+                self.assertIn("excluding ligand bound", row.value.toolTip())
+                self.assertEqual(Settings.from_dict(Settings(ligands={key: pool}).to_dict()).ligands[key], pool)
+            elif key == "nitrogen-n2-gas":
+                self.assertIn("Fugacity", row.mode.currentText())
+                self.assertIn("1 bar", row.value.toolTip())
+            else:
+                self.assertEqual(row.mode.currentText(), "Activity (log₁₀ a)")
+                self.assertIn("unit activity", row.value.toolTip())
+            row.set_setting(old)
 
     def test_periodic_table_opens_every_system_it_shows(self) -> None:
         window = self.window

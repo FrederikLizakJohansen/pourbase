@@ -16,6 +16,7 @@ holds retain their meaning. Completed source reviews carry forward.
 | `species.record_id`, `sources.source_id`, `reported_thermochemistry.value_id`, `ligands.ligand_id` | Stable identifiers. Their spelling supplies no evidence class, licence or chemical identity. Links refer to existing records. |
 | `species.symbol`, `system` | An element symbol from `element_coverage`, and its single system label ending in that symbol in parentheses. |
 | `species.species` | A readable display name. Unicode formulas, hydrate dots and established mineral/endmember names are allowed. `formula_ascii` supplies the machine-readable composition. |
+| `ligands.name` | Name and formula of the dissolved reference, such as Ammonia (NH₃) or Calcium (Ca²⁺). “Free” is explained by the activity setting. Gas and solid reservoirs retain explicit physical labels. |
 | `species.formula_ascii`, `ligands.formula_ascii` | Complete formula units with element symbols, positive numeric occupancies and balanced `()` or `[]` groups. Hydrates use forms such as `CaSO4(H2O)0.5`. Charge and native oxidation annotations have separate fields. |
 | `species.phase` | Controlled values: `solid`, `aqueous`, `gas`, `liquid`. |
 | `species.phase_detail` | A concise phase, polymorph or chemical-identity label. Generic aqueous/gas labels are `aqueous` and `gas`. Named phases and physical qualifiers such as vitreous, precipitated, nominal or supercooled remain distinct. Source citations and evaluation-method notes belong in provenance. |

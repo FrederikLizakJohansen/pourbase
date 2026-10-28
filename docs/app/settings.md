@@ -76,9 +76,17 @@ table has the same switch. Below it, each ligand that forms complexes with the e
 |---|---|
 | Checkbox | Includes the ligand and its complexes |
 | Free activity (log₁₀ a) | Holds the free ligand at this activity |
-| Unbound pool (mol/L) | Holds the total unbound ligand at this concentration. With a pKa, protonation lowers the free activity at low pH |
+| Total unbound pool (mol/L) | Holds the total unbound ligand at this concentration. With a pKa, protonation lowers the free activity at low pH |
 
 Ligands are treated as buffered reservoirs, so binding to the metal does not change their activity.
+“Free” means the dissolved species unbound to a metal complex. Component names use the same
+name-and-formula style, such as Chloride (Cl⁻), Ammonia (NH₃) and Calcium (Ca²⁺).
+The total unbound pool includes the protonated and unprotonated forms, HL + L; it excludes ligand
+bound in metal complexes and remains externally buffered.
+
+Nitrogen gas and the graphite, selenium and tellurium solid reservoirs retain explicit reservoir
+names. Their direct controls show gas fugacity relative to 1 bar or solid activity, respectively;
+a value of zero means 1 bar or unit activity. Hover over an activity control for its explanation.
 
 ## Axes
 

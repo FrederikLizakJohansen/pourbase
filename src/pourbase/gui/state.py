@@ -22,7 +22,7 @@ CONCENTRATION_UNITS = {
     "ppm": "ppm (mg/L)",
     "wt_percent": "wt %",
 }
-LIGAND_MODES = {"free": "Free activity (log₁₀ a)", "total": "Unbound pool (mol/L)"}
+LIGAND_MODES = {"free": "Free activity (log₁₀ a)", "total": "Total unbound pool (mol/L)"}
 MAX_GRID_POINTS = 801
 
 

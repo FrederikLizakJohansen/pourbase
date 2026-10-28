@@ -13,6 +13,7 @@ from .state import LIGAND_MODES, LigandSetting
 
 SHOWN = 6  # complexes listed before "+ N more"
 SUPERSCRIPTS = "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻"
+SOLID_RESERVOIRS = {"carbon-graphite", "elemental-se-cr", "elemental-te-cr"}
 
 
 def complex_order(name: str) -> tuple:
@@ -36,6 +37,10 @@ class LigandRow(QWidget):
         self.mode = QComboBox()
         for key, label in LIGAND_MODES.items():
             self.mode.addItem(label, key)
+        if reference.ligand_id == "nitrogen-n2-gas":
+            self.mode.setItemText(0, "Fugacity (log₁₀ f/f°)")
+        elif reference.ligand_id in SOLID_RESERVOIRS:
+            self.mode.setItemText(0, "Activity (log₁₀ a)")
         self.value = QDoubleSpinBox()
         self.value.setKeyboardTracking(False)
         self.use_pKa = QCheckBox("pKa")
@@ -87,8 +92,8 @@ class LigandRow(QWidget):
         more = len(ordered) - SHOWN
         self.species.setText(f"<span style='font-size:8pt'>{shown}"
                              + (f" · + {more} more" if more > 0 else "") + "</span>")
-        self.count.setText(f"{len(ordered)} complex{'es' if len(ordered) != 1 else ''}")
-        tooltip = "Complexes with this ligand:\n" + "\n".join(ordered)
+        self.count.setText(f"{len(ordered)} species")
+        tooltip = "Species using this reference:\n" + "\n".join(ordered)
         for widget in (self.species, self.count, self.enabled):
             widget.setToolTip(tooltip)
 
@@ -99,12 +104,23 @@ class LigandRow(QWidget):
             self.value.setSingleStep(0.5)
             self.value.setSuffix("")
             self.value.setValue(self._setting.log10_free_activity)
+            if self.reference.ligand_id == "nitrogen-n2-gas":
+                explanation = "Prescribed nitrogen gas fugacity: log₁₀(f / 1 bar). Zero means 1 bar."
+            elif self.reference.ligand_id in SOLID_RESERVOIRS:
+                explanation = "Prescribed solid-reservoir activity: log₁₀ a. Zero means unit activity."
+            else:
+                explanation = ("Free means the dissolved species unbound to a metal complex. "
+                               "Enter log₁₀ of its activity; binding does not deplete this buffered reservoir.")
         else:
             self.value.setRange(1e-9, 10.0)
             self.value.setDecimals(6)
             self.value.setSingleStep(0.001)
             self.value.setSuffix(" mol/L")
             self.value.setValue(self._setting.total_unbound_mol_L)
+            explanation = ("Total unbound pool means HL + L in solution, excluding ligand bound in metal complexes. "
+                           "With a pKa, the free fraction varies with pH. The pool is externally buffered.")
+        self.mode.setToolTip(explanation)
+        self.value.setToolTip(explanation)
 
     def _mode_changed(self) -> None:
         if self._updating:
@@ -169,7 +185,7 @@ class LigandPanel(QWidget):
         for ligand_id, row in self.rows.items():
             row.set_relevant(species_by_ligand.get(ligand_id))
         self.note.setText(
-            "Buffered free-ligand reservoirs; the model does not solve a closed ligand balance."
+            "Free means unbound in solution. Binding to the metal does not deplete these buffered reservoirs."
             if species_by_ligand else
             f"The database holds no ligand complexes for {symbol}."
         )

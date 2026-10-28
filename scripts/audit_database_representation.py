@@ -133,6 +133,8 @@ def audit_database(path: str | Path) -> dict:
         additional[row["record_id"]].append((row["ligand_id"], row["component_count"]))
     compositions = {}
     for lid, row in ligands.items():
+        if row["name"].lower().startswith("free "):
+            issue("ligands", lid, "name", "use the component name and formula; explain free activity in the controls")
         try:
             compositions[lid] = formula_counts(row["formula_ascii"])
             if set(compositions[lid]) - elements:
