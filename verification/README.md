@@ -1,8 +1,16 @@
 # Transcription audit
 
 A manual check of randomly drawn database values against their cited sources, with the tools to
-repeat or extend it. `samples.csv` and `results.csv` hold the audit of 100 values reported in the
-paper (section "Manual verification of thermodynamic records").
+repeat or extend it. `samples.csv` and `results.csv` retain 96 completed reviews
+from the original 100-value sample reported in the paper (section "Manual
+verification of thermodynamic records"). Four direct JANAF observations and
+their completed reviews were archived privately on 28 October 2026 when those
+observations were excluded from the distributed database. The remaining sample
+and result rows are unchanged; no new sample or source review was performed.
+`sampling-provenance.json` records the excluded IDs, original file hashes and
+the original sampling population. Exported statistics describe the retained
+subset and preserve that historical population instead of relabelling the
+sample as a fresh draw from today's database.
 
     python draw_sample.py -n 50 --seed <any integer>         # or use "Draw sample…" in the app
     QT_QPA_PLATFORM=offscreen python fetch_evidence.py        # or "Fetch missing evidence" in the app
@@ -16,6 +24,7 @@ paper (section "Manual verification of thermodynamic records").
 | `evidence/` | Not in the repository; `fetch_evidence.py` rebuilds it. Per sample: a grab of the source around the value (`.png`), the full page for PDFs (`-page.png`) and how it was found (`.json`). |
 | `cache/` | Downloaded sources. PDFs you attach in the app are stored as `attached-*.pdf`. Not in the repository. |
 | `results.csv` | One row per reviewed sample (the latest review counts). |
+| `sampling-provenance.json` | Original sampling scope, private-archive hashes and the IDs excluded from the public review corpus. Contains no archived thermochemical values. |
 | `summary-by-family.csv`, `audit-statistics.tex`, `audit-table.tex` | Written by Statistics → export (also copied to `paper/generated/` when that folder exists). |
 
 ## Population

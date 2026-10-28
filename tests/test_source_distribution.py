@@ -1,8 +1,10 @@
 """Release boundaries preserve usable evidence and expose unresolved JANAF gaps."""
+import csv
 import json
 import sqlite3
 import unittest
 from contextlib import closing
+from pathlib import Path
 
 import support  # noqa: F401
 import pourbase as pb
@@ -63,6 +65,23 @@ class SourceDistributionTests(unittest.TestCase):
         self.assertEqual(entropy.source.source_id, 'TiO_fallback_Beyer1982_entropy')
         self.assertEqual(entropy.uncertainty, 0.07)
         self.assertIn('Pressure not explicitly specified', entropy.source.locator)
+
+    def test_published_audit_contains_only_retained_observations(self):
+        path = Path(__file__).resolve().parents[1] / 'verification/samples.csv'
+        if not path.is_file():
+            self.skipTest('The audit corpus is published in the repository separately from the package')
+        with path.open(newline='') as stream:
+            samples = list(csv.DictReader(stream))
+        self.assertTrue(samples)
+        with closing(sqlite3.connect(self.database.path)) as connection:
+            for sample in samples:
+                with self.subTest(sample=sample['sample_id']):
+                    self.assertNotIn('NIST-JANAF Thermochemical Tables', sample['citation'])
+                    row = connection.execute(
+                        'SELECT value FROM reported_thermochemistry WHERE value_id=?',
+                        (sample['value_id'],)).fetchone()
+                    self.assertIsNotNone(row)
+                    self.assertEqual(float(sample['value']), row[0])
 
 
 if __name__ == '__main__':

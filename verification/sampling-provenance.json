@@ -1,0 +1,51 @@
+{
+  "recorded_on": "2026-10-28",
+  "original_draw_date": "2026-10-22",
+  "original_sample_size": 100,
+  "population_at_sampling": 2960,
+  "population_source": "Published audit-statistics.tex before the JANAF release filter; retained as historical sampling provenance.",
+  "original_source_records": 84,
+  "retained_sample_size": 96,
+  "excluded_sample_ids": [
+    "S0007",
+    "S0044",
+    "S0065",
+    "S0090"
+  ],
+  "excluded_records": [
+    {
+      "sample_id": "S0007",
+      "value_id": "gfe-k-ko2-q+0-solid-crystalline-ko2-polymorph-not-assigned:entropy:preferred",
+      "source_id": "NIST_JANAF_K-010",
+      "reason": "Direct JANAF observation excluded from distribution while permission remains unconfirmed; completed review preserved privately."
+    },
+    {
+      "sample_id": "S0044",
+      "value_id": "gfe-v-v2o3-q+0-solid-v2o3-ii-corundum:hf:preferred",
+      "source_id": "NIST_JANAF_O-062",
+      "reason": "Direct JANAF observation excluded from distribution while permission remains unconfirmed; completed review preserved privately."
+    },
+    {
+      "sample_id": "S0065",
+      "value_id": "gfe-pb-pbo2-q+0-solid-plattnerite:hf:preferred",
+      "source_id": "NIST_JANAF_O-033",
+      "reason": "Direct JANAF observation excluded from distribution while permission remains unconfirmed; completed review preserved privately."
+    },
+    {
+      "sample_id": "S0090",
+      "value_id": "gfe-fe-fe3o4-q+0-solid-magnetite:gf:preferred",
+      "source_id": "NIST_JANAF_Fe-032",
+      "reason": "Direct JANAF observation excluded from distribution while permission remains unconfirmed; completed review preserved privately."
+    }
+  ],
+  "original_files_sha256": {
+    "samples.csv": "f8d35d78f22585e65d4c219a82827c1be02c6ae06d520dc52a0422bf78245d41",
+    "results.csv": "3ec2aaed026ba87eb59a19c27ff2e6749dea6098e51a4b6f3c51b65d15acba78",
+    "audit-statistics.tex": "21cbf93704c8fdb57caca0be500bc5f5cf024dbac0dbd4d7fe761dea42c869d4",
+    "audit-table.tex": "535fecf890164d2a80664279db49261ed20ad39327e05ff5e09f8b54d17c3779",
+    "summary-by-family.csv": "bb679901b9f1a5ee5f481b10afee18bb1692f7509d7259316b8e7abeee4cb675"
+  },
+  "private_archive_distributed": false,
+  "no_new_draw_or_review": true,
+  "source_review": "docs/sources/nist-janaf-redistribution.md"
+}

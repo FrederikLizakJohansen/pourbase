@@ -1287,8 +1287,15 @@ def export_statistics(samples: list[dict], results: dict[str, dict]) -> str:
     derived = [r for r in reviewed if "derived" in r.get("flags", "")]
     with connect() as connection:
         population_size = len(population(connection))
+    provenance_path = HERE / "sampling-provenance.json"
+    provenance = json.loads(provenance_path.read_text()) if provenance_path.exists() else {}
+    # Filtering a completed audit does not redraw it from today's database.
+    population_size = provenance.get("population_at_sampling", population_size)
     macros.update({
         "AuditPopulation": population_size,
+        "AuditOriginalSampled": provenance.get("original_sample_size", s["sampled"]),
+        "AuditExcludedFromRelease": len(provenance.get("excluded_sample_ids", [])),
+        "AuditTranscriptionUpper": f"{100 * wilson(0, s['checked'])[1]:.1f}",
         "AuditRounds": len({x["round"] for x in samples}),
         "AuditMatches": s["outcomes"].get("match", 0),
         "AuditDerived": len(derived),

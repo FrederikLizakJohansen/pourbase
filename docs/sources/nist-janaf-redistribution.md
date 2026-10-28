@@ -208,6 +208,24 @@ updated source-family table, policy example and heat-capacity wording. Wheel,
 source-distribution and installed-wheel checks retain the current data and
 notices and exclude private correspondence and archived observations.
 
+## Subsequent manuscript alignment
+
+At the user's request, the live manuscript was then aligned with the release:
+JANAF was removed from the included-source description and introductory policy
+table, the temperature section now cites the open NBS inputs, and the example
+policy explanation matches its existing USGS-first configuration. The SI
+exclusions table gives JANAF SRD 13 and WebBook SRD 69 separate entries.
+
+This pass also found four copies of the excluded JANAF observations in the
+published manual-audit CSVs. Their original sample records and completed
+reviews were preserved privately. The other 96 sample and review rows remain
+exact. Public audit summaries now report those 96 retained reviews: 95 source
+matches, one inherited source mismatch and zero identified agent transcription
+errors. The paper explains the original 100-value draw, the four exclusions
+and the retained subset. Sampling provenance preserves the original population;
+no new sampling or source verification was performed. This correction changes
+the audit artifacts and manuscript, with no further database or policy change.
+
 This follow-up ends with a documented retention decision or a validated
 distribution in which every scoped JANAF item has a disposition. A finite
 replacement pass may end with clearly reported missing properties. Additional
