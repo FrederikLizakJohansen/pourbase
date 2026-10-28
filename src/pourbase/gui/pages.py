@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (
 
 from ..database import ThermodynamicDatabase
 from ..grid import phase_boundary_segments
-from ..inverse import stability_region
+from ..inverse import StabilityRegion, stability_region
 from ..measurements import assess_points
 from ..paths import phase_path
 from ..records import PropertyValue, SourceReference, SpeciesRecord
@@ -103,14 +103,14 @@ def source_html(source: SourceReference | None) -> str:
     return citation + locator
 
 
-def _table(columns: list[str]) -> QTableWidget:
+def _table(columns: list[str], *, formula_column: int = 0) -> QTableWidget:
     table = QTableWidget(0, len(columns))
     table.setHorizontalHeaderLabels(columns)
     table.setEditTriggers(QAbstractItemView.NoEditTriggers)
     table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
     table.horizontalHeader().setHighlightSections(False)  # Qt draws the selected row's header in bold
     table.verticalHeader().setHighlightSections(False)
-    table.setItemDelegateForColumn(0, formula_delegate(table))
+    table.setItemDelegateForColumn(formula_column, formula_delegate(table))
     return table
 
 
@@ -161,10 +161,11 @@ class DiagramPage(StackedView):
         self.display = DisplayOptions()
         self.diagram.cursorMoved.connect(self._show_cursor)
         self.cursor.hide()
-        self.diagram.probeMoved.connect(self.probeMoved)
+        self.diagram.probeMoved.connect(self._diagram_probe_moved)
         self.diagram.boundaryClicked.connect(self.show_boundary)
         self.diagram.clickable_boundaries = True
         self.calculation: Calculation | None = None
+        self.highlighted_record: str | None = None
         self.path_panel.changed.connect(self.update_tools)
         self.path_panel.probeRequested.connect(self.probeMoved)
         self.path_panel.pickRequested.connect(
@@ -211,17 +212,52 @@ class DiagramPage(StackedView):
         self.region_panel.set_species(diagram.system.species)
         target, margin, sigma = self.region_panel.options()
         if self.tools.currentWidget() is self.region_panel and target:  # shaded while its panel is open
+            self.highlighted_record = None
             region = stability_region(calculation, target, margin, sigma)
             names = {item.record_id: item.species for item in diagram.system.species}
             self.diagram.show_region(region)
             self.region_panel.show_region(region, self.region_panel.kinds.get(target) or names.get(target, target),
                                           calculation.is_mass_balance)
+        elif self.highlighted_record is not None:
+            # Follow the displayed record IDs exactly, including cells assigned at an energy tie.
+            mask = self._highlight_mask(self.highlighted_record)
+            region = StabilityRegion(self.highlighted_record, diagram.pH, diagram.U_V,
+                                     np.full(mask.shape, np.nan), mask, 0.0, None)
+            self.diagram.show_region(region)
         else:
             self.diagram.show_region(None)
         assessments = assess_points(calculation, self.points_panel.points)
         self.points_panel.show_assessments(assessments)
         self.diagram.show_points([(item.point.label, item.point.pH, item.point.U_V, item.within_uncertainty)
                                   for item in assessments if item.inside])
+
+    def _highlight_mask(self, record_id: str) -> np.ndarray:
+        diagram = self.calculation.diagram
+        members = np.array([item.record_id == record_id for item in diagram.system.species])
+        return members[diagram.stable_species_index]
+
+    def highlight_species(self, record_id: str) -> tuple[float, float] | None:
+        """Highlight every displayed region of this record and return a probe point inside it."""
+        if self.calculation is None:
+            return None
+        mask = self._highlight_mask(record_id)
+        locations = np.argwhere(mask)
+        if not len(locations):
+            return None
+        self.highlighted_record = record_id
+        self.tools.setCurrentWidget(self.probe)
+        self.update_tools()
+        # Project the region's centre onto an actual cell, including disconnected or concave regions.
+        distances = (((locations - locations.mean(axis=0)) / np.array(mask.shape)) ** 2).sum(axis=1)
+        row, column = locations[int(np.argmin(distances))]
+        diagram = self.calculation.diagram
+        return float(diagram.pH[column]), float(diagram.U_V[row])
+
+    def _diagram_probe_moved(self, pH: float, U_V: float) -> None:
+        if self.highlighted_record is not None:
+            self.highlighted_record = None
+            self.update_tools()
+        self.probeMoved.emit(pH, U_V)
 
     def show_boundary(self, first: str, second: str, position) -> None:
         """A popup with the reaction, equation and sources of the boundary between two species."""
@@ -275,6 +311,8 @@ class DiagramPage(StackedView):
         super().hideEvent(event)
 
     def show_calculation(self, calculation: Calculation, display: DisplayOptions, reset_range: bool) -> None:
+        if self.calculation is None or self.calculation.diagram is not calculation.diagram:
+            self.highlighted_record = None
         self.calculation = calculation
         self.hide_boundary()
         plating = calculation.plating[0].potential_V_vs_SHE if calculation.plating else None
@@ -392,20 +430,26 @@ class DiagramPage(StackedView):
 class SpeciesPage(QSplitter):
     """Every species of the system with its full evidence record."""
 
-    COLUMNS = ["Composition", "State", "Phase name", "Ligand", "ΔfG° (kJ/mol)", "±", "Status", "Class", "Spread (kJ/mol)", "Stable",
+    speciesActivated = Signal(str)
+
+    COLUMNS = ["Stable", "Composition", "State", "Phase name", "Ligand", "ΔfG° (kJ/mol)", "±", "Status", "Class", "Spread (kJ/mol)",
                "Warnings", "Record ID"]
-    ENERGY, STATUS, SPREAD, STABLE, RECORD = 4, 6, 8, 9, 11
+    STABLE, COMPOSITION, STATE, PHASE, ENERGY, STATUS, SPREAD, RECORD = 0, 1, 2, 3, 5, 7, 9, 11
     PROPERTIES = (("Gibbs energy of formation", "gibbs_energy_of_formation", "gibbs_energy_J_mol", "kJ/mol", 1000),
                   ("Formation enthalpy", "enthalpy_of_formation", "formation_enthalpy_J_mol", "kJ/mol", 1000),
                   ("Absolute entropy", "absolute_entropy", "entropy_J_mol_K", "J/(mol K)", 1))
 
     def __init__(self, parent=None) -> None:
         super().__init__(Qt.Vertical, parent)
-        self.table = _table(self.COLUMNS)
+        self.table = _table(self.COLUMNS, formula_column=self.COMPOSITION)
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.setSelectionMode(QAbstractItemView.SingleSelection)
         self.table.setSortingEnabled(True)
         self.table.itemSelectionChanged.connect(self._show_details)
+        self.table.cellClicked.connect(self._activate_stable_cell)
+        self.table.cellActivated.connect(self._activate_stable_cell)
+        self.table.setMouseTracking(True)
+        self.table.cellEntered.connect(self._stable_cursor)
         self.details = QTextBrowser()
         self.details.setOpenExternalLinks(True)
         self.addWidget(self.table)
@@ -466,18 +510,18 @@ class SpeciesPage(QSplitter):
             composition = composition_text(record.formula_ascii, record.charge)
             phase = phase_label(record)
             values = [
-                composition, record.phase, phase if phase != record.phase else "",
+                "yes" if record_id in stable else "", composition, record.phase, phase if phase != record.phase else "",
                 ligand_names.get(ligand, ligand or ""),
                 kilojoules(energy if energy is not None else gibbs.value), kilojoules(gibbs.uncertainty),
                 hold_label(status, record), selection.chosen.evidence_class if selection else "",
                 kilojoules(spread) if spread is not None else "",
-                "yes" if record_id in stable else "", str(len(record.warnings)), record_id,
+                str(len(record.warnings)), record_id,
             ]
             for column, value in enumerate(values):
                 cell = QTableWidgetItem(value)
                 if column in (self.ENERGY, self.SPREAD) and value:
                     cell.setData(Qt.EditRole, float(value))
-                if column == 0:
+                if column == self.COMPOSITION:
                     cell.setToolTip(f"{species_label(record.formula_ascii, record.charge, phase)}\n"
                                     f"Recorded name: {record.species}")
                 if column == self.SPREAD and flagged:
@@ -486,7 +530,10 @@ class SpeciesPage(QSplitter):
                                     f"({len(selection.candidates)} values)")
                 if column == self.STABLE and record_id in swatches:
                     cell.setIcon(_swatch(swatches[record_id]))
-                    cell.setToolTip("Color of this species in the diagram")
+                    cell.setData(Qt.UserRole, record_id)
+                    cell.setToolTip("Click to open the diagram and highlight this species. The swatch matches its color.")
+                elif column == self.STABLE:
+                    cell.setToolTip("No stable region in the current diagram")
                 if excluded:
                     cell.setForeground(Qt.gray)
                 table.setItem(index, column, cell)
@@ -505,6 +552,17 @@ class SpeciesPage(QSplitter):
         if rows:
             table.selectRow(target)
             table.scrollToItem(table.item(target, 0))
+
+    def _activate_stable_cell(self, row: int, column: int) -> None:
+        if column == self.STABLE:
+            item = self.table.item(row, column)
+            if item is not None and item.data(Qt.UserRole):
+                self.speciesActivated.emit(item.data(Qt.UserRole))
+
+    def _stable_cursor(self, row: int, column: int) -> None:
+        item = self.table.item(row, column)
+        active = column == self.STABLE and item is not None and item.data(Qt.UserRole)
+        self.table.viewport().setCursor(Qt.PointingHandCursor if active else Qt.ArrowCursor)
 
     def _show_details(self) -> None:
         selected = self.table.selectedItems()

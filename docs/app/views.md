@@ -16,6 +16,7 @@ The Species view lists the species of the system.
 
 | Column | Shows |
 |---|---|
+| Stable | First column: whether the species is stable anywhere in the diagram; click its marker to open the diagram and highlight its region |
 | Composition | The complete chemical formula, including the charge of an ion |
 | State | Solid, aqueous, gas or liquid |
 | Phase name | The mineral, polymorph or other phase description, such as gibbsite or microcrystalline aluminium hydroxide |
@@ -23,7 +24,6 @@ The Species view lists the species of the system.
 | Status | The status of the recommended Gibbs energy, or why the species is left out |
 | Class | The evidence class (A–F) of the source of the recommended value |
 | Spread (kJ/mol) | The range of the eligible Gibbs energies, marked when it is larger than the policy's review threshold |
-| Stable | Whether the species is stable anywhere in the diagram; the swatch matches its diagram color |
 | Warnings | The number of notes on the record |
 | Record ID | The identifier in the database |
 
@@ -32,6 +32,9 @@ and the absolute entropy, it gives the recommended value with its status, eviden
 and the reason the policy chose it. Below that are the other reported values with their status and source, with
 the ineligible ones marked. The record ends with the phase identity, any Materials Project estimate and the notes.
 Species that were left out are listed with the reason.
+Clicking a marked **Stable** cell outlines that species' regions, fades the surrounding diagram
+and places the probe inside one of its regions. Its color swatch matches the diagram. Click the
+diagram to clear the highlight and inspect another point.
 
 Record headings and Search show the composition together with the phase name, for example
 **Al(OH)₃ — gibbsite**. Different phases keep separate records even when their compositions match.

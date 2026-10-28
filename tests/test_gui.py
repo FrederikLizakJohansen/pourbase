@@ -617,7 +617,7 @@ class WindowTests(WindowTestCase):
                   and window.calculation.diagram.stable_species_index.shape
                   == (window.settings.U_points, window.settings.pH_points))
         table = window.species_page.table
-        self.assertEqual(table.item(table.currentRow(), 2).text(), "cuprite")
+        self.assertEqual(table.item(table.currentRow(), window.species_page.PHASE).text(), "cuprite")
         self.open("Fe")
 
     def test_species_show_composition_state_and_phase_with_searchable_aliases(self) -> None:
@@ -636,7 +636,7 @@ class WindowTests(WindowTestCase):
         for record_id, phase in phases.items():
             row = next(i for i in range(page.table.rowCount())
                        if page.table.item(i, page.RECORD).text() == record_id)
-            self.assertEqual([page.table.item(row, i).text() for i in range(3)],
+            self.assertEqual([page.table.item(row, i).text() for i in (page.COMPOSITION, page.STATE, page.PHASE)],
                              ["Al(OH)₃", "solid", phase])
         page.table.selectRow(row)
         details = page.details.toPlainText()
@@ -648,6 +648,81 @@ class WindowTests(WindowTestCase):
         match = rank(window._search_entries(), "alohmic")[0]
         self.assertEqual(match.title, "Al(OH)₃ — microcrystalline aluminium hydroxide")
         self.assertIn("AlOHmic", match.detail)
+        self.open("Fe")
+
+    def test_stable_column_opens_and_highlights_the_record_after_sorting(self) -> None:
+        from PySide6.QtCore import Qt
+        from PySide6.QtTest import QTest
+        from pourbase.gui.plots import DisplayOptions
+        from pourbase.gui.scales import resample
+
+        window = self.window
+        self.open("Fe")
+        window.pages.setCurrentIndex(1)
+        window.views.setCurrentWidget(window.species_page)
+        window.show()
+        self.app.processEvents()
+        try:
+            page = window.species_page
+            self.assertEqual(page.table.horizontalHeaderItem(0).text(), "Stable")
+            page.table.sortItems(page.COMPOSITION, Qt.DescendingOrder)
+            record_id = "gfe-fe-fe2o3-q+0-solid-hematite"
+            row = next(i for i in range(page.table.rowCount())
+                       if page.table.item(i, page.RECORD).text() == record_id)
+            cell = page.table.item(row, page.STABLE)
+            self.assertEqual(cell.text(), "yes")
+            page.table.scrollToItem(cell)
+            self.app.processEvents()
+            QTest.mouseClick(page.table.viewport(), Qt.LeftButton,
+                             pos=page.table.visualItemRect(cell).center())
+            self.assertIs(window.views.currentWidget(), window.diagram_page)
+            self.assertEqual(window.diagram_page.highlighted_record, record_id)
+            diagram = window.calculation.diagram
+            index = next(i for i, item in enumerate(diagram.system.species) if item.record_id == record_id)
+            mask = diagram.stable_species_index == index
+            image = window.diagram_page.diagram.region_image.image
+            np.testing.assert_array_equal(image[..., 3] == 0, mask)
+            self.assertEqual(window.calculation.probe(window.settings.probe_pH,
+                                                     window.settings.probe_U_V).species.record_id, record_id)
+            window.panel.potential_scale.setCurrentIndex(window.panel.potential_scale.findData("RHE"))
+            _axis, rows, valid = resample(diagram.pH, diagram.U_V, "RHE", diagram.conditions.temperature_K)
+            image = window.diagram_page.diagram.region_image.image
+            np.testing.assert_array_equal((image[..., 3] == 0) & valid,
+                                          mask[rows, np.arange(diagram.pH.size)[None, :]] & valid)
+            window.diagram_page.diagram._probe_moved()
+            self.assertIsNone(window.diagram_page.highlighted_record)
+            self.assertIsNone(window.diagram_page.diagram.region_image.image)
+        finally:
+            window.panel.set_display(DisplayOptions())
+            window.refresh_view()
+            window.hide()
+
+    def test_stable_navigation_ignores_blank_cells_and_other_columns(self) -> None:
+        window = self.window
+        self.open("Fe")
+        window.views.setCurrentWidget(window.species_page)
+        page = window.species_page
+        blank = next(i for i in range(page.table.rowCount()) if not page.table.item(i, page.STABLE).text())
+        page.table.cellClicked.emit(blank, page.STABLE)
+        self.assertIs(window.views.currentWidget(), page)
+        row = next(i for i in range(page.table.rowCount()) if page.table.item(i, page.STABLE).text())
+        page.table.cellClicked.emit(row, page.COMPOSITION)
+        self.assertIs(window.views.currentWidget(), page)
+
+    def test_keyboard_stable_activation_works_in_mass_balance_and_clears_for_a_new_system(self) -> None:
+        window = self.window
+        self.open("Fe", mode="mass_balance")
+        window.views.setCurrentWidget(window.species_page)
+        page = window.species_page
+        row = next(i for i in range(page.table.rowCount()) if page.table.item(i, page.STABLE).text())
+        record_id = page.table.item(row, page.RECORD).text()
+        page.table.cellActivated.emit(row, page.STABLE)
+        self.assertIs(window.views.currentWidget(), window.diagram_page)
+        self.assertEqual(window.diagram_page.highlighted_record, record_id)
+        self.assertGreater(np.sum(window.diagram_page.diagram.region_image.image[..., 3] == 0), 0)
+        self.open("Cu")
+        self.assertIsNone(window.diagram_page.highlighted_record)
+        self.assertIsNone(window.diagram_page.diagram.region_image.image)
         self.open("Fe")
 
     def test_sweep_runs_in_the_background_and_is_cached(self) -> None:
@@ -729,7 +804,7 @@ class WindowTests(WindowTestCase):
         window.views.setCurrentWidget(window.species_page)
         self.app.processEvents()
         page = window.species_page
-        flagged = [page.table.item(row, 0).text() for row in range(page.table.rowCount())
+        flagged = [page.table.item(row, page.COMPOSITION).text() for row in range(page.table.rowCount())
                    if page.table.item(row, page.SPREAD).toolTip()]
         self.assertIn("Co₃O₄", flagged)
         statuses = {page.table.item(row, page.STATUS).text() for row in range(page.table.rowCount())}

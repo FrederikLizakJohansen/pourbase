@@ -170,6 +170,7 @@ class MainWindow(QMainWindow):
         self.diagram_page.probeMoved.connect(self.set_probe)
         self.diagram_page.speciesRequested.connect(lambda: self.views.setCurrentWidget(self.species_page))
         self.species_page = SpeciesPage()
+        self.species_page.speciesActivated.connect(self.show_species_on_diagram)
         self.boundaries_page = BoundariesPage()
         self.speciation_page = SpeciationPage()
         self.sensitivity_page = SensitivityPage()
@@ -1608,6 +1609,18 @@ class MainWindow(QMainWindow):
             self.open_element(symbol)
         self.views.setCurrentWidget(self.species_page)
         self.refresh_view()
+
+    def show_species_on_diagram(self, record_id: str) -> None:
+        """Open the current diagram with this stable record highlighted."""
+        if self.calculation is None or not any(item.record_id == record_id
+                                               for item in self.calculation.stable_species):
+            return
+        self.pages.setCurrentIndex(1)
+        self.views.setCurrentWidget(self.diagram_page)
+        self.refresh_view()
+        point = self.diagram_page.highlight_species(record_id)
+        if point is not None:
+            self.set_probe(*point)
 
     def show_sources(self) -> None:
         """The publications behind the shown diagram, with BibTeX export."""
