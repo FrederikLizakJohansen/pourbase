@@ -40,10 +40,13 @@ def main(argv: list[str] | None = None) -> int:
     try:
         from PySide6.QtWidgets import QApplication
         pg = _load_pyqtgraph()
-    except ImportError:
+    except ImportError as error:
         sys.stderr.write(
-            "The pourbase GUI needs PySide6 and pyqtgraph. Install them with\n"
-            '    pip install "pourbase[gui]"\n'
+            "Could not load the pourbase GUI dependencies.\n"
+            f"Python interpreter: {sys.executable}\n"
+            f"Import error: {type(error).__name__}: {error}\n"
+            "Install the GUI dependencies with the same interpreter:\n"
+            f'    "{sys.executable}" -m pip install "pourbase[gui]"\n'
         )
         return 1
 

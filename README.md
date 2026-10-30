@@ -41,29 +41,19 @@ and test with `python -m unittest discover -s tests`.
 
 ## Desktop application
 
-`pourbase-gui` (or `pourbase gui`, which prints errors to the terminal on Windows) opens a periodic table coloured by the stable species of every element at a chosen
-pH, potential and temperature, or by the share of a pH–potential window where an element is immune,
-passive or corroding. Click an element to open its system:
+Run `pourbase-gui` or `pourbase gui` to open the periodic table. Select an element to explore
+its Pourbaix diagram, inspect species and their sources, and compare published values. The app
+supports fixed-activity and closed mass-balance calculations, temperature changes and
+<!-- count:ligands -->33<!-- /count --> buffered ligands. Interactive probes, uncertainty views and sensitivity
+analysis help show how the selected data affect a prediction.
 
-- fixed-activity and closed total-metal (mass-balance) diagrams, in ppm, molarity or weight percent,
-  with Davies activity coefficients, <!-- count:ligands -->33<!-- /count --> buffered ligands and water presets (seawater, river water,
-  simulated body fluid, saline);
-- temperatures from 0 to 100 °C, extrapolated from the stored entropies and enthalpies;
-- a probe that reports the stable species, its Gibbs energy, uncertainty and source, and the margin
-  to the runner-up; hatching where another species lies within 1–3 combined uncertainties;
-- the sources behind the diagram, with BibTeX, and the sensitivity of every boundary to the
-  alternative published values;
-- regions where a species or kind of species is stable with a chosen margin;
-- paths through pH and potential with the boundaries they cross, and measured points imported from
-  CSV in any reference electrode;
-- solubility and ligand-predominance diagrams at fixed potential, species fractions along pH, and
-  concentration sweeps drawn as a rotatable 3D stack;
-- comparisons with a second element, concentration or temperature on linked axes, overlays of a
-  second element, and linked pop-out windows;
-- the official Materials Project diagram beside the experimental one, with an agreement map (needs
-  the `materials-project` extra and a free [API key](https://materialsproject.org/api));
-- undo and redo, search (Ctrl+K), sessions saved as `.pourbase.json`, and export of figures (PNG,
-  PDF, SVG), grids (CSV) and the equivalent Python code.
+You can compare conditions or Materials Project diagrams, save sessions, and export figures,
+data and Python code. Materials Project comparisons require the `materials-project` extra and
+an [API key](https://materialsproject.org/api).
+
+See the [desktop application documentation](https://frederiklizakjohansen.github.io/pourbase/app/)
+for a guide to the views, controls and workflows. On Windows, `pourbase gui` prints startup errors
+in the terminal.
 
 ## Python
 

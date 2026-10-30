@@ -8,11 +8,12 @@ distinguishable from curated records in every result.
 
 The CSV format has one row per species::
 
-    symbol,species,formula,charge,phase,gibbs_energy_kJ_mol,uncertainty_kJ_mol,citation,replaces
+    symbol,species,formula,charge,phase,formation_energy_kJ_mol,uncertainty_kJ_mol,citation,replaces
     Fe,Fe(OH)2 (fresh),Fe(OH)2,0,solid,-486.5,2.0,My lab notebook p. 12,
     Cu,Cu+,Cu,1,aqueous,49.98,,Example et al. 2024,gfe-cu-cu-q+1-aqueous-aq
 
-``uncertainty_kJ_mol`` and ``replaces`` may be empty. ``replaces`` names the record ID of a
+``species``, ``charge``, ``citation``, ``uncertainty_kJ_mol`` and ``replaces`` may be empty.
+The legacy column ``gibbs_energy_kJ_mol`` is also accepted. ``replaces`` names the record ID of a
 bundled species the row substitutes in calculations.
 """
 
@@ -107,7 +108,13 @@ def read_user_species(path: str | Path) -> tuple[UserSpecies, ...]:
         for number, row in enumerate(csv.DictReader(handle), start=2):
             try:
                 uncertainty = (row.get("uncertainty_kJ_mol") or "").strip()
-                gibbs = float(row["gibbs_energy_kJ_mol"]) * 1000.0
+                new_energy = (row.get("formation_energy_kJ_mol") or "").strip()
+                old_energy = (row.get("gibbs_energy_kJ_mol") or "").strip()
+                if not new_energy and not old_energy:
+                    raise ValueError("formation_energy_kJ_mol is required")
+                if new_energy and old_energy and float(new_energy) != float(old_energy):
+                    raise ValueError("formation_energy_kJ_mol and gibbs_energy_kJ_mol disagree")
+                gibbs = float(new_energy or old_energy) * 1000.0
                 if not math.isfinite(gibbs):
                     raise ValueError("the Gibbs energy must be finite")
                 rows.append(UserSpecies(
