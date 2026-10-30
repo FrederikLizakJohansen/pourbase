@@ -14,7 +14,6 @@ selection policy picks the value used in calculations. You can read the policy, 
 - [The app](app/index.md): what each part of the app does.
 - [Python](python/index.md): the same calculations in a script.
 - [The data](data/selection.md): how values are selected, and which compilations we could not include.
-- [Contribute](contributing.md): API features, GUI changes and new applications, including technoeconomic analysis.
 - [Reference](reference/calculation.md): the classes and functions, generated from the docstrings.
 
 </div>
