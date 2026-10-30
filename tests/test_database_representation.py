@@ -1,5 +1,6 @@
 """Whole-database representation checks and realistic malformed imports."""
 
+from contextlib import closing
 from pathlib import Path
 import shutil
 import sqlite3
@@ -50,7 +51,7 @@ class DatabaseRepresentationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "invalid.sqlite"
             shutil.copyfile(ROOT / "src/pourbase/data/pourbase.sqlite", path)
-            with sqlite3.connect(path) as connection:
+            with closing(sqlite3.connect(path)) as connection, connection:
                 connection.execute("UPDATE species SET atom_count=3 WHERE record_id='gfe-sn-sn-q+0-solid-metal'")
                 connection.execute("UPDATE species SET phase='crystalline' WHERE record_id='gfe-fe-fe-q+0-solid-metal'")
                 connection.execute("UPDATE reported_thermochemistry SET unit='kJ/mol' "

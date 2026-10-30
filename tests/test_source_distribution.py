@@ -70,7 +70,7 @@ class SourceDistributionTests(unittest.TestCase):
         path = Path(__file__).resolve().parents[1] / 'verification/samples.csv'
         if not path.is_file():
             self.skipTest('The audit corpus is published in the repository separately from the package')
-        with path.open(newline='') as stream:
+        with path.open(newline='', encoding='utf-8') as stream:
             samples = list(csv.DictReader(stream))
         self.assertTrue(samples)
         with closing(sqlite3.connect(self.database.path)) as connection:

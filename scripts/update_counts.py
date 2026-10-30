@@ -126,12 +126,12 @@ def main() -> None:
     volumes = acknowledgement(nea_volumes())
     stale = []
     for path in FILES:
-        text = path.read_text()
+        text = path.read_text(encoding="utf-8")
         new = update(text, values, volumes)
         if new != text:
             stale.append(path.name)
             if not check:
-                path.write_text(new)
+                path.write_text(new, encoding="utf-8")
     if check and stale:
         raise SystemExit(f"Out of date: {', '.join(stale)}. Run python scripts/update_counts.py")
     print(f"Updated {', '.join(stale)}" if stale else "Up to date")

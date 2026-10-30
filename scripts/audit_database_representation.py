@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter, defaultdict
+from contextlib import closing
 import csv
 import json
 import math
@@ -80,7 +81,7 @@ def audit_database(path: str | Path) -> dict:
     def issue(table, key, field, message):
         findings.append({"table": table, "id": str(key), "field": field, "message": message})
 
-    with sqlite3.connect(f"{path.as_uri()}?mode=ro", uri=True) as connection:
+    with closing(sqlite3.connect(f"{path.as_uri()}?mode=ro", uri=True)) as connection:
         connection.row_factory = sqlite3.Row
         tables = {row[0]: [dict(r) for r in connection.execute(f'SELECT * FROM "{row[0]}"')]
                   for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table' "
