@@ -73,7 +73,7 @@ from .user_data import (
 from .selection import PolicyDatabase, SelectionPolicy, compare_policies, select, with_policy
 from .uncertainty import StabilityMargin, StabilityUncertainty, stability_margin, stability_uncertainty
 
-__version__ = "1.0.0rc2"
+__version__ = "0.1.0"
 
 
 def __getattr__(name: str) -> str:

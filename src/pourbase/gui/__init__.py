@@ -14,11 +14,32 @@ APP_ID = "pourbase"
 LOGO = Path(__file__).parent / "assets" / "logo.svg"
 
 
+def _load_pyqtgraph():
+    """Use the same Qt binding as the rest of the GUI, even in mixed environments."""
+    # pyqtgraph selects its binding at import time. Restore the caller's environment
+    # afterwards; an already-imported incompatible binding cannot be changed safely.
+    previous = os.environ.get("PYQTGRAPH_QT_LIB")
+    os.environ["PYQTGRAPH_QT_LIB"] = "PySide6"
+    try:
+        import pyqtgraph as pg
+    finally:
+        if previous is None:
+            os.environ.pop("PYQTGRAPH_QT_LIB", None)
+        else:
+            os.environ["PYQTGRAPH_QT_LIB"] = previous
+    if pg.Qt.QT_LIB != "PySide6":
+        raise RuntimeError(
+            f"pourbase requires pyqtgraph to use PySide6; it already uses {pg.Qt.QT_LIB}. "
+            "Start pourbase in a fresh Python process."
+        )
+    return pg
+
+
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     try:
-        import pyqtgraph as pg
         from PySide6.QtWidgets import QApplication
+        pg = _load_pyqtgraph()
     except ImportError:
         sys.stderr.write(
             "The pourbase GUI needs PySide6 and pyqtgraph. Install them with\n"

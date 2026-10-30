@@ -1,8 +1,8 @@
 # Changelog
 
-## 1.0.0rc2 (unreleased)
+## 0.1.0 (unreleased)
 
-Release candidate for collaborator review. Package version `1.0.0rc2`; dataset version `1.0.0`.
+Initial preprint release. Package version `0.1.0`; dataset version `1.0.0`.
 
 - Retain three original 323.15 K sodium-zirconosilicate Gibbs observations
   alongside NEA evaluations, preserving the authors’ uncertainty intervals.

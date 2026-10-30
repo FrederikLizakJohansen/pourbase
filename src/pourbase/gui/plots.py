@@ -9,7 +9,9 @@ from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
-import pyqtgraph as pg
+from . import _load_pyqtgraph
+
+pg = _load_pyqtgraph()
 from matplotlib import colormaps
 from PySide6.QtCore import QPointF, QRectF, Qt, Signal
 from PySide6.QtGui import QColor

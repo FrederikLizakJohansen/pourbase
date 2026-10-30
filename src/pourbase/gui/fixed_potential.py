@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import numpy as np
-import pyqtgraph as pg
+from . import _load_pyqtgraph
+
+pg = _load_pyqtgraph()
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QButtonGroup, QComboBox, QDoubleSpinBox, QHBoxLayout, QLabel, QRadioButton, QVBoxLayout, QWidget,
