@@ -4,6 +4,8 @@
 
 Initial preprint release. Package version `0.1.0`; dataset version `1.0.0`.
 
+- Limit PySide6 to versions before 6.12 on Linux with Python 3.11 to avoid a Qt shutdown crash.
+
 - Retain three original 323.15 K sodium-zirconosilicate Gibbs observations
   alongside NEA evaluations, preserving the authors’ uncertainty intervals.
   Add source-specific temperature exclusions and attributed experimental
