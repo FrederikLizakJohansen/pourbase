@@ -96,7 +96,7 @@ class PolicyComparisonDialog(QDialog):
         self.summary.setText(
             f"{label} ({policy.name}, {policy.fingerprint}) against the default policy "
             f"({default.fingerprint}): {len(changes)} recommended values change — "
-            f"{counts['gibbs_energy_of_formation']} Gibbs energies, {counts['enthalpy_of_formation']} enthalpies, "
+            f"{counts['gibbs_energy_of_formation']} formation energies, {counts['enthalpy_of_formation']} enthalpies, "
             f"{counts['absolute_entropy']} entropies. The evidence is the same; only the choice differs.")
         table = self.table
         table.setSortingEnabled(False)

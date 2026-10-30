@@ -618,7 +618,7 @@ class MainWindow(QMainWindow):
         parts = [f"{system.system}: {len(calculation.stable_species)} stable of {len(system.species)} species"
                  + (f", calculated in {elapsed * 1e3:.0f} ms" if elapsed > 1e-3 else "")]
         if missing:
-            parts.append(f"{missing} species omitted for missing Gibbs data")
+            parts.append(f"{missing} species omitted for missing formation-energy data")
         cold = reasons.count(ExclusionReason.TEMPERATURE_DATA_UNAVAILABLE)
         if cold:
             other -= cold
@@ -644,7 +644,7 @@ class MainWindow(QMainWindow):
         if isinstance(error, IncompleteSystemError):
             self.diagram_page.show_message(
                 f"{name} has documented evidence gaps",
-                f"{html.escape(str(error))}.<br><br>Species without a recommended Gibbs energy can be "
+                f"{html.escape(str(error))}.<br><br>Species without a recommended formation energy can be "
                 "left out for an exploratory diagram, or replaced by labelled Materials Project 300 K "
                 "estimates where those exist.",
                 ("Leave these species out", lambda: self.panel.require_complete.setChecked(False)),
@@ -799,7 +799,7 @@ class MainWindow(QMainWindow):
         canvas.show_screen(screen)
         self.overview.note.setText(
             f"Metal concentration {settings.concentration:g} {CONCENTRATION_UNITS[settings.concentration_unit]}"
-            + ("" if settings.allow_incomplete else ", a Gibbs energy required for every species")
+            + ("" if settings.allow_incomplete else ", a formation energy required for every species")
             + (f", {len(settings.ligand_activities())} ligand reservoir(s)" if settings.ligand_activities() else "")
             + (f", {settings.temperature_C:g} °C (extrapolated; species without entropy data left out)"
                if abs(settings.temperature_C - 25.0) > 1e-9 else "")
@@ -839,7 +839,7 @@ class MainWindow(QMainWindow):
                 tip = "Every dissolved species of the element has this activity, as in Pourbaix's atlas."
             if abs(settings.temperature_C - 25.0) > 1e-9:
                 text += f" · {settings.temperature_C:g} °C"
-                tip += (" Gibbs energies are extrapolated from 25 °C with constant enthalpies and entropies of "
+                tip += (" Formation energies are extrapolated from 25 °C with constant enthalpies and entropies of "
                         "formation; uncertainties include the neglected heat capacity.")
             preview = calculation.diagram.stable_species_index.shape != (settings.U_points, settings.pH_points)
             chips["model"].configure(text + (" · preview" if preview else ""),
@@ -883,7 +883,7 @@ class MainWindow(QMainWindow):
                    for item in calculation.diagram.system.excluded) if calculation is not None else 0
         reasons = []
         if missing:
-            reasons.append(f"{missing} have no recommended Gibbs energy")
+            reasons.append(f"{missing} have no recommended formation energy")
         if cold:
             reasons.append(f"{cold} have no entropy data to extrapolate to {settings.temperature_C:g} °C or are "
                            "ligand species")

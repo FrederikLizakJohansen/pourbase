@@ -340,10 +340,10 @@ class PeriodicTableCanvas(QWidget):
         elif element.reason:
             lines.append(element.reason)
         if element.status is ElementStatus.CALCULATED_WITH_FALLBACK:
-            lines.append("Materials Project 300 K estimates replace the missing experimental Gibbs energies")
+            lines.append("Materials Project 300 K estimates replace the missing experimental formation energies")
         if element.missing_record_ids:
             count = len(element.missing_record_ids)
-            lines.append(f"{count} species without a recommended Gibbs energy {'is' if count == 1 else 'are'} "
+            lines.append(f"{count} species without a recommended formation energy {'is' if count == 1 else 'are'} "
                          "left out of this calculation")
         painter.setFont(body)
         metrics = QFontMetricsF(body)
@@ -487,7 +487,7 @@ def _export_table(canvas) -> object:
                      f"{element.energy_margin_J_mol_metal / 1000:.3f}" if element.energy_margin_J_mol_metal is not None else "",
                      element.gibbs_source.citation if element.gibbs_source and element.gibbs_source.citation else ""))
     header = ("Z", "symbol", "system", "status", "stable species", "phase", "category",
-              "margin to next species (kJ/mol metal)", "Gibbs energy source")
+              "margin to next species (kJ/mol metal)", "Formation energy source")
     return header, rows
 
 

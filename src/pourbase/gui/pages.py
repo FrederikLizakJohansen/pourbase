@@ -57,7 +57,7 @@ STATUS_LABELS = {
     "user_supplied": "user supplied",
     "accepted": "accepted",
     "superseded_source_value": "superseded",
-    "recommended_gibbs_energy_unavailable": "omitted: no Gibbs energy",
+    "recommended_gibbs_energy_unavailable": "omitted: no formation energy",
     "ligand_species_not_selected": "omitted: ligand not selected",
     "ligand_reference_unavailable": "omitted: no ligand reference",
     "mass_balance_nonmonometal_aqueous_unsupported": "omitted: polynuclear (mass balance)",
@@ -78,7 +78,7 @@ def hold_label(status: str, record: SpeciesRecord) -> str:
     """The status of a species row, naming a held Gibbs energy where the record documents one."""
     if status == "recommended_gibbs_energy_unavailable" and any(
             "formation_hold" in item.type for item in record.warnings):
-        return "omitted: Gibbs energy held (inherited source)"
+        return "omitted: formation energy held (inherited source)"
     return status_label(status)
 
 
@@ -383,7 +383,7 @@ class DiagramPage(StackedView):
         locator = (source.locator or "") if source is not None else ""
         if len(locator) > 140:
             locator = locator[:138].rstrip(" ,;") + "…"
-        value_column = (caption("Gibbs energy") + line(energy)
+        value_column = (caption("Formation energy") + line(energy)
                         + line(f'<span style="color:{muted}">{html.escape(status_label(species.gibbs_status.value))}</span>')
                         + line(citation, small=True)
                         + (line(f'<span style="color:{muted}">{html.escape(locator)}</span>', small=True) if locator else ""))
@@ -437,7 +437,7 @@ class SpeciesPage(QSplitter):
     COLUMNS = ["Stable", "Composition", "State", "Phase name", "Ligand", "ΔfG° (kJ/mol)", "±", "Status", "Class", "Spread (kJ/mol)",
                "Warnings", "Record ID"]
     STABLE, COMPOSITION, STATE, PHASE, ENERGY, STATUS, SPREAD, RECORD = 0, 1, 2, 3, 5, 7, 9, 11
-    PROPERTIES = (("Gibbs energy of formation", "gibbs_energy_of_formation", "gibbs_energy_J_mol", "kJ/mol", 1000),
+    PROPERTIES = (("Formation energy", "gibbs_energy_of_formation", "gibbs_energy_J_mol", "kJ/mol", 1000),
                   ("Formation enthalpy", "enthalpy_of_formation", "formation_enthalpy_J_mol", "kJ/mol", 1000),
                   ("Absolute entropy", "absolute_entropy", "entropy_J_mol_K", "J/(mol K)", 1))
 
@@ -639,7 +639,7 @@ class SpeciesPage(QSplitter):
 
 class BoundariesPage(StackedView):
     def __init__(self, parent=None) -> None:
-        table = _table(["Reaction", "Equation", "Kind", "Sources of the Gibbs energies"])
+        table = _table(["Reaction", "Equation", "Kind", "Sources of the formation energies"])
         body = QWidget()
         layout = QVBoxLayout(body)
         layout.addWidget(QLabel("Balanced reactions and activity-conditioned Nernst equations for adjacent domains."))
@@ -914,7 +914,7 @@ class SensitivityPage(StackedView):
         self._place_labels(diagram)
         sources = "critical evaluations" if self.critical_only() else "all eligible published values"
         if result.samples == 0:
-            self.summary.setText(f"No species of this system has more than one eligible Gibbs energy among the "
+            self.summary.setText(f"No species of this system has more than one eligible formation energy among the "
                                  f"{sources}; the diagram is fixed by the data in the database.")
         else:
             self.summary.setText(

@@ -152,7 +152,7 @@ class SettingsPanel(QTabWidget):
         self.temperature.valueChanged.connect(lambda value: self._set("temperature_C", value))
         form.addRow(self.temperature)
         self.temperature_note = QLabel("The data describe 25 °C. Other temperatures, up to 100 °C, extrapolate each "
-                                       "Gibbs energy with its entropy of formation; species without entropy data "
+                                       "formation energy with its entropy of formation; species without entropy data "
                                        "and ligand species are left out.")
         self.temperature_note.setWordWrap(True)
         self.temperature_note.setStyleSheet("color: gray;")
@@ -175,12 +175,12 @@ class SettingsPanel(QTabWidget):
 
         box = Section("Evidence policy", "evidence-policy")
         column = QVBoxLayout(box.body)
-        self.require_complete = QCheckBox("Require a Gibbs energy for every species")
+        self.require_complete = QCheckBox("Require a formation energy for every species")
         self.require_complete.setToolTip(
-            "By default, species without a recommended Gibbs energy are left out of the calculation and listed "
+            "By default, species without a recommended formation energy are left out of the calculation and listed "
             "in the Species tab. Tick this to stop instead when the system has such species.")
         self.require_complete.toggled.connect(lambda value: self._set("allow_incomplete", not value))
-        self.use_mp_fallbacks = QCheckBox("Fill missing solid Gibbs values with labelled MP 300 K estimates")
+        self.use_mp_fallbacks = QCheckBox("Fill missing solid formation energies with labelled MP 300 K estimates")
         self.use_mp_fallbacks.toggled.connect(lambda value: self._set("use_mp_fallbacks", value))
         column.addWidget(self.require_complete)
         column.addWidget(self.use_mp_fallbacks)

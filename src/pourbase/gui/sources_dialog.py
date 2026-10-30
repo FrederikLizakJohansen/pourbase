@@ -21,7 +21,7 @@ class SourcesDialog(QDialog):
         self.setWindowTitle("Sources behind this diagram")
         self.resize(1000, 520)
         self.publications = diagram_sources(calculation)
-        summary = QLabel(f"{title}: {len(self.publications)} publications supply the Gibbs energies of the "
+        summary = QLabel(f"{title}: {len(self.publications)} publications supply the formation energies of the "
                          f"{len(calculation.diagram.system.species)} species in this calculation, and of its ligands. "
                          "BibTeX keeps each full citation as a note, with year, DOI and URL where known.")
         summary.setWordWrap(True)

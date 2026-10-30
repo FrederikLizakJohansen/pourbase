@@ -22,8 +22,8 @@ PROPERTY_FIELDS = {
     ),
     "gibbs": (
         "experimental_gibbs_eV_atom",
-        "Experimental Gibbs formation energy at 298.15 K (eV/atom)",
-        "Gibbs formation energy",
+        "Experimental formation energy ΔfG° at 298.15 K (eV/atom)",
+        "Formation energy ΔfG°",
     ),
 }
 
