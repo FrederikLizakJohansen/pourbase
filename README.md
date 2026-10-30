@@ -21,6 +21,9 @@ the source, an evidence status, its uncertainty where reported, and every altern
   <a href="docs/DATA_DICTIONARY.md">Data dictionary</a>
 </p>
 
+Want to add an API feature, improve the GUI or build an application around pourbase?
+The [collaborator guide](docs/contributing.md) explains where to start, including technoeconomic extensions.
+
 <p align="center">
   <img src="docs/assets/screens/periodic-table.png#gh-light-mode-only" alt="The pourbase periodic table: the stable species of every element at pH 7 and 0 V vs SHE" width="900">
   <img src="docs/assets/screens/dark/periodic-table.png#gh-dark-mode-only" alt="The pourbase periodic table: the stable species of every element at pH 7 and 0 V vs SHE" width="900">

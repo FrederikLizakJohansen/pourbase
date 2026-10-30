@@ -99,6 +99,7 @@ nav:
       - Temperature trends: TEMPERATURE_TRENDS.md
       - Check against pymatgen: validation/pymatgen-crosscheck.md
       - Data dictionary: DATA_DICTIONARY.md
+  - Contribute: contributing.md
   - Reference:
       - Calculation: reference/calculation.md
       - Database: reference/database.md
