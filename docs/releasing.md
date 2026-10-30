@@ -17,7 +17,7 @@ environment and its protection settings as appropriate for the repository.
 Before releasing, check the version, changelog, citation, CI results and built distributions.
 Publish a GitHub release with a tag matching the package version, such as `v0.1.0`.
 The release workflow builds the tagged source, checks its distributions and publishes them
-using the trusted publisher. 
+using the trusted publisher.
 Check the workflow and the resulting PyPI project after publication.
 
 To install this release:
