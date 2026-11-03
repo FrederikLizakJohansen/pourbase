@@ -117,6 +117,9 @@ pourbase plot Zn --mode mass_balance --total-metal 1e-6 --output zn.png
 pourbase sweep Fe --minimum -10 --maximum 0 --points 7 --output fe-sweep.png
 ```
 
+`scripts/animate_periodic_table.py` renders looping videos of the periodic table as pH, potential or
+temperature change. It is meant to be edited: its docstring describes how to change or add to the video.
+
 ## Agents (MCP)
 
 `pourbase-mcp` is a [Model Context Protocol](https://modelcontextprotocol.io) server that gives
