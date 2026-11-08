@@ -20,7 +20,7 @@ import pourbase as pb
 TABLES = {
     "metadata", "species", "sources", "phases", "warnings",
     "materials_project_matches", "materials_project_energies", "ligands", "additional_components",
-    "reported_thermochemistry", "computational_fallbacks", "element_coverage",
+    "reported_thermochemistry", "computational_fallbacks", "element_coverage", "element_production",
 }
 
 
@@ -37,7 +37,8 @@ class DatasetSnapshotTests(unittest.TestCase):
             self.assertEqual(tables, TABLES)
             for table, count in (("species", 1788), ("reported_thermochemistry", 5206),
                                  ("sources", 1795), ("warnings", 2778), ("additional_components", 64),
-                                 ("computational_fallbacks", 6), ("element_coverage", 118)):
+                                 ("computational_fallbacks", 6), ("element_coverage", 118),
+                                 ("element_production", 118)):
                 self.assertEqual(connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0], count, table)
             self.assertEqual(connection.execute("PRAGMA integrity_check").fetchone()[0], "ok")
             self.assertEqual(connection.execute("PRAGMA foreign_key_check").fetchall(), [])

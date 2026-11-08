@@ -42,7 +42,7 @@ from .scales import to_scale
 
 PUBLIC_TABLES = (
     "species", "selected_thermochemistry", "reported_thermochemistry", "sources", "phases", "warnings",
-    "computational_fallbacks", "element_coverage", "materials_project_matches",
+    "computational_fallbacks", "element_coverage", "element_production", "materials_project_matches",
     "materials_project_energies", "ligands", "metadata",
 )
 

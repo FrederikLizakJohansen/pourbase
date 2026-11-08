@@ -32,6 +32,7 @@ review descriptions below retain their historical scope.
 | `reported_thermochemistry` | Every retained thermochemical observation, with status, source, uncertainty, locator and supersession link |
 | `computational_fallbacks` | Opt-in 300 K Materials Project SISSO Gibbs estimates for experimental gaps, with phase mapping, confidence, identifiers, versions, and warnings |
 | `element_coverage` | One row for every element, recording whether it is supported, a reference component, deferred, or outside the current curated scope |
+| `element_production` | One row for every element: global annual production with its source, or an explicit gap. No calculation reads this table |
 | `sources` | Full scientific citations, URLs, general locators, and access dates |
 | `phases` | Experimental phase label, identity status, polymorph candidates, space group, and evidence summary |
 | `warnings` | Readable cautions for estimates, absent recommended values, and phase-identity limitations |
@@ -238,6 +239,29 @@ questioned by the later NEA thorium review and unsupported component models.
 The bare Zr gas also retains a separate integration review, preserving the
 gas-free default closed balance. Optional halide gases use explicit fugacity.
 These holds carry the original values and source locations for later review.
+
+## Element production
+
+`element_production` is built by `scripts/add_element_production.py` from
+`data/production/element_production.csv`. It holds only values taken or calculated from U.S.
+Geological Survey publications whose production figures carry no third-party attribution, so the
+values have no redistribution condition. Other elements are gaps, with the reason in `notes`.
+
+| Column | Meaning |
+|---|---|
+| `atomic_number`, `symbol` | The element, as in `element_coverage` |
+| `production_t_per_year` | Global production in metric tons of contained element per year; NULL for a gap |
+| `range_low_t_per_year`, `range_high_t_per_year` | Stated range, where one is available |
+| `reference_year` | Year of the value |
+| `measured_as` | What was measured, such as mine output or primary metal |
+| `value_basis` | `reported`, `converted` (from a compound or ore), `modelled`, `proxy` (one commodity only) or `gap` |
+| `source_value`, `source_unit`, `conversion_factor` | The figure as published and the factor applied to it |
+| `source_citation`, `source_url`, `source_locator` | The publication, a link and the page or table |
+| `reuse_basis` | The reuse status of the source |
+| `notes` | Assumptions and limits, or the reason for a gap |
+
+Stages differ between elements, so compare `measured_as` before comparing values. USGS totals are
+usually rounded to two significant figures, and converted values are rounded the same way.
 
 ## Units
 

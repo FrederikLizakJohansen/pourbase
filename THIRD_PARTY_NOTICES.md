@@ -479,6 +479,16 @@ reevaluations and native database evaluations retain separate ancestry reviews.
   Bulletin 672, p. 300; source lineage for enthalpy and low-temperature entropy.
   <https://stacks.cdc.gov/view/cdc/219421>
 
+## USGS element production
+
+The table `element_production` uses U.S. Geological Survey, *Mineral Commodity Summaries 2026*,
+https://doi.org/10.3133/mcs2026, and *Minerals Yearbook 2018*, Platinum-group metals, table 5.
+The U.S. Geological Survey is acknowledged. USGS-authored data are in the U.S. public domain, and
+the Mineral Commodity Summaries 2026 data release, https://doi.org/10.5066/P1WKQ63T, is marked
+CC0 1.0. Production figures that USGS attributes to third parties are not included, and elements
+without a value free of redistribution conditions are recorded as gaps. Conversions and the
+platinum-group ratios are pourbase calculations, described in the table's `notes`.
+
 ## NIST Standard Reference Data and independently open alternatives
 
 The 28 October 2026 release omits 100 directly sourced JANAF observations and
