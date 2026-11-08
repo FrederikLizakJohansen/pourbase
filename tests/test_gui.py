@@ -420,6 +420,31 @@ class WindowTests(WindowTestCase):
         self.wait(lambda: overview.stack.currentWidget() is overview.canvas)
         window.pages.setCurrentIndex(1)
 
+    def test_the_landscape_height_can_show_annual_production(self) -> None:
+        window = self.window
+        window.pages.setCurrentIndex(0)
+        overview = window.overview
+        window.update_overview()
+        self.assertTrue(overview.height_by.isHidden())
+        overview.set_3d(True)
+        self.wait(lambda: overview.landscape.raise_amount == 1.0)
+        self.assertFalse(overview.height_by.isHidden())
+        landscape = overview.landscape
+        overview.height_by.setCurrentIndex(overview.height_by.findData("production"))
+        self.wait(lambda: not landscape._grow.isActive())
+        heights = dict(zip(landscape._symbols, landscape._targets))
+        self.assertGreater(heights["Fe"], heights["Au"])
+        self.assertGreater(heights["Ir"], 0.0)
+        self.assertEqual(heights["Cs"], 0.0)
+        overview.set_production(())
+        self.assertEqual(overview.canvas.height_mode, "margin")
+        self.assertFalse(overview.height_by.isEnabled())
+        window.update_overview()
+        self.assertTrue(overview.height_by.isEnabled())
+        overview.set_3d(False)
+        self.wait(lambda: overview.stack.currentWidget() is overview.canvas)
+        window.pages.setCurrentIndex(1)
+
     def test_the_policy_editor_checks_applies_and_reverts(self) -> None:
         from PySide6.QtWidgets import QMessageBox
 

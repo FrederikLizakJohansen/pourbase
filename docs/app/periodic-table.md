@@ -15,7 +15,7 @@ model and ligands of the [element view](settings.md), so both describe the same 
 | T | The temperature of all elements, 0 to 100 °C. This is the same setting as System → Temperature |
 | Ligands | Turns the buffered ligands on or off for all elements, here and in the element view |
 | Color by | What the tiles show (see below) |
-| 3D | Raises the table into columns whose height is the stability margin |
+| 3D | Raises the table into columns, and shows what sets their height: the stability margin or annual production |
 | Sweep | Shows controls that run the table through a range of pH or potential |
 
 ## Color modes
@@ -62,6 +62,11 @@ Materials Project estimates are filling the gaps (System → Evidence policy), t
 In 3D, each element is a column whose height is its stability margin, on a logarithmic scale up to 1000 kJ mol⁻¹
 of metal. Drag to rotate, scroll to zoom and double-click to reset the view. Pressing 3D again lowers the table
 back to 2D.
+
+The selector next to the 3D button changes the height to annual global production, on a logarithmic scale up to
+10¹⁰ t per year, while the color still follows the table. An element without a value in `element_production` stays
+flat, and hovering over it gives the reason. Stages differ between elements, so hovering also shows what was
+measured. The selector is disabled when the database has no production data.
 
 ## Sweep
 

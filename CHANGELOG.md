@@ -4,6 +4,7 @@
 
 Initial preprint release. Package version `0.1.0`; dataset version `1.0.0`.
 
+- Let the columns of the 3D periodic table show annual production as well as the stability margin.
 - Add the table `element_production` and `ThermodynamicDatabase.element_production`: global annual
   production of each element from U.S. Geological Survey publications, with 54 values and 64 explicit
   gaps. No calculation reads it, and thermochemical values are unchanged.

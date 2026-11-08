@@ -32,6 +32,7 @@ CATEGORY_COLORS = {
 }
 COLOR_MODES = {"category": "Stable species category", "margin": "Stability margin",
                "window": "Share of a pH–potential window"}
+HEIGHT_MODES = {"margin": "Height: stability margin", "production": "Height: annual production"}
 UNIT_LABELS = {"log10_molar": "log₁₀ M", "molar": "M", "ppm": "ppm", "wt_percent": "wt %"}
 F_BLOCK_MARKERS = {(5, 2): "57–71", (6, 2): "89–103"}
 CARD_CELLS = ((0, 2), (2, 11))
@@ -95,6 +96,8 @@ class PeriodicTableCanvas(QWidget):
         self.selected: str | None = None
         self.highlight_category: Category | None = None
         self.color_mode = "category"
+        self.height_mode = "margin"
+        self.production: dict[str, dict] = {}  # symbol → row of element_production
         self.window: dict | None = None  # symbol → WindowResult of the window search
         self.window_label = ""
         self.dark = False
@@ -121,6 +124,10 @@ class PeriodicTableCanvas(QWidget):
 
     def set_color_mode(self, mode: str) -> None:
         self.color_mode = mode
+        self._redraw()
+
+    def set_height_mode(self, mode: str) -> None:
+        self.height_mode = mode
         self._redraw()
 
     def set_dark(self, dark: bool) -> None:
@@ -531,8 +538,14 @@ class OverviewPage(QWidget):
         self.view_button = QToolButton()
         self.view_button.setText("3D")
         self.view_button.setCheckable(True)
-        self.view_button.setToolTip("Raise the table into a 3D landscape of stability margins")
+        self.view_button.setToolTip("Raise the table into a 3D landscape")
         self.view_button.toggled.connect(self.set_3d)
+        self.height_by = QComboBox()
+        for key, label in HEIGHT_MODES.items():
+            self.height_by.addItem(label, key)
+        self.height_by.setToolTip("What the height of the 3D columns shows")
+        self.height_by.currentIndexChanged.connect(
+            lambda _index: self.canvas.set_height_mode(self.height_by.currentData()))
         self.sweep_bar = self._sweep_controls()
         self.sweep_button = QToolButton()
         self.sweep_button.setText("Sweep")
@@ -559,6 +572,7 @@ class OverviewPage(QWidget):
         controls.addWidget(self.color)
         controls.addSpacing(16)
         controls.addWidget(self.view_button)
+        controls.addWidget(self.height_by)
         controls.addWidget(self.sweep_button)
         layout = QVBoxLayout(self)
         layout.setContentsMargins(16, 12, 16, 8)
@@ -569,6 +583,7 @@ class OverviewPage(QWidget):
         layout.addWidget(self.stack, 1)
         self.window_bar.hide()
         self.sweep_bar.hide()
+        self.height_by.hide()
 
     def set_ligands(self, references, settings) -> None:
         """Show the ligand reservoirs of ``settings`` for the ligands in ``references``."""
@@ -597,6 +612,13 @@ class OverviewPage(QWidget):
         self.ligand_button.setText(f"Ligands: {len(names)} on" if active else "Ligands: off")
         self.ligand_button.setToolTip("Buffered ligand reservoirs for every element, here and in the element "
                                       "view: " + (", ".join(names) if active else "none"))
+
+    def set_production(self, rows) -> None:
+        """Give the canvas the production rows of the active database; without any, the height stays the margin."""
+        self.canvas.production = {row["symbol"]: row for row in rows}
+        self.height_by.setEnabled(bool(rows))
+        if not rows:
+            self.height_by.setCurrentIndex(self.height_by.findData("margin"))
 
     windowChanged = Signal()
 
@@ -638,6 +660,7 @@ class OverviewPage(QWidget):
         if self.view_button.isChecked() != on:
             self.view_button.setChecked(on)  # calls back here through toggled
             return
+        self.height_by.setVisible(on)
         self.landscape.snapshot = self.canvas.grab()  # faded into the columns as they rise, and back
         if on:
             self.landscape.refresh()
