@@ -794,6 +794,7 @@ class MainWindow(QMainWindow):
             return
         self.overview.set_ligands(self.database.available_ligands(), settings)
         self.overview.temperature.setValue(settings.temperature_C)  # shown without emitting a change
+        self.overview.set_production(self.session.database.element_production())
         canvas = self.overview.canvas
         canvas.selected = settings.symbol
         canvas.show_screen(screen)

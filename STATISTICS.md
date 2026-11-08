@@ -52,6 +52,7 @@ Species by phase:
 | `materials_project_matches` | 105 | Reviewed experimental-phase to Materials Project structure matches |
 | `materials_project_energies` | 299 | Method-specific Materials Project energies with provenance |
 | `element_coverage` | 118 | Status of every chemical element |
+| `element_production` | 118 | Global annual production of each element, or an explicit gap |
 | `ligands` | 33 | Free-ligand reference states for ligand-aware calculations |
 | `additional_components` | 64 | Additional independent buffered references per species, beyond the first ligand |
 | `metadata` | 200 | Dataset version, reference conditions, schema version and value policy |

@@ -1,4 +1,4 @@
-"""The margin landscape: the periodic table in 3D, each element a column as tall as its stability margin."""
+"""The margin landscape: the periodic table in 3D, each element a column as tall as its margin or annual production."""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ from .figure_export import install_export_menu
 from .formula import draw_formula, pretty_formula
 
 MAX_MARGIN_KJ = 1000.0  # the top of the height scale
+PRODUCTION_DECADES_PER_PITCH = 3.0  # one tile width of column height is a factor of 1000 in tons
 MAX_HEIGHT = 3.2  # column height at MAX_MARGIN_KJ, in table pitches
 HALF = 0.5 - 0.045  # half the width of a column; the 2D tiles leave the same inset
 RADIUS = 0.12  # corner radius, as on the 2D tiles
@@ -28,6 +29,22 @@ def margin_height(margin_kJ: float | None) -> float:
     if margin_kJ is None:
         return 0.0
     return MAX_HEIGHT * math.log10(1 + max(margin_kJ, 0.0)) / math.log10(1 + MAX_MARGIN_KJ)
+
+
+def production_height(tons: float | None) -> float:
+    """Column height for annual production in metric tons, so 1 kt, 1 Mt and 1 Gt stand 1, 2 and 3 pitches tall."""
+    return 0.0 if tons is None else max(math.log10(tons), 0.0) / PRODUCTION_DECADES_PER_PITCH
+
+
+def production_lines(row: dict | None) -> list[str]:
+    """Hover text for one row of ``element_production``."""
+    if row is None:
+        return ["Production: no value"]
+    value = row["production_t_per_year"]
+    if value is None:
+        return [f"Production: no value. {row['notes']}"]
+    amount = f"{value:,.0f}" if value >= 100 else f"{value:g}"
+    return [f"Production: {amount} t/yr ({row['reference_year']})", f"{row['measured_as']} · {row['value_basis']}"]
 
 
 def grid_point(row: int, column: int) -> tuple[float, float]:
@@ -92,12 +109,18 @@ class MarginLandscape(QWidget):
         canvas.redrawn.connect(self.refresh)
 
     # data
+    def _height(self, element) -> float:
+        if self.canvas.height_mode == "production":
+            row = self.canvas.production.get(element.symbol)
+            return production_height(row["production_t_per_year"] if row else None)
+        margin = element.energy_margin_J_mol_metal
+        return margin_height(None if margin is None else margin / 1000)
+
     def refresh(self) -> None:
         """Take new target heights from the canvas; columns move to them over ``tween_ms``."""
         elements = self.canvas.elements
         symbols = list(elements)
-        targets = np.array([margin_height(None if elements[s].energy_margin_J_mol_metal is None
-                                          else elements[s].energy_margin_J_mol_metal / 1000) for s in symbols])
+        targets = np.array([self._height(elements[s]) for s in symbols])
         if symbols != self._symbols or not self.isVisible():
             self._symbols, self._heights = symbols, targets.copy()
             self._targets = targets
@@ -318,15 +341,20 @@ class MarginLandscape(QWidget):
                 lines.append(f"Margin: {element.energy_margin_J_mol_metal / 1000:.1f} kJ/mol metal")
             elif element.reason:
                 lines.append(element.reason)
+            if canvas.height_mode == "production":
+                lines += production_lines(canvas.production.get(element.symbol))
             for index, line in enumerate(lines):
                 painter.setPen(canvas._text_color() if index == 0 else canvas._muted())
                 painter.drawText(QRectF(16, 34 + 18 * index, self.width() / 2, 18), Qt.AlignLeft | Qt.AlignVCenter,
-                                 line)
+                                 painter.fontMetrics().elidedText(line, Qt.ElideRight, int(self.width() / 2)))
         painter.setPen(canvas._muted())
         painter.setFont(self._font(12))
+        height = ("annual production, log scale: 1 tile width = ×1000 (1 kt, 1 Mt, 1 Gt), flat = no value"
+                  if canvas.height_mode == "production" else
+                  f"energy margin to the next species, log scale up to {MAX_MARGIN_KJ:g} kJ/mol metal")
         painter.drawText(
             QRectF(16, self.height() - 26, self.width() - 32, 20), Qt.AlignCenter,
-            f"Height: energy margin to the next species, log scale up to {MAX_MARGIN_KJ:g} kJ/mol metal  ·  "
+            f"Height: {height}  ·  "
             "color as in the table  ·  drag to rotate, scroll to zoom, double-click to reset",
         )
         painter.setOpacity(1.0)

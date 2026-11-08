@@ -230,6 +230,16 @@ class ThermodynamicDatabase:
         return self._coverage
 
     @cached_property
+    def _production(self) -> tuple[dict[str, object], ...]:
+        if not self._evidence_rows("SELECT 1 FROM sqlite_master WHERE type='table' AND name='element_production'"):
+            return ()
+        return tuple(dict(row) for row in self._rows("SELECT * FROM element_production ORDER BY atomic_number"))
+
+    def element_production(self) -> tuple[dict[str, object], ...]:
+        """Global annual production of each element, or an explicit gap; empty if the file has no such table."""
+        return self._production
+
+    @cached_property
     def _ligands(self) -> tuple[LigandReference, ...]:
         return tuple(
             LigandReference(

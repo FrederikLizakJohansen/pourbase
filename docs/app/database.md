@@ -16,6 +16,7 @@ matching rows, and click a column header to sort. The line under the table gives
 | `warnings` | Scientific notes on records |
 | `computational_fallbacks` | The Materials Project 300 K estimates for missing solid Gibbs energies, used only on request |
 | `element_coverage` | The status of each chemical element |
+| `element_production` | Global annual production of each element, with its source, or an explicit gap |
 | `materials_project_matches` | Reviewed matches between experimental phases and Materials Project structures |
 | `materials_project_energies` | Materials Project energies by method, with their provenance |
 | `ligands` | Reference states of the free ligands |
