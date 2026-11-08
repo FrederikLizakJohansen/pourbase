@@ -435,6 +435,7 @@ class WindowTests(WindowTestCase):
         heights = dict(zip(landscape._symbols, landscape._targets))
         self.assertGreater(heights["Fe"], heights["Au"])
         self.assertGreater(heights["Ir"], 0.0)
+        self.assertAlmostEqual(heights["Au"], np.log10(3300) / 3)
         self.assertEqual(heights["Cs"], 0.0)
         overview.set_production(())
         self.assertEqual(overview.canvas.height_mode, "margin")

@@ -14,7 +14,7 @@ from .figure_export import install_export_menu
 from .formula import draw_formula, pretty_formula
 
 MAX_MARGIN_KJ = 1000.0  # the top of the height scale
-MAX_PRODUCTION_T = 1e10  # the top of the height scale for annual production
+PRODUCTION_DECADES_PER_PITCH = 3.0  # one tile width of column height is a factor of 1000 in tons
 MAX_HEIGHT = 3.2  # column height at MAX_MARGIN_KJ, in table pitches
 HALF = 0.5 - 0.045  # half the width of a column; the 2D tiles leave the same inset
 RADIUS = 0.12  # corner radius, as on the 2D tiles
@@ -32,8 +32,8 @@ def margin_height(margin_kJ: float | None) -> float:
 
 
 def production_height(tons: float | None) -> float:
-    """Column height for annual production in metric tons, on a log scale; no value leaves the column flat."""
-    return 0.0 if tons is None else MAX_HEIGHT * math.log10(1 + tons) / math.log10(1 + MAX_PRODUCTION_T)
+    """Column height for annual production in metric tons, so 1 kt, 1 Mt and 1 Gt stand 1, 2 and 3 pitches tall."""
+    return 0.0 if tons is None else max(math.log10(tons), 0.0) / PRODUCTION_DECADES_PER_PITCH
 
 
 def production_lines(row: dict | None) -> list[str]:
@@ -349,7 +349,7 @@ class MarginLandscape(QWidget):
                                  painter.fontMetrics().elidedText(line, Qt.ElideRight, int(self.width() / 2)))
         painter.setPen(canvas._muted())
         painter.setFont(self._font(12))
-        height = ("annual production, log scale up to 10¹⁰ t/yr, flat where no value is available"
+        height = ("annual production, log scale: 1 tile width = ×1000 (1 kt, 1 Mt, 1 Gt), flat = no value"
                   if canvas.height_mode == "production" else
                   f"energy margin to the next species, log scale up to {MAX_MARGIN_KJ:g} kJ/mol metal")
         painter.drawText(

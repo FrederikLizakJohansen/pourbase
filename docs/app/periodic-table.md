@@ -63,8 +63,9 @@ In 3D, each element is a column whose height is its stability margin, on a logar
 of metal. Drag to rotate, scroll to zoom and double-click to reset the view. Pressing 3D again lowers the table
 back to 2D.
 
-The selector next to the 3D button changes the height to annual global production, on a logarithmic scale up to
-10¹⁰ t per year, while the color still follows the table. An element without a value in `element_production` stays
+The selector next to the 3D button changes the height to annual global production, on a logarithmic scale where
+one tile width of height is a factor of 1000, so 1 kt, 1 Mt and 1 Gt stand one, two and three tile widths tall. The
+color still follows the table. An element without a value in `element_production` stays
 flat, and hovering over it gives the reason. Stages differ between elements, so hovering also shows what was
 measured. The selector is disabled when the database has no production data.
 
